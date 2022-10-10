@@ -1,0 +1,41 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _prog_servidor_consideracoes:
+
+Considerações Finais
+--------------------
+
+
+Uma boa leitura sobre o assunto de **Sistemas de Bancos de Dados Objeto-Relacionais** e **extensibilidade** pode ser encontrada nos livros de Stonebraker (:ref:`Stonebraker, 1996 <Stonebraker_1996>`; :ref:`Stonebraker et al., 1998 <Stonebraker_1998>`).
+
+
+Existem vários motivos para se usar **procedimentos armazenados**. Um deles tem haver com a diminuição da quantidade de comunicação exigida entre os processos das aplicações clientes e o processo do servidor de bancos de dados. Cada consulta SQL submetida por uma aplicação envolve uma comunicação entre processos, o que possui um custo. Além disso, as aplicações cliente e servidor podem estar em diferentes máquinas, exigindo uma comunicação pela rede. Os procedimentos armazenados permitem que agrupemos vários comandos SQL, o que pode ser útil para evitar o tráfego de informações intermediárias que não sejam úteis à aplicação cliente.
+
+
+Outro uso importante de procedimentos armazenados é para tornar as aplicações clientes o mais imune possível à mudanças da parte lógica do negócio (ou das regras de negócio). Também podemos criar funções que verifiquem a integridade dos dados manipulados por uma aplicação.
+
+
+Uma boa discussão, diz respeito a quanto de computação (ou lógica) deva ser realizada do lado cliente, e quanto deva ser movida para o lado servidor. As aplicações modernas são construídas em várias camadas, podendo delegar as regras de negócio nos chamados servidores de aplicação. No entanto, muitas vezes é mais interessante mover a computação para onde o dado se encontra, a fim de diminuir a quantidade de dado trafegado para o lado cliente. Outro fato a ser considerado é quando temos várias aplicações, cada uma possivelmente escrita em uma linguagem diferente, que realizam um mesmo tipo de computação. Muitas vezes criar um procedimento armazenado no SGBD simplifica a manutenção dessa computação uma vez que em todas as aplicações apenas a chamada a esta função será utilizada.
+
+
+Procedimentos armazenados ``PL/pgSQL`` podem aceitar um número variável de argumentos (``VARIADIC``). Também podem aceitar e retornar os tipos polimórficos ``ANY``, ``ANYELEMENT``, ``ANYARRAY``, ``ANYNONARRAY``, ``ANYENUM`` ou ``ANYRANGE``, de maneira que os tipos reais podem ser mudados a cada chamada da função. Outra capacidade interessante dessas funções é a possibilidade de declará-las com o tipo de retorno de um conjunto de valores de um certo tipo escalar (``RETURNS SETOF`` ou ``RETURNS TABLE``). Neste caso, a saída é gerada executando o comando ``RETURN NEXT`` ou ``RETURN QUERY``. Funções podem ser sobrecarregadas. Podemos declarar parâmetros de retorno (``OUT``). Podemos associar um custo às funções de modo a ajudar o *query planner* a realizar seu trabalho, ele terá uma forma de estimar quanto irá custar a chamada de sua função.
+
+
+**Triggers** são importantes ferramentas para aplicações que necessitam de uma auditoria das modificações realizadas em tabelas especiais ou para gerenciamento de dados relacionados em várias tabelas. Um *trigger* pode ser criado em qualquer linguagem procedural do PostgreSQL, bem como na Linguagem C. Além da associação com tabelas, um *trigger* pode ser associado a visões (``views``) e tabelas externas (``foreign tables``). Como comandos ``SELECT`` não modificam linhas, não podemos criar *triggers* associadas a este tipo de comando. Neste caso, o mais adequado é o uso de regras (*rules*) e visões (*views*). Para maiores detalhes sobre *triggers*, consulte :ref:`Postgresql 9.5.3 documentation - chapter 36. triggers <PGGlobalTrigger>`.
+
+
+As cláusulas ``BEGIN`` e ``END`` em funções ``PL/pgSQL`` possuem o único propósito de agrupar os comandos, não tendo nenhuma relação com os comandos de controle de transações. Tanto **funções** quanto **triggers** são sempre executadas dentro da transação iniciada pela consulta que as invocaram.
+
+
+Uma diferença entre o tipo ``RECORD`` e um tipo composto\ [#f1]_, é que a estrutura do registro é montada durante a execução da função, enquanto a variável do tipo composto já possui uma estrutura pré-definida. Isto significa que se você tentar acessar os campos de um registro que ainda não foi construído terá um erro de execução. Já o tipo composto não produzirá este efeito.
+
+
+.. rubric:: Notas
+
+
+.. [#f1]
+
+    Tipo de uma tabela ou um tipo definido por ``%ROWTYPE``.

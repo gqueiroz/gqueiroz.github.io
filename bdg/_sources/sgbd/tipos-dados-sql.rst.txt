@@ -1,0 +1,60 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_sgbd_tipos_dados:
+
+Tipos de Dados SQL
+==================
+
+
+Um **tipo de dado** (**data type**) é definido por um conjunto de valores e um conjunto de operações sobre esses valores. No PostgreSQL, toda coluna de uma tabela é associada a um tipo, que define as operações que podem ser realizadas sobre os valores dessa coluna. O **core** do PostgreSQL contém um conjunto de tipos de dados chamados de **fundamentais** ou **primitivos** (**built-in types**), para manipulação de valores numéricos, lógicos (ou booleanos), strings (cadeia de caracteres), data e hora, entre outros tipos.
+
+
+A :numref:`Tabela %s <tbl:sgbd:tipos-dados:sql>` apresenta alguns tipos suportados pelo PostgreSQL.
+
+
+.. table:: Tipos de Dados SQL
+    :name: tbl:sgbd:tipos-dados:sql
+    :header-alignment: center center center center center
+    :column-alignment: left left left left left
+
+    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
+    | Tipo                                                    | Descrição                                       | tamanho | nomes alternativos |   
+    +==================+======================================+=================================================+=========+====================+
+    +                  + integer                              + Números inteiros com sinal                      + 4 bytes + int, int4          +
+    + Números Inteiros +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + bigint                               + Números inteiros com sinal                      + 8 bytes + int8               +
+    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + serial                               + Números inteiros com sinal (autoincremental)    + 4 bytes + serial4            +
+    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + bigserial                            + Números inteiros com sinal (autoincremental)    + 8 bytes + srial8             +
+    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
+    + Booleano         + boolean                              + ``true`` ou ``false``                           +         + bool               +
+    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + real                                 + Números em ponto flutuante de precisão simples  + 4 bytes + float4             +
+    + Números reais    +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + double precision                     + Números em ponto flutuante de precisão dupla    + 8 bytes + float8             +
+    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + numeric [(p, s)]                     + Números exatos com precisão controlada          +         +                    +
+    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + character [(n)]                      + Cadeia de caracteres de tamanho fixo            +         + char [(n)]         +
+    + Strings          +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + character varying [(n)]              + Cadeia de caracteres de tamanho variável        +         + varchar [(n)]      +
+    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + text                                 + Cadeia de caracteres de tamanho variável        +         +                    +
+    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + timestamp [(p)] [without time zone]  + Data e hora sem *time zone*                     + 8 bytes +                    +
+    + Data e Hora      +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + timestamp [(p)] with time zone       + Data e hora com *time zone*                     + 8 bytes + timestamptz        +
+    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + date                                 + Data                                            + 4 bytes +                    +
+    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + time [ (p) ] [ without time zone ]   + Hora do dia sem *time zone*                     + 8 bytes +                    +
+    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +                  + time [ (p) ] with time zone          + Hora do dia com *time zone*                     + 12 bytes+                    +
+    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
+
+
+

@@ -1,0 +1,177 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_sgbd_consultas:
+
+Consultas em SQL
+================
+
+
+Na linguagem ``SQL``, o comando ``SELECT`` é utilizado para recuperação de dados das tabelas. A sintaxe geral deste comando\ [#f1]_ é a seguinte:
+
+
+.. code-block:: text
+
+        SELECT [ ALL | DISTINCT [ ON ( expressão [, ...] ) ] ]
+               [ * | expressão [ [ AS ] rótulo ] [, ...] ]
+    [     FROM from_item [, ...] ]
+    [    WHERE condição ]
+    [ GROUP BY elemento_agrupamento [, ...] ]
+    [   HAVING condição [, ...] ]
+    [ ORDER BY expressão [ ASC | DESC ] [, ...] ]
+    [    LIMIT { quantidade | ALL } ]
+    [   OFFSET início [ ROW | ROWS ] ]
+
+
+O comando ``SELECT`` é formado por várias cláusulas: ``SELECT``, ``FROM``, ``WHERE``, ``GROUP BY``, ``HAVING``, ``ORDER BY``, ``LIMIT`` e ``OFFSET``. Cada uma dessas cláusulas tem um papel importante na definição dos objetivos de uma consulta. Portanto, na sintaxe mostrada acima temos que:
+
+.. rst-class:: open
+
+- Tudo que está entre os pares de colchetes (``[`` e ``]``) é opcional.
+
+- A cláusula ``SELECT`` permite especificar a lista de expressões, isto é, nomes de colunas ou fórmulas matemáticas ou chamadas de função ou até mesmo sub-consultas, que farão parte das linhas de saída da consulta. A palavra-chave ``DISTINCT`` faz com que linhas com valores duplicados sejam removidas do resultado, ficando apenas uma linha do grupo de linhas repetidas. ``DISTINCT ON ( expressão [, ...])`` tem um comportamento semelhante, mas considerando apenas a lista de expressões fornecida. A palavra-chave ``ALL`` inclui todas as linhas do resultado, que é o comportamento padrão e, portanto, pode ser omitida. A palavra chave ``AS`` possibilita renomearmos uma coluna ou expressão com um novo ``rótulo``. O caractere ``*`` é uma abreviação para a lista de todas as colunas dos conjuntos de dados presentes na cláusula ``FROM``.
+
+- A cláusula ``FROM`` especifica uma ou mais tabelas como fonte dos dados da consulta. Caso múltiplas tabelas sejam especificadas, o resultado é um produto cartesiano (ou ``CROSS JOIN``) de todas as tabelas envolvidas. No entanto, é muito comum o uso de uma cláusula ``WHERE`` para restringir as linhas retornadas a um subconjunto menor desse produto cartesiano. Vale ressaltar que na cláusula ``FROM``, o ``from_item`` pode ser o nome de uma tabela do banco de dados, o nome de uma *view* (visão), uma sub-consulta, ou até mesmo uma chamada de função que produza valores que são tratados como um conjunto de linhas. Portanto, a cláusula ``FROM`` faz o produto cartesiano dos conjuntos de dados informados.
+
+- A cláusula ``WHERE`` permite definir uma ``condição``, isto é, uma ``expressão lógica`` ou ``predicado``, para filtrar o conjunto de linhas da consulta. As linhas que não satisfaçam esse predicado serão eliminadas do resultado.
+
+- A cláusula ``GROUP BY`` é utilizada para criar grupos de linhas que são condensadas em uma única linha através das operações de agregação tais como: ``SUM``, ``MIN``, ``MAX``, ``AVG``, ``COUNT``, entre outras. O ``elemento_agrupamento`` pode ser o nome de uma coluna ou uma expressão formada a partir das colunas. Também podemos usar os nomes das colunas de saída da consulta nessa cláusula ou até mesmo a posição ordinal da coluna de saída. Quando esta cláusula está presente, apenas as colunas listadas nela ou funções de agregação podem ser usadas na lista da cláusula ``SELECT``.
+
+- A cláusula ``HAVING`` permite definirmos uma ``condição``, isto é, uma ``expressão lógica`` ou ``predicado``, para filtrar o resutado dos grupos de linhas. Dessa maneira, as linhas resultantes de agrupamentos que não satisfaçam essa condição, são eliminadas do resultado final.
+
+- A cláusula ``ORDER BY`` ordena o resultado final de acordo com a expressão fornecida. Lembrando que a expressão poe ser uma lista de colunas, expressões matemáticas, chamadas de função, ou a posição das colunas de saída de acordo com a lista da cláusula ``SELECT``.
+
+- As cláusulas ``LIMIT`` e ``OFFSET`` permitem, respectivamente, definir o número máximo de linhas a serem retornadas e o ponto onde esta contagem começa a valer.
+
+
+.. warning::
+
+    O comando ``SELECT`` possui várias outras cláusulas e detalhes. Para saber mais sobre a versão completa deste comando, consulte o seguite tópico do manual do PostgreSQL: `SELECT <https://www.postgresql.org/docs/14/sql-select.html>`__.
+
+
+Exemplos
+--------
+
+
+**1.** Recuperar os dados do aluno ``gilberto``:
+
+    .. collapse:: Solução:
+
+        .. code-block:: sql
+
+            SELECT * FROM alunos WHERE nome = 'gilberto';
+
+
+**2.** Fazer o produto cartesiano entre as tabelas ``cursos`` e ``alunos``:
+
+    .. collapse:: Solução:
+
+        .. code-block:: sql
+
+            SELECT * FROM alunos, cursos;
+
+
+**3.** Juntar as linhas correlatas das tabelas ``cursos`` e ``alunos``:
+
+
+.. note::
+
+    Chamamos este tipo de consulta de **junção entre tabelas**.
+
+
+..
+
+    .. collapse:: Solução:
+
+        .. code-block:: sql
+
+            SELECT *
+              FROM alunos, cursos
+             WHERE alunos.curso_id = cursos.curso_id;
+
+
+        ou, ordenando as linhas de saída pelas colunas ``cursos.titulo`` e ``alunos.nome``:
+
+
+        .. code-block:: sql
+
+              SELECT *
+                FROM alunos, cursos
+               WHERE alunos.curso_id = cursos.curso_id
+            ORDER BY cursos.titulo, alunos.nome;
+
+
+        ou, utilizando novos rótulos para as colunas do resultado (``nome_aluno`` e ``nome_curso``):
+
+
+        .. code-block:: sql
+
+            SELECT *, A.nome AS nome_aluno, C.titulo AS nome_curso
+              FROM alunos A, cursos C
+             WHERE A.curso_id = C.curso_id;
+
+
+        ou, usando a sintaxe ``NATURAL JOIN``:
+
+
+        .. code-block:: sql
+
+            SELECT * FROM alunos NATURAL JOIN cursos;
+
+
+        ou, usando a sintaxe ``INNER JOIN``:
+
+
+        .. code-block:: sql
+
+            SELECT * FROM alunos INNER JOIN cursos USING (curso_id);
+
+
+        ou:
+
+
+        .. code-block:: sql
+
+            SELECT * FROM alunos INNER JOIN cursos ON (alunos.curso_id = cursos.curso_id);
+
+
+**4.** Qual o nome da disciplina do aluno ``gilberto``?
+
+
+    .. collapse:: Solução:
+
+        .. code-block:: sql
+
+            SELECT titulo
+              FROM alunos, cursos
+             WHERE nome = 'gilberto'
+               AND alunos.curso_id = cursos.curso_id;
+
+
+        ou, qualificando o nome da coluna:
+
+
+        .. code-block:: sql
+
+            SELECT cursos.titulo
+              FROM alunos, cursos
+             WHERE nome = 'gilberto'
+               AND alunos.curso_id = cursos.curso_id;
+
+
+Sugestões de Leitura
+--------------------
+
+
+- The PostgreSQL Global Development Group. `PostgreSQL 14 Documentation, Parte I. Tutorial, Chapter 2 - The SQL Language, Section 2.5 - Querying a Table <https://www.postgresql.org/docs/14/tutorial-select.html>`_. Acesso: 03 de Outubro de 2022.
+
+
+
+.. rubric:: Notas
+
+
+.. [#f1]
+
+    Trata-se de uma versão simplificada da sintaxe de consultas ``SELECT``. Para a versão completa, consulte o seguite tópico do manual do PostgreSQL: `SELECT <https://www.postgresql.org/docs/14/sql-select.html>`__.

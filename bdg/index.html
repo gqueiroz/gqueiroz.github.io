@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bancos de Dados Geográficos &mdash; BDGeo</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/index.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="1. Instalando e Configurando o Ambiente de Trabalho" href="instalacao/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="#" class="icon icon-home"> BDGeo
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consultas-espaciais/index.html">4. Consultas Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prog-servidor/index.html">5. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estrutura-dados/index.html">6. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algo-geom/index.html">7. Algoritmos Geométricos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Bancos de Dados Geográficos</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="instalacao/index.html" class="btn btn-neutral float-right" title="1. Instalando e Configurando o Ambiente de Trabalho" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bancos-de-dados-geograficos">
+<h1>Bancos de Dados Geográficos<a class="headerlink" href="#bancos-de-dados-geograficos" title="Link permanente para este cabeçalho"></a></h1>
+<p>Na última década, o uso de dados geoespaciais tem sido cada vez mais comum nas aplicações do cotidiano, bem como nas diversas áreas do conhecimento. Esses dados são fundamentais em tomadas de decisão, em problemas ambientais e sócio-econômicos. Além disso, há uma maior disponibilidade de dados geoespaciais em conseqüência da adoção de políticas de dados abertos por inúmeras agências espaciais, instituições de pesquisa e iniciativas baseadas em sistemas colaborativos (VGI, Crowdsourcing, Citizen Science). Como reflexo, temos uma grande quantidade de tecnologias disponíveis para armazenamento, análise, visualização e disseminação desse tipo de dado. Portanto, a utilização efetiva de dados e tecnologias geoespaciais tem sido um fator decisivo para o sucesso de empresas, órgãos do governo e desenvolvimento de pesquisas inovadoras. Esse curso irá fornecer os fundamentos teóricos e práticos para o tratamento de dados em sistemas de bancos de dados, com ênfase em dados geoespciais.</p>
+<a class="reference internal image-reference" href="_images/pg.svg"><img alt="PostgreSQL" class="align-right" src="_images/pg.svg" width="48" /></a>
+<p>Nessas notas de aula, o aluno irá aprender o uso das funcionalidades presentes em um servidor típico de bancos de dados, como o PostgreSQL, para trabalhar no <em>domínio geoespacial</em>. O <a class="reference external" href="http://www.postgresql.org">PostgreSQL</a> é um sistema gerenciador de banco de dados objeto-relacional, gratuito e de código fonte aberto, desenvolvido a partir do projeto Postgres, iniciado em 1986, na Universidade da Califórnia em Berkeley, sob a liderança do professor Michael Stonebraker.</p>
+<a class="reference internal image-reference" href="_images/postgis.png"><img alt="PostGIS" class="align-right" src="_images/postgis.png" style="width: 48px;" /></a>
+<p>Iniciaremos o curso por uma revisão dos conceitos básicos em sistemas de bancos de dados relacionais (SGBD-R). A seguir, a aula sobre <a class="reference internal" href="tipos-geometricos/index.html#cap-tipos-geometricos"><span class="std std-ref">Tipos de Dados e Operações Espaciais</span></a> tem como objetivo fornecer os fundamentos teóricos e a prática necessária para lidar com a componente geoespacial tanto em sistemas de bancos de dados quanto em linguagens de programação. Para tal apresentamos diversos exemplos em SQL com o uso do PostgreSQL e PostGIS. O <a class="reference external" href="https://postgis.net/">PostGIS</a> é uma biblioteca de software livre, sob a licença GNU GPL versão 2 (GPLv2), que fornece ao SGBD PostgreSQL uma extensão geoespacial.</p>
+<p>No Capítulo <a class="reference internal" href="consultas-espaciais/index.html#cap-consultas-espaciais"><span class="std std-ref">Consultas Espaciais</span></a>, apresentamos diversas estratégias para manipulação do dado geográfico, cobrindo desde os tipos mais comuns de consulta, como apontamento (<em>point query</em>) e janela (<em>window</em> ou <em>range query</em>), até junções espaciais e <em>overlay</em>. Também fornecemos exemplos práticos de como acelerar as consultas espaciais para grandes volumes de dados ou coleções com objetos com grande número de vértices.</p>
+<p>Para desmistificar o comportamento dos atuais SGBDs, discutimos em detalhes <a class="reference internal" href="algo-geom/index.html#cap-algo-geom"><span class="std std-ref">Algoritmos Geométricos</span></a> e <a class="reference internal" href="estrutura-dados/index.html#cap-estrutura-dados"><span class="std std-ref">Estruturas de Dados e Métodos de Acesso Multidimensionais</span></a>.</p>
+<p>Por último, a aula sobre <a class="reference internal" href="prog-servidor/index.html#cap-prog-servidor"><span class="std std-ref">Programação do Lado do Servidor de Bancos de Dados</span></a> tem como objetivo fornecer ao aluno conceitos e técnicas de programação em bancos de dados que o auxilie em atividades de pesquisa e desenvolvimento, principalmente, para aqueles que precisarão lidar com grandes quantidades de dados. Essa parte das notas de aulas são baseadas no <a class="reference external" href="https://www.postgresql.org/docs/current/static/server-programming.html">manual do servidor PostgreSQL</a>, disponíveis livremente e com seções com maiores detalhes do que os apresentados aqui. A Seção <a class="reference internal" href="prog-servidor/triggers.html#sec-prog-servidor-triggers-rel-espacial"><span class="std std-ref">Triggers e Relacionamentos de Integridade Espacial</span></a> mostra como implementar em PL/pgSQL os relacionamentos de integridade espacial entre tabelas com coleções de feições.</p>
+<p>Espera-se que o aluno aproveite a oportunidade no curso para aprofundar seus conhecimentos sobre bancos de dados, além de exercitar esse conhecimento adquirido em um ambiente real como o PostgreSQL.</p>
+<div class="line-block">
+<div class="line">Atenciosamente,</div>
+<div class="line">Gilberto Ribeiro de Queiroz</div>
+<div class="line">São José dos Campos, 01 de Outubro de 2022</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consultas-espaciais/index.html">4. Consultas Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prog-servidor/index.html">5. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estrutura-dados/index.html">6. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algo-geom/index.html">7. Algoritmos Geométricos</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="referencias.html">Referências Bibliográficas</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="listas.html">Listas de Exercícios</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="licenca.html">Licença</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="agradecimentos.html">Agradecimentos</a></li>
+</ul>
+</div>
+</section>
+<section id="indices-e-tabelas">
+<h1>Índices e Tabelas<a class="headerlink" href="#indices-e-tabelas" title="Link permanente para este cabeçalho"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Índice</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Índice do Módulo</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Página de Busca</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="instalacao/index.html" class="btn btn-neutral float-right" title="1. Instalando e Configurando o Ambiente de Trabalho" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f2e342ccd90>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

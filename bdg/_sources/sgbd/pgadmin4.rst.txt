@@ -1,0 +1,151 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_sgbd_pgadmin4:
+
+pgAdmin
+=======
+
+
+O `pgAdmin <https://www.pgadmin.org/>`__ é uma aplicação **cliente** que fornece uma interface gráfica com o usuário para facilitar tanto a administração básica de bancos de dados PostgreSQL quanto a realização de consultas usando a linguagem SQL. 
+
+
+.. tip::
+
+    Para realizar as atividades desta seção, iremos utilizar o pgAdmin 4. Caso você ainda não tenha instalado essa aplicação, consulte a :numref:`Seção %s <sec_instalacao_pg_admin>`, que apresenta os detalhes de sua instalação.
+
+
+Uma vez aberta essa aplicação, dependendo da instalação realizada, será solicitada uma credencial de acesso. Na janela mostrada na :numref:`Figura %s <fig:sgbd:pgadmin4:login-page>`, entre com o e-mail (ou nome de usuário) e senha informados durante o processo de instalação do pgAdmin. No exemplo mostrado nessa figura, utilizamos como login o e-mail ``gilberto@domain.br`` e a senha ``segredo``.
+
+
+.. figure:: ../img/pgadmin4/login-page.png
+    :alt: Janela de login do pgAdmin
+    :width: 100%
+    :figclass: align-center
+    :align: center
+    :name: fig:sgbd:pgadmin4:login-page
+
+    Janela de *login* do pgAdmin
+
+
+A interface gráfica do pgAdmin apresenta uma barra de *menu* na parte superior (``File``, ``Object``, ``Tools``, ``Help``) e uma janela dividida em dois painéis localizados logo abaixo da barra de *menu* (:numref:`Figura %s <fig:sgbd:pgadmin4:main-page>`). O painel à esqueda, apresenta um componente na forma de árvore para organizar os objetos manipulados pelo pgAdmin, tais como servidores, grupos de servidores, bancos de dados, esquemas, tabelas e outros tipos de objetos. Esse componente ainda apresenta uma barra de botões com atalhos para alguns recursos muito utilizados no pgAdmin: *Query Tool*, *View Data*, *Filtered Rows*, *Search Objects*. O painel à direita, contém uma série de páginas organizadas por um controle com abas. Essas páginas fornecem informações do objeto selecionado no painel à esquerda. Essa área contém um *DashBoard*, com gráficos e estatísticas do servidor, bem como das atividades em andamento. A página de propriedades apresenta mais detalhes do objeto selecionado no painel da esquerda. 
+
+
+.. figure:: ../img/pgadmin4/main-page.png
+    :alt: Janela principal do pgAdmin
+    :width: 100%
+    :figclass: align-center
+    :name: fig:sgbd:pgadmin4:main-page
+
+    Janela principal do pgAdmin
+
+
+Na primeira vez que essa aplicação é aberta, possivelmente, não haverá um servidor definido. Desta forma, para começarmos a trabalhar com um servidor PostgreSQL específico, é necessário registrar as informações para conexão ao servidor. No *menu* de atalho do objeto ``Servers``, selecione a opção ``Register | Server...`` como indicado na :numref:`Figura %s <fig:sgbd:pgadmin4:menu-register-server>`.
+
+
+.. figure:: ../img/pgadmin4/menu-register-server.png
+    :alt: Menu para registro de um novo servidor
+    :width: 100%
+    :figclass: align-center
+    :name: fig:sgbd:pgadmin4:menu-register-server
+
+    Menu para registro de um novo servidor
+
+
+Na janela apresentada, deve ser informado um nome que será usado para identificar o servidor na árvore de objetos do pgAdmin (:numref:`Figura %s <fig:sgbd:pgadmin4:register-server-general>`).
+
+
+.. figure:: ../img/pgadmin4/register-server-general.png
+    :alt: Registrando um novo servidor
+    :width: 80%
+    :figclass: align-center
+    :name: fig:sgbd:pgadmin4:register-server-general
+
+    Registrando um novo servidor
+
+
+Na aba ``Connection``, forneça as informações de conexão ao servidor (:numref:`Figura %s <fig:sgbd:pgadmin4:register-server-connection>`).
+
+
+.. figure:: ../img/pgadmin4/register-server-connection.png
+    :alt: Informações de conexão ao servidor PostgreSQL
+    :width: 80%
+    :figclass: align-center
+    :name: fig:sgbd:pgadmin4:register-server-connection
+
+    Informações de conexão ao servidor PostgreSQL
+
+
+Ao pressionar o botão ``Save``, deverá ser apresentada uma tela como a da :numref:`Figura %s <fig:sgbd:pgadmin4:local-server>`.
+
+
+.. figure:: ../img/pgadmin4/local-server.png
+    :alt: Servidor PostgreSQL
+    :width: 100%
+    :figclass: align-center
+    :name: fig:sgbd:pgadmin4:local-server
+
+    Servidor PostgreSQL
+
+
+Repare que logo abaixo do nome do servidor (``local-server``), é apresentado um único banco de dados, chamado ``postgres``. Este banco é destinado à manutenção e não deve ser usado para criação de novos objetos, como tabelas. Portanto, vamos criar um outro banco de dados para armazenar as tabelas e objetos que criaremos ao longo do curso. Para isso, selecione a opção ``Create | Database...``, como indicado na :numref:`Figura %s <fig:sgbd:pgadmin4:menu-create-database>`.
+
+.. figure:: ../img/pgadmin4/menu-create-database.png
+    :alt: Criando um novo banco de dados
+    :width: 100%
+    :figclass: align-center
+    :name: fig:sgbd:pgadmin4:menu-create-database
+
+    Criando um novo banco de dados
+
+
+Forneça um nome para o novo banco de dados, por exemplo, ``bdgeo``. Opcionalmente, também é possível incluir um comentário descritivo que ajude a identificar o banco de dados no futuro (:numref:`Figura %s <fig:sgbd:pgadmin4:create-database-general>`).
+
+
+.. figure:: ../img/pgadmin4/create-database-general.png
+    :alt: Criando um novo banco de dados
+    :width: 80%
+    :figclass: align-center
+    :name: fig:sgbd:pgadmin4:create-database-general
+
+    Criando um novo banco de dados
+
+
+Na aba ``Definition`` (:numref:`Figura %s <fig:sgbd:pgadmin4:create-database-definition>`), devemos fornecer algumas informações básicas, como o banco de dados a ser usado como molde (``template``) na criação do novo banco. 
+
+
+.. figure:: ../img/pgadmin4/create-database-definition.png
+    :alt: Criando um novo banco de dados
+    :width: 80%
+    :class: with-border
+    :figclass: align-center
+    :name: fig:sgbd:pgadmin4:create-database-definition
+
+    Criando um novo banco de dados
+
+
+A aba ``SQL`` mostra o comando SQL que será enviado pelo pgAdmin ao servidor PostgreSQL para criação do banco de dados (:numref:`Figura %s <fig:sgbd:pgadmin4:create-database-sql>`). 
+
+
+.. figure:: ../img/pgadmin4/create-database-sql.png
+    :alt: Criando um novo banco de dados
+    :width: 80%
+    :figclass: align-center
+    :name: fig:sgbd:pgadmin4:create-database-sql
+
+    Criando um novo banco de dados
+
+
+Ao pressionar o botão ``save``, o banco deverá ser criado e exibido no painel de objetos (:numref:`Figura %s <fig:sgbd:pgadmin4:bdgeo>`).
+
+
+.. figure:: ../img/pgadmin4/bdgeo.png
+    :alt: Banco de dados bdgeo
+    :width: 100%
+    :figclass: align-center
+    :name: fig:sgbd:pgadmin4:bdgeo
+
+    Banco de dados ``bdgeo``
+

@@ -1,0 +1,34 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _sec_consultas_espaciais_window_query:
+
+Consultas de Janela ou Intervalo
+================================
+
+
+**Consulta:** Quais UF possuem geometrias com interação com o retângulo de coordenadas :math:`(-54.23, -21.49)` e :math:`(-43.89, -12.90)`?
+
+
+.. |range-query| image:: ../img/consultas-espaciais/range-query.png
+
+
+.. table::
+    :widths: 30 70
+    :width: 100%
+    :align: center
+    :column-alignment: left center
+
+    +--------------------+---------------+
+    | - **xmin:** -54.23 | |range-query| |
+    | - **xmax:** -43.89 |               |
+    | - **ymin:** -21.49 |               |
+    | - **ymax:** -12.90 |               |
+    +--------------------+---------------+
+
+
+.. note::
+
+    Este tipo de consulta também é conhecida por **Window Query** ou **Range Query**.

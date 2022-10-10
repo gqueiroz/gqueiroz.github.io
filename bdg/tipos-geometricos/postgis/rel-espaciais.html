@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.4.6. Relacionamentos Espaciais &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/tipos-geometricos/postgis/rel-espaciais.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../search.html" />
+    <link rel="next" title="3.4.7. Transformação entre Sistemas de Referencia Espacial" href="srs.html" />
+    <link rel="prev" title="3.4.5. Operações Geração Geometrias" href="op-geracao-geom.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. Tipos de Dados e Operações Espaciais</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introducao.html">3.1. Introdução</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ogc-sfs.html">3.2. Tipos Geométricos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rel-espaciais.html">3.3. Relacionamentos Espaciais</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../postgis-geometry.html">3.4. PostGIS Geometry</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="carregando.html">3.4.1. Carregando a Extensão PostGIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wkt.html">3.4.2. Well-Known Text (WKT)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="op-metricos.html">3.4.3. Operadores Métricos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="op-conjunto.html">3.4.4. Operadores Conjunto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="op-geracao-geom.html">3.4.5. Operações Geração Geometrias</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.4.6. Relacionamentos Espaciais</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srs.html">3.4.7. Transformação entre Sistemas de Referencia Espacial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="feature-table.html">3.4.8. Tabelas com Colunas Geométricas</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../consultas-espaciais/index.html">4. Consultas Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prog-servidor/index.html">5. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../estrutura-dados/index.html">6. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">7. Algoritmos Geométricos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a> &raquo;</li>
+          <li><a href="../postgis-geometry.html"><span class="section-number">3.4. </span>PostGIS Geometry</a> &raquo;</li>
+      <li><span class="section-number">3.4.6. </span>Relacionamentos Espaciais</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="op-geracao-geom.html" class="btn btn-neutral float-left" title="3.4.5. Operações Geração Geometrias" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="srs.html" class="btn btn-neutral float-right" title="3.4.7. Transformação entre Sistemas de Referencia Espacial" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="relacionamentos-espaciais">
+<span id="sec-tipos-geometricos-postgis-geometry-rel-espaciais"></span><h1><span class="section-number">3.4.6. </span>Relacionamentos Espaciais<a class="headerlink" href="#relacionamentos-espaciais" title="Link permanente para este cabeçalho"></a></h1>
+<section id="st-relate">
+<h2><span class="section-number">3.4.6.1. </span><code class="docutils literal notranslate"><span class="pre">ST_Relate</span></code><a class="headerlink" href="#st-relate" title="Link permanente para este cabeçalho"></a></h2>
+<p>Considere os objetos geométricos apresentados na <a class="reference internal" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-relate"><span class="std std-numref">Figura 3.9</span></a>.</p>
+<figure class="align-center align-default" id="fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-relate">
+<a class="reference internal image-reference" href="../../_images/op-st-relate.png"><img alt="Qual o relacionamento espacial entre as geometrias A e B?" src="../../_images/op-st-relate.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.9 - </span><span class="caption-text">Qual o relacionamento espacial entre as geometrias <code class="docutils literal notranslate"><span class="pre">A</span></code> e <code class="docutils literal notranslate"><span class="pre">B</span></code>?</span><a class="headerlink" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-relate" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><strong>Caso 1:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Relate</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( (1 1, 1 3, 5 3, 5 1, 1 1) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( (3 2, 3 4, 5 4, 5 2, 3 2) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 2:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Relate</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( (1 5, 1 7, 3 7, 3 5, 1 5) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( (3 6, 3 7, 7 7, 7 6, 3 6) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 3:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Relate</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( (7 1, 7 3, 9 3, 9 1, 7 1) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POINT( 8 3 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 4:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Relate</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( (9 5, 9 7, 11 7, 11 5, 9 5) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 10 8, 10 6, 13 6 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 5:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Relate</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 11 2, 13 4, 15 2 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 12 3, 12 1, 15 1 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<figure class="align-center align-default" id="fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-relate-bool">
+<a class="reference internal image-reference" href="../../_images/op-st-relate-bool.png"><img alt="As geometrias ``A`` e ``B`` seguem o rlacionamento espacial 'T*T***F**'?" src="../../_images/op-st-relate-bool.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.10 - </span><span class="caption-text">As geometrias <code class="docutils literal notranslate"><span class="pre">A</span></code> e <code class="docutils literal notranslate"><span class="pre">B</span></code> seguem o rlacionamento espacial <code class="docutils literal notranslate"><span class="pre">'T*T***F**'</span></code>?</span><a class="headerlink" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-relate-bool" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><strong>Caso 6:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Relate</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( (1 1, 1 3, 3 3, 3 1, 1 1) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POINT( 2 2 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="s1">&#39;T*T***F**&#39;</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 7:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Relate</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 5 5, 5 3, 3 3, 3 1, 1 1 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 6 4, 6 3, 7 3, 7 1 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="s1">&#39;T*T***F**&#39;</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-equals">
+<h2><span class="section-number">3.4.6.2. </span><code class="docutils literal notranslate"><span class="pre">ST_Equals</span></code><a class="headerlink" href="#st-equals" title="Link permanente para este cabeçalho"></a></h2>
+<p>O relacionamento espacial <code class="docutils literal notranslate"><span class="pre">ST_Equals</span></code> permite saber se duas geometrias <code class="docutils literal notranslate"><span class="pre">A</span></code> e <code class="docutils literal notranslate"><span class="pre">B</span></code> são toplogicamente iguais.</p>
+<figure class="align-center align-default" id="fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-equals">
+<a class="reference internal image-reference" href="../../_images/op-st-equals.png"><img alt="As geometrias A e B são iguais?" src="../../_images/op-st-equals.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.11 - </span><span class="caption-text">As geometrias <code class="docutils literal notranslate"><span class="pre">A</span></code> e <code class="docutils literal notranslate"><span class="pre">B</span></code> são iguais?</span><a class="headerlink" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-equals" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Equals</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 1, 1 5, 5 5, 5 1, 1 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( (5 3, 5 5, 3 5, 1 5, 1 3, 1 1, 3 1, 5 1, 5 3 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-touches">
+<h2><span class="section-number">3.4.6.3. </span><code class="docutils literal notranslate"><span class="pre">ST_Touches</span></code><a class="headerlink" href="#st-touches" title="Link permanente para este cabeçalho"></a></h2>
+<p>O relacionamento espacial <code class="docutils literal notranslate"><span class="pre">ST_Touches</span></code> diz se duas geometrias se tocam.</p>
+<figure class="align-center align-default" id="fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-touches">
+<a class="reference internal image-reference" href="../../_images/op-st-touches.png"><img alt="A geometria A toca a geometria B?" src="../../_images/op-st-touches.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.12 - </span><span class="caption-text">A geometria <code class="docutils literal notranslate"><span class="pre">A</span></code> toca a geometria <code class="docutils literal notranslate"><span class="pre">B</span></code>?</span><a class="headerlink" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-touches" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><strong>Caso 1:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 1 7, 1 9, 3 9 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 1 9, 3 7 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 2:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 1 4, 2 6 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 2 6, 3 4 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 3:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 5 6, 5 8, 7 8 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 6 6, 6 9 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 4:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 9 6, 9 8, 12 8, 12 6, 9 6 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 12 7, 15 9, 15 5, 12 7 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 5:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 1, 1 3, 4 3, 4 1, 1 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 4 2, 4 4, 6 4, 6 2, 4 2 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 6:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 7 1, 7 3, 10 3, 10 1, 7 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 9 2, 13 4, 13 1, 9 2 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-crosses">
+<h2><span class="section-number">3.4.6.4. </span><code class="docutils literal notranslate"><span class="pre">ST_Crosses</span></code><a class="headerlink" href="#st-crosses" title="Link permanente para este cabeçalho"></a></h2>
+<p>O relacionamento espacial <code class="docutils literal notranslate"><span class="pre">ST_Crosses</span></code> diz se duas geometrias se cruzam.</p>
+<figure class="align-center align-default" id="fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-crosses">
+<a class="reference internal image-reference" href="../../_images/op-st-crosses.png"><img alt="A geometria A cruza a geometria B?" src="../../_images/op-st-crosses.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.13 - </span><span class="caption-text">A geometria <code class="docutils literal notranslate"><span class="pre">A</span></code> cruza a geometria <code class="docutils literal notranslate"><span class="pre">B</span></code>?</span><a class="headerlink" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-crosses" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><strong>Caso 1:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Crosses</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 0 4, 3 9 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 1.5 6.5, 4 4 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 2:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Crosses</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 4 8, 7 8 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 5 6, 5 9 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 3:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Crosses</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 8 8, 12 8 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 9 6, 9 8, 11 8, 11 9 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 4:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Crosses</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LineString( 11 5, 13 5, 13 6 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 12 4, 12 7, 15 7, 15 5, 12 4) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 5:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Crosses</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;MultiPoint( 9 2, 9 3, 10 2 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LineString( 8 1, 8 3, 10 3 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 6:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Crosses</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;MultiPoint( 3.5 1, 3.5 2.5, 4.5 1.5, 4.5 2.5 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 1, 1 3, 4 3, 4 1, 1 1) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-within">
+<h2><span class="section-number">3.4.6.5. </span><code class="docutils literal notranslate"><span class="pre">ST_Within</span></code><a class="headerlink" href="#st-within" title="Link permanente para este cabeçalho"></a></h2>
+<p>O relacionamento espacial <code class="docutils literal notranslate"><span class="pre">ST_Within</span></code> diz se a geometria <code class="docutils literal notranslate"><span class="pre">A</span></code> encontra-se dentro da geometria <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
+<figure class="align-center align-default" id="fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-within">
+<a class="reference internal image-reference" href="../../_images/op-st-within.png"><img alt="A geometria A está dentro da geometria B?" src="../../_images/op-st-within.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.14 - </span><span class="caption-text">A geometria <code class="docutils literal notranslate"><span class="pre">A</span></code> está dentro da geometria <code class="docutils literal notranslate"><span class="pre">B</span></code>?</span><a class="headerlink" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-within" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><strong>Caso 1:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Within</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POINT( 3 8 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 6, 1 9, 5 9, 5 6, 1 6 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 2:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Within</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POINT( 6 8 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 6 6, 6 9, 10 9, 10 6, 6 6 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 3:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Within</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 2 2, 2 4, 4 4, 4 2, 2 2 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 1, 1 5, 5 5, 5 1, 1 1 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 4:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Within</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 7 3, 7 5, 9 5, 9 3, 7 3 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 6 1, 6 5, 10 5, 10 1, 6 1 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 5:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Within</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 12 7, 12 9, 14 9 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 11 6, 11 9, 15 9, 15 6, 11 6 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 6:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Within</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 11 3, 11 5, 13 5 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 11 1, 11 5, 15 5, 15 1, 11 1 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-contains">
+<h2><span class="section-number">3.4.6.6. </span><code class="docutils literal notranslate"><span class="pre">ST_Contains</span></code><a class="headerlink" href="#st-contains" title="Link permanente para este cabeçalho"></a></h2>
+<p>O relacionamento espacial <code class="docutils literal notranslate"><span class="pre">ST_Contains</span></code> diz se a geometria <code class="docutils literal notranslate"><span class="pre">A</span></code> contém a geometria <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
+<figure class="align-center align-default" id="fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-contains">
+<a class="reference internal image-reference" href="../../_images/op-st-contains.png"><img alt="A geometria A contém a geometria B?" src="../../_images/op-st-contains.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.15 - </span><span class="caption-text">A geometria <code class="docutils literal notranslate"><span class="pre">A</span></code> contém a <code class="docutils literal notranslate"><span class="pre">B</span></code>?</span><a class="headerlink" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-contains" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><strong>Caso 1:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 6, 1 9, 5 9, 5 6, 1 6 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POINT( 3 8 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 2:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 6 6, 6 9, 10 9, 10 6, 6 6 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POINT( 6 8 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 3:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 1, 1 5, 5 5, 5 1, 1 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 2 2, 2 4, 4 4, 4 2, 2 2 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 4:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 6 1, 6 5, 10 5, 10 1, 6 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 7 3, 7 5, 9 5, 9 3, 7 3 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 5:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 11 6, 11 9, 15 9, 15 6, 11 6 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 12 7, 12 9, 14 9 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 6:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 11 1, 11 5, 15 5, 15 1, 11 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 11 3, 11 5, 13 5 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-overlaps">
+<h2><span class="section-number">3.4.6.7. </span><code class="docutils literal notranslate"><span class="pre">ST_Overlaps</span></code><a class="headerlink" href="#st-overlaps" title="Link permanente para este cabeçalho"></a></h2>
+<p>O relacionamento espacial <code class="docutils literal notranslate"><span class="pre">ST_Overlaps</span></code> diz se duas geometrias se sobrepõem.</p>
+<figure class="align-center align-default" id="fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-overlaps">
+<a class="reference internal image-reference" href="../../_images/op-st-overlaps.png"><img alt="A geometria A sobrepõe a geometria B?" src="../../_images/op-st-overlaps.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.16 - </span><span class="caption-text">A geometria <code class="docutils literal notranslate"><span class="pre">A</span></code> sobrepõe a <code class="docutils literal notranslate"><span class="pre">B</span></code>?</span><a class="headerlink" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-overlaps" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><strong>Caso 1:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Overlaps</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 4 8, 7 8 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 5 6, 5 9 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 2:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Overlaps</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 8 8, 12 8 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 9 6, 9 8, 11 8, 11 9 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 3:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Overlaps</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 1, 1 3, 4 3, 4 1, 1 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 4 2, 4 4, 6 4, 6 2, 4 2 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 4:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Overlaps</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 7 1, 7 3, 10 3, 10 1, 7 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 9 2, 13 4, 13 1, 9 2 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-disjoint">
+<h2><span class="section-number">3.4.6.8. </span><code class="docutils literal notranslate"><span class="pre">ST_Disjoint</span></code><a class="headerlink" href="#st-disjoint" title="Link permanente para este cabeçalho"></a></h2>
+<p>O relacionamento espacial <code class="docutils literal notranslate"><span class="pre">ST_Disjoint</span></code> diz se duas geometrias são disjuntas, isto é, se elas não possuem nenhuma interação espacial.</p>
+<figure class="align-center align-default" id="fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-disjoint">
+<a class="reference internal image-reference" href="../../_images/op-st-disjoint.png"><img alt="As geometrias A e B são disjuntas?" src="../../_images/op-st-disjoint.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.17 - </span><span class="caption-text">As geometrias <code class="docutils literal notranslate"><span class="pre">A</span></code> e <code class="docutils literal notranslate"><span class="pre">B</span></code> são disjuntas?</span><a class="headerlink" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-disjoint" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><strong>Caso 1:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Disjoint</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 1.5 5, 3 5, 4 6, 6 5 )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;LINESTRING( 1 6, 1 4, 4 4 )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 2:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Disjoint</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 1, 1 2, 3 2, 3 1, 1 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 3 3, 5 3, 5 2, 3 2, 3 3 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-intersects">
+<h2><span class="section-number">3.4.6.9. </span><code class="docutils literal notranslate"><span class="pre">ST_Intersects</span></code><a class="headerlink" href="#st-intersects" title="Link permanente para este cabeçalho"></a></h2>
+<p>O relacionamento espacial <code class="docutils literal notranslate"><span class="pre">ST_Intersects</span></code> diz se a geometria <code class="docutils literal notranslate"><span class="pre">A</span></code> possui algum tipo de interação espacial com a geometria <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
+<figure class="align-center align-default" id="fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-intersects">
+<a class="reference internal image-reference" href="../../_images/op-st-intersects.png"><img alt="A geometria A possui algum relacionamento espacial com a geometria B?" src="../../_images/op-st-intersects.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.18 - </span><span class="caption-text">A geometria <code class="docutils literal notranslate"><span class="pre">A</span></code> possui algum relacionamento espacial com a geometria <code class="docutils literal notranslate"><span class="pre">B</span></code>?</span><a class="headerlink" href="#fig-tipos-geometricos-postgis-geometry-rel-espaciais-op-st-intersects" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><strong>Caso 1:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 7, 1 9, 5 9, 5 7, 1 7 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 4 6, 4 8, 8 8, 8 6, 4 6 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 2:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 10 6, 10 8, 12 8, 12 6, 10 6 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 12 6, 12 8, 14 8, 14 6, 12 6 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 3:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 1 1, 1 5, 5 5, 5 1, 1 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 2 2, 2 4, 4 4, 4 2, 2 2 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 4:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 6 1, 6 5, 10 5, 10 1, 6 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 7 3, 7 5, 9 5, 9 3, 7 3 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Caso 5:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 11 1, 11 3, 13 3, 13 1, 11 1 ) )&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;POLYGON( ( 13 3, 13 5, 15 5, 15 3, 13 3 ) )&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="op-geracao-geom.html" class="btn btn-neutral float-left" title="3.4.5. Operações Geração Geometrias" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="srs.html" class="btn btn-neutral float-right" title="3.4.7. Transformação entre Sistemas de Referencia Espacial" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f2e34c9ca30>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

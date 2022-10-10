@@ -1,0 +1,124 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _sec_consultas_espaciais_overlay_mapas:
+
+Overlay de Mapas
+================
+
+
+Carga de Dados - Mapa Pedológico
+--------------------------------
+
+
+Considere o conjunto ESRI Shapefile mostrado na :numref:`Tabela %s <tbl:consultas-espaciais:overlay:pedologia-2017>`, que contem o mapa pedológico do Brazil, abo de referência 2017. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.
+
+
+.. |trechos-rodoviarios| image:: ../img/consultas-espaciais/pedologia-2017.png
+
+
+.. table:: Mapa Pedológico – 2017 |br| **Fonte Original:** :download:`IBGE <https://geoftp.ibge.gov.br/informacoes_ambientais/pedologia/vetores/escala_250_mil/versao_2017/brasil/Brasil_pedo_area.zip>`.
+    :widths: 60 40
+    :width: 100%
+    :align: center
+    :column-alignment: center left
+    :name: tbl:consultas-espaciais:overlay:pedologia-2017
+
+    +-----------------------+-------------------------------------------+
+    | |trechos-rodoviarios| | **Mapa Pedológico – 2017**                |
+    |                       |                                           |
+    |                       | - pedologia_2017.cpg                      |
+    |                       | - pedologia_2017.dbf                      |
+    |                       | - pedologia_2017.prj                      |
+    |                       | - pedologia_2017.shp                      |
+    |                       | - pedologia_2017.shx                      |
+    |                       |                                           |
+    |                       | **Tipo Geométrico:** MultiPolygon         |
+    |                       | |br|  |br|                                |
+    |                       | **Número de Feições:** 113.907            |
+    |                       | |br|  |br|                                |
+    |                       | **CRS:** Lat/Long SIRGAS 2000             |
+    |                       | |br|  |br|                                |
+    |                       | **SRID:** 4674                            |
+    |                       | |br|  |br|                                |
+    |                       | **Codificação Caracteres:** UTF-8         |
+    |                       | |br|  |br|                                |
+    |                       | **Nome Tabela:** pedologia                |
+    +-----------------------+-------------------------------------------+
+
+
+.. tip::
+
+    Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o ``shp2pgsql``, use o seguinte comando::
+
+        shp2pgsql -c -g "geom" -s 4674 -i -I -t "2D" -W UTF-8 pedologia_2017.shp public.pedologia > pedologia.sql
+
+
+.. tip::
+
+    Para carregar o arquivo ``pedologia.sql`` para um banco de dados PostgreSQL, utilize o ``psql``::
+
+        psql -h localhost -p 5432 -d bdgeo -U postgres -f pedologia.sql
+
+
+Consulta 1
+----------
+
+
+**Consulta:** Quais os tipos de solo do Estado do Tocantins?
+
+
+.. figure:: ../img/consultas-espaciais/overlay-01.png
+    :alt: Overlay - Intersecção entre Limite Estadual do Tocantins e o Mapa Pedológico
+    :width: 60%
+    :figclass: align-center
+    :name: fig:consultas-espaciais:overlay:01
+
+    Overlay - Intersecção entre Limite Estadual do Tocantins e o Mapa Pedológico.
+
+
+
+Consulta 2
+----------
+
+
+**Consulta:** Qual o tipo de solo predominante em Ouro Preto?
+
+
+.. figure:: ../img/consultas-espaciais/overlay-02.png
+    :alt: Overlay - Intersecção entre limite municipal de Ouro Preto e o Mapa Pedológico
+    :width: 60%
+    :figclass: align-center
+    :name: fig:consultas-espaciais:overlay:02
+
+    Overlay - Intersecção entre limite municipal de Ouro Preto e o Mapa Pedológico.
+
+
+Consulta 3
+----------
+
+
+**Consulta:**  Recuperar os trechos de rodovia no Estado do Tocantins com o tipo de revestimento "Pavimentado"?
+
+
+.. figure:: ../img/consultas-espaciais/overlay-03.png
+    :alt: Overlay - Intersecção entre trechos rodoviários e o limite estadual de Tocantins
+    :width: 60%
+    :figclass: align-center
+    :name: fig:consultas-espaciais:overlay:03
+
+    Overlay - Intersecção entre trechos rodoviários e o limite estadual de Tocantins.
+
+
+Consulta 4
+----------
+
+
+**Consulta:** Quantos KM de rodovia existem no Estado do Tocantins com o tipo de revestimento "Pavimentado"?
+
+
