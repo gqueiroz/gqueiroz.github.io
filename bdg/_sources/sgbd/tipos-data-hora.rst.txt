@@ -1,0 +1,69 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_sgbd_tipos_data_hora:
+
+Tipos de Dados para Data e Hora
+===============================
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP WITH TIME ZONE '2022-10-11 06:15:00';
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP '2022-10-11 06:15:00';
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP WITH TIME ZONE '2022-10-11 06:15:00-03';
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP '2022-10-11 06:15:00-03';
+
+
+.. note::
+
+    Veja que o PostgreSQL descarta o *time zone* nesse último caso.
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP WITH TIME ZONE 'epoch';
+
+
+.. code-block:: sql
+
+    SELECT DATE 'tomorrow';
+
+
+.. code-block:: sql
+
+    SELECT TIME 'now';
+
+
+.. tip::
+
+    O padrão SQL define algumas funções para fornecer valores específicos de data e hora:
+
+    .. code-block:: sql
+
+        SELECT CURRENT_DATE, CURRENT_TIME, CURRENT_TIMESTAMP, LOCALTIME, LOCALTIMESTAMP;
+
+
+.. tip::
+
+    Constantes de outros tipos que não os valores numéricos podem ser representados por uma das seguintes formas:
+    
+    .. code-block:: sql
+    
+        type 'string'
+        'string'::type
+        CAST ( 'string' AS type )

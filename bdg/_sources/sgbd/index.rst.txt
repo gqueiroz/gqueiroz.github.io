@@ -34,13 +34,24 @@ Sistemas de Bancos de Dados Relacionais
     ./conectando-bd
     ./criando-bd
     ./tipos-dados-sql
+    ./tipos-numericos
+    ./expressoes
+    ./tipo-logico
+    ./op-relacionais
+    ./strings
+    ./tipos-data-hora
+    ./expressoes-logicas
     ./criando-tabelas
     ./inserindo-dados
     ./consultas
+    ./funcoes-operadores
     ./consultas-agreg
     ./atualizando-dados
     ./removendo-dados
     ./criando-views
+    ./restricoes-integridade
+    ./importando-dados
+    ./exportando-dados
     ./alterando-estrutura
 
 

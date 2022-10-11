@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.6. Tipos Numéricos &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/sgbd/tipos-numericos.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="2.7. Expressões" href="expressoes.html" />
+    <link rel="prev" title="2.5. Tipos de Dados SQL" href="tipos-dados-sql.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. Sistemas de Bancos de Dados Relacionais</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pgadmin4.html">2.1. pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tour-sql.html">2.2. Um Tour pela Linguagem SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conectando-bd.html">2.3. Conectando ao Servidor PostgreSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="criando-bd.html">2.4. Criando um Novo Banco de Dados no PostgreSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipos-dados-sql.html">2.5. Tipos de Dados SQL</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.6. Tipos Numéricos</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#integer">2.6.1. <code class="docutils literal notranslate"><span class="pre">integer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bigint">2.6.2. <code class="docutils literal notranslate"><span class="pre">bigint</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#double-precision">2.6.3. <code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">precision</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operacoes-aritmeticas">2.6.4. Operações Aritméticas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#funcoes-matematicas">2.6.5. Funções Matemáticas</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.7. Expressões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipo-logico.html">2.8. Tipo Lógico - <code class="docutils literal notranslate"><span class="pre">boolean</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="op-relacionais.html">2.9. Operadores Relacionais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">2.10. Tipos Textuais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.11. Tipos de Dados para Data e Hora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressoes-logicas.html">2.12. Expressões Lógicas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="criando-tabelas.html">2.13. Criando Tabelas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inserindo-dados.html">2.14. Inserindo Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consultas.html">2.15. Consultas em SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="funcoes-operadores.html">2.16. Funções e Operadores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consultas-agreg.html">2.17. Consultas de Agregação</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atualizando-dados.html">2.18. Atualizando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removendo-dados.html">2.19. Removendo Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="criando-views.html">2.20. Criando Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.21. Restrições de Integridade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importando-dados.html">2.22. Importando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.23. Exportando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.24. Alterando a Estrutura de uma Tabela</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../consultas-espaciais/index.html">4. Consultas Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">5. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">6. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">7. Algoritmos Geométricos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
+      <li><span class="section-number">2.6. </span>Tipos Numéricos</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="tipos-dados-sql.html" class="btn btn-neutral float-left" title="2.5. Tipos de Dados SQL" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="expressoes.html" class="btn btn-neutral float-right" title="2.7. Expressões" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tipos-numericos">
+<span id="cap-sgbd-tipos-numericos"></span><h1><span class="section-number">2.6. </span>Tipos Numéricos<a class="headerlink" href="#tipos-numericos" title="Link permanente para este cabeçalho"></a></h1>
+<section id="integer">
+<h2><span class="section-number">2.6.1. </span><code class="docutils literal notranslate"><span class="pre">integer</span></code><a class="headerlink" href="#integer" title="Link permanente para este cabeçalho"></a></h2>
+<p>O tipo <strong>integer</strong> é capaz de representar números inteiros na faixa de valores entre -2147483648 a +2147483647. Portanto, esse tipo possui precisão “finita” e ocupa 4 bytes.</p>
+<p>Exemplo de notação:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="bigint">
+<h2><span class="section-number">2.6.2. </span><code class="docutils literal notranslate"><span class="pre">bigint</span></code><a class="headerlink" href="#bigint" title="Link permanente para este cabeçalho"></a></h2>
+<p>O tipo <strong>bigint</strong> é capaz de representar números inteiros na faixa de valores entre -9223372036854775808 a +9223372036854775807. Portanto, esse tipo possui precisão “finita” e ocupa 8 bytes.</p>
+<p>Exemplo de notação:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">2247483647</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="double-precision">
+<h2><span class="section-number">2.6.3. </span><code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">precision</span></code><a class="headerlink" href="#double-precision" title="Link permanente para este cabeçalho"></a></h2>
+<p>O tipo <strong>double precision</strong>, ou <strong>float8</strong>, é capaz de representar números reais (ou números em ponto flutiante) com uma certa precisão numérica (64-bits). Um número em ponto flutuante pode ser expresso da seguinte maneira:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="k">precision</span><span class="w"> </span><span class="s1">&#39;5.1&#39;</span><span class="p">;</span><span class="w"></span>
+
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="k">precision</span><span class="w"> </span><span class="s1">&#39;5.&#39;</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="k">precision</span><span class="w"> </span><span class="s1">&#39;5.2e12&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="operacoes-aritmeticas">
+<h2><span class="section-number">2.6.4. </span>Operações Aritméticas<a class="headerlink" href="#operacoes-aritmeticas" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para cada tipo de dado, existe um conjunto de operadores disponíveis. No caso das operações aritméticas, para os tipos numéricos, os símbolos utilizados são muito semelhantes aos que usamos na matemática (<a class="reference internal" href="#tbl-sgbd-op-aritmeticas"><span class="std std-numref">Tabela 2.2</span></a>):</p>
+<table class="styled-table docutils align-center" id="tbl-sgbd-op-aritmeticas">
+<caption><span class="caption-number">Tabela 2.2 - </span><span class="caption-text">Operadores aritméticos básicos.</span><a class="headerlink" href="#tbl-sgbd-op-aritmeticas" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 32%" />
+<col style="width: 39%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="center-align head"><p>Operador</p></th>
+<th class="left-align head"><p>Nome</p></th>
+<th class="center-align head"><p>Expressão</p></th>
+<th class="center-align head"><p>Valor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">+</span></code></p></td>
+<td class="left-align"><p>soma</p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p>13</p></td>
+</tr>
+<tr class="row-odd"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">-</span></code></p></td>
+<td class="left-align"><p>subtração</p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">*</span></code></p></td>
+<td class="left-align"><p>multiplicação</p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p>12</p></td>
+</tr>
+<tr class="row-odd"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
+<td class="left-align"><p>divisão</p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">%</span></code></p></td>
+<td class="left-align"><p>resto da divisão</p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p>2</p></td>
+</tr>
+<tr class="row-odd"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">^</span></code></p></td>
+<td class="left-align"><p>potenciação</p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p>16</p></td>
+</tr>
+</tbody>
+</table>
+<p>Exemplos:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">     </span><span class="c1">-- adição</span>
+
+
+<span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">     </span><span class="c1">-- subtração</span>
+
+
+<span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">     </span><span class="c1">-- multiplicação</span>
+
+
+<span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">     </span><span class="c1">-- parte inteira da divisão</span>
+
+
+<span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="p">.</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">    </span><span class="c1">-- divisão com valor do tipo numeric</span>
+
+
+<span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">     </span><span class="c1">-- resto da divisão</span>
+
+
+<span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">     </span><span class="c1">-- potenciação</span>
+</pre></div>
+</div>
+</section>
+<section id="funcoes-matematicas">
+<h2><span class="section-number">2.6.5. </span>Funções Matemáticas<a class="headerlink" href="#funcoes-matematicas" title="Link permanente para este cabeçalho"></a></h2>
+<p>Exemplos:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pi</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">radians</span><span class="p">(</span><span class="mi">270</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="mi">900</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Para uma lista completa dos métodos de uma string, consulte <a class="reference external" href="https://www.postgresql.org/docs/14/functions-math.html">9.3. Mathematical Functions and Operators</a>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="tipos-dados-sql.html" class="btn btn-neutral float-left" title="2.5. Tipos de Dados SQL" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="expressoes.html" class="btn btn-neutral float-right" title="2.7. Expressões" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7ff768073760>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

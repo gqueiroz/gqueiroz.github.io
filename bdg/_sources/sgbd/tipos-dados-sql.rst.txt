@@ -17,44 +17,105 @@ A :numref:`Tabela %s <tbl:sgbd:tipos-dados:sql>` apresenta alguns tipos suportad
 
 .. table:: Tipos de Dados SQL
     :name: tbl:sgbd:tipos-dados:sql
-    :header-alignment: center center center center center
-    :column-alignment: left left left left left
+    :header-alignment: center center center center 
+    :column-alignment: left left left left
+    :widths: 25 25 25 25
 
-    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
-    | Tipo                                                    | Descrição                                       | tamanho | nomes alternativos |   
-    +==================+======================================+=================================================+=========+====================+
-    +                  + integer                              + Números inteiros com sinal                      + 4 bytes + int, int4          +
-    + Números Inteiros +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + bigint                               + Números inteiros com sinal                      + 8 bytes + int8               +
-    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + serial                               + Números inteiros com sinal (autoincremental)    + 4 bytes + serial4            +
-    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + bigserial                            + Números inteiros com sinal (autoincremental)    + 8 bytes + srial8             +
-    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
-    + Booleano         + boolean                              + ``true`` ou ``false``                           +         + bool               +
-    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + real                                 + Números em ponto flutuante de precisão simples  + 4 bytes + float4             +
-    + Números reais    +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + double precision                     + Números em ponto flutuante de precisão dupla    + 8 bytes + float8             +
-    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + numeric [(p, s)]                     + Números exatos com precisão controlada          +         +                    +
-    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + character [(n)]                      + Cadeia de caracteres de tamanho fixo            +         + char [(n)]         +
-    + Strings          +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + character varying [(n)]              + Cadeia de caracteres de tamanho variável        +         + varchar [(n)]      +
-    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + text                                 + Cadeia de caracteres de tamanho variável        +         +                    +
-    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + timestamp [(p)] [without time zone]  + Data e hora sem *time zone*                     + 8 bytes +                    +
-    + Data e Hora      +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + timestamp [(p)] with time zone       + Data e hora com *time zone*                     + 8 bytes + timestamptz        +
-    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + date                                 + Data                                            + 4 bytes +                    +
-    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + time [ (p) ] [ without time zone ]   + Hora do dia sem *time zone*                     + 8 bytes +                    +
-    +                  +--------------------------------------+-------------------------------------------------+---------+--------------------+
-    +                  + time [ (p) ] with time zone          + Hora do dia com *time zone*                     + 12 bytes+                    +
-    +------------------+--------------------------------------+-------------------------------------------------+---------+--------------------+
+    +---------------------------------------------------------------------------------+--------------------------------------+-------------------------------------------------+--------------------+
+    | Tipo                                                                                                                   | Descrição                                       | nomes alternativos |   
+    +=================================================================================+======================================+=================================================+====================+
+    |                                                                                 | integer                              | Número inteiro com sinal                        | int, int4          |
+    +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
+    |                                                                                 | bigint                               | Número inteiro com sinal                        | int8               |
+    + `Números Inteiros <https://www.postgresql.org/docs/14/datatype-numeric.html>`__ +--------------------------------------+-------------------------------------------------+--------------------+
+    |                                                                                 | serial                               | Número inteiro com sinal (autoincremental)      | serial4            |
+    +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
+    |                                                                                 | bigserial                            | Número inteiro com sinal (autoincremental)      | serial8            |
+    +---------------------------------------------------------------------------------+--------------------------------------+-------------------------------------------------+--------------------+
+    |                                                                                 | real                                 | Números em ponto flutuante de precisão simples  | float4             |
+    + `Números reais <https://www.postgresql.org/docs/14/datatype-numeric.html>`__    +--------------------------------------+-------------------------------------------------+--------------------+
+    |                                                                                 | double precision                     | Números em ponto flutuante de precisão dupla    | float8             |
+    +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
+    |                                                                                 | numeric [(p, s)]                     | Números exatos com precisão controlada          |                    |
+    +---------------------------------------------------------------------------------+--------------------------------------+-------------------------------------------------+--------------------+
+    | `Booleano <https://www.postgresql.org/docs/14/datatype-boolean.html>`__         | boolean                              | valores ``true`` ou ``false``                   | bool               |
+    +---------------------------------------------------------------------------------+--------------------------------------+-------------------------------------------------+--------------------+
+    +                                                                                 | character [(n)]                      | Cadeia de caracteres de tamanho fixo            | char [(n)]         |
+    + `Strings <https://www.postgresql.org/docs/14/datatype-character.html>`__        +--------------------------------------+-------------------------------------------------+--------------------+
+    +                                                                                 | character varying [(n)]              | Cadeia de caracteres de tamanho variável        | varchar [(n)]      |
+    +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
+    +                                                                                 | text                                 | Cadeia de caracteres de tamanho variável        |                    |    
+    +---------------------------------------------------------------------------------+--------------------------------------+-------------------------------------------------+--------------------+
+    +                                                                                 | timestamp [(p)] [without time zone]  | Data e hora sem *time zone*                     |                    |
+    + `Data e Hora <https://www.postgresql.org/docs/14/datatype-datetime.html>`__     +--------------------------------------+-------------------------------------------------+--------------------+
+    +                                                                                 | timestamp [(p)] with time zone       | Data e hora com *time zone*                     | timestamptz        |
+    +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
+    +                                                                                 | date                                 | Data                                            |                    |
+    +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
+    +                                                                                 | time [ (p) ] [ without time zone ]   | Hora do dia sem *time zone*                     |                    |
+    +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
+    +                                                                                 | time [ (p) ] with time zone          | Hora do dia com *time zone*                     |                    |    
+    +---------------------------------------------------------------------------------+--------------------------------------+-------------------------------------------------+--------------------+
 
 
+Os valores individuais de cada tipo são chamados de **literais** ou **literais constantes**. Exemplos:
+
+
+.. code-block:: sql
+
+    SELECT 473;           -- número inteiro
+
+
+.. code-block:: sql
+
+    SELECT 4.1            -- numeric
+ 
+
+.. code-block:: sql
+
+    SELECT true;          -- valor lógico verdadeiro
+
+
+.. code-block:: sql
+
+    SELECT 'Satélite'     -- sequência de caracteres
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP WITH TIME ZONE '2022-10-11 06:15:00-03';  -- data e hora com fuso horário
+
+
+Usando a função ``pg_typeof``:
+
+
+.. code-block:: sql
+
+    SELECT pg_typeof('Gilberto');
+
+
+.. code-block:: sql
+
+    SELECT pg_typeof(30);
+
+
+.. code-block:: sql
+
+    SELECT pg_typeof(22.5);
+
+
+.. code-block:: sql
+
+    SELECT pg_typeof(5 / 2 + 4 * 5);
+
+
+.. code-block:: sql
+
+    SELECT pg_typeof(TIMESTAMP WITH TIME ZONE '2022-10-11 06:15:00-03');
+
+
+
+.. tip::
+
+    A lista completa dos tipos básicos do PostgreSQL pode ser consultada em `Data Types <https://www.postgresql.org/docs/14/datatype.html>`__.
 

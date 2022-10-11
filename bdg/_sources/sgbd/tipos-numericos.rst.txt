@@ -1,0 +1,147 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+.. _cap_sgbd_tipos_numericos:
+
+Tipos Numéricos
+===============
+
+
+``integer``
+-----------
+
+
+O tipo **integer** é capaz de representar números inteiros na faixa de valores entre -2147483648 a +2147483647. Portanto, esse tipo possui precisão "finita" e ocupa 4 bytes.
+
+
+Exemplo de notação:
+
+
+.. code-block:: sql
+
+    SELECT 4;
+
+
+``bigint``
+----------
+
+
+O tipo **bigint** é capaz de representar números inteiros na faixa de valores entre -9223372036854775808 a +9223372036854775807. Portanto, esse tipo possui precisão "finita" e ocupa 8 bytes.
+
+
+Exemplo de notação:
+
+
+.. code-block:: sql
+
+    SELECT 2247483647;
+
+
+``double precision``
+--------------------
+
+
+O tipo **double precision**, ou **float8**, é capaz de representar números reais (ou números em ponto flutiante) com uma certa precisão numérica (64-bits). Um número em ponto flutuante pode ser expresso da seguinte maneira:
+
+
+.. code-block:: sql
+
+    SELECT double precision '5.1';
+    
+
+    SELECT double precision '5.';
+
+    SELECT double precision '5.2e12';
+
+
+Operações Aritméticas
+---------------------
+
+
+Para cada tipo de dado, existe um conjunto de operadores disponíveis. No caso das operações aritméticas, para os tipos numéricos, os símbolos utilizados são muito semelhantes aos que usamos na matemática (:numref:`Tabela %s <tbl:sgbd:op-aritmeticas>`):
+
+
+.. table:: Operadores aritméticos básicos.
+    :align: center
+    :header-alignment: center left center center
+    :column-alignment: center left center center
+    :name: tbl:sgbd:op-aritmeticas
+
+    +----------+------------------+----------------------+-------+
+    | Operador | Nome             | Expressão            | Valor |
+    +==========+==================+======================+=======+
+    | ``+``    | soma             | :sql:`SELECT 5 + 8;` | 13    |
+    +----------+------------------+----------------------+-------+
+    | ``-``    | subtração        | :sql:`SELECT 3 - 2;` | 1     |
+    +----------+------------------+----------------------+-------+
+    | ``*``    | multiplicação    | :sql:`SELECT 3 * 4;` | 12    |
+    +----------+------------------+----------------------+-------+
+    | ``/``    | divisão          | :sql:`SELECT 6 / 4;` | 1     |
+    +----------+------------------+----------------------+-------+
+    | ``%``    | resto da divisão | :sql:`SELECT 6 % 4;` | 2     |
+    +----------+------------------+----------------------+-------+
+    | ``^``    | potenciação      | :sql:`SELECT 2 ^ 4;` | 16    |
+    +----------+------------------+----------------------+-------+
+
+
+Exemplos:
+
+
+.. code-block:: sql
+
+    SELECT 5 + 2;     -- adição
+    
+
+    SELECT 5 - 2;     -- subtração
+
+
+    SELECT 5 * 2;     -- multiplicação
+
+
+    SELECT 5 / 2;     -- parte inteira da divisão
+
+
+    SELECT 5. / 2;    -- divisão com valor do tipo numeric
+
+
+    SELECT 5 % 2;     -- resto da divisão
+    
+
+    SELECT 5 ^ 2;     -- potenciação
+
+
+Funções Matemáticas
+-------------------
+
+
+Exemplos:
+
+
+.. code-block:: sql
+
+    SELECT log(100);
+
+
+.. code-block:: sql
+
+    SELECT pi();
+
+
+.. code-block:: sql
+
+    SELECT radians(270);
+
+
+.. code-block:: sql
+
+    SELECT sqrt(900);
+
+
+.. tip::
+
+    Para uma lista completa dos métodos de uma string, consulte `9.3. Mathematical Functions and Operators <https://www.postgresql.org/docs/14/functions-math.html>`__.
+
