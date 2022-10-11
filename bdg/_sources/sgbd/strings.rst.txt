@@ -12,20 +12,6 @@ Tipos Textuais
 ==============
 
 
-As strings são delimitadas por ``'``:
-
-
-
-
-
-
-
-
-.. code-block:: sql
-
-    SELECT '''Bancos de Dados Geográficos''';
-
-
 Os tipos ``character``, ``character varying`` e ``text`` são capazes de representar uma **sequência de caracteres**, ou **cadeia de caracteres**, ou **string**.
 
 
@@ -52,6 +38,14 @@ Para escrever **literais string** que expandem por **múltiplas linhas**, podemo
 
     SELECT 'Bancos de Dados'
     ' Geográficos';
+
+
+Para representar o caracter ``'`` (aspas simples), devemos dobrar o número de caracteres, como mostrado abaixo:
+
+
+.. code-block:: sql
+
+    SELECT '''Bancos de Dados Geográficos''';
 
 
 Operações com Strings

@@ -138,10 +138,6 @@
              
   <section id="tipos-textuais">
 <span id="cap-sgbd-strings"></span><h1><span class="section-number">2.10. </span>Tipos Textuais<a class="headerlink" href="#tipos-textuais" title="Link permanente para este cabeçalho"></a></h1>
-<p>As strings são delimitadas por <code class="docutils literal notranslate"><span class="pre">'</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;&#39;&#39;Bancos de Dados Geográficos&#39;&#39;&#39;</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
 <p>Os tipos <code class="docutils literal notranslate"><span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">character</span> <span class="pre">varying</span></code> e <code class="docutils literal notranslate"><span class="pre">text</span></code> são capazes de representar uma <strong>sequência de caracteres</strong>, ou <strong>cadeia de caracteres</strong>, ou <strong>string</strong>.</p>
 <p>Uma <strong>string</strong> pode ser expressa entre <strong>aspas simples</strong> ou entre marcações especiais como um <strong>duplo sinal de dólar</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">sql</span>
@@ -157,6 +153,10 @@
 <p>Para escrever <strong>literais string</strong> que expandem por <strong>múltiplas linhas</strong>, podemos fazer:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Bancos de Dados&#39;</span><span class="w"></span>
 <span class="s1">&#39; Geográficos&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Para representar o caracter <code class="docutils literal notranslate"><span class="pre">'</span></code> (aspas simples), devemos dobrar o número de caracteres, como mostrado abaixo:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;&#39;&#39;Bancos de Dados Geográficos&#39;&#39;&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <section id="operacoes-com-strings">
@@ -262,7 +262,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7ff768c70a30>
+<jinja2.runtime.BlockReference object at 0x7fe9a89dea90>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 
