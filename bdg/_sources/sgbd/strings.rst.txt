@@ -15,7 +15,7 @@ Tipos Textuais
 Os tipos ``character``, ``character varying`` e ``text`` são capazes de representar uma **sequência de caracteres**, ou **cadeia de caracteres**, ou **string**.
 
 
-Uma **string** pode ser expressa entre **aspas simples** ou entre marcações especiais como um **duplo sinal de dólar**::
+Uma **string** pode ser expressa entre **aspas simples** ou entre marcações especiais como um **duplo sinal de dólar**:
 
 
 .. code-block:: sql
