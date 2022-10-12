@@ -5,8 +5,8 @@
 
 .. _cap_sgbd_tipo_logico:
 
-Tipo Lógico - ``boolean``
-=========================
+Tipo Lógico
+===========
 
 
 O tipo ``boolean`` é usado para representar valores **booleanos** ou **lógicos**. Este tipo possui apenas dois valores possíveis: ``true`` (verdadeiro) ou ``false`` (falso).
@@ -42,7 +42,7 @@ As operações usuais sobre os tipos booleanos são conhecidas como **operaçõe
 - ``NOT``: a negação opera em um único valor (lógico), também chamado de **proposição**, e produz o valor verdadeiro se o operando for falso, ou falso caso o operando seja verdadeiro (:numref:`Tabela %s <tbl:sgbd:tipo-logico:op-logico-not>`).
 
 
-.. table:: Tabela verdade do operador ``and``.
+.. table:: Tabela verdade do operador ``AND``.
     :width: 50%
     :align: center
     :header-alignment: center center center
@@ -62,7 +62,7 @@ As operações usuais sobre os tipos booleanos são conhecidas como **operaçõe
     +-----------+-----------+--------------------+
 
 
-.. table:: Tabela verdade do operador ``or``.
+.. table:: Tabela verdade do operador ``OR``.
     :width: 50%
     :align: center
     :header-alignment: center center center
@@ -82,7 +82,7 @@ As operações usuais sobre os tipos booleanos são conhecidas como **operaçõe
     +-----------+-----------+------------------+
 
 
-.. table:: Tabela verdade do operador ``not``.
+.. table:: Tabela verdade do operador ``NOT``.
     :width: 50%
     :align: center
     :header-alignment: center center center

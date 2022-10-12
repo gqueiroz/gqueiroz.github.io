@@ -238,25 +238,25 @@
 <p class="admonition-title">Nota</p>
 <p>Para facilitar o gerenciamento do compartilhamento do sistema de arquivos entre o <em>host</em> e os contêiners criados a partir dessa imagem, iremos adicionar um usuário no sistema operacional da imagem com os mesmos nomes e valores do seu usuário e grupo principal. Caso você não tenha o aplicativo <code class="docutils literal notranslate"><span class="pre">id</span></code>, forneça os valores manualmente.</p>
 </div>
-<p>O comando acima fará, inicialmente, com que algumas imagens e camadas bases, necessárias à criação da imagem <code class="docutils literal notranslate"><span class="pre">bdgeo/qgis</span></code>, sejam recuperadas do <a class="reference external" href="https://hub.docker.com/">Docker Hub</a>. A <a class="reference internal" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-01"><span class="std std-numref">Figura 1.2</span></a> mostra essa parte inicial do processo de construção da imagem <code class="docutils literal notranslate"><span class="pre">bdgeo/qgis</span></code>.</p>
+<p>O comando acima fará, inicialmente, com que algumas imagens e camadas bases, necessárias à criação da imagem <code class="docutils literal notranslate"><span class="pre">bdgeo/qgis</span></code>, sejam recuperadas do <a class="reference external" href="https://hub.docker.com/">Docker Hub</a>. A <a class="reference internal" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-01"><span class="std std-numref">Figura 1.30</span></a> mostra essa parte inicial do processo de construção da imagem <code class="docutils literal notranslate"><span class="pre">bdgeo/qgis</span></code>.</p>
 <figure class="align-center align-default" id="fig-instalacao-qgis-docker-build-bdgeo-qgis-01">
 <a class="reference internal image-reference" href="../_images/docker-build-bdgeo-qgis-01.png"><img alt="Construindo a imagem Docker chamada bdgeo/qgis" src="../_images/docker-build-bdgeo-qgis-01.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Figura 1.2 - </span><span class="caption-text">Construindo a imagem Docker chamada <code class="docutils literal notranslate"><span class="pre">bdgeo/qgis</span></code>.</span><a class="headerlink" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-01" title="Link Permanente para essa imagem"></a></p>
+<p><span class="caption-number">Figura 1.30 - </span><span class="caption-text">Construindo a imagem Docker chamada <code class="docutils literal notranslate"><span class="pre">bdgeo/qgis</span></code>.</span><a class="headerlink" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-01" title="Link Permanente para essa imagem"></a></p>
 </figcaption>
 </figure>
-<p>Assim que o <em>download</em> e extração dessas imagens e camadas bases terminarem, o processo de construção irá começar a executar os demais comandos contidos no <cite>Dockerfile</cite>, como mostrado na <a class="reference internal" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-02"><span class="std std-numref">Figura 1.3</span></a>.</p>
+<p>Assim que o <em>download</em> e extração dessas imagens e camadas bases terminarem, o processo de construção irá começar a executar os demais comandos contidos no <cite>Dockerfile</cite>, como mostrado na <a class="reference internal" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-02"><span class="std std-numref">Figura 1.31</span></a>.</p>
 <figure class="align-center align-default" id="fig-instalacao-qgis-docker-build-bdgeo-qgis-02">
 <a class="reference internal image-reference" href="../_images/docker-build-bdgeo-qgis-02.png"><img alt="Etapas de construção da imagem bdgeo/qgis" src="../_images/docker-build-bdgeo-qgis-02.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Figura 1.3 - </span><span class="caption-text">Etapas de construção da imagem <code class="docutils literal notranslate"><span class="pre">bdgeo/qgis</span></code>.</span><a class="headerlink" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-02" title="Link Permanente para essa imagem"></a></p>
+<p><span class="caption-number">Figura 1.31 - </span><span class="caption-text">Etapas de construção da imagem <code class="docutils literal notranslate"><span class="pre">bdgeo/qgis</span></code>.</span><a class="headerlink" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-02" title="Link Permanente para essa imagem"></a></p>
 </figcaption>
 </figure>
-<p>Após algum tempo realizando a construção da imagem, duas mensagens notificando o sucesso da operação deverão ser escritas no terminal, como mostrado na <a class="reference internal" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-03"><span class="std std-numref">Figura 1.4</span></a>.</p>
+<p>Após algum tempo realizando a construção da imagem, duas mensagens notificando o sucesso da operação deverão ser escritas no terminal, como mostrado na <a class="reference internal" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-03"><span class="std std-numref">Figura 1.32</span></a>.</p>
 <figure class="align-center align-default" id="fig-instalacao-qgis-docker-build-bdgeo-qgis-03">
 <a class="reference internal image-reference" href="../_images/docker-build-bdgeo-qgis-03.png"><img alt="Finalização do processo de construção da imagem bdgeo/qgis" src="../_images/docker-build-bdgeo-qgis-03.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Figura 1.4 - </span><span class="caption-text">Finalização do processo de construção da imagem <code class="docutils literal notranslate"><span class="pre">bdgeo/qgis</span></code>.</span><a class="headerlink" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-03" title="Link Permanente para essa imagem"></a></p>
+<p><span class="caption-number">Figura 1.32 - </span><span class="caption-text">Finalização do processo de construção da imagem <code class="docutils literal notranslate"><span class="pre">bdgeo/qgis</span></code>.</span><a class="headerlink" href="#fig-instalacao-qgis-docker-build-bdgeo-qgis-03" title="Link Permanente para essa imagem"></a></p>
 </figcaption>
 </figure>
 <p>Consulte se a imagem criada aperece na lista das imagens disponíveis no seu sistema:</p>
@@ -308,18 +308,18 @@
 </section>
 <section id="inicializando-o-qgis">
 <h3><span class="section-number">1.4.2.3. </span>Inicializando o QGIS<a class="headerlink" href="#inicializando-o-qgis" title="Link permanente para este cabeçalho"></a></h3>
-<p>O comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> da seção anterior fará com que uma janela como a mostrada na <a class="reference internal" href="#fig-instalacao-qgis-docker-qgis-01"><span class="std std-numref">Figura 1.5</span></a> seja apresentada.</p>
+<p>O comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> da seção anterior fará com que uma janela como a mostrada na <a class="reference internal" href="#fig-instalacao-qgis-docker-qgis-01"><span class="std std-numref">Figura 1.33</span></a> seja apresentada.</p>
 <figure class="align-center align-default" id="fig-instalacao-qgis-docker-qgis-01">
 <a class="reference internal image-reference" href="../_images/docker-qgis-01.png"><img alt="Janela de boas vindas ao QGIS" src="../_images/docker-qgis-01.png" style="width: 60%;" /></a>
 <figcaption>
-<p><span class="caption-number">Figura 1.5 - </span><span class="caption-text">Janela de boas vindas ao <cite>QGIS</cite>.</span><a class="headerlink" href="#fig-instalacao-qgis-docker-qgis-01" title="Link Permanente para essa imagem"></a></p>
+<p><span class="caption-number">Figura 1.33 - </span><span class="caption-text">Janela de boas vindas ao <cite>QGIS</cite>.</span><a class="headerlink" href="#fig-instalacao-qgis-docker-qgis-01" title="Link Permanente para essa imagem"></a></p>
 </figcaption>
 </figure>
-<p>Pressione o botão <code class="docutils literal notranslate"><span class="pre">Let's</span> <span class="pre">get</span> <span class="pre">started!</span></code> para abrir a janela principal do <cite>QGIS</cite> (<a class="reference internal" href="#fig-instalacao-qgis-docker-qgis-02"><span class="std std-numref">Figura 1.6</span></a>).</p>
+<p>Pressione o botão <code class="docutils literal notranslate"><span class="pre">Let's</span> <span class="pre">get</span> <span class="pre">started!</span></code> para abrir a janela principal do <cite>QGIS</cite> (<a class="reference internal" href="#fig-instalacao-qgis-docker-qgis-02"><span class="std std-numref">Figura 1.34</span></a>).</p>
 <figure class="align-center align-default" id="fig-instalacao-qgis-docker-qgis-02">
 <a class="reference internal image-reference" href="../_images/docker-qgis-02.png"><img alt="Janela principal do QGIS" src="../_images/docker-qgis-02.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Figura 1.6 - </span><span class="caption-text">Janela principal do <cite>QGIS</cite>.</span><a class="headerlink" href="#fig-instalacao-qgis-docker-qgis-02" title="Link Permanente para essa imagem"></a></p>
+<p><span class="caption-number">Figura 1.34 - </span><span class="caption-text">Janela principal do <cite>QGIS</cite>.</span><a class="headerlink" href="#fig-instalacao-qgis-docker-qgis-02" title="Link Permanente para essa imagem"></a></p>
 </figcaption>
 </figure>
 <p>Quando você encerrar o QGIS, o contêiner será interrompido. Para inicializar novamente este contêiner, use o comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">start</span></code>:</p>
@@ -376,7 +376,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f070c894bb0>
+<jinja2.runtime.BlockReference object at 0x7f6ce7f716a0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

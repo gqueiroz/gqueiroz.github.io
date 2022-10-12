@@ -9,7 +9,7 @@ pgAdmin 4
 =========
 
 
-Uma das ferramentas mais populares para trabalhar com o PostgreSQL é o `pgAdmin 4 <https://www.pgadmin.org/>`_. Este documento apresenta os passos necessários para instalação deste sistema para as plataformas Linux (Ubuntu) ou através do Docker.
+Uma das ferramentas mais populares para trabalhar com o PostgreSQL é o `pgAdmin <https://www.pgadmin.org/>`_. Este documento apresenta os passos necessários para instalação deste sistema para as plataformas Linux (Ubuntu) ou através do Docker.
 
 
 .. _sec_instalacao_pg_admin_ubuntu:

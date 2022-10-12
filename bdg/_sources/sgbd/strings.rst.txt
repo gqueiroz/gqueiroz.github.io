@@ -180,4 +180,4 @@ Exemplos:
 
 .. tip::
 
-    Para uma lista completa dos métodos de uma string, consulte `9.4. String Functions and Operators <https://www.postgresql.org/docs/14/functions-string.html>`__.
+    Para uma lista completa das funções e operações com strings, consulte o manual do PostgreSQL na `Seção 9.4. String Functions and Operators <https://www.postgresql.org/docs/14/functions-string.html>`__.

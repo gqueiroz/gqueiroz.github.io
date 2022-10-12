@@ -29,7 +29,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="1.3. pgAdmin 4" href="pg-admin.html" />
+    <link rel="next" title="1.2.1. Instalação no Linux Ubuntu" href="pg-pgis-ubuntu.html" />
     <link rel="prev" title="1.1. Docker" href="docker.html" /> 
 </head>
 
@@ -57,8 +57,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Instalando e Configurando o Ambiente de Trabalho</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="docker.html">1.1. Docker</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">1.2. PostgreSQL e PostGIS</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#instalacao-no-linux-ubuntu">1.2.1. Instalação no Linux Ubuntu</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#instalando-o-postgresql-atraves-de-um-conteiner-docker">1.2.2. Instalando o PostgreSQL através de um Contêiner Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-pgis-ubuntu.html">1.2.1. Instalação no Linux Ubuntu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-pgis-docker.html">1.2.2. Instalando o PostgreSQL através de um Contêiner Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-pgis-win.html">1.2.3. Instalação no Microsoft Windows 10</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pg-admin.html">1.3. pgAdmin 4</a></li>
@@ -110,7 +111,7 @@
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
         <a href="docker.html" class="btn btn-neutral float-left" title="1.1. Docker" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="pg-admin.html" class="btn btn-neutral float-right" title="1.3. pgAdmin 4" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pg-pgis-ubuntu.html" class="btn btn-neutral float-right" title="1.2.1. Instalação no Linux Ubuntu" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -122,270 +123,17 @@
 <a class="reference internal image-reference" href="../_images/pg.svg"><img alt="PostgreSQL" class="align-left" src="../_images/pg.svg" width="48" /></a>
 <a class="reference internal image-reference" href="../_images/postgis.png"><img alt="PostGIS" class="align-right" src="../_images/postgis.png" style="width: 48px;" /></a>
 <p>Neste curso, utilizaremos o PostgreSQL versão 14.5 e sua extensão geográfica PostGIS 3.3.1 para exemplificar as funcionalidades presentes em um servidor típico de bancos de dados capaz de suportar o domínio geoespacial.</p>
-<section id="instalacao-no-linux-ubuntu">
-<span id="sec-instalacao-pg-pgis-ubuntu"></span><h2><span class="section-number">1.2.1. </span>Instalação no Linux Ubuntu<a class="headerlink" href="#instalacao-no-linux-ubuntu" title="Link permanente para este cabeçalho"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Aviso</p>
-<p>Os passos apresentados abaixo foram realizados no <em>Ubuntu Focal (20.04 LTS)</em>. No entanto, também devem funcionar para as versões <em>Ubuntu Bionic (18.04 LTS)</em> e <em>Ubuntu Xenial (16.04 LTS)</em>.</p>
+<p>No Microsoft Windows usaremos o PostGIS na versão 3.2.3.</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Aviso</p>
-<p>Ao invés de instalar o PostgreSQL e o PostGIS diretamente no sistema operacional da sua máquina, é possível usar o Docker. Neste caso, consulte a <a class="reference internal" href="#sec-instalacao-pg-pgis-docker"><span class="std std-numref">Seção 1.2.2</span></a>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pg-pgis-ubuntu.html">1.2.1. Instalação no Linux Ubuntu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pg-pgis-docker.html">1.2.2. Instalando o PostgreSQL através de um Contêiner Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pg-pgis-win.html">1.2.3. Instalação no Microsoft Windows 10</a></li>
+</ul>
 </div>
-<section id="acrescentando-o-repositorio-do-postgresql-no-sistema-de-pacotes-do-ubuntu">
-<h3><span class="section-number">1.2.1.1. </span>Acrescentando o Repositório do PostgreSQL no Sistema de Pacotes do Ubuntu<a class="headerlink" href="#acrescentando-o-repositorio-do-postgresql-no-sistema-de-pacotes-do-ubuntu" title="Link permanente para este cabeçalho"></a></h3>
-<p>Vamos criar um arquivo chamado <code class="docutils literal notranslate"><span class="pre">pgdg.list</span></code> contendo as informações do repositório de pacotes do PostgreSQL para sua versão do Ubuntu:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;echo &quot;deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main&quot; &gt; /etc/apt/sources.list.d/pgdg.list&#39;</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>No Ubuntu 18.04 LTS, o comando acima irá criar o arquivo <code class="docutils literal notranslate"><span class="pre">/etc/apt/sources.list.d/pgdg.list</span></code> com o seguinte conteúdo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">deb</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">apt</span><span class="o">.</span><span class="n">postgresql</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">repos</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span> <span class="n">bionic</span><span class="o">-</span><span class="n">pgdg</span> <span class="n">main</span>
-</pre></div>
-</div>
-</div>
-<p>Após criar o arquivo, utilize o seguinte comando para importar a chave de assinatura do repositório:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">--</span><span class="n">quiet</span> <span class="o">-</span><span class="n">O</span> <span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">postgresql</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">media</span><span class="o">/</span><span class="n">keys</span><span class="o">/</span><span class="n">ACCC4CF8</span><span class="o">.</span><span class="n">asc</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
-</pre></div>
-</div>
-<p>Em seguida, atualize sua lista de pacotes:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
-</pre></div>
-</div>
-</section>
-<section id="instalacao-do-postgresql-versao-14">
-<h3><span class="section-number">1.2.1.2. </span>Instalação do PostgreSQL Versão 14<a class="headerlink" href="#instalacao-do-postgresql-versao-14" title="Link permanente para este cabeçalho"></a></h3>
-<p>A <a class="reference internal" href="#tbl-postgresql-instalacao-ubuntu"><span class="std std-numref">Tabela 1.1</span></a> apresenta os pacotes relacionados à versão 14 do PostgreSQL.</p>
-<table class="styled-table docutils align-center" id="tbl-postgresql-instalacao-ubuntu" style="width: 100%">
-<caption><span class="caption-number">Tabela 1.1 - </span><span class="caption-text">Pacotes do PostgreSQL disponíveis na distribuição Linux Ubuntu.</span><a class="headerlink" href="#tbl-postgresql-instalacao-ubuntu" title="Link Permanente para essa tabela"></a></caption>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="center-align head"><p><em>Pacote</em></p></th>
-<th class="center-align head"><p><em>Descrição</em></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="left-align" rowspan="2"><p>postgresql-14</p></td>
-<td class="justify-align" rowspan="2"><p><em>core</em> servidor de banco de dados</p></td>
-</tr>
-<tr class="row-odd"></tr>
-<tr class="row-even"><td class="left-align" rowspan="2"><p>postgresql-server-dev-14</p></td>
-<td class="justify-align" rowspan="2"><p>arquivos de cabeçalho e bibliotecas para o desenvolvimento no lado do servidor através da linguagem C</p></td>
-</tr>
-<tr class="row-odd"></tr>
-<tr class="row-even"><td class="left-align" rowspan="2"><p>postgresql-client-14</p></td>
-<td class="justify-align" rowspan="2"><p>binários das bibliotecas de programação e aplicações clientes</p></td>
-</tr>
-<tr class="row-odd"></tr>
-<tr class="row-even"><td class="left-align" rowspan="2"><p>libpq-dev</p></td>
-<td class="justify-align" rowspan="2"><p>arquivos de cabeçalho para o desenvolvimento de aplicações clientes através da linguagem C</p></td>
-</tr>
-<tr class="row-odd"></tr>
-</tbody>
-</table>
-<div class="admonition tip">
-<p class="admonition-title">Dica</p>
-<p>Se você quiser consultar as versões do servidor PostgreSQL disponíveis no repositório adicionado, bem como nos repositórios padrão, faça:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">cache</span> <span class="n">search</span> <span class="n">postgresql</span><span class="o">-</span><span class="n">server</span>
-</pre></div>
-</div>
-<p>Você obterá uma saída semelhante a mostrada abaixo:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>postgresql-server-dev-8.2 - development files for PostgreSQL 8.2 server-side programming
-postgresql-server-dev-8.3 - development files for PostgreSQL 8.3 server-side programming
-postgresql-server-dev-8.4 - development files for PostgreSQL 8.4 server-side programming
-postgresql-server-dev-9.0 - development files for PostgreSQL 9.0 server-side programming
-postgresql-server-dev-9.1 - development files for PostgreSQL 9.1 server-side programming
-postgresql-server-dev-9.2 - development files for PostgreSQL 9.2 server-side programming
-postgresql-server-dev-9.3 - development files for PostgreSQL 9.3 server-side programming
-postgresql-server-dev-9.4 - development files for PostgreSQL 9.4 server-side programming
-postgresql-server-dev-9.5 - development files for PostgreSQL 9.5 server-side programming
-postgresql-server-dev-9.6 - development files for PostgreSQL 9.6 server-side programming
-postgresql-server-dev-10 - development files for PostgreSQL 10 server-side programming
-postgresql-server-dev-11 - development files for PostgreSQL 11 server-side programming
-postgresql-server-dev-12 - development files for PostgreSQL 12 server-side programming
-postgresql-server-dev-13 - development files for PostgreSQL 13 server-side programming
-postgresql-server-dev-14 - development files for PostgreSQL 14 server-side programming
-postgresql-server-dev-all - extension build tool for multiple PostgreSQL versions
-</pre></div>
-</div>
-<p>Para saber mais detalhes de uma versão específica, podemos fazer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">cache</span> <span class="n">search</span> <span class="n">postgresql</span><span class="o">-</span><span class="mi">14</span>
-</pre></div>
-</div>
-<p>Uma listagem mais ampla que a mostrada abaixo será exibida:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>postgresql-14 - The World&#39;s Most Advanced Open Source Relational Database
-postgresql-14-pointcloud - PostgreSQL extension for storing point cloud (LIDAR) data
-postgresql-14-postgis-3 - Geographic objects support for PostgreSQL 14
-postgresql-14-postgis-3-scripts - Geographic objects support for PostgreSQL 14 -- SQL scripts
-postgresql-14-repmgr - replication manager for PostgreSQL 14
-postgresql-14-repmgr-dbgsym - debug symbols for postgresql-14-repmgr
-postgresql-client-14 - front-end programs for PostgreSQL 14
-</pre></div>
-</div>
-</div>
-<p>Vamos instalar apenas o servidor PostgreSQL 14 e as ferramentas clientes. Para isso, utilize o seguinte comando:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">postgresql</span><span class="o">-</span><span class="mi">14</span> <span class="n">postgresql</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="mi">14</span>
-</pre></div>
-</div>
-<p>Verifique se a instalação foi realizada com sucesso e, se o servidor PostgreSQL se encontra em execução. Para isso, utilize o seguinte comando:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">psql</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;SELECT version();&quot;</span>
-</pre></div>
-</div>
-<p>Você deverá obter uma saída semelhante à apresentada abaixo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                                                               <span class="n">version</span>
-<span class="o">--------------------------------------------------------------------------------------------------------------------------------------</span>
- <span class="n">PostgreSQL</span> <span class="mf">14.5</span> <span class="p">(</span><span class="n">Ubuntu</span> <span class="mf">14.5</span><span class="o">-</span><span class="mf">1.</span><span class="n">pgdg20</span><span class="mf">.04</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="n">on</span> <span class="n">x86_64</span><span class="o">-</span><span class="n">pc</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="p">,</span> <span class="n">compiled</span> <span class="n">by</span> <span class="n">gcc</span> <span class="p">(</span><span class="n">Ubuntu</span> <span class="mf">9.4.0</span><span class="o">-</span><span class="mi">1</span><span class="n">ubuntu1</span><span class="o">~</span><span class="mf">20.04.1</span><span class="p">)</span> <span class="mf">9.4.0</span><span class="p">,</span> <span class="mi">64</span><span class="o">-</span><span class="n">bit</span>
-<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="instalacao-da-extensao-postgis-3">
-<h3><span class="section-number">1.2.1.3. </span>Instalação da extensão PostGIS 3<a class="headerlink" href="#instalacao-da-extensao-postgis-3" title="Link permanente para este cabeçalho"></a></h3>
-<p>Para instalar a extensão espacial PostGIS utilize o seguinte comando:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">postgresql</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="n">postgis</span><span class="o">-</span><span class="mi">3</span>
-</pre></div>
-</div>
-<p>Para testar sua instalação, utilize o comando abaixo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> \
-     <span class="n">psql</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;SELECT name, default_version FROM pg_available_extensions WHERE name = &#39;postgis&#39;;&quot;</span>
-</pre></div>
-</div>
-<p>Você deverá obter uma saída semelhante à apresentada abaixo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">name</span>   <span class="o">|</span> <span class="n">default_version</span>
-<span class="o">---------+-----------------</span>
- <span class="n">postgis</span> <span class="o">|</span> <span class="mf">3.3.1</span>
-<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Se você quiser utilizar os aplicativos do PostGIS de linha de comando, como o <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code> e <code class="docutils literal notranslate"><span class="pre">pgsql2shp</span></code>, você precisará instalar um pacote adicional chamado <code class="docutils literal notranslate"><span class="pre">postgis</span></code>, como mostrado no comando abaixo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">postgis</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>Nas versões anteriores do PostgreSQL (12), era possível instalar o aplicativo gráfico <code class="docutils literal notranslate"><span class="pre">postgis-gui</span></code> para realizar a importação ou exportação de dados entre o PostgreSQL e arquivos no formato ESRI Shapefile. O seguinte comando, poderia ser usado:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">postgis</span><span class="o">-</span><span class="n">gui</span>
-</pre></div>
-</div>
-<p>Nas versões 13+ do PostgreSQL não há esse pacote. Portanto, o comando acima fará com que todos os pacotes da versão 12, incluindo o servidor, sejam instalados. Sugiro não instalar.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>Mais informações da instalação do <code class="docutils literal notranslate"><span class="pre">PostgreSQL</span></code> no <code class="docutils literal notranslate"><span class="pre">Linux</span> <span class="pre">Ubuntu</span></code> podem ser encontradas em: <a class="reference external" href="https://www.postgresql.org/download/linux/ubuntu/">PostgreSQL downloads (Ubuntu)</a>.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>Mais informações da instalação do <code class="docutils literal notranslate"><span class="pre">PostGIS</span></code> podem ser encontradas em: <a class="reference external" href="https://postgis.net/install/">PostGIS downloads (Ubuntu)]</a>.</p>
-</div>
-</section>
-</section>
-<section id="instalando-o-postgresql-atraves-de-um-conteiner-docker">
-<span id="sec-instalacao-pg-pgis-docker"></span><h2><span class="section-number">1.2.2. </span>Instalando o PostgreSQL através de um Contêiner Docker<a class="headerlink" href="#instalando-o-postgresql-atraves-de-um-conteiner-docker" title="Link permanente para este cabeçalho"></a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Aviso</p>
-<p>Se você já tiver instalado o PostgreSQL e PostGIS com os passos descritos na <a class="reference internal" href="#sec-instalacao-pg-pgis-ubuntu"><span class="std std-numref">Seção 1.2.1</span></a>, não há necessidade de seguir os passos desta seção.</p>
-</div>
-<p>Vamos utilizar a <a class="reference external" href="https://registry.hub.docker.com/r/postgis/postgis">imagem Docker</a> disponível para o PostgreSQL e PostGIS. O comando abaixo irá realizar o download da imagem contendo a instalação do PostgreSQL 14.5 e o PostGIS 3.3.1:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">postgis</span><span class="o">/</span><span class="n">postgis</span><span class="p">:</span><span class="mi">14</span><span class="o">-</span><span class="mf">3.3</span>
-</pre></div>
-</div>
-<p>Após baixar a imagem Docker, crie um contêiner através do seguinte comando:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">detach</span> \
-           <span class="o">--</span><span class="n">name</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span> \
-           <span class="o">--</span><span class="n">publish</span> <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">5432</span><span class="p">:</span><span class="mi">5432</span> \
-           <span class="o">--</span><span class="n">env</span> <span class="s2">&quot;POSTGRES_PASSWORD=secreto&quot;</span> \
-           <span class="n">postgis</span><span class="o">/</span><span class="n">postgis</span><span class="p">:</span><span class="mi">14</span><span class="o">-</span><span class="mf">3.3</span>
-</pre></div>
-</div>
-<p>O comando acima irá criar um contêiner chamado <code class="docutils literal notranslate"><span class="pre">my-pg</span></code>, ligando a porta 5432 do <em>host</em> com a porta 5432 do contêiner. Além disso, o usuário padrão <code class="docutils literal notranslate"><span class="pre">postgres</span></code> será definido com a senha representada pelo texto <code class="docutils literal notranslate"><span class="pre">secreto</span></code>.</p>
-<p>Verifique se o contêiner com o servidor PostgreSQL se encontra em execução. Para isso, utilize o seguinte comando:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">container</span> <span class="n">ls</span>
-</pre></div>
-</div>
-<p>Uma saída como amostrada abaixo deverá ser apresentada:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONTAINER</span> <span class="n">ID</span>   <span class="n">IMAGE</span>                    <span class="n">COMMAND</span>                  <span class="n">CREATED</span>              <span class="n">STATUS</span>              <span class="n">PORTS</span>                      <span class="n">NAMES</span>
-<span class="mi">6</span><span class="n">c4cd445ad46</span>   <span class="n">postgis</span><span class="o">/</span><span class="n">postgis</span><span class="p">:</span><span class="mi">14</span><span class="o">-</span><span class="mf">3.3</span>   <span class="s2">&quot;docker-entrypoint.s…&quot;</span>   <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span> <span class="n">ago</span>   <span class="n">Up</span> <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span>   <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">5432</span><span class="o">-&gt;</span><span class="mi">5432</span><span class="o">/</span><span class="n">tcp</span>   <span class="n">my</span><span class="o">-</span><span class="n">pg</span>
-</pre></div>
-</div>
-<section id="verificando-a-versao-do-postgresql">
-<h3><span class="section-number">1.2.2.1. </span>Verificando a Versão do PostgreSQL<a class="headerlink" href="#verificando-a-versao-do-postgresql" title="Link permanente para este cabeçalho"></a></h3>
-<p>Se o contêiner <code class="docutils literal notranslate"><span class="pre">my-pg</span></code> estiver em execução, verifique a versão do PostgreSQL contida nele através do seguite comando:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span> <span class="n">psql</span> <span class="o">-</span><span class="n">U</span> <span class="n">postgres</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;SELECT version();&quot;</span>
-</pre></div>
-</div>
-<p>Esse comando deverá produzir uma saída semelhante à apresentada abaixo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                                                           <span class="n">version</span>
-<span class="o">-----------------------------------------------------------------------------------------------------------------------------</span>
- <span class="n">PostgreSQL</span> <span class="mf">14.5</span> <span class="p">(</span><span class="n">Debian</span> <span class="mf">14.5</span><span class="o">-</span><span class="mf">1.</span><span class="n">pgdg110</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="n">on</span> <span class="n">x86_64</span><span class="o">-</span><span class="n">pc</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="p">,</span> <span class="n">compiled</span> <span class="n">by</span> <span class="n">gcc</span> <span class="p">(</span><span class="n">Debian</span> <span class="mf">10.2.1</span><span class="o">-</span><span class="mi">6</span><span class="p">)</span> <span class="mf">10.2.1</span> <span class="mi">20210110</span><span class="p">,</span> <span class="mi">64</span><span class="o">-</span><span class="n">bit</span>
-<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="verificando-a-versao-do-postgis">
-<h3><span class="section-number">1.2.2.2. </span>Verificando a Versão do PostGIS<a class="headerlink" href="#verificando-a-versao-do-postgis" title="Link permanente para este cabeçalho"></a></h3>
-<p>Para verificar a versão do PostGIS, utilize o comando abaixo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span> <span class="n">psql</span> <span class="o">-</span><span class="n">U</span> <span class="n">postgres</span> \
-                       <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;SELECT name, default_version FROM pg_available_extensions WHERE name = &#39;postgis&#39;;&quot;</span>
-</pre></div>
-</div>
-<p>Esse comando deverá produzir uma saída semelhante à apresentada abaixo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">name</span>   <span class="o">|</span> <span class="n">default_version</span>
-<span class="o">---------+-----------------</span>
- <span class="n">postgis</span> <span class="o">|</span> <span class="mf">3.3.1</span>
-<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="dicas-gerenciamento-do-conteiner">
-<h3><span class="section-number">1.2.2.3. </span>Dicas Gerenciamento do Contêiner<a class="headerlink" href="#dicas-gerenciamento-do-conteiner" title="Link permanente para este cabeçalho"></a></h3>
-<p>Para parar o contêiner, faça:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">stop</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span>
-</pre></div>
-</div>
-<p>Para remover o contêiner (parado):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">rm</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span>
-</pre></div>
-</div>
-<p>Para criar um contêiner com um diretório do <em>host</em> compartilhado, use a opção <code class="docutils literal notranslate"><span class="pre">--volume</span></code> como mostrado abaixo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gribeiro</span><span class="o">/</span><span class="n">Aulas</span><span class="o">/</span><span class="n">CAP</span><span class="o">-</span><span class="mi">349</span><span class="o">/</span><span class="n">PG</span><span class="o">-</span><span class="n">Data</span>
-<span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gribeiro</span><span class="o">/</span><span class="n">Data</span>
-
-<span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">detach</span> \
-           <span class="o">--</span><span class="n">name</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span> \
-           <span class="o">--</span><span class="n">publish</span> <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">5432</span><span class="p">:</span><span class="mi">5432</span> \
-           <span class="o">--</span><span class="n">env</span> <span class="s2">&quot;POSTGRES_PASSWORD=secreto&quot;</span> \
-           <span class="o">--</span><span class="n">volume</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gribeiro</span><span class="o">/</span><span class="n">aulas</span><span class="o">/</span><span class="n">bd</span><span class="o">/</span><span class="n">pg</span><span class="o">-</span><span class="n">data</span><span class="p">:</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span><span class="o">/</span><span class="n">data</span> \
-           <span class="o">--</span><span class="n">volume</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gribeiro</span><span class="o">/</span><span class="n">aulas</span><span class="o">/</span><span class="n">dados</span><span class="p">:</span><span class="o">/</span><span class="n">shared</span><span class="o">-</span><span class="n">data</span> \
-           <span class="n">postgis</span><span class="o">/</span><span class="n">postgis</span><span class="p">:</span><span class="mi">14</span><span class="o">-</span><span class="mf">3.3</span>
-</pre></div>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Aviso</p>
-<p>Lembre-se de substituir os diretórios <code class="docutils literal notranslate"><span class="pre">/home/gribeiro/aulas/bd/pg-data</span></code> e <code class="docutils literal notranslate"><span class="pre">/home/gribeiro/aulas/dados</span></code> por caminhos válidos em seu sistema.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>Se você quiser instalar os aplicativos de linha de comando do PostGIS, <code class="docutils literal notranslate"><span class="pre">shape2pgsql</span></code>  e <code class="docutils literal notranslate"><span class="pre">raster2pgsql</span></code>, abra um shell no contêiner <code class="docutils literal notranslate"><span class="pre">my-pg</span></code> e instale o pacote <code class="docutils literal notranslate"><span class="pre">postgis</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span> <span class="n">bash</span>
-</pre></div>
-</div>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>apt update
-</pre></div>
-</div>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>apt install postgis
-</pre></div>
-</div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>Nesta seção, utilizamos uma imagem do PostgreSQL com PostGIS baseada na distribuição Linux Debian GNU/Linux 11 (bullseye).</p>
-</div>
-</section>
-</section>
 </section>
 
 
@@ -393,7 +141,7 @@ postgresql-client-14 - front-end programs for PostgreSQL 14
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
         <a href="docker.html" class="btn btn-neutral float-left" title="1.1. Docker" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="pg-admin.html" class="btn btn-neutral float-right" title="1.3. pgAdmin 4" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pg-pgis-ubuntu.html" class="btn btn-neutral float-right" title="1.2.1. Instalação no Linux Ubuntu" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -403,7 +151,7 @@ postgresql-client-14 - front-end programs for PostgreSQL 14
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f070ca08ee0>
+<jinja2.runtime.BlockReference object at 0x7f6ce7b881c0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

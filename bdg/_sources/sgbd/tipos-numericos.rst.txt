@@ -41,6 +41,29 @@ Exemplo de notação:
     SELECT 2247483647;
 
 
+``numeric``
+-----------
+
+
+O tipo **double precision**, ou **float8**, é capaz de representar números reais (ou números em ponto flutiante) com uma certa precisão numérica (64-bits). Um número em ponto flutuante pode ser expresso da seguinte maneira:
+
+
+.. code-block:: sql
+
+    SELECT 5.1;
+    
+
+    SELECT 5.;
+    
+
+    SELECT 5.2e12;
+
+
+.. tip::
+
+    Utilize a função ``pg_typeof`` para verificar se os literais acima realmente são considerados do tipo ``numeric``.
+
+
 ``double precision``
 --------------------
 
@@ -54,6 +77,7 @@ O tipo **double precision**, ou **float8**, é capaz de representar números rea
     
 
     SELECT double precision '5.';
+    
 
     SELECT double precision '5.2e12';
 
@@ -143,5 +167,5 @@ Exemplos:
 
 .. tip::
 
-    Para uma lista completa dos métodos de uma string, consulte `9.3. Mathematical Functions and Operators <https://www.postgresql.org/docs/14/functions-math.html>`__.
+    Para uma lista completa das funções matemáticas do PostgreSQL, consulte o manual do PostgreSQL na `Seção 9.3. Mathematical Functions and Operators <https://www.postgresql.org/docs/14/functions-math.html>`__.
 

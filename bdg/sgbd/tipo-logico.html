@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2.8. Tipo Lógico - boolean &mdash; BDGeo</title>
+  <title>2.8. Tipo Lógico &mdash; BDGeo</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -64,7 +64,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tipos-dados-sql.html">2.5. Tipos de Dados SQL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tipos-numericos.html">2.6. Tipos Numéricos</a></li>
 <li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.7. Expressões</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.8. Tipo Lógico - <code class="docutils literal notranslate"><span class="pre">boolean</span></code></a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.8. Tipo Lógico</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#operadores-logicos">2.8.1. Operadores Lógicos</a></li>
 </ul>
 </li>
@@ -124,7 +124,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
-      <li><span class="section-number">2.8. </span>Tipo Lógico - <code class="docutils literal notranslate"><span class="pre">boolean</span></code></li>
+      <li><span class="section-number">2.8. </span>Tipo Lógico</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -136,8 +136,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="tipo-logico-boolean">
-<span id="cap-sgbd-tipo-logico"></span><h1><span class="section-number">2.8. </span>Tipo Lógico - <code class="docutils literal notranslate"><span class="pre">boolean</span></code><a class="headerlink" href="#tipo-logico-boolean" title="Link permanente para este cabeçalho"></a></h1>
+  <section id="tipo-logico">
+<span id="cap-sgbd-tipo-logico"></span><h1><span class="section-number">2.8. </span>Tipo Lógico<a class="headerlink" href="#tipo-logico" title="Link permanente para este cabeçalho"></a></h1>
 <p>O tipo <code class="docutils literal notranslate"><span class="pre">boolean</span></code> é usado para representar valores <strong>booleanos</strong> ou <strong>lógicos</strong>. Este tipo possui apenas dois valores possíveis: <code class="docutils literal notranslate"><span class="pre">true</span></code> (verdadeiro) ou <code class="docutils literal notranslate"><span class="pre">false</span></code> (falso).</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
@@ -158,7 +158,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">NOT</span></code>: a negação opera em um único valor (lógico), também chamado de <strong>proposição</strong>, e produz o valor verdadeiro se o operando for falso, ou falso caso o operando seja verdadeiro (<a class="reference internal" href="#tbl-sgbd-tipo-logico-op-logico-not"><span class="std std-numref">Tabela 2.5</span></a>).</p></li>
 </ul>
 <table class="styled-table docutils align-center" id="tbl-sgbd-tipo-logico-op-logico-and" style="width: 50%">
-<caption><span class="caption-number">Tabela 2.3 - </span><span class="caption-text">Tabela verdade do operador <code class="docutils literal notranslate"><span class="pre">and</span></code>.</span><a class="headerlink" href="#tbl-sgbd-tipo-logico-op-logico-and" title="Link Permanente para essa tabela"></a></caption>
+<caption><span class="caption-number">Tabela 2.3 - </span><span class="caption-text">Tabela verdade do operador <code class="docutils literal notranslate"><span class="pre">AND</span></code>.</span><a class="headerlink" href="#tbl-sgbd-tipo-logico-op-logico-and" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 26%" />
 <col style="width: 26%" />
@@ -190,7 +190,7 @@
 </tbody>
 </table>
 <table class="styled-table docutils align-center" id="tbl-sgbd-tipo-logico-op-logico-or" style="width: 50%">
-<caption><span class="caption-number">Tabela 2.4 - </span><span class="caption-text">Tabela verdade do operador <code class="docutils literal notranslate"><span class="pre">or</span></code>.</span><a class="headerlink" href="#tbl-sgbd-tipo-logico-op-logico-or" title="Link Permanente para essa tabela"></a></caption>
+<caption><span class="caption-number">Tabela 2.4 - </span><span class="caption-text">Tabela verdade do operador <code class="docutils literal notranslate"><span class="pre">OR</span></code>.</span><a class="headerlink" href="#tbl-sgbd-tipo-logico-op-logico-or" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 28%" />
 <col style="width: 28%" />
@@ -222,7 +222,7 @@
 </tbody>
 </table>
 <table class="styled-table docutils align-center" id="tbl-sgbd-tipo-logico-op-logico-not" style="width: 50%">
-<caption><span class="caption-number">Tabela 2.5 - </span><span class="caption-text">Tabela verdade do operador <code class="docutils literal notranslate"><span class="pre">not</span></code>.</span><a class="headerlink" href="#tbl-sgbd-tipo-logico-op-logico-not" title="Link Permanente para essa tabela"></a></caption>
+<caption><span class="caption-number">Tabela 2.5 - </span><span class="caption-text">Tabela verdade do operador <code class="docutils literal notranslate"><span class="pre">NOT</span></code>.</span><a class="headerlink" href="#tbl-sgbd-tipo-logico-op-logico-not" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 41%" />
 <col style="width: 59%" />
@@ -276,7 +276,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f070c81b9d0>
+<jinja2.runtime.BlockReference object at 0x7f6ce85d7880>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

@@ -9,6 +9,10 @@ Tipos de Dados para Data e Hora
 ===============================
 
 
+Representação
+-------------
+
+
 .. code-block:: sql
 
     SELECT TIMESTAMP WITH TIME ZONE '2022-10-11 06:15:00';
@@ -49,6 +53,84 @@ Tipos de Dados para Data e Hora
     SELECT TIME 'now';
 
 
+.. code-block::sql
+
+    SELECT INTERVAL '1' YEAR;
+
+
+.. code-block::sql
+
+    SELECT INTERVAL '16' DAY;
+
+
+.. code-block::sql
+
+    SELECT INTERVAL '1 YEAR 2 MONTHS 3 DAYS 4 HOURS 5 MINUTES 6 SECONDS';
+
+
+Extraindo Partes de um tipo temporal
+------------------------------------
+
+
+Sintaxe::
+
+    EXTRACT(field FROM source)
+
+
+Exemplos:
+
+
+.. code-block:: sql
+
+    SELECT EXTRACT(DAY FROM TIMESTAMP '2022-10-10 06:15:00');
+
+
+.. code-block:: sql
+
+    SELECT EXTRACT(DOY FROM TIMESTAMP '2022-10-10 06:15:00');
+
+
+.. code-block:: sql
+
+    SELECT EXTRACT(MONTH FROM TIMESTAMP '2022-10-10 06:15:00');
+
+
+.. code-block:: sql
+
+    SELECT EXTRACT(YEAR FROM TIMESTAMP '2022-10-10 06:15:00');
+
+
+
+
+Operadores
+----------
+
+
+Adicionando um número de dias a uma data:
+
+
+.. code-block:: sql
+
+
+    SELECT DATE '2022-10-10' + 30;
+
+
+Calculando o número de dias entre duas datas:
+
+
+.. code-block:: sql
+
+    SELECT DATE '2022-11-09' - DATE '2022-10-10';
+
+
+Intervalo de tempo entre dois instantes de tempo:
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP '2022-11-09 06:15' - TIMESTAMP '2022-10-10 06:10'; 
+
+
 .. tip::
 
     O padrão SQL define algumas funções para fornecer valores específicos de data e hora:
@@ -67,3 +149,9 @@ Tipos de Dados para Data e Hora
         type 'string'
         'string'::type
         CAST ( 'string' AS type )
+
+
+.. tip::
+
+    Para uma lista completa das funções e operações com tipos associados a data, hora e intervalos, consulte o manual do PostgreSQL na `Seção 9.9. Date/Time Functions and Operators <https://www.postgresql.org/docs/14/functions-datetime.html>`__.
+
