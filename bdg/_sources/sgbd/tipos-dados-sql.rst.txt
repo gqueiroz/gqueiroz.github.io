@@ -73,7 +73,7 @@ Podemos realizar consultas SQL no PostgreSQL usando apenas a cláusula ``SELECT`
 
 .. code-block:: sql
 
-    SELECT 4.1            -- numeric
+    SELECT 4.1;           -- numeric
  
 
 .. code-block:: sql
@@ -83,7 +83,7 @@ Podemos realizar consultas SQL no PostgreSQL usando apenas a cláusula ``SELECT`
 
 .. code-block:: sql
 
-    SELECT 'Satélite'     -- sequência de caracteres
+    SELECT 'Satélite';    -- sequência de caracteres
 
 
 .. code-block:: sql

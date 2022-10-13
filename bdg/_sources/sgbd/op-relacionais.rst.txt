@@ -91,7 +91,7 @@ Os exercícios desta seção consideram as tabelas criadas na :numref:`Seção %
 - :math:`latitude_{2} = -7.5`
 
 
-**Exercício 3.** Quais as Unidades Federativas do Brasil (tabela ``populacao_1940``) possuia uma população feminina maior que a masculina em 1940?
+**Exercício 3.** Quais Unidades da Federação do Brasil (tabela ``populacao_1940``) possuiam população feminina maior que a masculina em 1940?
 
 
 **Exercício 4.** Faça uma consulta na tabela ``populacao_1940`` que apresente como resultado uma coluna com o nome da UF e outra com um valor booleando indicando se a população masculina é ou não maior na UF.
