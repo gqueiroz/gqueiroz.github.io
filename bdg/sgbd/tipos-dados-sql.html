@@ -62,12 +62,12 @@
 <li class="toctree-l2"><a class="reference internal" href="criando-bd.html">2.4. Criando um Novo Banco de Dados no PostgreSQL</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">2.5. Tipos de Dados SQL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tipos-numericos.html">2.6. Tipos Numéricos</a></li>
-<li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.7. Expressões</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tipo-logico.html">2.8. Tipo Lógico</a></li>
-<li class="toctree-l2"><a class="reference internal" href="op-relacionais.html">2.9. Operadores Relacionais</a></li>
-<li class="toctree-l2"><a class="reference internal" href="strings.html">2.10. Tipos Textuais</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.11. Tipos de Dados para Data e Hora</a></li>
-<li class="toctree-l2"><a class="reference internal" href="expressoes-logicas.html">2.12. Expressões Lógicas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipo-logico.html">2.7. Tipo Lógico</a></li>
+<li class="toctree-l2"><a class="reference internal" href="op-relacionais.html">2.8. Operadores Relacionais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">2.9. Tipos Textuais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.10. Tipos de Dados para Data e Hora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.11. Expressões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressoes.html#expressoes-logicas">2.12. Expressões Lógicas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="criando-tabelas.html">2.13. Criando Tabelas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inserindo-dados.html">2.14. Inserindo Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="consultas.html">2.15. Consultas em SQL</a></li>
@@ -134,10 +134,10 @@
              
   <section id="tipos-de-dados-sql">
 <span id="cap-sgbd-tipos-dados"></span><h1><span class="section-number">2.5. </span>Tipos de Dados SQL<a class="headerlink" href="#tipos-de-dados-sql" title="Link permanente para este cabeçalho"></a></h1>
-<p>Um <strong>tipo de dado</strong> (<strong>data type</strong>) é definido por um conjunto de valores e um conjunto de operações sobre esses valores. No PostgreSQL, toda coluna de uma tabela é associada a um tipo, que define as operações que podem ser realizadas sobre os valores dessa coluna. O <strong>core</strong> do PostgreSQL contém um conjunto de tipos de dados chamados de <strong>fundamentais</strong> ou <strong>primitivos</strong> (<strong>built-in types</strong>), para manipulação de valores numéricos, lógicos (ou booleanos), strings (cadeia de caracteres), data e hora, entre outros tipos.</p>
+<p>Um <strong>tipo de dado</strong> (<strong>data type</strong>) é definido por um conjunto de valores e um conjunto de operações sobre esses valores. No PostgreSQL, toda coluna de uma tabela é associada a um tipo, que define as operações que podem ser realizadas sobre os valores dessa coluna. O <strong>core</strong> do PostgreSQL contém um conjunto de tipos de dados chamados de <strong>fundamentais</strong> ou <strong>primitivos</strong> (<strong>built-in types</strong>), para manipulação de valores numéricos, lógicos (ou booleanos), strings (cadeia de caracteres), data e hora, entre outros.</p>
 <p>A <a class="reference internal" href="#tbl-sgbd-tipos-dados-sql"><span class="std std-numref">Tabela 2.1</span></a> apresenta alguns tipos suportados pelo PostgreSQL.</p>
 <table class="colwidths-given styled-table docutils align-default" id="tbl-sgbd-tipos-dados-sql">
-<caption><span class="caption-number">Tabela 2.1 - </span><span class="caption-text">Tipos de Dados SQL</span><a class="headerlink" href="#tbl-sgbd-tipos-dados-sql" title="Link Permanente para essa tabela"></a></caption>
+<caption><span class="caption-number">Tabela 2.1 - </span><span class="caption-text">Tipos de Dados do PostgreSQL</span><a class="headerlink" href="#tbl-sgbd-tipos-dados-sql" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 25%" />
 <col style="width: 25%" />
@@ -204,12 +204,12 @@
 <tr class="row-odd"></tr>
 <tr class="row-even"><td class="left-align" rowspan="10"><p><a class="reference external" href="https://www.postgresql.org/docs/14/datatype-datetime.html">Data e Hora</a></p></td>
 <td class="left-align" rowspan="2"><p>timestamp [(p)] [without time zone]</p></td>
-<td class="left-align" rowspan="2"><p>Data e hora sem <em>time zone</em></p></td>
+<td class="left-align" rowspan="2"><p>Data e hora sem fuso horário</p></td>
 <td class="left-align" rowspan="2"></td>
 </tr>
 <tr class="row-odd"></tr>
 <tr class="row-even"><td class="left-align" rowspan="2"><p>timestamp [(p)] with time zone</p></td>
-<td class="left-align" rowspan="2"><p>Data e hora com <em>time zone</em></p></td>
+<td class="left-align" rowspan="2"><p>Data e hora com fuso horário</p></td>
 <td class="left-align" rowspan="2"><p>timestamptz</p></td>
 </tr>
 <tr class="row-odd"></tr>
@@ -219,18 +219,22 @@
 </tr>
 <tr class="row-odd"></tr>
 <tr class="row-even"><td class="left-align" rowspan="2"><p>time [ (p) ] [ without time zone ]</p></td>
-<td class="left-align" rowspan="2"><p>Hora do dia sem <em>time zone</em></p></td>
+<td class="left-align" rowspan="2"><p>Hora do dia sem fuso horário</p></td>
 <td class="left-align" rowspan="2"></td>
 </tr>
 <tr class="row-odd"></tr>
 <tr class="row-even"><td class="left-align" rowspan="2"><p>time [ (p) ] with time zone</p></td>
-<td class="left-align" rowspan="2"><p>Hora do dia com <em>time zone</em></p></td>
+<td class="left-align" rowspan="2"><p>Hora do dia com fuso horário</p></td>
 <td class="left-align" rowspan="2"></td>
 </tr>
 <tr class="row-odd"></tr>
 </tbody>
 </table>
-<p>Os valores individuais de cada tipo são chamados de <strong>literais</strong> ou <strong>literais constantes</strong>. Exemplos:</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Os valores individuais de cada tipo são chamados de <strong>literais</strong> ou <strong>constantes</strong>.</p>
+</div>
+<p>Podemos realizar consultas SQL no PostgreSQL usando apenas a cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code>. Abaixo, são apresentados alguns exemplos da notação empregada para valores literais de alguns dos tipos de dados listados na <a class="reference internal" href="#tbl-sgbd-tipos-dados-sql"><span class="std std-numref">Tabela 2.1</span></a>:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">473</span><span class="p">;</span><span class="w">           </span><span class="c1">-- número inteiro</span>
 </pre></div>
 </div>
@@ -246,10 +250,11 @@
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="w"> </span><span class="s1">&#39;2022-10-11 06:15:00-03&#39;</span><span class="p">;</span><span class="w">  </span><span class="c1">-- data e hora com fuso horário</span>
 </pre></div>
 </div>
-<p>Usando a função <code class="docutils literal notranslate"><span class="pre">pg_typeof</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_typeof</span><span class="p">(</span><span class="s1">&#39;Gilberto&#39;</span><span class="p">);</span><span class="w"></span>
-</pre></div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Nos exemplos acima, os carcteres <code class="docutils literal notranslate"><span class="pre">--</span></code> são usados para escrita de comentários. Todo o conteúdo da linha após esses caracteres não são tratados como comandos e, portanto, são desconsiderados pelo interpretador de consultas do PostgreSQL. Esse tipo de comentário é conhecido como <strong>comentário de linha</strong>. É possível também utilizar os delimitadores <code class="docutils literal notranslate"><span class="pre">/*</span></code> e <code class="docutils literal notranslate"><span class="pre">*/</span></code> para criar comentários que se expandem por múltiplas linhas, que são chamados de <strong>comentários de bloco</strong>.</p>
 </div>
+<p>No PostgreSQL podemos utilizar a função <code class="docutils literal notranslate"><span class="pre">pg_typeof</span></code> para obter o tipo de dado associado a um determinado valor:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_typeof</span><span class="p">(</span><span class="mi">30</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
@@ -260,6 +265,9 @@
 </pre></div>
 </div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_typeof</span><span class="p">(</span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="w"> </span><span class="s1">&#39;2022-10-11 06:15:00-03&#39;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_typeof</span><span class="p">(</span><span class="s1">&#39;Gilberto&#39;</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -283,7 +291,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f6ce85d7580>
+<jinja2.runtime.BlockReference object at 0x7fc40f20d0a0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

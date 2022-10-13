@@ -128,7 +128,7 @@ Intervalo de tempo entre dois instantes de tempo:
 
 .. code-block:: sql
 
-    SELECT TIMESTAMP '2022-11-09 06:15' - TIMESTAMP '2022-10-10 06:10'; 
+    SELECT TIMESTAMP '2022-11-09 06:15' - TIMESTAMP '2022-10-10 06:10';
 
 
 .. tip::
@@ -153,5 +153,70 @@ Intervalo de tempo entre dois instantes de tempo:
 
 .. tip::
 
-    Para uma lista completa das funções e operações com tipos associados a data, hora e intervalos, consulte o manual do PostgreSQL na `Seção 9.9. Date/Time Functions and Operators <https://www.postgresql.org/docs/14/functions-datetime.html>`__.
+    Para converter um valor do tipo ``TIMESTAMP`` para ``TIME`` faça:
+    
+    
+    .. code-block:: sql
+    
+        SELECT (TIMESTAMP '2022-11-09 06:15')::time;
+    
+    
+    O operador ``::`` permite fazermos a **coerção explícita de tipos**.
 
+
+
+Exercícios
+----------
+
+
+**Exercício 1.** Crie a tabela de focos abaixo com uma coluna do tipo data e hora sem fuso horário.
+
+
+.. code-block:: postgresql
+
+    CREATE TABLE focos_2
+    (
+        latitude            DOUBLE PRECISION,
+        longitude           DOUBLE PRECISION,
+        num_dias_sem_chuva  INTEGER,
+        frp                 NUMERIC(4,1),
+        data                TIMESTAMP WITHOUT TIME ZONE,
+        satelite            VARCHAR(30)
+    );
+
+
+Vamos incluir alguns valores na tabela acima:
+
+
+.. code-block:: sql
+
+    INSERT INTO focos_2 VALUES(-9.41792, -51.65176, 30, 89, '2022-09-01 16:30:00', 'AQUA'),
+                              (-6.63565,-51.73956, 28, 103, '2022-08-30 14:30:00', 'TERRA'),
+                              (-5.40959,-51.04929, 31, 31.9, '2022-09-03 08:30:00', 'NOAA-20'),
+                              (-7.04535,-52.24566, 27, 44.2, '2022-09-03 07:30:00', 'GOES-16'),
+                              (-5.67382,-51.89861, 32, 97.8, '2022-08-03 17:30:00', 'GOES-16');
+
+
+**Exercício 2.** Apresente os dados de focos com duas colunas extras, uma apresentando o ano e outra o mês.
+
+
+**Exercício 3.** Quais os focos detectados no período da manhã?
+
+
+**Exercício 4.** Quais os focos detectados no período da tarde?
+
+
+**Exercício 5.** Quais os focos detectados no mês de agosto?
+
+
+**Exercício 6.** Qual o número de focos reportado por cada satélite?
+
+
+**Exercício 7.** Qual o número de focos reportado mensalmente?
+
+
+-----
+
+.. tip::
+
+    Para uma lista completa das funções e operações com tipos associados a data, hora e intervalos, consulte o manual do PostgreSQL na `Seção 9.9. Date/Time Functions and Operators <https://www.postgresql.org/docs/14/functions-datetime.html>`__.

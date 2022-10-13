@@ -26,7 +26,7 @@ Uma **string** pode ser expressa entre **aspas simples** ou entre marcações es
 ou:
 
 
-.. code-block:: sql
+.. code-block:: postgresql
 
     SELECT $$Bancos de Dados Geográficos$$;
 
@@ -176,6 +176,53 @@ Exemplos:
 .. code-block:: sql
 
     SELECT substring('Bancos de Dados Geográficos' FROM 1 FOR 6);
+
+
+Exercícios
+----------
+
+
+Os exercícios desta seção consideram as tabelas criadas na :numref:`Seção %s - Tipos Numéricos <cap_sgbd_tipos_numericos>`.
+
+
+**Exercício 1.** Faça uma consulta na tabela ``populacao_1940`` que converta o nome das Unidades da Federação para letras maiúsculas.
+
+
+**Exercício 2.** Liste as Unidades da Federação da tabela ``populacao_1940`` que começam pela letra ``a``.
+
+
+**Exercício 3.** Faça uma consulta na tabela ``populacao_1940`` que apresente a seguinte listagem:
+
+
+.. table:: 
+    :name: tbl:sgbd:tipos-numericos:cidades
+    :header-alignment: center center
+    :column-alignment: left center
+
+    +--------------------------+-------------------+
+    |  Estado                  | homens > mulheres |
+    +==========================+===================+
+    + Nome: ACRE - Brasil      +       t           +
+    +--------------------------+--------+----------+
+    + Nome: AMAPÁ - Brasil     +       t           +
+    +--------------------------+--------+----------+
+    + Nome: AMAZONAS - Brasil  +       t           +
+    +--------------------------+--------+----------+
+    + Nome: MARANHÃO - Brasil  +       f           +
+    +--------------------------+--------+----------+
+    + Nome: PARÁ - Brasil      +       t           +
+    +--------------------------+--------+----------+
+    + Nome: PIAUÍ - Brasil     +       f           +
+    +--------------------------+--------+----------+
+    + Nome: RONDÔNIA - Brasil  +       t           +
+    +--------------------------+--------+----------+
+    + Nome: RORAIMA - Brasil   +       t           +
+    +--------------------------+--------+----------+
+    + Nome: TOCANTINS - Brasil +       t           +
+    +--------------------------+--------+----------+
+
+
+-----
 
 
 .. tip::

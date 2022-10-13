@@ -17,7 +17,7 @@ Considere o arquivo CSV mostrado abaixo, que contém dados sobre focos de queima
 
 
 .. literalinclude:: ../data/csv/focos-sao-felix-do-xingu-20220901.csv
-    :lines: 1-16  
+    :lines: 1-16
     :caption: :download:`focos-sao-felix-do-xingu-20220901.csv <../data/csv/focos-sao-felix-do-xingu-20220901.csv>`.
     :name: data:csv:focos-sao-felix-do-xingu-20220901
 
@@ -88,12 +88,12 @@ Se o comando acima for bem sucedido, você receberá uma mensagem indicando que 
 
     O exemplo acima também poderia ser realizado sem especificar as colunas da tabela de destino:
 
-    
+
     .. code-block:: sql
 
         COPY focos
         FROM '/data/focos-sao-felix-do-xingu-20220901.csv'
-        DELIMITER ',' CSV HEADER;  
+        DELIMITER ',' CSV HEADER;
 
 
 .. note::
@@ -104,10 +104,10 @@ Se o comando acima for bem sucedido, você receberá uma mensagem indicando que 
 .. tip::
 
     Para limpar a tabela, faça:
-    
-    
+
+
     .. code-block:: sql
-    
+
         TRUNCATE TABLE focos RESTART IDENTITY;
 
 
@@ -124,7 +124,7 @@ Importando pelo pgAdmin
 
 
 Pela interface gráfica do pgAdmin é possível importar arquivos CSV. Ao selecionar a tabela para a qual se deseja copiar os dados, selecione o meno ``Import/Export Data...``, como mostrado na figura abaixo:
- 
+
 
 .. figure:: ../img/pgadmin4/import-csv-01.png
     :alt: Importando dados para a tabela focos
@@ -211,4 +211,3 @@ O arquivo pode ser indicado de diversas formas. Uma delas consiste em fazer o up
     :name: fig:sgbd:import-csv-09
 
     Importando dados para a tabela focos
-

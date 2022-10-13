@@ -72,3 +72,26 @@ Exemplos:
 
     SELECT 5 <> 4.1;
 
+
+Exercícios
+----------
+
+
+Os exercícios desta seção consideram as tabelas criadas na :numref:`Seção %s - Tipos Numéricos <cap_sgbd_tipos_numericos>`.
+
+
+**Exercício 1.** Quais os focos com valor de FRP maior que 90?
+
+
+**Exercício 2.** Quais os focos detectados na região definida pelo seguinte retângulo:
+
+- :math:`longitude_{1} = -52.5`
+- :math:`longitude_{2} = -51.5`
+- :math:`latitude_{1} = -6.5`
+- :math:`latitude_{2} = -7.5`
+
+
+**Exercício 3.** Quais as Unidades Federativas do Brasil (tabela ``populacao_1940``) possuia uma população feminina maior que a masculina em 1940?
+
+
+**Exercício 4.** Faça uma consulta na tabela ``populacao_1940`` que apresente como resultado uma coluna com o nome da UF e outra com um valor booleando indicando se a população masculina é ou não maior na UF.

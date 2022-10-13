@@ -67,12 +67,12 @@
 <li class="toctree-l2"><a class="reference internal" href="criando-bd.html">2.4. Criando um Novo Banco de Dados no PostgreSQL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tipos-dados-sql.html">2.5. Tipos de Dados SQL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tipos-numericos.html">2.6. Tipos Numéricos</a></li>
-<li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.7. Expressões</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tipo-logico.html">2.8. Tipo Lógico</a></li>
-<li class="toctree-l2"><a class="reference internal" href="op-relacionais.html">2.9. Operadores Relacionais</a></li>
-<li class="toctree-l2"><a class="reference internal" href="strings.html">2.10. Tipos Textuais</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.11. Tipos de Dados para Data e Hora</a></li>
-<li class="toctree-l2"><a class="reference internal" href="expressoes-logicas.html">2.12. Expressões Lógicas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipo-logico.html">2.7. Tipo Lógico</a></li>
+<li class="toctree-l2"><a class="reference internal" href="op-relacionais.html">2.8. Operadores Relacionais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">2.9. Tipos Textuais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.10. Tipos de Dados para Data e Hora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.11. Expressões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressoes.html#expressoes-logicas">2.12. Expressões Lógicas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="criando-tabelas.html">2.13. Criando Tabelas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inserindo-dados.html">2.14. Inserindo Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="consultas.html">2.15. Consultas em SQL</a></li>
@@ -149,7 +149,7 @@
 <tr class="row-odd"><th class="center-align head" colspan="2"><p><strong>paises</strong></p></th>
 </tr>
 <tr class="row-even"><th class="center-align head"><p>pid</p></th>
-<th class="center-align head"><p>nome</p></th>
+<th class="center-align head"><p>nome_pais</p></th>
 </tr>
 </thead>
 <tbody>
@@ -165,16 +165,16 @@
 </table>
 <table class="styled-table docutils align-default" id="tbl-sgbd-tour-cidades">
 <colgroup>
-<col style="width: 14%" />
-<col style="width: 32%" />
-<col style="width: 30%" />
+<col style="width: 13%" />
+<col style="width: 34%" />
+<col style="width: 29%" />
 <col style="width: 24%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="center-align head" colspan="4"><p><strong>cidades</strong></p></th>
 </tr>
 <tr class="row-even"><th class="center-align head"><p>cid</p></th>
-<th class="center-align head"><p>nome</p></th>
+<th class="center-align head"><p>nome_cidade</p></th>
 <th class="center-align head"><p>populacao</p></th>
 <th class="center-align head"><p>pais_id</p></th>
 </tr>
@@ -211,9 +211,9 @@
 <p>A tabela <code class="docutils literal notranslate"><span class="pre">paises</span></code> possui o seguinte esquema:</p>
 <table class="styled-table docutils align-default" id="tbl-sgbd-tour-paises-esquema">
 <colgroup>
-<col style="width: 12%" />
-<col style="width: 36%" />
-<col style="width: 52%" />
+<col style="width: 14%" />
+<col style="width: 35%" />
+<col style="width: 51%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="center-align head" colspan="3" rowspan="2"><p>nome tabela: <strong>paises</strong></p></th>
@@ -234,7 +234,7 @@
 <tr class="row-odd"></tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td class="left-align" rowspan="2"><p>nome</p></td>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>nome_pais</p></td>
 <td class="left-align" rowspan="2"><p>texto de tamanho variável</p></td>
 <td class="left-align" rowspan="2"><p>limitado a 50 caracteres</p></td>
 </tr>
@@ -244,13 +244,12 @@
 <p>A tabela <code class="docutils literal notranslate"><span class="pre">cidades</span></code> possui o seguinte esquema:</p>
 <table class="styled-table docutils align-default" id="tbl-sgbd-tour-cidades-esquema">
 <colgroup>
-<col style="width: 9%" />
+<col style="width: 10%" />
 <col style="width: 22%" />
-<col style="width: 69%" />
+<col style="width: 68%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="center-align head" colspan="2" rowspan="2"><p>nome tabela: <strong>cidades</strong></p></th>
-<th class="center-align head" rowspan="2"></th>
+<tr class="row-odd"><th class="center-align head" colspan="3" rowspan="2"><p>nome tabela: <strong>cidades</strong></p></th>
 </tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"><th class="center-align head" rowspan="2"><p>colunas</p></th>
@@ -269,7 +268,7 @@
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td class="left-align" rowspan="2"><p>nome</p></td>
+<tr class="row-odd"><td class="left-align" rowspan="2"><p>nome_cidade</p></td>
 <td class="left-align" rowspan="2"><p>texto de tamanho variável</p></td>
 <td class="left-align" rowspan="2"><p>limitado a 50 caracterers</p></td>
 </tr>
@@ -401,7 +400,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f6ce7e08eb0>
+<jinja2.runtime.BlockReference object at 0x7fc40ea6f5e0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

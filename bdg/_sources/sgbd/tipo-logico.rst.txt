@@ -12,9 +12,9 @@ Tipo Lógico
 O tipo ``boolean`` é usado para representar valores **booleanos** ou **lógicos**. Este tipo possui apenas dois valores possíveis: ``true`` (verdadeiro) ou ``false`` (falso).
 
 
-.. note::
+.. tip::
 
-    Podemos obter o tipo de um valor através da função ``pg_typeof``:
+    Veja o retorno da função ``pg_typeof`` nos exemplos abaixo:
 
 
     .. code-block:: sql

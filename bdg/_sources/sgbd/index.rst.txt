@@ -35,12 +35,11 @@ Sistemas de Bancos de Dados Relacionais
     ./criando-bd
     ./tipos-dados-sql
     ./tipos-numericos
-    ./expressoes
     ./tipo-logico
     ./op-relacionais
     ./strings
     ./tipos-data-hora
-    ./expressoes-logicas
+    ./expressoes
     ./criando-tabelas
     ./inserindo-dados
     ./consultas

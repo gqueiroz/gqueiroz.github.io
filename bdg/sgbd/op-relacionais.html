@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2.9. Operadores Relacionais &mdash; BDGeo</title>
+  <title>2.8. Operadores Relacionais &mdash; BDGeo</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -26,11 +26,12 @@
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="2.10. Tipos Textuais" href="strings.html" />
-    <link rel="prev" title="2.8. Tipo Lógico" href="tipo-logico.html" /> 
+    <link rel="next" title="2.9. Tipos Textuais" href="strings.html" />
+    <link rel="prev" title="2.7. Tipo Lógico" href="tipo-logico.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -62,12 +63,15 @@
 <li class="toctree-l2"><a class="reference internal" href="criando-bd.html">2.4. Criando um Novo Banco de Dados no PostgreSQL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tipos-dados-sql.html">2.5. Tipos de Dados SQL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tipos-numericos.html">2.6. Tipos Numéricos</a></li>
-<li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.7. Expressões</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tipo-logico.html">2.8. Tipo Lógico</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.9. Operadores Relacionais</a></li>
-<li class="toctree-l2"><a class="reference internal" href="strings.html">2.10. Tipos Textuais</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.11. Tipos de Dados para Data e Hora</a></li>
-<li class="toctree-l2"><a class="reference internal" href="expressoes-logicas.html">2.12. Expressões Lógicas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipo-logico.html">2.7. Tipo Lógico</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.8. Operadores Relacionais</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercicios">2.8.1. Exercícios</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">2.9. Tipos Textuais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.10. Tipos de Dados para Data e Hora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.11. Expressões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressoes.html#expressoes-logicas">2.12. Expressões Lógicas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="criando-tabelas.html">2.13. Criando Tabelas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inserindo-dados.html">2.14. Inserindo Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="consultas.html">2.15. Consultas em SQL</a></li>
@@ -120,12 +124,12 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
-      <li><span class="section-number">2.9. </span>Operadores Relacionais</li>
+      <li><span class="section-number">2.8. </span>Operadores Relacionais</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
-        <a href="tipo-logico.html" class="btn btn-neutral float-left" title="2.8. Tipo Lógico" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="strings.html" class="btn btn-neutral float-right" title="2.10. Tipos Textuais" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tipo-logico.html" class="btn btn-neutral float-left" title="2.7. Tipo Lógico" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="strings.html" class="btn btn-neutral float-right" title="2.9. Tipos Textuais" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -133,7 +137,7 @@
            <div itemprop="articleBody">
              
   <section id="operadores-relacionais">
-<span id="cap-sgbd-op-relacionais"></span><h1><span class="section-number">2.9. </span>Operadores Relacionais<a class="headerlink" href="#operadores-relacionais" title="Link permanente para este cabeçalho"></a></h1>
+<span id="cap-sgbd-op-relacionais"></span><h1><span class="section-number">2.8. </span>Operadores Relacionais<a class="headerlink" href="#operadores-relacionais" title="Link permanente para este cabeçalho"></a></h1>
 <p>Os <strong>operadores relacionais</strong> ou <strong>operadores de comparação</strong> permitem comparar dois valores e produzir um valor booleano como resultado. Esse tipo de operador, juntamente com os operadores lógicos, são essenciais nas expressões da cláusula <code class="docutils literal notranslate"><span class="pre">WHERE</span></code>, nos <strong>comandos condicionais</strong> e nos <strong>testes condicionais dos laços de repetição</strong>. A <a class="reference internal" href="#tbl-sgbd-op-relacionais"><span class="std std-numref">Tabela 2.6</span></a> apresenta a notação desses operadores e seus significados.</p>
 <table class="styled-table docutils align-center" id="tbl-sgbd-op-relacionais">
 <caption><span class="caption-number">Tabela 2.6 - </span><span class="caption-text">Operadores relacionais.</span><a class="headerlink" href="#tbl-sgbd-op-relacionais" title="Link Permanente para essa tabela"></a></caption>
@@ -216,14 +220,28 @@ igual a</p></td>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">.</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
+<section id="exercicios">
+<h2><span class="section-number">2.8.1. </span>Exercícios<a class="headerlink" href="#exercicios" title="Link permanente para este cabeçalho"></a></h2>
+<p>Os exercícios desta seção consideram as tabelas criadas na <a class="reference internal" href="tipos-numericos.html#cap-sgbd-tipos-numericos"><span class="std std-numref">Seção 2.6 - Tipos Numéricos</span></a>.</p>
+<p><strong>Exercício 1.</strong> Quais os focos com valor de FRP maior que 90?</p>
+<p><strong>Exercício 2.</strong> Quais os focos detectados na região definida pelo seguinte retângulo:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(longitude_{1} = -52.5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(longitude_{2} = -51.5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(latitude_{1} = -6.5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(latitude_{2} = -7.5\)</span></p></li>
+</ul>
+<p><strong>Exercício 3.</strong> Quais as Unidades Federativas do Brasil (tabela <code class="docutils literal notranslate"><span class="pre">populacao_1940</span></code>) possuia uma população feminina maior que a masculina em 1940?</p>
+<p><strong>Exercício 4.</strong> Faça uma consulta na tabela <code class="docutils literal notranslate"><span class="pre">populacao_1940</span></code> que apresente como resultado uma coluna com o nome da UF e outra com um valor booleando indicando se a população masculina é ou não maior na UF.</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="tipo-logico.html" class="btn btn-neutral float-left" title="2.8. Tipo Lógico" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="strings.html" class="btn btn-neutral float-right" title="2.10. Tipos Textuais" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tipo-logico.html" class="btn btn-neutral float-left" title="2.7. Tipo Lógico" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="strings.html" class="btn btn-neutral float-right" title="2.9. Tipos Textuais" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -233,7 +251,7 @@ igual a</p></td>
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f6ce8192cd0>
+<jinja2.runtime.BlockReference object at 0x7fc40eafbb80>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

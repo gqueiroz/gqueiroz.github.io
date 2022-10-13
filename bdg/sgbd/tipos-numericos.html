@@ -26,10 +26,11 @@
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="2.7. Expressões" href="expressoes.html" />
+    <link rel="next" title="2.7. Tipo Lógico" href="tipo-logico.html" />
     <link rel="prev" title="2.5. Tipos de Dados SQL" href="tipos-dados-sql.html" /> 
 </head>
 
@@ -64,18 +65,20 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">2.6. Tipos Numéricos</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#integer">2.6.1. <code class="docutils literal notranslate"><span class="pre">integer</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bigint">2.6.2. <code class="docutils literal notranslate"><span class="pre">bigint</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#numeric">2.6.3. <code class="docutils literal notranslate"><span class="pre">numeric</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#double-precision">2.6.4. <code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">precision</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#double-precision">2.6.3. <code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">precision</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numeric">2.6.4. <code class="docutils literal notranslate"><span class="pre">numeric</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#operacoes-aritmeticas">2.6.5. Operações Aritméticas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#funcoes-matematicas">2.6.6. Funções Matemáticas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trabalhando-com-tabelas-com-colunas-numericas">2.6.7. Trabalhando com Tabelas com Colunas Numéricas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exercicios">2.6.8. Exercícios</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.7. Expressões</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tipo-logico.html">2.8. Tipo Lógico</a></li>
-<li class="toctree-l2"><a class="reference internal" href="op-relacionais.html">2.9. Operadores Relacionais</a></li>
-<li class="toctree-l2"><a class="reference internal" href="strings.html">2.10. Tipos Textuais</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.11. Tipos de Dados para Data e Hora</a></li>
-<li class="toctree-l2"><a class="reference internal" href="expressoes-logicas.html">2.12. Expressões Lógicas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipo-logico.html">2.7. Tipo Lógico</a></li>
+<li class="toctree-l2"><a class="reference internal" href="op-relacionais.html">2.8. Operadores Relacionais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">2.9. Tipos Textuais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.10. Tipos de Dados para Data e Hora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.11. Expressões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressoes.html#expressoes-logicas">2.12. Expressões Lógicas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="criando-tabelas.html">2.13. Criando Tabelas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inserindo-dados.html">2.14. Inserindo Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="consultas.html">2.15. Consultas em SQL</a></li>
@@ -133,7 +136,7 @@
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
         <a href="tipos-dados-sql.html" class="btn btn-neutral float-left" title="2.5. Tipos de Dados SQL" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="expressoes.html" class="btn btn-neutral float-right" title="2.7. Expressões" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tipo-logico.html" class="btn btn-neutral float-right" title="2.7. Tipo Lógico" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -158,9 +161,22 @@
 </pre></div>
 </div>
 </section>
-<section id="numeric">
-<h2><span class="section-number">2.6.3. </span><code class="docutils literal notranslate"><span class="pre">numeric</span></code><a class="headerlink" href="#numeric" title="Link permanente para este cabeçalho"></a></h2>
+<section id="double-precision">
+<h2><span class="section-number">2.6.3. </span><code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">precision</span></code><a class="headerlink" href="#double-precision" title="Link permanente para este cabeçalho"></a></h2>
 <p>O tipo <strong>double precision</strong>, ou <strong>float8</strong>, é capaz de representar números reais (ou números em ponto flutiante) com uma certa precisão numérica (64-bits). Um número em ponto flutuante pode ser expresso da seguinte maneira:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="nb">double precision</span><span class="w"> </span><span class="s1">&#39;5.1&#39;</span><span class="p">;</span><span class="w"></span>
+
+
+<span class="k">SELECT</span><span class="w"> </span><span class="nb">double precision</span><span class="w"> </span><span class="s1">&#39;5.&#39;</span><span class="p">;</span><span class="w"></span>
+
+
+<span class="k">SELECT</span><span class="w"> </span><span class="nb">double precision</span><span class="w"> </span><span class="s1">&#39;5.2e12&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="numeric">
+<h2><span class="section-number">2.6.4. </span><code class="docutils literal notranslate"><span class="pre">numeric</span></code><a class="headerlink" href="#numeric" title="Link permanente para este cabeçalho"></a></h2>
+<p>O tipo <strong>numeric</strong> é capaz de representar números reais com grande número de dígitos. Em geral, é usado para representar valores numéricos com a melhor precisão possível. Trata-se do tipo de dados indicado para valores que representam dinheiro. Comparado aos tipos <code class="docutils literal notranslate"><span class="pre">integer</span></code> e <code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">precision</span></code>, pode ocupar mais espaço em disco e as operações são mais lentas pois são implementadas em software, enquanto que dos outros dois tipos as operações aritméticas básicas são implementadas em hardware.</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="p">.</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
 
 
@@ -174,19 +190,15 @@
 <p class="admonition-title">Dica</p>
 <p>Utilize a função <code class="docutils literal notranslate"><span class="pre">pg_typeof</span></code> para verificar se os literais acima realmente são considerados do tipo <code class="docutils literal notranslate"><span class="pre">numeric</span></code>.</p>
 </div>
-</section>
-<section id="double-precision">
-<h2><span class="section-number">2.6.4. </span><code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">precision</span></code><a class="headerlink" href="#double-precision" title="Link permanente para este cabeçalho"></a></h2>
-<p>O tipo <strong>double precision</strong>, ou <strong>float8</strong>, é capaz de representar números reais (ou números em ponto flutiante) com uma certa precisão numérica (64-bits). Um número em ponto flutuante pode ser expresso da seguinte maneira:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="k">precision</span><span class="w"> </span><span class="s1">&#39;5.1&#39;</span><span class="p">;</span><span class="w"></span>
-
-
-<span class="k">SELECT</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="k">precision</span><span class="w"> </span><span class="s1">&#39;5.&#39;</span><span class="p">;</span><span class="w"></span>
-
-
-<span class="k">SELECT</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="k">precision</span><span class="w"> </span><span class="s1">&#39;5.2e12&#39;</span><span class="p">;</span><span class="w"></span>
+<p>Na criação de colunas de uma tabela, podemos utilizar a seguinte sintaxe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NUMERIC</span><span class="p">(</span><span class="n">precision</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Onde:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">precison</span></code>: indica o número total de digitos.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scale</span></code>: indica o número de dígitos dedicado à parte fracionária.</p></li>
+</ul>
 </section>
 <section id="operacoes-aritmeticas">
 <h2><span class="section-number">2.6.5. </span>Operações Aritméticas<a class="headerlink" href="#operacoes-aritmeticas" title="Link permanente para este cabeçalho"></a></h2>
@@ -277,9 +289,116 @@
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="mi">900</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
+</section>
+<section id="trabalhando-com-tabelas-com-colunas-numericas">
+<h2><span class="section-number">2.6.7. </span>Trabalhando com Tabelas com Colunas Numéricas<a class="headerlink" href="#trabalhando-com-tabelas-com-colunas-numericas" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para ilustrar o uso dos tipos numéricos na definição de colunas de uma tabela, considere um evento de foco de queimada na vegetação. Cada foco será representado por um par de coordenadas (latitude e longitude), o número de dias sem chuva na localização do foco e a potência radiativa do fogo (<em>Fire Radiative Power</em>). Podemos então definir uma tabela denominada <code class="docutils literal notranslate"><span class="pre">focos</span></code> para armazenar esse tipo de evento através do seguinte comando SQL:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">latitude</span><span class="w">            </span><span class="nb">DOUBLE PRECISION</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">longitude</span><span class="w">           </span><span class="nb">DOUBLE PRECISION</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_dias_sem_chuva</span><span class="w">  </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">frp</span><span class="w">                 </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mf">4</span><span class="p">,</span><span class="mf">1</span><span class="p">)</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
 <div class="admonition tip">
 <p class="admonition-title">Dica</p>
-<p>Para uma lista completa das funções matemáticas do PostgreSQL, consulte o manual do PostgreSQL na <a class="reference external" href="https://www.postgresql.org/docs/14/functions-math.html">Seção 9.3. Mathematical Functions and Operators</a>.</p>
+<p>Consulte o <a class="reference external" href="https://queimadas.dgi.inpe.br/queimadas/portal/informacoes/perguntas-frequentes#p42">Portal do Programa Queimadas do INPE</a> para saber mais sobre o significado do atributo do foco FRP (<em>Fire Radiative Power</em>).</p>
+</div>
+<p>Vamos incluir alguns valores na tabela acima:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">focos</span><span class="w"> </span><span class="k">VALUES</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">.</span><span class="mi">41792</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">65176</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">89</span><span class="p">),</span><span class="w"></span>
+<span class="w">                        </span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">.</span><span class="mi">63565</span><span class="p">,</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">73956</span><span class="p">,</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w"> </span><span class="mi">103</span><span class="p">),</span><span class="w"></span>
+<span class="w">                        </span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">.</span><span class="mi">40959</span><span class="p">,</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">04929</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">.</span><span class="mi">9</span><span class="p">),</span><span class="w"></span>
+<span class="w">                        </span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">.</span><span class="mi">04535</span><span class="p">,</span><span class="o">-</span><span class="mi">52</span><span class="p">.</span><span class="mi">24566</span><span class="p">,</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w"> </span><span class="mi">44</span><span class="p">.</span><span class="mi">2</span><span class="p">),</span><span class="w"></span>
+<span class="w">                        </span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">.</span><span class="mi">67382</span><span class="p">,</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">89861</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">97</span><span class="p">.</span><span class="mi">8</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Agora, vamos fazer uma consulta para saber a distância euclidiana entre cada um dos focos e a localização da sede municipal de São Félix do Xingu, no Estado do Pará. Para isso adotaremos a localização de latitude -6.645 e longitude -51.995 para a sede municipal e que um grau decimal possui aproximadamente 111 km.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Lembrando que a fórmula da distância é:</p>
+<div class="math notranslate nohighlight">
+\[d_{AB} = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}\]</div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">995</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">longitude</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">.</span><span class="mi">645</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">latitude</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">111</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;distancia km&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="exercicios">
+<h2><span class="section-number">2.6.8. </span>Exercícios<a class="headerlink" href="#exercicios" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>Exercício 1.</strong> Faça uma consulta SQL que calcule o logaritmo do valor de FRP dos focos.</p>
+<p><strong>Exercício 2:</strong> Qual a média do número de dias sem chuva dos focos?</p>
+<p><strong>Exercício 3:</strong> Crie a tabela abaixo com os valores indicados.</p>
+<table class="styled-table docutils align-default" id="tbl-sgbd-tipos-numericos-cidades">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 28%" />
+<col style="width: 34%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="center-align head" colspan="3"><p><strong>populacao_1940</strong></p></th>
+</tr>
+<tr class="row-even"><th class="center-align head"><p>uf</p></th>
+<th class="center-align head"><p>homens</p></th>
+<th class="center-align head"><p>mulheres</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td class="left-align" rowspan="2"><p>Rondônia</p></td>
+<td class="left-align" rowspan="2"><p>7879</p></td>
+<td class="left-align" rowspan="2"><p>6538</p></td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td class="left-align" rowspan="2"><p>Acre</p></td>
+<td class="left-align" rowspan="2"><p>44079</p></td>
+<td class="left-align" rowspan="2"><p>35689</p></td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td class="left-align" rowspan="2"><p>Amazonas</p></td>
+<td class="left-align" rowspan="2"><p>215681</p></td>
+<td class="left-align" rowspan="2"><p>203502</p></td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td class="left-align" rowspan="2"><p>Roraima</p></td>
+<td class="left-align" rowspan="2"><p>5509</p></td>
+<td class="left-align" rowspan="2"><p>5000</p></td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td class="left-align" rowspan="2"><p>Pará</p></td>
+<td class="left-align" rowspan="2"><p>457659</p></td>
+<td class="left-align" rowspan="2"><p>456238</p></td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td class="left-align" rowspan="2"><p>Amapá</p></td>
+<td class="left-align" rowspan="2"><p>15800</p></td>
+<td class="left-align" rowspan="2"><p>14947</p></td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td class="left-align" rowspan="2"><p>Tocantins</p></td>
+<td class="left-align" rowspan="2"><p>82268</p></td>
+<td class="left-align" rowspan="2"><p>82128</p></td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td class="left-align" rowspan="2"><p>Maranhão</p></td>
+<td class="left-align" rowspan="2"><p>613938</p></td>
+<td class="left-align" rowspan="2"><p>621231</p></td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td class="left-align" rowspan="2"><p>Piauí</p></td>
+<td class="left-align" rowspan="2"><p>404989</p></td>
+<td class="left-align" rowspan="2"><p>412612</p></td>
+</tr>
+<tr class="row-even"></tr>
+</tbody>
+</table>
+<p><strong>Exercício 4:</strong> Qual o total da população de cada estado?</p>
+<p><strong>Exercício 5:</strong> Apresente a população de homens e de mulheres na forma de porcentagem?</p>
+<hr class="docutils" />
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Para uma lista completa dos tipos numéricos do PostgreSQL, consulte o seu manual na <a class="reference external" href="https://www.postgresql.org/docs/14/datatype-numeric.html">Seção 8.1. Numeric Types</a>. A documentação das funções e operadores matemáticas pode ser encontrada na <a class="reference external" href="https://www.postgresql.org/docs/14/functions-math.html">Seção 9.3. Mathematical Functions and Operators</a>.</p>
 </div>
 </section>
 </section>
@@ -289,7 +408,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
         <a href="tipos-dados-sql.html" class="btn btn-neutral float-left" title="2.5. Tipos de Dados SQL" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="expressoes.html" class="btn btn-neutral float-right" title="2.7. Expressões" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tipo-logico.html" class="btn btn-neutral float-right" title="2.7. Tipo Lógico" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -299,7 +418,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f6ce7bb9cd0>
+<jinja2.runtime.BlockReference object at 0x7fc40f6746a0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

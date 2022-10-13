@@ -41,20 +41,38 @@ Exemplo de notação:
     SELECT 2247483647;
 
 
-``numeric``
------------
+``double precision``
+--------------------
 
 
 O tipo **double precision**, ou **float8**, é capaz de representar números reais (ou números em ponto flutiante) com uma certa precisão numérica (64-bits). Um número em ponto flutuante pode ser expresso da seguinte maneira:
 
 
+.. code-block:: postgresql
+
+    SELECT double precision '5.1';
+
+
+    SELECT double precision '5.';
+
+
+    SELECT double precision '5.2e12';
+
+
+``numeric``
+-----------
+
+
+O tipo **numeric** é capaz de representar números reais com grande número de dígitos. Em geral, é usado para representar valores numéricos com a melhor precisão possível. Trata-se do tipo de dados indicado para valores que representam dinheiro. Comparado aos tipos ``integer`` e ``double precision``, pode ocupar mais espaço em disco e as operações são mais lentas pois são implementadas em software, enquanto que dos outros dois tipos as operações aritméticas básicas são implementadas em hardware. 
+
+
 .. code-block:: sql
 
     SELECT 5.1;
-    
+
 
     SELECT 5.;
-    
+
 
     SELECT 5.2e12;
 
@@ -64,22 +82,16 @@ O tipo **double precision**, ou **float8**, é capaz de representar números rea
     Utilize a função ``pg_typeof`` para verificar se os literais acima realmente são considerados do tipo ``numeric``.
 
 
-``double precision``
---------------------
+Na criação de colunas de uma tabela, podemos utilizar a seguinte sintaxe::
+
+    NUMERIC(precision, scale)
 
 
-O tipo **double precision**, ou **float8**, é capaz de representar números reais (ou números em ponto flutiante) com uma certa precisão numérica (64-bits). Um número em ponto flutuante pode ser expresso da seguinte maneira:
+Onde:
 
+- ``precison``: indica o número total de digitos.
 
-.. code-block:: sql
-
-    SELECT double precision '5.1';
-    
-
-    SELECT double precision '5.';
-    
-
-    SELECT double precision '5.2e12';
+- ``scale``: indica o número de dígitos dedicado à parte fracionária.
 
 
 Operações Aritméticas
@@ -165,7 +177,110 @@ Exemplos:
     SELECT sqrt(900);
 
 
+Trabalhando com Tabelas com Colunas Numéricas
+---------------------------------------------
+
+
+Para ilustrar o uso dos tipos numéricos na definição de colunas de uma tabela, considere um evento de foco de queimada na vegetação. Cada foco será representado por um par de coordenadas (latitude e longitude), o número de dias sem chuva na localização do foco e a potência radiativa do fogo (*Fire Radiative Power*). Podemos então definir uma tabela denominada ``focos`` para armazenar esse tipo de evento através do seguinte comando SQL:
+
+
+.. code-block:: postgresql
+
+    CREATE TABLE focos
+    (
+        latitude            DOUBLE PRECISION,
+        longitude           DOUBLE PRECISION,
+        num_dias_sem_chuva  INTEGER,
+        frp                 NUMERIC(4,1)
+    );
+
+
 .. tip::
 
-    Para uma lista completa das funções matemáticas do PostgreSQL, consulte o manual do PostgreSQL na `Seção 9.3. Mathematical Functions and Operators <https://www.postgresql.org/docs/14/functions-math.html>`__.
+    Consulte o `Portal do Programa Queimadas do INPE <https://queimadas.dgi.inpe.br/queimadas/portal/informacoes/perguntas-frequentes#p42>`__ para saber mais sobre o significado do atributo do foco FRP (*Fire Radiative Power*).
 
+
+Vamos incluir alguns valores na tabela acima:
+
+
+.. code-block:: sql
+
+    INSERT INTO focos VALUES(-9.41792, -51.65176, 30, 89),
+                            (-6.63565,-51.73956, 28, 103),
+                            (-5.40959,-51.04929, 31, 31.9),
+                            (-7.04535,-52.24566, 27, 44.2),
+                            (-5.67382,-51.89861, 32, 97.8);
+
+
+Agora, vamos fazer uma consulta para saber a distância euclidiana entre cada um dos focos e a localização da sede municipal de São Félix do Xingu, no Estado do Pará. Para isso adotaremos a localização de latitude -6.645 e longitude -51.995 para a sede municipal e que um grau decimal possui aproximadamente 111 km.
+
+
+.. note::
+
+    Lembrando que a fórmula da distância é:
+    
+    .. math::
+    
+        d_{AB} = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}
+
+
+.. code-block:: sql
+
+    SELECT sqrt( (-51.995 - longitude)^2 + (-6.645 - latitude)^2 ) * 111 AS "distancia km"
+      FROM focos;
+
+
+Exercícios
+----------
+
+
+**Exercício 1.** Faça uma consulta SQL que calcule o logaritmo do valor de FRP dos focos.
+
+
+**Exercício 2:** Qual a média do número de dias sem chuva dos focos?
+
+
+**Exercício 3:** Crie a tabela abaixo com os valores indicados.
+
+.. table:: 
+    :name: tbl:sgbd:tipos-numericos:cidades
+    :header-alignment: center center center
+    :column-alignment: left left left
+
+    +-----------+--------+----------+
+    |   **populacao_1940**          |
+    +-----------+--------+----------+
+    |  uf       | homens | mulheres |
+    +===========+========+==========+
+    + Rondônia  + 7879   + 6538     +
+    +-----------+--------+----------+
+    + Acre      + 44079  + 35689    +
+    +-----------+--------+----------+
+    + Amazonas  + 215681 + 203502   +
+    +-----------+--------+----------+
+    +  Roraima  + 5509   + 5000     +
+    +-----------+--------+----------+
+    + Pará      + 457659 + 456238   +
+    +-----------+--------+----------+
+    + Amapá     + 15800  + 14947    +
+    +-----------+--------+----------+
+    + Tocantins + 82268  + 82128    +
+    +-----------+--------+----------+
+    + Maranhão  + 613938 + 621231   +  
+    +-----------+--------+----------+
+    + Piauí     + 404989 + 412612   +
+    +-----------+--------+----------+
+
+
+**Exercício 4:** Qual o total da população de cada estado?
+
+
+**Exercício 5:** Apresente a população de homens e de mulheres na forma de porcentagem?
+
+
+-----
+
+
+.. tip::
+
+    Para uma lista completa dos tipos numéricos do PostgreSQL, consulte o seu manual na `Seção 8.1. Numeric Types <https://www.postgresql.org/docs/14/datatype-numeric.html>`__. A documentação das funções e operadores matemáticas pode ser encontrada na `Seção 9.3. Mathematical Functions and Operators <https://www.postgresql.org/docs/14/functions-math.html>`__.

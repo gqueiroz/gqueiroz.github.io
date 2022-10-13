@@ -9,13 +9,13 @@ Tipos de Dados SQL
 ==================
 
 
-Um **tipo de dado** (**data type**) é definido por um conjunto de valores e um conjunto de operações sobre esses valores. No PostgreSQL, toda coluna de uma tabela é associada a um tipo, que define as operações que podem ser realizadas sobre os valores dessa coluna. O **core** do PostgreSQL contém um conjunto de tipos de dados chamados de **fundamentais** ou **primitivos** (**built-in types**), para manipulação de valores numéricos, lógicos (ou booleanos), strings (cadeia de caracteres), data e hora, entre outros tipos.
+Um **tipo de dado** (**data type**) é definido por um conjunto de valores e um conjunto de operações sobre esses valores. No PostgreSQL, toda coluna de uma tabela é associada a um tipo, que define as operações que podem ser realizadas sobre os valores dessa coluna. O **core** do PostgreSQL contém um conjunto de tipos de dados chamados de **fundamentais** ou **primitivos** (**built-in types**), para manipulação de valores numéricos, lógicos (ou booleanos), strings (cadeia de caracteres), data e hora, entre outros.
 
 
 A :numref:`Tabela %s <tbl:sgbd:tipos-dados:sql>` apresenta alguns tipos suportados pelo PostgreSQL.
 
 
-.. table:: Tipos de Dados SQL
+.. table:: Tipos de Dados do PostgreSQL
     :name: tbl:sgbd:tipos-dados:sql
     :header-alignment: center center center center 
     :column-alignment: left left left left
@@ -46,19 +46,24 @@ A :numref:`Tabela %s <tbl:sgbd:tipos-dados:sql>` apresenta alguns tipos suportad
     +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
     +                                                                                 | text                                 | Cadeia de caracteres de tamanho variável        |                    |    
     +---------------------------------------------------------------------------------+--------------------------------------+-------------------------------------------------+--------------------+
-    +                                                                                 | timestamp [(p)] [without time zone]  | Data e hora sem *time zone*                     |                    |
+    +                                                                                 | timestamp [(p)] [without time zone]  | Data e hora sem fuso horário                    |                    |
     + `Data e Hora <https://www.postgresql.org/docs/14/datatype-datetime.html>`__     +--------------------------------------+-------------------------------------------------+--------------------+
-    +                                                                                 | timestamp [(p)] with time zone       | Data e hora com *time zone*                     | timestamptz        |
+    +                                                                                 | timestamp [(p)] with time zone       | Data e hora com fuso horário                    | timestamptz        |
     +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
     +                                                                                 | date                                 | Data                                            |                    |
     +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
-    +                                                                                 | time [ (p) ] [ without time zone ]   | Hora do dia sem *time zone*                     |                    |
+    +                                                                                 | time [ (p) ] [ without time zone ]   | Hora do dia sem fuso horário                    |                    |
     +                                                                                 +--------------------------------------+-------------------------------------------------+--------------------+
-    +                                                                                 | time [ (p) ] with time zone          | Hora do dia com *time zone*                     |                    |    
+    +                                                                                 | time [ (p) ] with time zone          | Hora do dia com fuso horário                    |                    |    
     +---------------------------------------------------------------------------------+--------------------------------------+-------------------------------------------------+--------------------+
 
 
-Os valores individuais de cada tipo são chamados de **literais** ou **literais constantes**. Exemplos:
+.. note::
+
+    Os valores individuais de cada tipo são chamados de **literais** ou **constantes**. 
+
+
+Podemos realizar consultas SQL no PostgreSQL usando apenas a cláusula ``SELECT``. Abaixo, são apresentados alguns exemplos da notação empregada para valores literais de alguns dos tipos de dados listados na :numref:`Tabela %s <tbl:sgbd:tipos-dados:sql>`:
 
 
 .. code-block:: sql
@@ -86,12 +91,12 @@ Os valores individuais de cada tipo são chamados de **literais** ou **literais 
     SELECT TIMESTAMP WITH TIME ZONE '2022-10-11 06:15:00-03';  -- data e hora com fuso horário
 
 
-Usando a função ``pg_typeof``:
+.. note::
+
+    Nos exemplos acima, os carcteres ``--`` são usados para escrita de comentários. Todo o conteúdo da linha após esses caracteres não são tratados como comandos e, portanto, são desconsiderados pelo interpretador de consultas do PostgreSQL. Esse tipo de comentário é conhecido como **comentário de linha**. É possível também utilizar os delimitadores ``/*`` e ``*/`` para criar comentários que se expandem por múltiplas linhas, que são chamados de **comentários de bloco**.
 
 
-.. code-block:: sql
-
-    SELECT pg_typeof('Gilberto');
+No PostgreSQL podemos utilizar a função ``pg_typeof`` para obter o tipo de dado associado a um determinado valor:
 
 
 .. code-block:: sql
@@ -113,6 +118,10 @@ Usando a função ``pg_typeof``:
 
     SELECT pg_typeof(TIMESTAMP WITH TIME ZONE '2022-10-11 06:15:00-03');
 
+
+.. code-block:: sql
+
+    SELECT pg_typeof('Gilberto');
 
 
 .. tip::
