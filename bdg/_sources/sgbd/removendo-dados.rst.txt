@@ -12,22 +12,19 @@ Removendo Dados
 Exemplos:
 
 
-**1.** Eliminando o aluno de código de matrícula ``11``:
+**1.** Eliminando o estudante de código de matrícula ``11``:
 
 
 .. code-block:: sql
 
-    DELETE FROM alunos WHERE matricula = 11;
+    DELETE FROM estudante WHERE matricula = 11;
 
 
-**2.** Eliminando o curso de ``biologia``:
+**2.** Eliminando a disciplina de ``Bilogia``:
 
 
 .. code-block:: sql
 
-    DELETE FROM cursos WHERE titulo = 'biologia';
+    DELETE FROM disciplina WHERE titulo = 'Bilogia';
 
 
-.. note::
-
-    Repare que nesse último comando ``DELETE``, como havíamos definido uma restrição de integridade referencial entre as tabelas ``alunos`` e ``cursos``, as linhas da tabela ``alunos`` relacionadas ao código do curso de ``biologia`` foram automaticamente eliminadas.

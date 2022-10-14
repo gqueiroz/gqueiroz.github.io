@@ -27,85 +27,27 @@ Exemplos
 --------
 
 
-Para os exemplos dessa seção, vamos acrescentar mais algumas linhas na nossa tabela chamada ``alunos``:
+**1.** Quantos disciplinas são oferecidas?
 
 
-.. code-block:: sql
-
-    INSERT INTO alunos (nome, curso_id)
-                VALUES ('Telma', 3),
-                       ('antoNio', 4),
-                       ('Maria', 1),
-                       ('Marta', 1),
-                       ('Murilo', 2),
-                       ('Alice', 2),
-                       ('Mauricio', 1),
-                       ('Jonas', 4),
-                       ('José', 4),
-                       ('Ronaldo', 4);
-
-    INSERT INTO alunos (nome, curso_id)
-                VALUES ('edson', 2);
-
-    INSERT INTO alunos (nome, curso_id)
-                VALUES ('eduardo', 3);
-
-    INSERT INTO alunos (nome, curso_id)
-                VALUES ('cassia', 4);
-
-
-**1.** Quantos cursos são oferecidos?
-
-    .. collapse:: Solução:
-
-        .. code-block:: sql
-
-            SELECT COUNT(*) FROM cursos;
-
-
-**2.** Qual o número de alunos ?
-
-    .. collapse:: Solução:
-
-        .. code-block:: sql
-
-            SELECT COUNT(*) FROM alunos;
+**2.** Qual o número de estudantes?
 
 
 **3.** Quantos alunos estão matriculados em cada curso?
 
-    .. collapse:: Solução:
 
-        .. code-block:: sql
-
-              SELECT cursos.curso_id, COUNT(*) AS numero_alunos
-                FROM cursos, alunos
-               WHERE cursos.curso_id = alunos.curso_id
-            GROUP BY cursos.curso_id;
+**4.** Qual a disciplina mais cursada?
 
 
-        ou, incluindo o nome do curso no resultado de saída e ordenando pelo nome do curso:
+**5.** Quais disciplinas possuem mais de 06 estudantes?
 
 
-        .. code-block:: sql
-
-              SELECT cursos.titulo, COUNT(*) AS numero_alunos
-                FROM cursos, alunos
-               WHERE cursos.curso_id = alunos.curso_id
-            GROUP BY cursos.curso_id, cursos.titulo
-            ORDER BY 1;
+**6.** Qual a média de disciplinas cursadas pelos estudantes?
 
 
-**4.** Quais cursos possuem mais de 03 alunos?
-
-    .. collapse:: Solução:
+**7.** Qual o número de estudantes matriculados por ano?
 
 
-        .. code-block:: sql
+**8.** Qual estudante fez maior número de créditos?
 
-              SELECT cursos.titulo, COUNT(*) AS numero_alunos
-                FROM cursos, alunos
-               WHERE cursos.curso_id = alunos.curso_id
-            GROUP BY cursos.curso_id, cursos.titulo
-              HAVING COUNT(*) > 3
-            ORDER BY 1;
+

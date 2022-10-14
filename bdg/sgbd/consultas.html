@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2.15. Consultas em SQL &mdash; BDGeo</title>
+  <title>2.14. Consultas em SQL &mdash; BDGeo</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -29,8 +29,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="2.16. Funções e Operadores" href="funcoes-operadores.html" />
-    <link rel="prev" title="2.14. Inserindo Dados" href="inserindo-dados.html" /> 
+    <link rel="next" title="2.15. Funções e Operadores" href="funcoes-operadores.html" />
+    <link rel="prev" title="2.13. Inserindo Dados" href="inserindo-dados.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -67,23 +67,21 @@
 <li class="toctree-l2"><a class="reference internal" href="strings.html">2.9. Tipos Textuais</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.10. Tipos de Dados para Data e Hora</a></li>
 <li class="toctree-l2"><a class="reference internal" href="expressoes.html">2.11. Expressões</a></li>
-<li class="toctree-l2"><a class="reference internal" href="expressoes.html#expressoes-logicas">2.12. Expressões Lógicas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="criando-tabelas.html">2.13. Criando Tabelas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inserindo-dados.html">2.14. Inserindo Dados</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.15. Consultas em SQL</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#exemplos">2.15.1. Exemplos</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sugestoes-de-leitura">2.15.2. Sugestões de Leitura</a></li>
+<li class="toctree-l2"><a class="reference internal" href="criando-tabelas.html">2.12. Criando Tabelas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inserindo-dados.html">2.13. Inserindo Dados</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.14. Consultas em SQL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exemplos">2.14.1. Exemplos</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="funcoes-operadores.html">2.16. Funções e Operadores</a></li>
-<li class="toctree-l2"><a class="reference internal" href="consultas-agreg.html">2.17. Consultas de Agregação</a></li>
-<li class="toctree-l2"><a class="reference internal" href="atualizando-dados.html">2.18. Atualizando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="removendo-dados.html">2.19. Removendo Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="criando-views.html">2.20. Criando Views</a></li>
-<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.21. Restrições de Integridade</a></li>
-<li class="toctree-l2"><a class="reference internal" href="importando-dados.html">2.22. Importando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.23. Exportando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.24. Alterando a Estrutura de uma Tabela</a></li>
+<li class="toctree-l2"><a class="reference internal" href="funcoes-operadores.html">2.15. Funções e Operadores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consultas-agreg.html">2.16. Consultas de Agregação</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atualizando-dados.html">2.17. Atualizando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removendo-dados.html">2.18. Removendo Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="criando-views.html">2.19. Criando Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.20. Restrições de Integridade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importando-dados.html">2.21. Importando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.22. Exportando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.23. Alterando a Estrutura de uma Tabela</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
@@ -124,12 +122,12 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
-      <li><span class="section-number">2.15. </span>Consultas em SQL</li>
+      <li><span class="section-number">2.14. </span>Consultas em SQL</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
-        <a href="inserindo-dados.html" class="btn btn-neutral float-left" title="2.14. Inserindo Dados" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="funcoes-operadores.html" class="btn btn-neutral float-right" title="2.16. Funções e Operadores" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="inserindo-dados.html" class="btn btn-neutral float-left" title="2.13. Inserindo Dados" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="funcoes-operadores.html" class="btn btn-neutral float-right" title="2.15. Funções e Operadores" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -137,7 +135,7 @@
            <div itemprop="articleBody">
              
   <section id="consultas-em-sql">
-<span id="cap-sgbd-consultas"></span><h1><span class="section-number">2.15. </span>Consultas em SQL<a class="headerlink" href="#consultas-em-sql" title="Link permanente para este cabeçalho"></a></h1>
+<span id="cap-sgbd-consultas"></span><h1><span class="section-number">2.14. </span>Consultas em SQL<a class="headerlink" href="#consultas-em-sql" title="Link permanente para este cabeçalho"></a></h1>
 <p>Na linguagem <code class="docutils literal notranslate"><span class="pre">SQL</span></code>, o comando <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> é utilizado para recuperação de dados das tabelas. A sintaxe geral deste comando<a class="footnote-reference brackets" href="#f1" id="id1">1</a> é a seguinte:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    SELECT [ ALL | DISTINCT [ ON ( expressão [, ...] ) ] ]
            [ * | expressão [ [ AS ] rótulo ] [, ...] ]
@@ -166,82 +164,16 @@
 <p>O comando <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> possui várias outras cláusulas e detalhes. Para saber mais sobre a versão completa deste comando, consulte o seguite tópico do manual do PostgreSQL: <a class="reference external" href="https://www.postgresql.org/docs/14/sql-select.html">SELECT</a>.</p>
 </div>
 <section id="exemplos">
-<h2><span class="section-number">2.15.1. </span>Exemplos<a class="headerlink" href="#exemplos" title="Link permanente para este cabeçalho"></a></h2>
-<p><strong>1.</strong> Recuperar os dados do aluno <code class="docutils literal notranslate"><span class="pre">gilberto</span></code>:</p>
-<blockquote>
-<div><details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">alunos</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;gilberto&#39;</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-</details></div></blockquote>
-<p><strong>2.</strong> Fazer o produto cartesiano entre as tabelas <code class="docutils literal notranslate"><span class="pre">cursos</span></code> e <code class="docutils literal notranslate"><span class="pre">alunos</span></code>:</p>
-<blockquote>
-<div><details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">alunos</span><span class="p">,</span><span class="w"> </span><span class="n">cursos</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-</details></div></blockquote>
-<p><strong>3.</strong> Juntar as linhas correlatas das tabelas <code class="docutils literal notranslate"><span class="pre">cursos</span></code> e <code class="docutils literal notranslate"><span class="pre">alunos</span></code>:</p>
+<h2><span class="section-number">2.14.1. </span>Exemplos<a class="headerlink" href="#exemplos" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>1.</strong> Recuperar os dados do estudante <code class="docutils literal notranslate"><span class="pre">Eduardo</span></code>:</p>
+<p><strong>2.</strong> Fazer o produto cartesiano entre as tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>:</p>
+<p><strong>3.</strong> Juntar as linhas correlatas das tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>:</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>Chamamos este tipo de consulta de <strong>junção entre tabelas</strong>.</p>
 </div>
-<blockquote>
-<div><details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">alunos</span><span class="p">,</span><span class="w"> </span><span class="n">cursos</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">alunos</span><span class="p">.</span><span class="n">curso_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cursos</span><span class="p">.</span><span class="n">curso_id</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-<p>ou, ordenando as linhas de saída pelas colunas <code class="docutils literal notranslate"><span class="pre">cursos.titulo</span></code> e <code class="docutils literal notranslate"><span class="pre">alunos.nome</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">alunos</span><span class="p">,</span><span class="w"> </span><span class="n">cursos</span><span class="w"></span>
-<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">alunos</span><span class="p">.</span><span class="n">curso_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cursos</span><span class="p">.</span><span class="n">curso_id</span><span class="w"></span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">cursos</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="n">alunos</span><span class="p">.</span><span class="n">nome</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-<p>ou, utilizando novos rótulos para as colunas do resultado (<code class="docutils literal notranslate"><span class="pre">nome_aluno</span></code> e <code class="docutils literal notranslate"><span class="pre">nome_curso</span></code>):</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_aluno</span><span class="p">,</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">titulo</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_curso</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">alunos</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">cursos</span><span class="w"> </span><span class="k">C</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">curso_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">curso_id</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-<p>ou, usando a sintaxe <code class="docutils literal notranslate"><span class="pre">NATURAL</span> <span class="pre">JOIN</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">alunos</span><span class="w"> </span><span class="k">NATURAL</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">cursos</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-<p>ou, usando a sintaxe <code class="docutils literal notranslate"><span class="pre">INNER</span> <span class="pre">JOIN</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">alunos</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">cursos</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">curso_id</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-<p>ou:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">alunos</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">cursos</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">alunos</span><span class="p">.</span><span class="n">curso_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cursos</span><span class="p">.</span><span class="n">curso_id</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-</details></div></blockquote>
-<p><strong>4.</strong> Qual o nome da disciplina do aluno <code class="docutils literal notranslate"><span class="pre">gilberto</span></code>?</p>
-<blockquote>
-<div><details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">titulo</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">alunos</span><span class="p">,</span><span class="w"> </span><span class="n">cursos</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;gilberto&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">alunos</span><span class="p">.</span><span class="n">curso_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cursos</span><span class="p">.</span><span class="n">curso_id</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-<p>ou, qualificando o nome da coluna:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">cursos</span><span class="p">.</span><span class="n">titulo</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">alunos</span><span class="p">,</span><span class="w"> </span><span class="n">cursos</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;gilberto&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">alunos</span><span class="p">.</span><span class="n">curso_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cursos</span><span class="p">.</span><span class="n">curso_id</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-</details></div></blockquote>
-</section>
-<section id="sugestoes-de-leitura">
-<h2><span class="section-number">2.15.2. </span>Sugestões de Leitura<a class="headerlink" href="#sugestoes-de-leitura" title="Link permanente para este cabeçalho"></a></h2>
-<ul class="simple">
-<li><p>The PostgreSQL Global Development Group. <a class="reference external" href="https://www.postgresql.org/docs/14/tutorial-select.html">PostgreSQL 14 Documentation, Parte I. Tutorial, Chapter 2 - The SQL Language, Section 2.5 - Querying a Table</a>. Acesso: 03 de Outubro de 2022.</p></li>
-</ul>
+<p><strong>4.</strong> Qual o nome das disciplinas cursadas pelo aluno <code class="docutils literal notranslate"><span class="pre">eduardo</span></code>?</p>
+<p><strong>5.</strong> Qual o nome dos professores do aluno <code class="docutils literal notranslate"><span class="pre">eduardo</span></code>?</p>
 <p class="rubric">Notas</p>
 <dl class="footnote brackets">
 <dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
@@ -255,8 +187,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="inserindo-dados.html" class="btn btn-neutral float-left" title="2.14. Inserindo Dados" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="funcoes-operadores.html" class="btn btn-neutral float-right" title="2.16. Funções e Operadores" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="inserindo-dados.html" class="btn btn-neutral float-left" title="2.13. Inserindo Dados" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="funcoes-operadores.html" class="btn btn-neutral float-right" title="2.15. Funções e Operadores" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -266,7 +198,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f4a44323160>
+<jinja2.runtime.BlockReference object at 0x7fe8ed5eed30>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

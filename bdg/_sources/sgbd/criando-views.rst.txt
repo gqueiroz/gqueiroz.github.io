@@ -9,20 +9,4 @@ Criando Views
 =============
 
 
-Criando uma *view* formada pela junção entre as tabelas ``alunos`` e ``cursos``:
 
-
-.. code-block:: sql
-
-    CREATE OR REPLACE VIEW aluno_curso AS
-        SELECT matricula, nome, titulo
-          FROM alunos, cursos
-         WHERE alunos.curso_id = cursos.curso_id;
-
-
-Agora podemos fazer:
-
-
-.. code-block:: sql
-
-    SELECT * FROM aluno_curso;

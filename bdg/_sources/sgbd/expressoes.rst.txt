@@ -12,7 +12,7 @@ Expressões
 ==========
 
 
-Através da combinação das operações e operandos, podemos criar expressões, como as expressões matemáticas convencionais:
+Através da **combinação das operações e operandos**, podemos criar **expressões**, como as expressões matemáticas convencionais:
 
 
 .. figure:: ../img/sgbd/expressao.png
@@ -76,11 +76,7 @@ Nas linguagens de programação, vários operadores possuem uma associatividade 
 
 
 Expressões Lógicas
-==================
-
-
-Exemplos
---------
+------------------
 
 
 A expressão lógica a seguir verifica se o ano de 2022 é ou não bissexto:

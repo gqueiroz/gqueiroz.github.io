@@ -55,25 +55,15 @@ Exemplos
 --------
 
 
-**1.** Recuperar os dados do aluno ``gilberto``:
-
-    .. collapse:: Solução:
-
-        .. code-block:: sql
-
-            SELECT * FROM alunos WHERE nome = 'gilberto';
+**1.** Recuperar os dados do estudante ``Eduardo``:
 
 
-**2.** Fazer o produto cartesiano entre as tabelas ``cursos`` e ``alunos``:
 
-    .. collapse:: Solução:
-
-        .. code-block:: sql
-
-            SELECT * FROM alunos, cursos;
+**2.** Fazer o produto cartesiano entre as tabelas ``professor`` e ``disciplina``:
 
 
-**3.** Juntar as linhas correlatas das tabelas ``cursos`` e ``alunos``:
+
+**3.** Juntar as linhas correlatas das tabelas ``professor`` e ``disciplina``:
 
 
 .. note::
@@ -81,91 +71,10 @@ Exemplos
     Chamamos este tipo de consulta de **junção entre tabelas**.
 
 
-..
-
-    .. collapse:: Solução:
-
-        .. code-block:: sql
-
-            SELECT *
-              FROM alunos, cursos
-             WHERE alunos.curso_id = cursos.curso_id;
+**4.** Qual o nome das disciplinas cursadas pelo aluno ``eduardo``?
 
 
-        ou, ordenando as linhas de saída pelas colunas ``cursos.titulo`` e ``alunos.nome``:
-
-
-        .. code-block:: sql
-
-              SELECT *
-                FROM alunos, cursos
-               WHERE alunos.curso_id = cursos.curso_id
-            ORDER BY cursos.titulo, alunos.nome;
-
-
-        ou, utilizando novos rótulos para as colunas do resultado (``nome_aluno`` e ``nome_curso``):
-
-
-        .. code-block:: sql
-
-            SELECT *, A.nome AS nome_aluno, C.titulo AS nome_curso
-              FROM alunos A, cursos C
-             WHERE A.curso_id = C.curso_id;
-
-
-        ou, usando a sintaxe ``NATURAL JOIN``:
-
-
-        .. code-block:: sql
-
-            SELECT * FROM alunos NATURAL JOIN cursos;
-
-
-        ou, usando a sintaxe ``INNER JOIN``:
-
-
-        .. code-block:: sql
-
-            SELECT * FROM alunos INNER JOIN cursos USING (curso_id);
-
-
-        ou:
-
-
-        .. code-block:: sql
-
-            SELECT * FROM alunos INNER JOIN cursos ON (alunos.curso_id = cursos.curso_id);
-
-
-**4.** Qual o nome da disciplina do aluno ``gilberto``?
-
-
-    .. collapse:: Solução:
-
-        .. code-block:: sql
-
-            SELECT titulo
-              FROM alunos, cursos
-             WHERE nome = 'gilberto'
-               AND alunos.curso_id = cursos.curso_id;
-
-
-        ou, qualificando o nome da coluna:
-
-
-        .. code-block:: sql
-
-            SELECT cursos.titulo
-              FROM alunos, cursos
-             WHERE nome = 'gilberto'
-               AND alunos.curso_id = cursos.curso_id;
-
-
-Sugestões de Leitura
---------------------
-
-
-- The PostgreSQL Global Development Group. `PostgreSQL 14 Documentation, Parte I. Tutorial, Chapter 2 - The SQL Language, Section 2.5 - Querying a Table <https://www.postgresql.org/docs/14/tutorial-select.html>`_. Acesso: 03 de Outubro de 2022.
+**5.** Qual o nome dos professores do aluno ``eduardo``?
 
 
 

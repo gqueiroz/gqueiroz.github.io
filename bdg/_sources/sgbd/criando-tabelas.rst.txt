@@ -9,7 +9,7 @@ Criando Tabelas
 ===============
 
 
-O comando SQL ``CREATE TABLE`` pode ser utilizado para criar novas tabelas no banco de dados. A sintaxe básica desse comando é mostrada abaixo:
+O comando SQL ``CREATE TABLE`` permite criar novas tabelas no banco de dados. A sintaxe básica desse comando é mostrada abaixo:
 
 
 .. code-block:: text
@@ -18,85 +18,167 @@ O comando SQL ``CREATE TABLE`` pode ser utilizado para criar novas tabelas no ba
     (
         <nome-coluna> <tipo-dados> [<restrição-atributo>]
         [, <nome-coluna> <tipo-dados> [<restrição-atributo>] ]
-        [, <restrição-tabela> [, <restrição-tabela> ]]
-    );
-
-
-Vamos criar duas tabelas para armazenar dados sobre alunos e cursos:
-
-
-.. table:: 
-    :name: tbl:sgbd:criando-tabelas:cursos
-    :header-alignment: center center center
-    :column-alignment: center left center
-
-    +----------+-------------+---------------+
-    |   **cursos**                           |
-    +----------+-------------+---------------+
-    | curso_id | titulo      | carga_horaria |
-    +==========+=============+===============+
-    + 1        + informatica + 4             +
-    +----------+-------------+---------------+
-    + 2        + matematica  + 6             +
-    +----------+-------------+---------------+
-    + 3        + quimica     + 2             +
-    +----------+-------------+---------------+
-    + 4        + biologia    + 3             +
-    +----------+-------------+---------------+
-    
-
-.. table:: 
-    :name: tbl:sgbd:criando-tabelas:alunos
-    :header-alignment: center center center
-    :column-alignment: center left center
-
-    +-----------+----------+----------+
-    |   **alunos**                    |
-    +-----------+----------+----------+
-    | matricula | nome     | curso_id |
-    +===========+==========+==========+
-    + 1         + gilberto + 1        +
-    +-----------+----------+----------+
-    + 2         + edson    + 2        +
-    +-----------+----------+----------+
-    + 3         + eduardo  + 3        +
-    +-----------+----------+----------+
-    + 4         + cassia   + 4        +
-    +-----------+----------+----------+
-    
-
-Criando uma tabela para armazenar dados de cursos:
-
-
-.. code-block:: sql
-
-    CREATE TABLE cursos
-    (
-        curso_id       SERIAL,
-        titulo         VARCHAR(30) NOT NULL,
-        carga_horaria  INTEGER     NOT NULL,
-        PRIMARY KEY(curso_id)
-    );
-
-
-Criando uma tabela para armazenar dados de alunos:
-
-
-.. code-block:: sql
-
-    CREATE TABLE alunos
-    (
-        matricula    SERIAL,
-        nome         VARCHAR(40) NOT NULL,
-        curso_id     INTEGER     NOT NULL,
-        PRIMARY KEY(matricula),
-        FOREIGN KEY (curso_id)
-                    REFERENCES cursos(curso_id)
-                        ON DELETE CASCADE
-                        ON UPDATE CASCADE
+        [, <restrição-tabela> [, <restrição-tabela> ] ]
     );
 
 
 .. note::
 
-    Mais adiante no curso iremos discutir outras características importantes na definição de tabelas, como *restrições*, *esquemas* e *tablespaces*.
+    Veremos ao longo do curso que este comando possui muitas opções.
+
+
+Estudo de Caso
+--------------
+
+
+Considere o **diagrama Entidade-Relacionamento** (ou **ER**) mostrado na :numref:`Figura %s <fig:sgbd:criando-tabelas:diagrama-er-estudante>` abaixo:
+
+
+.. figure:: ../img/er/diagrama-er-estudante.png
+    :alt: Diagrama ER - Disciplinas cursadas por um Estudante
+    :width: 100%
+    :figclass: align-center
+    :name: fig:sgbd:criando-tabelas:diagrama-er-estudante
+
+    Diagrama ER - Disciplinas cursadas por um Estudante
+
+
+Nesse diagrama temos as seguintes informações:
+
+- Um estudante possui propriedades como: número de matrícula, nome, data de nascimento, gênero (masculino ou feminino) e uma data matrícula na escola. O atributo destacado ``matricula`` indica que ele é único entre os estudantes e, portanto, identifica unicamente um determinado aluno.
+
+- Uma disciplina possui propriedades como: código, título, número de créditos.
+
+- O relacionamento entre ``estudante`` e ``disciplina`` possui uma cardinalidade de ``N:M`` (``N`` para ``M``), isto é, um estudante pode cursar uma ou mais discplinas e uma disciplina pod ser cursada por um ou mais estudantes. Além disso, esse relacionament possui um atributo ``data``, que corresponde a data em que o estudante curso a disciplina.
+
+- Um professor é descrito no sistema apenas pelo código único e seu nome.
+
+- O relacionamento entre ``professor`` e ``disciplina``  possui cardinalidade ``1:N`` (``1`` para ``N``), isto é, um professor pode lecionar várias disciplinas, mas uma disciplina é lecionada apenas por um úncio professor.
+
+- Também definiremos que toda ``disciplina`` deve obrigatoriamente estar relacionada a um ``professor``.
+
+
+A :numref:`Figura %s <fig:sgbd:criando-tabelas:cardinalidade-er-estudante>` apresenta a cardinalidade envolvida nos relacionamentos do diagrama acima:
+ 
+
+.. figure:: ../img/er/cardinalidade-er-estudante.png
+    :alt: Exemplo da cardinalidade dos relacionamento do Diagrama ER - Disciplinas cursadas por um Estudante
+    :width: 80%
+    :figclass: align-center
+    :name: fig:sgbd:criando-tabelas:cardinalidade-er-estudante
+
+    Exemplo da cardinalidade dos relacionamento do Diagrama ER - Disciplinas cursadas por um Estudante
+
+
+A partir da compreensão do diagrama ER, podemos criar um novo diagrama mais próximo da implementação que faremos no PostgreSQL (:numref:`Figura %s <fig:sgbd:criando-tabelas:logico-estudante>`):
+
+
+.. figure:: ../img/er/logico-estudante.png
+    :alt: Modelo lógico - Disciplinas cursadas por um Estudante
+    :width: 100%
+    :figclass: align-center
+    :name: fig:sgbd:criando-tabelas:logico-estudante
+
+    Modelo lógico - Disciplinas cursadas por um Estudante
+
+
+Agora, podemos gerar os comandos de criação das tabelas e dos relacionamentos envolvidos:
+
+
+**Tabela estudante:**
+
+
+.. code-block:: postgresql
+
+    CREATE TABLE estudante
+    (
+        matricula        INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        nome             VARCHAR(30) NOT NULL,
+        data_nascimento  DATE NOT NULL,
+        genero           CHAR(1) NOT NULL CHECK ( genero = 'M' OR genero = 'F' ),
+        data_matricula   DATE NOT NULL DEFAULT CURRENT_DATE
+    );
+
+
+Na definição da tabela ``estudante`` temos:
+
+- A coluna ``matricula`` foi definida como chave primária (``PRIMARY KEY``), comportando valores do tipo inteiro (``INTEGER``) gerados sequencialmente e automaticamente pelo servidor (``GENERATED ALWAYS AS IDENTITY``).
+
+- A coluna ``nome`` foi definida como uma cadeia de caracteres de tamanho variável limitada a no máximo 30 caracteres, sendo os valores dessa coluna obrigatórios (``NOT NULL``).
+
+- A coluna ``data_nascimento`` foi definida como sendo do tipo data (``DATE``) e obrigatória (``NOT NULL``).
+
+- A coluna ``genero`` foi definida como um caracter de tamanho 1, com uma **restrição** (**check constraint**) de uso apenas dos caracteres ``M`` ou ``F``.
+
+- A coluna ``data_matricula`` terá o valor padrão da data corrente do sistema no caso de ser omitida na inserção.
+
+
+-----
+
+
+**Tabela professor:**
+
+
+.. code-block:: postgresql
+
+    CREATE TABLE professor
+    (
+        codigo           INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        nome             VARCHAR(30) NOT NULL
+    );
+
+
+-----
+
+
+**Tabela disciplina:**
+
+
+.. code-block:: postgresql
+
+    CREATE TABLE disciplina
+    (
+        codigo           INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        titulo           VARCHAR(30) NOT NULL,
+        creditos         INTEGER NOT NULL CHECK ( creditos >= 1 AND creditos <= 6 ),
+        codigo_professor INTEGER NOT NULL,
+        FOREIGN KEY (codigo_professor) REFERENCES professor(codigo)
+                                       ON DELETE NO ACTION
+                                       ON UPDATE CASCADE
+    );
+    
+
+
+Nessa tabela temos a definição de uma **chave estrangeira**, impondo um relacionamento de integridade referencial entre as tabelas ``professor`` e ``disciplina`` nas colunas ``codigo`` e ``codigo_professor``. A sentença ``ON DELETE NO ACTION`` indica que no caso de remoção de linhas da tabela ``professor`` que tenham disciplinas associadas, deverá ser gerado um erro, impedindo a remoção das linhas da tabela ``professor. A setença ``ON UPDATE CASCADE``, define que no caso de atualização da chave primária na tabela ``professor``, o novo valor deva ser propagado automaticamente para as linhas relacionadas na tabela ``disciplina``.
+
+
+
+
+-----
+
+
+**Tabela estudante_disciplina:**
+
+
+.. code-block:: postgresql
+
+
+    CREATE TABLE estudante_disciplina
+    (
+        matricula    INTEGER,
+        codigo       INTEGER,
+        data         DATE NOT NULL DEFAULT CURRENT_DATE,
+        PRIMARY KEY (matricula, codigo),
+        FOREIGN KEY (matricula) REFERENCES estudante(matricula)
+                                       ON DELETE NO ACTION
+                                       ON UPDATE CASCADE,
+        FOREIGN KEY (codigo) REFERENCES disciplina(codigo)
+                                       ON DELETE NO ACTION
+                                       ON UPDATE CASCADE
+    );
+
+
+Na definição da tabela acima, repare que a **chave primária é composta** e, por isso, foi definida logo após a declaração de todas as colunas.
+
+
+

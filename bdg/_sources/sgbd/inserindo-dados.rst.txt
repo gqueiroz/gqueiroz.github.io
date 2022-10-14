@@ -18,41 +18,134 @@ Sintaxe:
                      VALUES (v1a, v2a, ...)[,(v1b, v2b, ...)];
 
 
-Vamos inserir quatro tuplas na tabela ``cursos``:
+Vamos inserir as seguintes tuplas na tabela ``estudante``:
 
 
 .. code-block:: sql
 
-    INSERT INTO cursos (titulo, carga_horaria)
-                VALUES ('informatica', 4);
+    INSERT INTO estudante (nome, data_nascimento, genero, data_matricula)
+                   VALUES ('Eduardo', '1980-08-04', 'M', '2019-01-01'),
+                          ('Maria', '1980-04-03', 'F', '2019-02-02'),
+                          ('Eugenio', '1981-02-01', 'M', '2019-02-02'),
+                          ('Luiza', '1981-09-14', 'F', '2020-01-05'),
+                          ('Ana Maria', '1981-01-04', 'F', '2020-01-05'),
+                          ('Ana Clara', '1981-03-04', 'F', '2020-01-05'),
+                          ('Manuel', '1981-10-11', 'M', '2020-01-06'),
+                          ('Jose', '1981-12-12', 'M', '2020-01-06'),
+                          ('Ricardo', '1982-11-11', 'M', '2020-01-01'),
+                          ('Claudio', '1982-07-07', 'M', '2019-01-01'),
+                          ('Carla', '1982-06-06', 'F', '2019-01-05'),
+                          ('Telma', '1983-05-05', 'F', '2020-01-06'),
+                          ('Gilberto', '1983-04-04', 'M', '2021-01-08'),
+                          ('Lucia', '1983-08-06', 'F', '2021-01-08'),
+                          ('Tassiana', '1983-09-06', 'F', '2021-01-08'),
+                          ('Julio', '1983-10-06', 'M', '2021-01-08'),
+                          ('Felipe', '1983-11-04', 'M', '2021-01-08'),
+                          ('Carlos', '1984-12-04', 'M', '2021-01-09'),
+                          ('Fabio', '1984-01-04', 'M', '2021-01-10'),
+                          ('Mateus', '1984-02-04', 'M', '2022-01-10'),
+                          ('Joana', '1984-03-04', 'F', '2022-01-10'),
+                          ('Manuel', '1984-04-04', 'M', '2022-01-10'),
+                          ('Gilberto', '1978-05-04', 'M', '2022-01-10'),
+                          ('Marco', '1985-06-04', 'M', '2022-01-10'),
+                          ('Marcia', '1984-07-04', 'F', '2022-01-11'),
+                          ('Luis', '1984-08-04', 'M', '2022-01-12'),
+                          ('Everaldo', '1985-09-04', 'M', '2022-01-12'),
+                          ('Katia', '1985-10-04', 'F', '2022-01-12'),
+                          ('Emiliano', '1985-11-04', 'M', '2022-01-12'),
+                          ('Zoraide', '1985-12-04', 'F', '2022-01-12'),
+                          ('Roberta', '1985-01-04', 'F', '2019-01-01'),
+                          ('Roberto', '1985-02-04', 'M', '2019-01-01'),
+                          ('Antonio', '1985-03-04', 'M', '2021-01-08'),
+                          ('Joana', '1985-04-04', 'F', '2019-01-01'),
+                          ('Josi', '1985-05-04', 'F', '2022-01-12'),
+                          ('Antonio', '1976-06-30', 'M', '2019-01-01');
 
-    INSERT INTO cursos (titulo, carga_horaria)
-                VALUES ('matematica', 6);
 
-    INSERT INTO cursos (titulo, carga_horaria)
-                VALUES ('quimica', 2);
-
-    INSERT INTO cursos (titulo, carga_horaria)
-                VALUES ('biologia', 3);
+-----
 
 
-Vamos inserir quatro tuplas na tabela ``alunos``:
+Vamos inserir as seguintes tuplas na tabela ``professor``:
 
 .. code-block:: sql
 
-    INSERT INTO alunos (nome, curso_id)
-                VALUES ('gilberto', 1);
+    INSERT INTO professor (nome) VALUES ('Romildo'), ('Thales'), ('Karine'), ('Tamara'), ('Carolina'), ('Cleiton');
 
-    INSERT INTO alunos (nome, curso_id)
-                VALUES ('edson', 2);
 
-    INSERT INTO alunos (nome, curso_id)
-                VALUES ('eduardo', 3);
+-----
 
-    INSERT INTO alunos (nome, curso_id)
-                VALUES ('cassia', 4);
+
+Vamos inserir as seguintes tuplas na tabela ``disciplina``:
+
+
+.. code-block:: sql
+
+    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Matemática', 6, 1);
+    
+    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Fisica', 4, 1);
+    
+    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Bilogia', 2, 2);
+    
+    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Quimica', 3, 3);
+    
+    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Geografia', 2, 4);
+    
+    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Historia', 2, 4);
+    
+    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Lingua Portuguesa', 4, 4);
+    
+    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Lingua Inglesa', 2, 5);
+    
+    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Lingua Francesa', 1, 5);
+
+
+-----
+
+
+Vamos inserir as seguintes tuplas na tabela ``estudante_disciplina``:
+
+
+.. code-block:: sql
+
+    INSERT INTO estudante_disciplina VALUES (1, 1, '2019-06-01'),  (1, 2, '2019-06-01'),
+                                            (2, 1, '2019-06-01'),  (2, 3, '2019-06-01'),
+                                            (2, 4, '2019-06-01'),  (3, 6, '2019-06-01'),
+                                            (4, 7, '2020-06-01'),  (5, 8, '2020-06-01'),
+                                            (5, 9, '2020-06-01'),  (6, 5, '2020-06-01'),
+                                            (6, 6, '2020-06-01'),  (6, 7, '2020-06-01'),
+                                            (7, 1, '2020-06-01'),  (7, 8, '2020-06-01'),
+                                            (7, 9, '2020-06-01'),  (7, 6, '2020-06-01'),
+                                            (7, 2, '2020-06-01'),  (8, 1, '2020-06-01'),
+                                            (8, 2, '2020-06-01'),  (8, 3, '2020-06-01'),
+                                            (9, 4, '2020-06-01'),  (9, 5, '2020-06-01'),
+                                            (10, 6, '2019-06-01'), (11, 7, '2019-06-01'),
+                                            (12, 8, '2020-06-01'), (12, 9, '2020-06-01'),
+                                            (12, 1, '2020-06-01'), (13, 2, '2021-06-01'),
+                                            (13, 3, '2021-06-01'), (14, 4, '2021-06-01'),
+                                            (15, 5, '2021-06-01'), (15, 6, '2021-06-01'),
+                                            (15, 7, '2021-06-01'), (15, 8, '2021-06-01'),
+                                            (16, 9, '2021-06-01'), (16, 1, '2021-06-01'),
+                                            (17, 2, '2021-06-01'), (17, 3, '2021-06-01'),
+                                            (18, 4, '2021-06-01'), (18, 5, '2021-06-01'),
+                                            (18, 6, '2021-06-01'), (19, 7, '2021-06-01'),
+                                            (19, 8, '2021-06-01'), (19, 9, '2021-06-01'),
+                                            (20, 9, '2022-06-01'), (21, 9, '2022-06-01'),
+                                            (22, 9, '2022-06-01'), (23, 7, '2022-06-01'),
+                                            (23, 8, '2022-06-01'), (23, 9, '2022-06-01'),
+                                            (24, 8, '2022-06-01'), (24, 9, '2022-06-01'),
+                                            (25, 1, '2022-06-01'), (25, 2, '2022-06-01'),
+                                            (26, 1, '2022-06-01'), (26, 2, '2022-06-01'),
+                                            (27, 1, '2022-06-01'), (27, 2, '2022-06-01'),
+                                            (28, 1, '2022-06-01'), (28, 2, '2022-06-01'),
+                                            (29, 4, '2022-06-01'), (30, 5, '2022-06-01'),
+                                            (30, 6, '2022-06-01'), (31, 5, '2019-06-01'),
+                                            (32, 6, '2019-06-01'), (33, 5, '2021-06-01'),
+                                            (34, 6, '2019-06-01'), (34, 5, '2019-06-01'),
+                                            (35, 6, '2022-06-01'), (36, 5, '2019-06-01'),
+                                            (36, 6, '2019-06-01'), (36, 7, '2019-06-01'),
+                                            (36, 8, '2019-06-01');
 
 
 .. note::
 
-    Observe que nos comandos acima relativos à tabela ``cursos``, omitimos os valores para a coluna ``curso_id``. Como definimos essa coluna como ``SERIAL``, o PostgreSQL utiliza valores de uma sequência para preencher este campo quando omitido. De maneira similar, omitimos os valores para a coluna ``curso_id`` nos comandos de inserção na tabela ``alunos``.
+    Observe que nos comandos acima relativos à tabela ``estudante``, omitimos os valores para a coluna ``matricula``. Como definimos essa coluna como ``GENERATED ALWAYS AS IDENTITY``, o PostgreSQL utiliza valores de uma sequência para preencher este campo automaticamente quando omitido. De maneira similar, omitimos os valores para a coluna ``codigo`` nos comandos de inserção na tabela ``professor`` e ``disciplina``.

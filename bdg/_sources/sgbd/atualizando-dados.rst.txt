@@ -12,20 +12,20 @@ Atualizando Dados
 Exemplos:
 
 
-**1.** Alterando a carga horária de todos os cursos para 60 horas:
+**1.** Alterando o número de creditos de todas as disciplinas para 04:
 
 
 .. code-block:: sql
 
-    UPDATE cursos
-       SET carga_horaria = 60;
+    UPDATE disciplina
+       SET creditos = 4;
 
 
-**2.** Alterando o nome do curso ``matematica`` para ``estatistica``:
+**2.** Alterando o nome da disciplina ``Matemática`` para ``Matemática Avançada``:
 
 
 .. code-block:: sql
 
-    UPDATE cursos
-       SET titulo = 'estatistica'
-     WHERE titulo = 'matematica';
+    UPDATE disciplina
+       SET titulo = 'Matemática'
+     WHERE titulo = 'Matemática Avançada';
