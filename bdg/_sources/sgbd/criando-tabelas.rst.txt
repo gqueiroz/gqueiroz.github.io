@@ -16,15 +16,55 @@ O comando SQL ``CREATE TABLE`` permite criar novas tabelas no banco de dados. A 
 
     CREATE TABLE <nome-tabela>
     (
-        <nome-coluna> <tipo-dados> [<restrição-atributo>]
-        [, <nome-coluna> <tipo-dados> [<restrição-atributo>] ]
+        <nome-coluna> <tipo-dados> [<restrição-coluna>]
+        [, <nome-coluna> <tipo-dados> [<restrição-coluna>] ]
         [, <restrição-tabela> [, <restrição-tabela> ] ]
     );
 
 
-.. note::
+Onde:
 
-    Veremos ao longo do curso que este comando possui muitas opções.
+.. rst-class:: open
+
+- ``nome-tabela``: O nome de uma tabela deve começar por uma letra (``a-z``) ou pelo caracter sublinhado ``_``, e os demais caracteres podem ser letras, dígitos (``0-9``) ou o caracter sublinhado ``_``. Alguns exemplos de nomes válidos são: ``foco``, ``foco_v2``, ``estudante_disciplina``, ``populacao_1940``. Opcionalmente, o nome de uma tabela pode ser qualificado com o nome de um esquema. Neste caso usamos a sintaxe ``nome-esquema.nome-tabela``. Como exemplo de nomes de tabelas qualificados com o esquema, podemos citar: ``public.foco``, ``geo.lote``, ``ibge.populacao_brasil``. Discutiremos mais detalhes sobre esquemas na :numref:`Seção %s <cap_sgbd_esquemas>`. 
+
+    .. note::
+    
+        Outro detalhe importante sobre o nome de tabelas consiste no uso de delimitadores com aspas duplas (``"``). Neste caso, podemos criar identificadores contendo caracteres especiais, além de diferenciar letras maiúsculas e minúsculas. Exemplos: ``"Foco"``, ``"Foco v2"``, ``ibge."População do Brasil"``. 
+        
+        
+        No entanto, esse recurso deve ser utilizado com moderação para não dificultar o uso dos identificadores na construção de consultas, uma vez que será necessário empregar os delimitadores (``"``).
+        
+
+    .. note::
+    
+        Os nomes de tabelas são limitados a no máximo 63 bytes. Logo, se usarmos apenas letras (``a-z``), dígitos (``0-9``) ou sublinhado (``_``), isto significa um identificador de 63 caracteres.
+
+
+- ``nome-coluna``: O nome de colunas segue a mesma regra do nome de tabelas. A única diferença nesse caso é que não usamos a qualificação com o nome do esquema para colunas.
+
+
+- ``tipo-dados``: Podemos usar os tipos de dados discutidos na :numref:`Seção %s <cap_sgbd_tipos_dados>`.
+
+
+- ``restrição-coluna``: É possível especificar restrições de integridade a serem mantidas pelo SGBD em relação ao valores da coluna. Os tipos mais comuns de restrições incluem:
+
+    - ``NOT NULL``: Especifica que a coluna é obrigatória.
+    - ``NULL``: Especifica que podemos armazenar valores ``NULL`` na coluna.
+    - ``CHECK ( expressão )``: Uma expressão lógica envolvendo o valor a ser inserido ou atualizado na coluna que deva ser avaliado como verdadeiro para que o valor seja considerado válido. Usaremos este tipo de restrição nas tabelas que criaremos nessa seção.
+    - ``DEFAULT expressão``: Um valor padrão caso a coluna seja omitida nas inserções.
+    - ``GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY``: Será usado um valor gerado a partir de uma sequência autoincremental.
+    - ``UNIQUE``: Indica que a coluna deverá ter valores únicos.
+    - ``PRIMARY KEY``: Indica que a coluna é chave primária e, portanto, possui valores únicos.
+    - ``REFERENCES``: Permite definir a coluna como uma chave estrangeira, referenciando a coluna de outra tabela.
+    
+
+- ``restrição-tabela``: Após as declarações das colunas, podemos incluir restrições que se aplicam à linha da tabela. Neste caso, podemos ter chaves primárias compostas, chaves estrangeiras compostas, chaves únicas compostas e retrições que envolvam valores de várias colunas. Portanto, podemos declarar as seguintes retrições:
+
+    - ``CHECK ( expressão )``: Uma expressão lógica que deve ser avaliada como verdadeiro para que os valores sendo inseridos na linha sejam considerados válidos.
+    - ``UNIQUE``: Lista de colunas que formam uma chave única composta.
+    - ``PRIMARY KEY``: Lista de colunas que formam uma chave primária composta.
+    - ``FOREIGN KEY``: Lista de colunas que formam uma chave estrangeira composta.
 
 
 Estudo de Caso
@@ -44,6 +84,8 @@ Considere o **diagrama Entidade-Relacionamento** (ou **ER**) mostrado na :numref
 
 
 Nesse diagrama temos as seguintes informações:
+
+.. rst-class:: open
 
 - Um estudante possui propriedades como: número de matrícula, nome, data de nascimento, gênero (masculino ou feminino) e uma data matrícula na escola. O atributo destacado ``matricula`` indica que ele é único entre os estudantes e, portanto, identifica unicamente um determinado aluno.
 
@@ -82,10 +124,17 @@ A partir da compreensão do diagrama ER, podemos criar um novo diagrama mais pr�
     Modelo lógico - Disciplinas cursadas por um Estudante
 
 
-Agora, podemos gerar os comandos de criação das tabelas e dos relacionamentos envolvidos:
+Comandos de Definição de Dados
+------------------------------
 
 
-**Tabela estudante:**
+Agora que temos o modelo das tabelas que queremos criar e sabemos a sintaxe básica do comando ``CREATE TABLE``, vamos definir as tabelas ``estudante``, ``professor``, ``disciplina`` e ``estudante_disciplina`` usando SQL.
+
+
+-----
+
+
+**Tabela:** ``estudante:``
 
 
 .. code-block:: postgresql
@@ -102,6 +151,8 @@ Agora, podemos gerar os comandos de criação das tabelas e dos relacionamentos 
 
 Na definição da tabela ``estudante`` temos:
 
+.. rst-class:: open
+
 - A coluna ``matricula`` foi definida como chave primária (``PRIMARY KEY``), comportando valores do tipo inteiro (``INTEGER``) gerados sequencialmente e automaticamente pelo servidor (``GENERATED ALWAYS AS IDENTITY``).
 
 - A coluna ``nome`` foi definida como uma cadeia de caracteres de tamanho variável limitada a no máximo 30 caracteres, sendo os valores dessa coluna obrigatórios (``NOT NULL``).
@@ -116,69 +167,90 @@ Na definição da tabela ``estudante`` temos:
 -----
 
 
-**Tabela professor:**
+**Tabela:** ``professor``
 
 
 .. code-block:: postgresql
 
     CREATE TABLE professor
     (
-        codigo           INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-        nome             VARCHAR(30) NOT NULL
+        codigo   INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        nome     VARCHAR(30) NOT NULL
     );
 
 
 -----
 
 
-**Tabela disciplina:**
+**Tabela:** ``disciplina``
 
 
 .. code-block:: postgresql
+    :emphasize-lines: 6-8 
 
     CREATE TABLE disciplina
     (
         codigo           INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         titulo           VARCHAR(30) NOT NULL,
         creditos         INTEGER NOT NULL CHECK ( creditos >= 1 AND creditos <= 6 ),
-        codigo_professor INTEGER NOT NULL,
-        FOREIGN KEY (codigo_professor) REFERENCES professor(codigo)
-                                       ON DELETE NO ACTION
-                                       ON UPDATE CASCADE
+        professor_codigo INTEGER NOT NULL REFERENCES professor(codigo)
+                                              ON DELETE NO ACTION
+                                              ON UPDATE CASCADE
     );
+
+
+Nessa tabela temos a definição de uma **chave estrangeira**, impondo um relacionamento de **integridade referencial** entre as tabelas ``professor`` e ``disciplina`` nas colunas ``codigo`` e ``professor_codigo``. A sentença ``ON DELETE NO ACTION`` indica que no caso de remoção de linhas da tabela ``professor`` que tenham disciplinas associadas, deverá ser gerado um erro, impedindo a remoção das linhas da tabela ``professor``. A setença ``ON UPDATE CASCADE``, define que no caso de atualização da chave primária na tabela ``professor``, o novo valor deva ser propagado automaticamente para as linhas relacionadas na tabela ``disciplina``.
+
+
+.. note::
+
+    Abaixo apresentamos como criar a chave estrangeira na seção dedicada a restrições da linha:
     
+    .. code-block:: postgresql
+        :emphasize-lines: 7-9 
 
-
-Nessa tabela temos a definição de uma **chave estrangeira**, impondo um relacionamento de integridade referencial entre as tabelas ``professor`` e ``disciplina`` nas colunas ``codigo`` e ``codigo_professor``. A sentença ``ON DELETE NO ACTION`` indica que no caso de remoção de linhas da tabela ``professor`` que tenham disciplinas associadas, deverá ser gerado um erro, impedindo a remoção das linhas da tabela ``professor. A setença ``ON UPDATE CASCADE``, define que no caso de atualização da chave primária na tabela ``professor``, o novo valor deva ser propagado automaticamente para as linhas relacionadas na tabela ``disciplina``.
-
-
-
+        CREATE TABLE disciplina2
+        (
+            codigo           INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+            titulo           VARCHAR(30) NOT NULL,
+            creditos         INTEGER NOT NULL CHECK ( creditos >= 1 AND creditos <= 6 ),
+            professor_codigo INTEGER NOT NULL,
+            FOREIGN KEY (professor_codigo) REFERENCES professor(codigo)
+                                           ON DELETE NO ACTION
+                                           ON UPDATE CASCADE
+        );
+    
 
 -----
 
 
-**Tabela estudante_disciplina:**
+**Tabela:** ``estudante_disciplina``
 
 
 .. code-block:: postgresql
+    :emphasize-lines: 10 
 
 
     CREATE TABLE estudante_disciplina
     (
-        matricula    INTEGER,
-        codigo       INTEGER,
+        matricula   INTEGER REFERENCES estudante(matricula)
+                                            ON DELETE NO ACTION
+                                            ON UPDATE CASCADE,
+        codigo       INTEGER REFERENCES disciplina(codigo)
+                                            ON DELETE NO ACTION
+                                            ON UPDATE CASCADE,
         data         DATE NOT NULL DEFAULT CURRENT_DATE,
-        PRIMARY KEY (matricula, codigo),
-        FOREIGN KEY (matricula) REFERENCES estudante(matricula)
-                                       ON DELETE NO ACTION
-                                       ON UPDATE CASCADE,
-        FOREIGN KEY (codigo) REFERENCES disciplina(codigo)
-                                       ON DELETE NO ACTION
-                                       ON UPDATE CASCADE
+        PRIMARY KEY (matricula, codigo)
     );
 
 
-Na definição da tabela acima, repare que a **chave primária é composta** e, por isso, foi definida logo após a declaração de todas as colunas.
+Repare na definição da tabela acima que:
 
+.. rst-class:: open
 
+- A coluna ``matricula`` pois uma restrição de chave estrangeira, referenciando a coluna ``matricula`` na tabela ``estudante``.
+
+- A coluna ``codigo`` também possui uma restrição de chave estrangeira, referenciando a coluna ``codigo`` na tabela ``disciplina``.
+
+- A **chave primária** dessa tabela é **composta** e, por isso, foi definida logo após a declaração de todas as colunas. Desta forma, podemos especificar as colunas ``matricula`` e ``codigo`` como a chave primária.
 

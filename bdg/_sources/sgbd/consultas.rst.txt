@@ -41,29 +41,410 @@ O comando ``SELECT`` é formado por várias cláusulas: ``SELECT``, ``FROM``, ``
 
 - A cláusula ``HAVING`` permite definirmos uma ``condição``, isto é, uma ``expressão lógica`` ou ``predicado``, para filtrar o resutado dos grupos de linhas. Dessa maneira, as linhas resultantes de agrupamentos que não satisfaçam essa condição, são eliminadas do resultado final.
 
-- A cláusula ``ORDER BY`` ordena o resultado final de acordo com a expressão fornecida. Lembrando que a expressão poe ser uma lista de colunas, expressões matemáticas, chamadas de função, ou a posição das colunas de saída de acordo com a lista da cláusula ``SELECT``.
+- A cláusula ``ORDER BY`` ordena o resultado final de acordo com a expressão fornecida. Lembrando que a expressão pode ser uma lista de colunas, expressões matemáticas, chamadas de função, ou a posição das colunas de saída de acordo com a lista da cláusula ``SELECT``.
 
 - As cláusulas ``LIMIT`` e ``OFFSET`` permitem, respectivamente, definir o número máximo de linhas a serem retornadas e o ponto onde esta contagem começa a valer.
 
 
-.. warning::
+.. tip::
 
     O comando ``SELECT`` possui várias outras cláusulas e detalhes. Para saber mais sobre a versão completa deste comando, consulte o seguite tópico do manual do PostgreSQL: `SELECT <https://www.postgresql.org/docs/14/sql-select.html>`__.
 
 
-Exemplos
---------
+Consultas Simples
+-----------------
+
+
+Nesta seção veremos exemplos de consultas que envolvem uma única tabela como entrada.
 
 
 **1.** Recuperar os dados do estudante ``Eduardo``:
 
 
+.. collapse:: Solução:
 
-**2.** Fazer o produto cartesiano entre as tabelas ``professor`` e ``disciplina``:
+    .. code-block:: sql
+
+        SELECT * 
+          FROM estudante
+         WHERE nome = 'Eduardo';
 
 
+    Saída:
+        
+        
+    .. code-block:: text
 
-**3.** Juntar as linhas correlatas das tabelas ``professor`` e ``disciplina``:
+         matricula |  nome   | data_nascimento | genero | data_matricula 
+        -----------+---------+-----------------+--------+----------------
+                 1 | Eduardo | 1980-08-04      | M      | 2019-01-01
+        (1 row)
+
+
+    Nessa consulta usamos três cláusulas:
+
+    .. rst-class:: open
+
+    - ``SELECT``: Nesta cláusula usamos o caracter especial ``*`` que é expandido para a lista de todas as colunas e, por isso, obtivemos uma linha com 05 valores como mostrado acima.
+
+    - ``FROM``: Nesta cláusula especificamos a tabela ``estudante`` como fonte da consulta.
+
+    - ``WHERE``: Nesta cláusula especificamos uma expressão lógica que realiza o filtro das linhas desejadas. No exemplo acima, temos apenas um estudante com o nome ``Eduardo`` e, portanto, somente uma linha satisfaz a condição ``nome = 'Eduardo'``. 
+
+
+-----
+
+
+**2.** Recuperar o número de matrícula, nome e a data de matrícula dos estudantes do gênero feminino (``F``):
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT matricula, nome, data_matricula, genero
+          FROM estudante
+         WHERE genero = 'F';
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         matricula |   nome    | data_matricula | genero 
+        -----------+-----------+----------------+--------
+                 2 | Maria     | 2019-02-02     | F
+                 4 | Luiza     | 2020-01-05     | F
+                 5 | Ana Maria | 2020-01-05     | F
+                 6 | Ana Clara | 2020-01-05     | F
+                11 | Carla     | 2019-01-05     | F
+                12 | Telma     | 2020-01-06     | F
+                14 | Lucia     | 2021-01-08     | F
+                15 | Tassiana  | 2021-01-08     | F
+                21 | Joana     | 2022-01-10     | F
+                25 | Marcia    | 2022-01-11     | F
+                28 | Katia     | 2022-01-12     | F
+                30 | Zoraide   | 2022-01-12     | F
+                31 | Roberta   | 2019-01-01     | F
+                34 | Joana     | 2019-01-01     | F
+                35 | Josi      | 2022-01-12     | F
+        (15 rows)
+
+
+    A cláusula ``SELECT`` da consulta acima contém um subconjunto das colunas da tabela ``estudante``: ``matricula``, ``nome``, ``data_matricula`` e ``genero``. Utilizamos o separador ``,`` para listar as colunas nessa cláusula. Essa cláusula nos permite, entre outra coisas, controlar a ordem de apresentação das colunas.
+
+
+-----
+
+
+**3.**  Recuperar o número de matrícula e os três primeiros caracteres do nome dos estudantes matriculados no ano de 2020 do gênero feminino (``F``):
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT matricula, left(nome, 3) AS iniciais_nome
+          FROM estudante
+         WHERE (genero = 'F') AND (extract(year from data_matricula) = 2020);
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         matricula | iniciais_nome 
+        -----------+---------------
+                 4 | Lui
+                 5 | Ana
+                 6 | Ana
+                12 | Tel
+        (4 rows)
+
+
+    Na consulta acima:
+    
+    .. rst-class:: open
+    
+    - O segundo elemento da cláusula ``SELECT`` utilizou uma função chamada ``left`` para extrair no máximo três caracteres de um nome. Nesse elemento, também utilizamos a palavra-chave ``AS`` para criar um novo rótulo para a coluna de saída: ``iniciais_nome``.
+    
+    - A clausula ``WHERE`` possui uma expressão usando o **e-lógico** (``AND``). Portanto, apenas as linhas que tenham simultaneamente o caracter ``F`` como gênero e a parte do ano da data de matricula igual a 2020 serão selecionadas no resultado final. 
+
+
+-----
+
+
+**4.**  Recuperar o número de matrícula, o nome e a idade dos estudantes matriculados no ano de 2020 do gênero feminino (``F``):
+
+
+.. collapse:: Solução:
+
+    Para resolver esta consulta vamos precisar usar a função ``age``, que computa um intervalo entre dois instantes de tempo. Considere o exemplo abaixo, onde usamos como referência o tempo do sistema atual (``CURRENT_TIMESTAMP``) e a data de ``2000-02-01``:
+    
+    
+    .. code-block:: sql
+    
+        SELECT age(CURRENT_TIMESTAMP, '2000-02-01');
+    
+    
+    Saída:
+
+
+    .. code-block:: text    
+
+                           age                   
+        -----------------------------------------
+         22 years 8 mons 13 days 19:42:10.241783
+        (1 row)
+
+
+    .. warning::
+    
+        O exemplo acima deverá retornar um valor diferente dependendo da data e hora e que você estará executando a consulta!
+
+
+    Para tomar apenas a quantidade de anos entre as duas datas, podemos usar a função ``extract``, como mostrado abaixo:
+
+
+    .. code-block:: sql
+    
+        SELECT extract( 'year' from age(CURRENT_TIMESTAMP, '2000-02-01') ) AS anos;
+    
+    
+    Saída:
+
+
+    .. code-block:: text    
+
+         anos 
+        ------
+           22
+        (1 row)
+
+
+    Agora estamos prontos para construir a consulta final:
+
+
+    .. code-block:: sql
+
+        SELECT matricula, nome, extract('year' from age(CURRENT_TIMESTAMP, data_nascimento)) AS idade
+          FROM estudante
+         WHERE (genero = 'F') AND (extract(year from data_matricula) = 2020);
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         matricula |   nome    | idade 
+        -----------+-----------+-------
+                 4 | Luiza     |    41
+                 5 | Ana Maria |    41
+                 6 | Ana Clara |    41
+                12 | Telma     |    39
+        (4 rows)
+
+
+-----
+
+
+**5.**  Recuperar o número de matrícula e o nome dos estudantes cujo nome comece com as iniciais ``jo``:
+
+
+.. collapse:: Solução:
+
+
+    .. code-block:: sql
+
+        SELECT matricula, nome
+          FROM estudante
+         WHERE lower(nome) LIKE 'jo%';
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         matricula | nome  
+        -----------+-------
+                 8 | Jose
+                21 | Joana
+                34 | Joana
+                35 | Josi
+        (4 rows)
+        
+
+    Essa consulta utiliza o operador ``LIKE``, que pode ser usado com strings. Este operador retorna verdadeiro caso a string à esquerda satisfaça o padrão fornecido à direita. O caracter ``%`` é um caracer "curinga", casando com qualquer sequencia de zero ou mais caracteres. Veja mais exemplos de uso desse operador abaixo:
+    
+    .. code-block:: sql
+    
+        SELECT 'Gilberto' LIKE '%be%';       -- retorna verdadeiro
+    
+    
+    .. code-block:: sql
+    
+        SELECT 'Gilberta' LIKE 'Gilbert_';   -- retorna verdadeiro
+
+
+    .. code-block:: sql
+    
+        SELECT 'Gilbertas' LIKE 'Gilbert_';  -- retorna falso   
+
+
+-----
+
+
+**6.**  Recuperar o número de matrícula e o nome dos estudantes que tenham número de matrícula no conjunto ``{1, 3, 5, 12, 14, 17}``:
+
+
+.. collapse:: Solução:
+
+
+    .. code-block:: sql
+
+        SELECT matricula, nome
+          FROM estudante
+         WHERE matricula IN (1, 3, 5, 12, 14, 17);
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         matricula |   nome    
+        -----------+-----------
+                 1 | Eduardo
+                 3 | Eugenio
+                 5 | Ana Maria
+                12 | Telma
+                14 | Lucia
+                17 | Felipe
+        (6 rows)
+
+
+-----        
+   
+
+**7.**  Recuperar o número de matrícula e o nome dos estudantes que **não** estejam no conjunto de matrículas ``{1, 3, 5, 12, 14, 17}``:
+
+
+.. collapse:: Solução:
+
+
+    .. code-block:: sql
+
+        SELECT matricula, nome
+          FROM estudante
+         WHERE matricula NOT IN (1, 3, 5, 12, 14, 17);
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+        matricula |   nome    
+        -----------+-----------
+                 2 | Maria
+                 4 | Luiza
+                 6 | Ana Clara
+               ...   ...
+                34 | Joana
+                35 | Josi
+                36 | Antonio
+                37 | Zuleica
+        (31 rows)
+
+
+-----
+
+
+Junção de Tabelas
+-----------------
+
+
+Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas como entrada.
+
+
+**8.** Fazer o produto cartesiano entre as tabelas ``professor`` e ``disciplina``:
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT * 
+          FROM professor, disciplina;
+
+
+    Saída:
+        
+        
+    .. code-block:: text
+
+         codigo |   nome   | codigo |      titulo       | creditos | professor_codigo 
+        --------+----------+--------+-------------------+----------+------------------
+              1 | Romildo  |      1 | Matemática        |        6 |                1
+              1 | Romildo  |      2 | Fisica            |        4 |                1
+              1 | Romildo  |      3 | Bilogia           |        2 |                2
+              1 | Romildo  |      4 | Quimica           |        3 |                3
+              1 | Romildo  |      5 | Geografia         |        2 |                4
+              1 | Romildo  |      6 | Historia          |        2 |                4
+              1 | Romildo  |      7 | Lingua Portuguesa |        4 |                4
+              1 | Romildo  |      8 | Lingua Inglesa    |        2 |                5
+            ...   ...           ...   ...                      ...                ...
+              6 | Cleiton  |      8 | Lingua Inglesa    |        2 |                5
+              6 | Cleiton  |      9 | Lingua Francesa   |        1 |                5
+              6 | Cleiton  |     10 | Ciências          |        1 |                4
+        (60 rows)
+
+
+    A cláusula ``FROM`` permite especificarmos uma lista de tabelas (ou itens de dados). Na consulta acima, a cláusula ``FROM`` realizou o produto cartesiano entre as duas tabelas. Como temos 06 professores e 10 discipllinas, o resultado contém 60 linhas, isto é, todas as linhas da tabela ``professor`` pareadas com todas as linhas da tabela ``disciplina``. 
+    
+    
+    Repare também que por termos usado o caracter ``*`` na cláusula ``SELECT``, todas as colunas das duas tabelas participaram do resultado final. Na cláusula ``SELECT`` é possível controlar a lista de colunas de saída especificando o nome qualificado da coluna, isto é, o ``nome-tabela.nome-coluna``:
+
+
+    .. code-block:: sql
+
+        SELECT professor.*, disciplina.titulo 
+          FROM professor, disciplina;
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         codigo |   nome   |      titulo       
+        --------+----------+-------------------
+              1 | Romildo  | Matemática
+              1 | Romildo  | Fisica
+              1 | Romildo  | Bilogia
+              1 | Romildo  | Quimica
+              1 | Romildo  | Geografia
+              1 | Romildo  | Historia
+              1 | Romildo  | Lingua Portuguesa
+              1 | Romildo  | Lingua Inglesa
+            ...   ...        ...
+              6 | Cleiton  | Lingua Inglesa
+              6 | Cleiton  | Lingua Francesa
+              6 | Cleiton  | Ciências
+        (60 rows)
+
+
+    Nesse último exemplo, o item ``professor.*`` na cláusula ``SELECT`` é expandido para todas as colunas da tabela ``professor`` apenas, isto é, as colunas ``codigo`` e ``nome``. Já a expressão ``disciplina.titulo`` indica que queremos a coluna ``titulo`` da tabela ``disciplina`` no resultado.
+
+
+-----
+
+
+**9.** Juntar as linhas correlatas das tabelas ``professor`` e ``disciplina``:
 
 
 .. note::
@@ -71,11 +452,280 @@ Exemplos
     Chamamos este tipo de consulta de **junção entre tabelas**.
 
 
-**4.** Qual o nome das disciplinas cursadas pelo aluno ``eduardo``?
+.. collapse:: Solução:
 
 
-**5.** Qual o nome dos professores do aluno ``eduardo``?
+    .. code-block:: sql
 
+        SELECT * 
+          FROM professor, disciplina
+         WHERE professor.codigo = disciplina.professor_codigo;
+
+
+    Saída:
+
+    .. code-block:: text
+
+         codigo |   nome   | codigo |      titulo       | creditos | professor_codigo 
+        --------+----------+--------+-------------------+----------+------------------
+              1 | Romildo  |      1 | Matemática        |        6 |                1
+              1 | Romildo  |      2 | Fisica            |        4 |                1
+              2 | Thales   |      3 | Bilogia           |        2 |                2
+              3 | Karine   |      4 | Quimica           |        3 |                3
+              4 | Tamara   |      5 | Geografia         |        2 |                4
+              4 | Tamara   |      6 | Historia          |        2 |                4
+              4 | Tamara   |      7 | Lingua Portuguesa |        4 |                4
+              5 | Carolina |      8 | Lingua Inglesa    |        2 |                5
+              5 | Carolina |      9 | Lingua Francesa   |        1 |                5
+              4 | Tamara   |     10 | Ciências          |        1 |                4
+        (10 rows)
+
+
+    Repare na saída acima que agora os valores nas linhas para a primeira coluna ``codigo`` são iguais na coluna ``professor_codigo``. Esse exemplo mostra como usar colunas relacionadas para busca da informação apropriada.
+
+
+    Outra forma de realizar a consulta acima é utilizar a palavra-chave ``INNER JOIN``, como indicado abaixo:
+
+
+    .. code-block:: sql
+
+        SELECT *
+          FROM professor INNER JOIN disciplina ON professor.codigo = disciplina.professor_codigo;
+
+
+    Saída:
+
+    .. code-block:: text
+
+         codigo |   nome   | codigo |      titulo       | creditos | professor_codigo 
+        --------+----------+--------+-------------------+----------+------------------
+              1 | Romildo  |      1 | Matemática        |        6 |                1
+              1 | Romildo  |      2 | Fisica            |        4 |                1
+              2 | Thales   |      3 | Bilogia           |        2 |                2
+              3 | Karine   |      4 | Quimica           |        3 |                3
+              4 | Tamara   |      5 | Geografia         |        2 |                4
+              4 | Tamara   |      6 | Historia          |        2 |                4
+              4 | Tamara   |      7 | Lingua Portuguesa |        4 |                4
+              5 | Carolina |      8 | Lingua Inglesa    |        2 |                5
+              5 | Carolina |      9 | Lingua Francesa   |        1 |                5
+              4 | Tamara   |     10 | Ciências          |        1 |                4
+        (10 rows)      
+
+
+-----
+
+
+**10.** Juntar as linhas correlatas das tabelas ``professor`` e ``disciplina``, exibindo também algum professor que não esteja associado a disciplinas:
+
+
+
+.. collapse:: Solução:
+
+
+    Neste caso precisamo fazer um ``LEFT OUTER JOIN`` entre as tabelas ``professor`` e ``disciplina``:
+
+    
+    .. code-block:: sql
+
+        SELECT *
+          FROM professor LEFT OUTER JOIN disciplina ON professor.codigo = disciplina.professor_codigo;    
+
+
+    Saída:
+
+
+    .. code-block:: text
+        :emphasize-lines: 13
+
+         codigo |   nome   | codigo |      titulo       | creditos | professor_codigo 
+        --------+----------+--------+-------------------+----------+------------------
+              1 | Romildo  |      1 | Matemática        |        6 |                1
+              1 | Romildo  |      2 | Fisica            |        4 |                1
+              2 | Thales   |      3 | Bilogia           |        2 |                2
+              3 | Karine   |      4 | Quimica           |        3 |                3
+              4 | Tamara   |      5 | Geografia         |        2 |                4
+              4 | Tamara   |      6 | Historia          |        2 |                4
+              4 | Tamara   |      7 | Lingua Portuguesa |        4 |                4
+              5 | Carolina |      8 | Lingua Inglesa    |        2 |                5
+              5 | Carolina |      9 | Lingua Francesa   |        1 |                5
+              4 | Tamara   |     10 | Ciências          |        1 |                4
+              6 | Cleiton  |        |                   |          |                 
+        (11 rows)
+
+
+    Repare na saída acima que o registro (tupla) do professor ``Cleiton`` apareceu no resultado final, com as colunas da tabela ``disciplina`` com valores nulo (``NULL``)
+
+
+-----
+
+
+**11.** Apresente os dados do professor que não está associado a disciplinas
+
+
+.. collapse:: Solução:
+
+
+    Neste caso precisamo fazer um ``LEFT OUTER JOIN`` entre as tabelas ``professor`` e ``disciplina``:
+
+    
+    .. code-block:: sql
+
+          SELECT *
+            FROM professor LEFT JOIN disciplina ON professor.codigo = disciplina.professor_codigo
+           WHERE disciplina.codigo IS NULL
+        ORDER BY nome;    
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         codigo |  nome   | codigo | titulo | creditos | professor_codigo 
+        --------+---------+--------+--------+----------+------------------
+              6 | Cleiton |        |        |          |                 
+        (1 row)
+
+
+-----
+
+
+**12.** Liste as linhas correlatas das tabelas ``estudante`` e ``disciplina`` bem como aquelas que não tiverem correspondência:
+
+
+.. collapse:: Solução:
+
+
+    Neste caso precisamos utilizar o ``FULL OUTER JOIN`` entre as tabelas ``estudante``, ``estudante_disciplina`` e ``disciplina``:
+
+    
+    .. code-block:: sql
+
+        SELECT *
+          FROM estudante FULL OUTER JOIN estudante_disciplina ON estudante.matricula = estudante_disciplina.matricula FULL OUTER JOIN disciplina ON estudante_disciplina.codigo = disciplina.codigo;    
+
+
+    Saída:
+
+
+    .. code-block:: text
+        :emphasize-lines: 8-9
+
+         matricula |   nome    | data_nascimento | genero | data_matricula | matricula | codigo |    data    | codigo |      titulo       | creditos | professor_codigo 
+        -----------+-----------+-----------------+--------+----------------+-----------+--------+------------+--------+-------------------+----------+------------------
+                 1 | Eduardo   | 1980-08-04      | M      | 2019-01-01     |         1 |      2 | 2019-06-01 |      2 | Fisica            |        4 |                1
+                 1 | Eduardo   | 1980-08-04      | M      | 2019-01-01     |         1 |      1 | 2019-06-01 |      1 | Matemática        |        6 |                1
+                 2 | Maria     | 1980-04-03      | F      | 2019-02-02     |         2 |      4 | 2019-06-01 |      4 | Quimica           |        3 |                3
+               ...   ...         ...               ...      ...                    ...      ...   ...             ...   ...                      ...                ...
+                36 | Antonio   | 1976-06-30      | M      | 2019-01-01     |        36 |      5 | 2019-06-01 |      5 | Geografia         |        2 |                4
+                37 | Zuleica   | 1986-06-30      | M      | 2019-01-01     |           |        |            |        |                   |          |                 
+                   |           |                 |        |                |           |        |            |     10 | Ciências          |        1 |                4
+        (75 rows)
+
+
+    Repare na saída acima que a estudante ``Zuleica`` não se encontra matriculada em nenhuma disciplina e que a disciplina de ``Ciências`` não possui estudante associado.
+
+
+-----
+
+
+**13.** Qual o nome das disciplinas cursadas pelo aluno ``Eduardo``?
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT estudante.matricula, nome, titulo
+          FROM estudante, estudante_disciplina, disciplina
+         WHERE estudante.matricula = estudante_disciplina.matricula
+           AND estudante_disciplina.codigo = disciplina.codigo
+           AND estudante.nome = 'Eduardo';
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         matricula |  nome   |   titulo   
+        -----------+---------+------------
+                 1 | Eduardo | Matemática
+                 1 | Eduardo | Fisica
+        (2 rows)
+
+
+-----
+
+
+**14.** Qual o nome dos professores do aluno ``eduardo``?
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT estudante.matricula, estudante.nome AS nome_estudante, professor.nome AS nome_professor, titulo
+          FROM estudante, estudante_disciplina, disciplina, professor
+         WHERE estudante.matricula = estudante_disciplina.matricula
+           AND estudante_disciplina.codigo = disciplina.codigo
+           AND disciplina.professor_codigo = professor.codigo
+           AND estudante.nome = 'Eduardo';
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         matricula | nome_estudante | nome_professor |   titulo   
+        -----------+----------------+----------------+------------
+                 1 | Eduardo        | Romildo        | Matemática
+                 1 | Eduardo        | Romildo        | Fisica
+        (2 rows)
+
+
+-----
+
+
+Consultas de Agregação
+----------------------
+
+
+**15.** Quantos estudantes estão cadastrados?
+
+
+**16.** Quantas são as disciplinas?
+
+
+**17.** Quantos professores estão cadastrados?
+
+
+**18.** Qual o número de alunos do sexo masculino e feminino?
+
+
+**19.** Qual o número de alunos em cada ano de matrícula?
+
+
+**20.** Quantas disciplinas cada aluno cursa?
+
+
+**21.** Quantos créditos cada aluno cursa?
+
+
+**22.** Quais alunos cursam três ou mais disciplinas?
+
+
+**23.** Qual o número de discipinas oferecidas por cada professor?
+
+
+**24.** Qual aluno que realiza o maior número de créditos e quantos são esses créditos?
+
+
+**25.** Qual a média de créditos cursados por cada aluno?
+
+
+-----
 
 
 .. rubric:: Notas

@@ -83,15 +83,118 @@ Os exercícios desta seção consideram as tabelas criadas na :numref:`Seção %
 **Exercício 1.** Quais os focos com valor de FRP maior que 90?
 
 
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT *
+          FROM foco
+         WHERE frp > 90;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+         latitude | longitude | num_dias_sem_chuva |  frp  
+        ----------+-----------+--------------------+-------
+         -6.63565 | -51.73956 |                 28 | 103.0
+         -5.67382 | -51.89861 |                 32 |  97.8
+        (2 rows)
+
+
+-----
+
+
 **Exercício 2.** Quais os focos detectados na região definida pelo seguinte retângulo:
 
 - :math:`longitude_{1} = -52.5`
 - :math:`longitude_{2} = -51.5`
-- :math:`latitude_{1} = -6.5`
-- :math:`latitude_{2} = -7.5`
+- :math:`latitude_{1} = -7.5`
+- :math:`latitude_{2} = -6.5`
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT *
+          FROM foco
+         WHERE longitude >= -52.5 AND longitude <= -51.5 AND latitude >= -7.5 AND latitude <= -6.5;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+         latitude | longitude | num_dias_sem_chuva |  frp  
+        ----------+-----------+--------------------+-------
+         -6.63565 | -51.73956 |                 28 | 103.0
+         -7.04535 | -52.24566 |                 27 |  44.2
+        (2 rows)
+
+
+-----
 
 
 **Exercício 3.** Quais Unidades da Federação do Brasil (tabela ``populacao_1940``) possuiam população feminina maior que a masculina em 1940?
 
 
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT *
+          FROM populacao_1940
+         WHERE mulheres > homens;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+            uf    | homens | mulheres 
+        ----------+--------+----------
+         Maranhão | 613938 |   621231
+         Piauí    | 404989 |   412612
+        (2 rows)
+
+
+-----
+
+
+
 **Exercício 4.** Faça uma consulta na tabela ``populacao_1940`` que apresente como resultado uma coluna com o nome da UF e outra com um valor booleando indicando se a população masculina é ou não maior na UF.
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT uf, homens > mulheres AS "homens > mulheres"
+          FROM populacao_1940;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+            uf     | homens > mulheres 
+        -----------+-------------------
+         Rondônia  | t
+         Acre      | t
+         Amazonas  | t
+         Roraima   | t
+         Pará      | t
+         Amapá     | t
+         Tocantins | t
+         Maranhão  | f
+         Piauí     | f
+        (9 rows)
+
+
+|br|

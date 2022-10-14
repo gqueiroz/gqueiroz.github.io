@@ -79,10 +79,11 @@
 <li class="toctree-l2"><a class="reference internal" href="atualizando-dados.html">2.17. Atualizando Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="removendo-dados.html">2.18. Removendo Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="criando-views.html">2.19. Criando Views</a></li>
-<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.20. Restrições de Integridade</a></li>
-<li class="toctree-l2"><a class="reference internal" href="importando-dados.html">2.21. Importando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.22. Exportando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.23. Alterando a Estrutura de uma Tabela</a></li>
+<li class="toctree-l2"><a class="reference internal" href="esquemas.html">2.20. Esquemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.21. Restrições de Integridade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importando-dados.html">2.22. Importando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.23. Exportando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.24. Alterando a Estrutura de uma Tabela</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
@@ -223,15 +224,81 @@ igual a</p></td>
 <h2><span class="section-number">2.8.1. </span>Exercícios<a class="headerlink" href="#exercicios" title="Link permanente para este cabeçalho"></a></h2>
 <p>Os exercícios desta seção consideram as tabelas criadas na <a class="reference internal" href="tipos-numericos.html#cap-sgbd-tipos-numericos"><span class="std std-numref">Seção 2.6 - Tipos Numéricos</span></a>.</p>
 <p><strong>Exercício 1.</strong> Quais os focos com valor de FRP maior que 90?</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">frp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">90</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> latitude | longitude | num_dias_sem_chuva |  frp
+----------+-----------+--------------------+-------
+ -6.63565 | -51.73956 |                 28 | 103.0
+ -5.67382 | -51.89861 |                 32 |  97.8
+(2 rows)
+</pre></div>
+</div>
+</details><hr class="docutils" />
 <p><strong>Exercício 2.</strong> Quais os focos detectados na região definida pelo seguinte retângulo:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(longitude_{1} = -52.5\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(longitude_{2} = -51.5\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(latitude_{1} = -6.5\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(latitude_{2} = -7.5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(latitude_{1} = -7.5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(latitude_{2} = -6.5\)</span></p></li>
 </ul>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">longitude</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">52</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">longitude</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">latitude</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">latitude</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">6</span><span class="p">.</span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> latitude | longitude | num_dias_sem_chuva |  frp
+----------+-----------+--------------------+-------
+ -6.63565 | -51.73956 |                 28 | 103.0
+ -7.04535 | -52.24566 |                 27 |  44.2
+(2 rows)
+</pre></div>
+</div>
+</details><hr class="docutils" />
 <p><strong>Exercício 3.</strong> Quais Unidades da Federação do Brasil (tabela <code class="docutils literal notranslate"><span class="pre">populacao_1940</span></code>) possuiam população feminina maior que a masculina em 1940?</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_1940</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">mulheres</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">homens</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    uf    | homens | mulheres
+----------+--------+----------
+ Maranhão | 613938 |   621231
+ Piauí    | 404989 |   412612
+(2 rows)
+</pre></div>
+</div>
+</details><hr class="docutils" />
 <p><strong>Exercício 4.</strong> Faça uma consulta na tabela <code class="docutils literal notranslate"><span class="pre">populacao_1940</span></code> que apresente como resultado uma coluna com o nome da UF e outra com um valor booleando indicando se a população masculina é ou não maior na UF.</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"> </span><span class="n">homens</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">mulheres</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;homens &gt; mulheres&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_1940</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    uf     | homens &gt; mulheres
+-----------+-------------------
+ Rondônia  | t
+ Acre      | t
+ Amazonas  | t
+ Roraima   | t
+ Pará      | t
+ Amapá     | t
+ Tocantins | t
+ Maranhão  | f
+ Piauí     | f
+(9 rows)
+</pre></div>
+</div>
+</details><p><br/></p>
 </section>
 </section>
 
@@ -250,7 +317,7 @@ igual a</p></td>
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe8edeab190>
+<jinja2.runtime.BlockReference object at 0x7f546620ce20>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

@@ -81,6 +81,9 @@ Expressões Lógicas
 
 A expressão lógica a seguir verifica se o ano de 2022 é ou não bissexto:
 
+
+.. code-block:: sql
+
     SELECT (2022 % 4 = 0) and (2022 % 100 <> 0 or 2022 % 400 = 0);
 
 

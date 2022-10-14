@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2.21. Importando Dados &mdash; BDGeo</title>
+  <title>2.22. Importando Dados &mdash; BDGeo</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -29,8 +29,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="2.22. Exportando Dados" href="exportando-dados.html" />
-    <link rel="prev" title="2.20. Restrições de Integridade" href="restricoes-integridade.html" /> 
+    <link rel="next" title="2.23. Exportando Dados" href="exportando-dados.html" />
+    <link rel="prev" title="2.21. Restrições de Integridade" href="restricoes-integridade.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -75,13 +75,14 @@
 <li class="toctree-l2"><a class="reference internal" href="atualizando-dados.html">2.17. Atualizando Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="removendo-dados.html">2.18. Removendo Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="criando-views.html">2.19. Criando Views</a></li>
-<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.20. Restrições de Integridade</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.21. Importando Dados</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#csv">2.21.1. CSV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="esquemas.html">2.20. Esquemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.21. Restrições de Integridade</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.22. Importando Dados</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#csv">2.22.1. CSV</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.22. Exportando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.23. Alterando a Estrutura de uma Tabela</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.23. Exportando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.24. Alterando a Estrutura de uma Tabela</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
@@ -122,12 +123,12 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
-      <li><span class="section-number">2.21. </span>Importando Dados</li>
+      <li><span class="section-number">2.22. </span>Importando Dados</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
-        <a href="restricoes-integridade.html" class="btn btn-neutral float-left" title="2.20. Restrições de Integridade" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="exportando-dados.html" class="btn btn-neutral float-right" title="2.22. Exportando Dados" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="restricoes-integridade.html" class="btn btn-neutral float-left" title="2.21. Restrições de Integridade" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="exportando-dados.html" class="btn btn-neutral float-right" title="2.23. Exportando Dados" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -135,9 +136,9 @@
            <div itemprop="articleBody">
              
   <section id="importando-dados">
-<span id="cap-sgbd-importando-dados"></span><h1><span class="section-number">2.21. </span>Importando Dados<a class="headerlink" href="#importando-dados" title="Link permanente para este cabeçalho"></a></h1>
+<span id="cap-sgbd-importando-dados"></span><h1><span class="section-number">2.22. </span>Importando Dados<a class="headerlink" href="#importando-dados" title="Link permanente para este cabeçalho"></a></h1>
 <section id="csv">
-<h2><span class="section-number">2.21.1. </span>CSV<a class="headerlink" href="#csv" title="Link permanente para este cabeçalho"></a></h2>
+<h2><span class="section-number">2.22.1. </span>CSV<a class="headerlink" href="#csv" title="Link permanente para este cabeçalho"></a></h2>
 <p>Considere o arquivo CSV mostrado abaixo, que contém dados sobre focos de queimada na vegetação localizados no município de São Félix do Xingu, no Pará, no dia 01 de setembro de 2022:</p>
 <div class="literal-block-wrapper docutils container" id="data-csv-focos-sao-felix-do-xingu-20220901">
 <div class="code-block-caption"><span class="caption-number">Trecho de Código 2.1 - </span><span class="caption-text"><a class="reference download internal" download="" href="../_downloads/5efe3f12e0e9c81f48ef552bfd6ec513/focos-sao-felix-do-xingu-20220901.csv"><code class="xref download docutils literal notranslate"><span class="pre">focos-sao-felix-do-xingu-20220901.csv</span></code></a>.</span><a class="headerlink" href="#data-csv-focos-sao-felix-do-xingu-20220901" title="Link Permanente para esse código"></a></div>
@@ -225,7 +226,7 @@
 </pre></div>
 </div>
 <section id="importando-pelo-pgadmin">
-<h3><span class="section-number">2.21.1.1. </span>Importando pelo pgAdmin<a class="headerlink" href="#importando-pelo-pgadmin" title="Link permanente para este cabeçalho"></a></h3>
+<h3><span class="section-number">2.22.1.1. </span>Importando pelo pgAdmin<a class="headerlink" href="#importando-pelo-pgadmin" title="Link permanente para este cabeçalho"></a></h3>
 <p>Pela interface gráfica do pgAdmin é possível importar arquivos CSV. Ao selecionar a tabela para a qual se deseja copiar os dados, selecione o meno <code class="docutils literal notranslate"><span class="pre">Import/Export</span> <span class="pre">Data...</span></code>, como mostrado na figura abaixo:</p>
 <figure class="align-center align-default" id="fig-sgbd-import-csv-01">
 <a class="reference internal image-reference" href="../_images/import-csv-01.png"><img alt="Importando dados para a tabela focos" src="../_images/import-csv-01.png" style="width: 100%;" /></a>
@@ -291,8 +292,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="restricoes-integridade.html" class="btn btn-neutral float-left" title="2.20. Restrições de Integridade" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="exportando-dados.html" class="btn btn-neutral float-right" title="2.22. Exportando Dados" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="restricoes-integridade.html" class="btn btn-neutral float-left" title="2.21. Restrições de Integridade" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="exportando-dados.html" class="btn btn-neutral float-right" title="2.23. Exportando Dados" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -302,7 +303,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe8ed419760>
+<jinja2.runtime.BlockReference object at 0x7f5465a8e3a0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

@@ -70,7 +70,9 @@
 <li class="toctree-l2"><a class="reference internal" href="criando-tabelas.html">2.12. Criando Tabelas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inserindo-dados.html">2.13. Inserindo Dados</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">2.14. Consultas em SQL</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#exemplos">2.14.1. Exemplos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#consultas-simples">2.14.1. Consultas Simples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#juncao-de-tabelas">2.14.2. Junção de Tabelas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#consultas-de-agregacao">2.14.3. Consultas de Agregação</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="funcoes-operadores.html">2.15. Funções e Operadores</a></li>
@@ -78,10 +80,11 @@
 <li class="toctree-l2"><a class="reference internal" href="atualizando-dados.html">2.17. Atualizando Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="removendo-dados.html">2.18. Removendo Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="criando-views.html">2.19. Criando Views</a></li>
-<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.20. Restrições de Integridade</a></li>
-<li class="toctree-l2"><a class="reference internal" href="importando-dados.html">2.21. Importando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.22. Exportando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.23. Alterando a Estrutura de uma Tabela</a></li>
+<li class="toctree-l2"><a class="reference internal" href="esquemas.html">2.20. Esquemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.21. Restrições de Integridade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importando-dados.html">2.22. Importando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.23. Exportando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.24. Alterando a Estrutura de uma Tabela</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
@@ -156,24 +159,426 @@
 <li><p>A cláusula <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> permite definir uma <code class="docutils literal notranslate"><span class="pre">condição</span></code>, isto é, uma <code class="docutils literal notranslate"><span class="pre">expressão</span> <span class="pre">lógica</span></code> ou <code class="docutils literal notranslate"><span class="pre">predicado</span></code>, para filtrar o conjunto de linhas da consulta. As linhas que não satisfaçam esse predicado serão eliminadas do resultado.</p></li>
 <li><p>A cláusula <code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> é utilizada para criar grupos de linhas que são condensadas em uma única linha através das operações de agregação tais como: <code class="docutils literal notranslate"><span class="pre">SUM</span></code>, <code class="docutils literal notranslate"><span class="pre">MIN</span></code>, <code class="docutils literal notranslate"><span class="pre">MAX</span></code>, <code class="docutils literal notranslate"><span class="pre">AVG</span></code>, <code class="docutils literal notranslate"><span class="pre">COUNT</span></code>, entre outras. O <code class="docutils literal notranslate"><span class="pre">elemento_agrupamento</span></code> pode ser o nome de uma coluna ou uma expressão formada a partir das colunas. Também podemos usar os nomes das colunas de saída da consulta nessa cláusula ou até mesmo a posição ordinal da coluna de saída. Quando esta cláusula está presente, apenas as colunas listadas nela ou funções de agregação podem ser usadas na lista da cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code>.</p></li>
 <li><p>A cláusula <code class="docutils literal notranslate"><span class="pre">HAVING</span></code> permite definirmos uma <code class="docutils literal notranslate"><span class="pre">condição</span></code>, isto é, uma <code class="docutils literal notranslate"><span class="pre">expressão</span> <span class="pre">lógica</span></code> ou <code class="docutils literal notranslate"><span class="pre">predicado</span></code>, para filtrar o resutado dos grupos de linhas. Dessa maneira, as linhas resultantes de agrupamentos que não satisfaçam essa condição, são eliminadas do resultado final.</p></li>
-<li><p>A cláusula <code class="docutils literal notranslate"><span class="pre">ORDER</span> <span class="pre">BY</span></code> ordena o resultado final de acordo com a expressão fornecida. Lembrando que a expressão poe ser uma lista de colunas, expressões matemáticas, chamadas de função, ou a posição das colunas de saída de acordo com a lista da cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code>.</p></li>
+<li><p>A cláusula <code class="docutils literal notranslate"><span class="pre">ORDER</span> <span class="pre">BY</span></code> ordena o resultado final de acordo com a expressão fornecida. Lembrando que a expressão pode ser uma lista de colunas, expressões matemáticas, chamadas de função, ou a posição das colunas de saída de acordo com a lista da cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code>.</p></li>
 <li><p>As cláusulas <code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> e <code class="docutils literal notranslate"><span class="pre">OFFSET</span></code> permitem, respectivamente, definir o número máximo de linhas a serem retornadas e o ponto onde esta contagem começa a valer.</p></li>
 </ul>
-<div class="admonition warning">
-<p class="admonition-title">Aviso</p>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
 <p>O comando <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> possui várias outras cláusulas e detalhes. Para saber mais sobre a versão completa deste comando, consulte o seguite tópico do manual do PostgreSQL: <a class="reference external" href="https://www.postgresql.org/docs/14/sql-select.html">SELECT</a>.</p>
 </div>
-<section id="exemplos">
-<h2><span class="section-number">2.14.1. </span>Exemplos<a class="headerlink" href="#exemplos" title="Link permanente para este cabeçalho"></a></h2>
+<section id="consultas-simples">
+<h2><span class="section-number">2.14.1. </span>Consultas Simples<a class="headerlink" href="#consultas-simples" title="Link permanente para este cabeçalho"></a></h2>
+<p>Nesta seção veremos exemplos de consultas que envolvem uma única tabela como entrada.</p>
 <p><strong>1.</strong> Recuperar os dados do estudante <code class="docutils literal notranslate"><span class="pre">Eduardo</span></code>:</p>
-<p><strong>2.</strong> Fazer o produto cartesiano entre as tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>:</p>
-<p><strong>3.</strong> Juntar as linhas correlatas das tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>:</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Eduardo&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> matricula |  nome   | data_nascimento | genero | data_matricula
+-----------+---------+-----------------+--------+----------------
+         1 | Eduardo | 1980-08-04      | M      | 2019-01-01
+(1 row)
+</pre></div>
+</div>
+<p>Nessa consulta usamos três cláusulas:</p>
+<ul class="open">
+<li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span></code>: Nesta cláusula usamos o caracter especial <code class="docutils literal notranslate"><span class="pre">*</span></code> que é expandido para a lista de todas as colunas e, por isso, obtivemos uma linha com 05 valores como mostrado acima.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FROM</span></code>: Nesta cláusula especificamos a tabela <code class="docutils literal notranslate"><span class="pre">estudante</span></code> como fonte da consulta.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WHERE</span></code>: Nesta cláusula especificamos uma expressão lógica que realiza o filtro das linhas desejadas. No exemplo acima, temos apenas um estudante com o nome <code class="docutils literal notranslate"><span class="pre">Eduardo</span></code> e, portanto, somente uma linha satisfaz a condição <code class="docutils literal notranslate"><span class="pre">nome</span> <span class="pre">=</span> <span class="pre">'Eduardo'</span></code>.</p></li>
+</ul>
+</details><hr class="docutils" />
+<p><strong>2.</strong> Recuperar o número de matrícula, nome e a data de matrícula dos estudantes do gênero feminino (<code class="docutils literal notranslate"><span class="pre">F</span></code>):</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">,</span><span class="w"> </span><span class="n">genero</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> matricula |   nome    | data_matricula | genero
+-----------+-----------+----------------+--------
+         2 | Maria     | 2019-02-02     | F
+         4 | Luiza     | 2020-01-05     | F
+         5 | Ana Maria | 2020-01-05     | F
+         6 | Ana Clara | 2020-01-05     | F
+        11 | Carla     | 2019-01-05     | F
+        12 | Telma     | 2020-01-06     | F
+        14 | Lucia     | 2021-01-08     | F
+        15 | Tassiana  | 2021-01-08     | F
+        21 | Joana     | 2022-01-10     | F
+        25 | Marcia    | 2022-01-11     | F
+        28 | Katia     | 2022-01-12     | F
+        30 | Zoraide   | 2022-01-12     | F
+        31 | Roberta   | 2019-01-01     | F
+        34 | Joana     | 2019-01-01     | F
+        35 | Josi      | 2022-01-12     | F
+(15 rows)
+</pre></div>
+</div>
+<p>A cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> da consulta acima contém um subconjunto das colunas da tabela <code class="docutils literal notranslate"><span class="pre">estudante</span></code>: <code class="docutils literal notranslate"><span class="pre">matricula</span></code>, <code class="docutils literal notranslate"><span class="pre">nome</span></code>, <code class="docutils literal notranslate"><span class="pre">data_matricula</span></code> e <code class="docutils literal notranslate"><span class="pre">genero</span></code>. Utilizamos o separador <code class="docutils literal notranslate"><span class="pre">,</span></code> para listar as colunas nessa cláusula. Essa cláusula nos permite, entre outra coisas, controlar a ordem de apresentação das colunas.</p>
+</details><hr class="docutils" />
+<p><strong>3.</strong>  Recuperar o número de matrícula e os três primeiros caracteres do nome dos estudantes matriculados no ano de 2020 do gênero feminino (<code class="docutils literal notranslate"><span class="pre">F</span></code>):</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">left</span><span class="p">(</span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">iniciais_nome</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> matricula | iniciais_nome
+-----------+---------------
+         4 | Lui
+         5 | Ana
+         6 | Ana
+        12 | Tel
+(4 rows)
+</pre></div>
+</div>
+<p>Na consulta acima:</p>
+<ul class="open">
+<li><p>O segundo elemento da cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> utilizou uma função chamada <code class="docutils literal notranslate"><span class="pre">left</span></code> para extrair no máximo três caracteres de um nome. Nesse elemento, também utilizamos a palavra-chave <code class="docutils literal notranslate"><span class="pre">AS</span></code> para criar um novo rótulo para a coluna de saída: <code class="docutils literal notranslate"><span class="pre">iniciais_nome</span></code>.</p></li>
+<li><p>A clausula <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> possui uma expressão usando o <strong>e-lógico</strong> (<code class="docutils literal notranslate"><span class="pre">AND</span></code>). Portanto, apenas as linhas que tenham simultaneamente o caracter <code class="docutils literal notranslate"><span class="pre">F</span></code> como gênero e a parte do ano da data de matricula igual a 2020 serão selecionadas no resultado final.</p></li>
+</ul>
+</details><hr class="docutils" />
+<p><strong>4.</strong>  Recuperar o número de matrícula, o nome e a idade dos estudantes matriculados no ano de 2020 do gênero feminino (<code class="docutils literal notranslate"><span class="pre">F</span></code>):</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><p>Para resolver esta consulta vamos precisar usar a função <code class="docutils literal notranslate"><span class="pre">age</span></code>, que computa um intervalo entre dois instantes de tempo. Considere o exemplo abaixo, onde usamos como referência o tempo do sistema atual (<code class="docutils literal notranslate"><span class="pre">CURRENT_TIMESTAMP</span></code>) e a data de <code class="docutils literal notranslate"><span class="pre">2000-02-01</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2000-02-01&#39;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                   age
+-----------------------------------------
+ 22 years 8 mons 13 days 19:42:10.241783
+(1 row)
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>O exemplo acima deverá retornar um valor diferente dependendo da data e hora e que você estará executando a consulta!</p>
+</div>
+<p>Para tomar apenas a quantidade de anos entre as duas datas, podemos usar a função <code class="docutils literal notranslate"><span class="pre">extract</span></code>, como mostrado abaixo:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;year&#39;</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2000-02-01&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anos</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> anos
+------
+   22
+(1 row)
+</pre></div>
+</div>
+<p>Agora estamos prontos para construir a consulta final:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span><span class="w"> </span><span class="n">data_nascimento</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">idade</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> matricula |   nome    | idade
+-----------+-----------+-------
+         4 | Luiza     |    41
+         5 | Ana Maria |    41
+         6 | Ana Clara |    41
+        12 | Telma     |    39
+(4 rows)
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>5.</strong>  Recuperar o número de matrícula e o nome dos estudantes cujo nome comece com as iniciais <code class="docutils literal notranslate"><span class="pre">jo</span></code>:</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">lower</span><span class="p">(</span><span class="n">nome</span><span class="p">)</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;jo%&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> matricula | nome
+-----------+-------
+         8 | Jose
+        21 | Joana
+        34 | Joana
+        35 | Josi
+(4 rows)
+</pre></div>
+</div>
+<p>Essa consulta utiliza o operador <code class="docutils literal notranslate"><span class="pre">LIKE</span></code>, que pode ser usado com strings. Este operador retorna verdadeiro caso a string à esquerda satisfaça o padrão fornecido à direita. O caracter <code class="docutils literal notranslate"><span class="pre">%</span></code> é um caracer “curinga”, casando com qualquer sequencia de zero ou mais caracteres. Veja mais exemplos de uso desse operador abaixo:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Gilberto&#39;</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%be%&#39;</span><span class="p">;</span><span class="w">       </span><span class="c1">-- retorna verdadeiro</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Gilberta&#39;</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;Gilbert_&#39;</span><span class="p">;</span><span class="w">   </span><span class="c1">-- retorna verdadeiro</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Gilbertas&#39;</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;Gilbert_&#39;</span><span class="p">;</span><span class="w">  </span><span class="c1">-- retorna falso</span>
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>6.</strong>  Recuperar o número de matrícula e o nome dos estudantes que tenham número de matrícula no conjunto <code class="docutils literal notranslate"><span class="pre">{1,</span> <span class="pre">3,</span> <span class="pre">5,</span> <span class="pre">12,</span> <span class="pre">14,</span> <span class="pre">17}</span></code>:</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">matricula</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> matricula |   nome
+-----------+-----------
+         1 | Eduardo
+         3 | Eugenio
+         5 | Ana Maria
+        12 | Telma
+        14 | Lucia
+        17 | Felipe
+(6 rows)
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>7.</strong>  Recuperar o número de matrícula e o nome dos estudantes que <strong>não</strong> estejam no conjunto de matrículas <code class="docutils literal notranslate"><span class="pre">{1,</span> <span class="pre">3,</span> <span class="pre">5,</span> <span class="pre">12,</span> <span class="pre">14,</span> <span class="pre">17}</span></code>:</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">matricula</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>matricula |   nome
+-----------+-----------
+         2 | Maria
+         4 | Luiza
+         6 | Ana Clara
+       ...   ...
+        34 | Joana
+        35 | Josi
+        36 | Antonio
+        37 | Zuleica
+(31 rows)
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="juncao-de-tabelas">
+<h2><span class="section-number">2.14.2. </span>Junção de Tabelas<a class="headerlink" href="#juncao-de-tabelas" title="Link permanente para este cabeçalho"></a></h2>
+<p>Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas como entrada.</p>
+<p><strong>8.</strong> Fazer o produto cartesiano entre as tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>:</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> codigo |   nome   | codigo |      titulo       | creditos | professor_codigo
+--------+----------+--------+-------------------+----------+------------------
+      1 | Romildo  |      1 | Matemática        |        6 |                1
+      1 | Romildo  |      2 | Fisica            |        4 |                1
+      1 | Romildo  |      3 | Bilogia           |        2 |                2
+      1 | Romildo  |      4 | Quimica           |        3 |                3
+      1 | Romildo  |      5 | Geografia         |        2 |                4
+      1 | Romildo  |      6 | Historia          |        2 |                4
+      1 | Romildo  |      7 | Lingua Portuguesa |        4 |                4
+      1 | Romildo  |      8 | Lingua Inglesa    |        2 |                5
+    ...   ...           ...   ...                      ...                ...
+      6 | Cleiton  |      8 | Lingua Inglesa    |        2 |                5
+      6 | Cleiton  |      9 | Lingua Francesa   |        1 |                5
+      6 | Cleiton  |     10 | Ciências          |        1 |                4
+(60 rows)
+</pre></div>
+</div>
+<p>A cláusula <code class="docutils literal notranslate"><span class="pre">FROM</span></code> permite especificarmos uma lista de tabelas (ou itens de dados). Na consulta acima, a cláusula <code class="docutils literal notranslate"><span class="pre">FROM</span></code> realizou o produto cartesiano entre as duas tabelas. Como temos 06 professores e 10 discipllinas, o resultado contém 60 linhas, isto é, todas as linhas da tabela <code class="docutils literal notranslate"><span class="pre">professor</span></code> pareadas com todas as linhas da tabela <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>.</p>
+<p>Repare também que por termos usado o caracter <code class="docutils literal notranslate"><span class="pre">*</span></code> na cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code>, todas as colunas das duas tabelas participaram do resultado final. Na cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> é possível controlar a lista de colunas de saída especificando o nome qualificado da coluna, isto é, o <code class="docutils literal notranslate"><span class="pre">nome-tabela.nome-coluna</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> codigo |   nome   |      titulo
+--------+----------+-------------------
+      1 | Romildo  | Matemática
+      1 | Romildo  | Fisica
+      1 | Romildo  | Bilogia
+      1 | Romildo  | Quimica
+      1 | Romildo  | Geografia
+      1 | Romildo  | Historia
+      1 | Romildo  | Lingua Portuguesa
+      1 | Romildo  | Lingua Inglesa
+    ...   ...        ...
+      6 | Cleiton  | Lingua Inglesa
+      6 | Cleiton  | Lingua Francesa
+      6 | Cleiton  | Ciências
+(60 rows)
+</pre></div>
+</div>
+<p>Nesse último exemplo, o item <code class="docutils literal notranslate"><span class="pre">professor.*</span></code> na cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> é expandido para todas as colunas da tabela <code class="docutils literal notranslate"><span class="pre">professor</span></code> apenas, isto é, as colunas <code class="docutils literal notranslate"><span class="pre">codigo</span></code> e <code class="docutils literal notranslate"><span class="pre">nome</span></code>. Já a expressão <code class="docutils literal notranslate"><span class="pre">disciplina.titulo</span></code> indica que queremos a coluna <code class="docutils literal notranslate"><span class="pre">titulo</span></code> da tabela <code class="docutils literal notranslate"><span class="pre">disciplina</span></code> no resultado.</p>
+</details><hr class="docutils" />
+<p><strong>9.</strong> Juntar as linhas correlatas das tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>:</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>Chamamos este tipo de consulta de <strong>junção entre tabelas</strong>.</p>
 </div>
-<p><strong>4.</strong> Qual o nome das disciplinas cursadas pelo aluno <code class="docutils literal notranslate"><span class="pre">eduardo</span></code>?</p>
-<p><strong>5.</strong> Qual o nome dos professores do aluno <code class="docutils literal notranslate"><span class="pre">eduardo</span></code>?</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> codigo |   nome   | codigo |      titulo       | creditos | professor_codigo
+--------+----------+--------+-------------------+----------+------------------
+      1 | Romildo  |      1 | Matemática        |        6 |                1
+      1 | Romildo  |      2 | Fisica            |        4 |                1
+      2 | Thales   |      3 | Bilogia           |        2 |                2
+      3 | Karine   |      4 | Quimica           |        3 |                3
+      4 | Tamara   |      5 | Geografia         |        2 |                4
+      4 | Tamara   |      6 | Historia          |        2 |                4
+      4 | Tamara   |      7 | Lingua Portuguesa |        4 |                4
+      5 | Carolina |      8 | Lingua Inglesa    |        2 |                5
+      5 | Carolina |      9 | Lingua Francesa   |        1 |                5
+      4 | Tamara   |     10 | Ciências          |        1 |                4
+(10 rows)
+</pre></div>
+</div>
+<p>Repare na saída acima que agora os valores nas linhas para a primeira coluna <code class="docutils literal notranslate"><span class="pre">codigo</span></code> são iguais na coluna <code class="docutils literal notranslate"><span class="pre">professor_codigo</span></code>. Esse exemplo mostra como usar colunas relacionadas para busca da informação apropriada.</p>
+<p>Outra forma de realizar a consulta acima é utilizar a palavra-chave <code class="docutils literal notranslate"><span class="pre">INNER</span> <span class="pre">JOIN</span></code>, como indicado abaixo:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> codigo |   nome   | codigo |      titulo       | creditos | professor_codigo
+--------+----------+--------+-------------------+----------+------------------
+      1 | Romildo  |      1 | Matemática        |        6 |                1
+      1 | Romildo  |      2 | Fisica            |        4 |                1
+      2 | Thales   |      3 | Bilogia           |        2 |                2
+      3 | Karine   |      4 | Quimica           |        3 |                3
+      4 | Tamara   |      5 | Geografia         |        2 |                4
+      4 | Tamara   |      6 | Historia          |        2 |                4
+      4 | Tamara   |      7 | Lingua Portuguesa |        4 |                4
+      5 | Carolina |      8 | Lingua Inglesa    |        2 |                5
+      5 | Carolina |      9 | Lingua Francesa   |        1 |                5
+      4 | Tamara   |     10 | Ciências          |        1 |                4
+(10 rows)
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>10.</strong> Juntar as linhas correlatas das tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>, exibindo também algum professor que não esteja associado a disciplinas:</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><p>Neste caso precisamo fazer um <code class="docutils literal notranslate"><span class="pre">LEFT</span> <span class="pre">OUTER</span> <span class="pre">JOIN</span></code> entre as tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> codigo |   nome   | codigo |      titulo       | creditos | professor_codigo
+--------+----------+--------+-------------------+----------+------------------
+      1 | Romildo  |      1 | Matemática        |        6 |                1
+      1 | Romildo  |      2 | Fisica            |        4 |                1
+      2 | Thales   |      3 | Bilogia           |        2 |                2
+      3 | Karine   |      4 | Quimica           |        3 |                3
+      4 | Tamara   |      5 | Geografia         |        2 |                4
+      4 | Tamara   |      6 | Historia          |        2 |                4
+      4 | Tamara   |      7 | Lingua Portuguesa |        4 |                4
+      5 | Carolina |      8 | Lingua Inglesa    |        2 |                5
+      5 | Carolina |      9 | Lingua Francesa   |        1 |                5
+      4 | Tamara   |     10 | Ciências          |        1 |                4
+<span class="hll">      6 | Cleiton  |        |                   |          |
+</span>(11 rows)
+</pre></div>
+</div>
+<p>Repare na saída acima que o registro (tupla) do professor <code class="docutils literal notranslate"><span class="pre">Cleiton</span></code> apareceu no resultado final, com as colunas da tabela <code class="docutils literal notranslate"><span class="pre">disciplina</span></code> com valores nulo (<code class="docutils literal notranslate"><span class="pre">NULL</span></code>)</p>
+</details><hr class="docutils" />
+<p><strong>11.</strong> Apresente os dados do professor que não está associado a disciplinas</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><p>Neste caso precisamo fazer um <code class="docutils literal notranslate"><span class="pre">LEFT</span> <span class="pre">OUTER</span> <span class="pre">JOIN</span></code> entre as tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="w"></span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nome</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> codigo |  nome   | codigo | titulo | creditos | professor_codigo
+--------+---------+--------+--------+----------+------------------
+      6 | Cleiton |        |        |          |
+(1 row)
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>12.</strong> Liste as linhas correlatas das tabelas <code class="docutils literal notranslate"><span class="pre">estudante</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code> bem como aquelas que não tiverem correspondência:</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><p>Neste caso precisamos utilizar o <code class="docutils literal notranslate"><span class="pre">FULL</span> <span class="pre">OUTER</span> <span class="pre">JOIN</span></code> entre as tabelas <code class="docutils literal notranslate"><span class="pre">estudante</span></code>, <code class="docutils literal notranslate"><span class="pre">estudante_disciplina</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">FULL</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">matricula</span><span class="w"> </span><span class="k">FULL</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> matricula |   nome    | data_nascimento | genero | data_matricula | matricula | codigo |    data    | codigo |      titulo       | creditos | professor_codigo
+-----------+-----------+-----------------+--------+----------------+-----------+--------+------------+--------+-------------------+----------+------------------
+         1 | Eduardo   | 1980-08-04      | M      | 2019-01-01     |         1 |      2 | 2019-06-01 |      2 | Fisica            |        4 |                1
+         1 | Eduardo   | 1980-08-04      | M      | 2019-01-01     |         1 |      1 | 2019-06-01 |      1 | Matemática        |        6 |                1
+         2 | Maria     | 1980-04-03      | F      | 2019-02-02     |         2 |      4 | 2019-06-01 |      4 | Quimica           |        3 |                3
+       ...   ...         ...               ...      ...                    ...      ...   ...             ...   ...                      ...                ...
+        36 | Antonio   | 1976-06-30      | M      | 2019-01-01     |        36 |      5 | 2019-06-01 |      5 | Geografia         |        2 |                4
+<span class="hll">        37 | Zuleica   | 1986-06-30      | M      | 2019-01-01     |           |        |            |        |                   |          |
+</span><span class="hll">           |           |                 |        |                |           |        |            |     10 | Ciências          |        1 |                4
+</span>(75 rows)
+</pre></div>
+</div>
+<p>Repare na saída acima que a estudante <code class="docutils literal notranslate"><span class="pre">Zuleica</span></code> não se encontra matriculada em nenhuma disciplina e que a disciplina de <code class="docutils literal notranslate"><span class="pre">Ciências</span></code> não possui estudante associado.</p>
+</details><hr class="docutils" />
+<p><strong>13.</strong> Qual o nome das disciplinas cursadas pelo aluno <code class="docutils literal notranslate"><span class="pre">Eduardo</span></code>?</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">titulo</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="p">,</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">matricula</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Eduardo&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> matricula |  nome   |   titulo
+-----------+---------+------------
+         1 | Eduardo | Matemática
+         1 | Eduardo | Fisica
+(2 rows)
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>14.</strong> Qual o nome dos professores do aluno <code class="docutils literal notranslate"><span class="pre">eduardo</span></code>?</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_professor</span><span class="p">,</span><span class="w"> </span><span class="n">titulo</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="p">,</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">,</span><span class="w"> </span><span class="n">professor</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">matricula</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Eduardo&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> matricula | nome_estudante | nome_professor |   titulo
+-----------+----------------+----------------+------------
+         1 | Eduardo        | Romildo        | Matemática
+         1 | Eduardo        | Romildo        | Fisica
+(2 rows)
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="consultas-de-agregacao">
+<h2><span class="section-number">2.14.3. </span>Consultas de Agregação<a class="headerlink" href="#consultas-de-agregacao" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>15.</strong> Quantos estudantes estão cadastrados?</p>
+<p><strong>16.</strong> Quantas são as disciplinas?</p>
+<p><strong>17.</strong> Quantos professores estão cadastrados?</p>
+<p><strong>18.</strong> Qual o número de alunos do sexo masculino e feminino?</p>
+<p><strong>19.</strong> Qual o número de alunos em cada ano de matrícula?</p>
+<p><strong>20.</strong> Quantas disciplinas cada aluno cursa?</p>
+<p><strong>21.</strong> Quantos créditos cada aluno cursa?</p>
+<p><strong>22.</strong> Quais alunos cursam três ou mais disciplinas?</p>
+<p><strong>23.</strong> Qual o número de discipinas oferecidas por cada professor?</p>
+<p><strong>24.</strong> Qual aluno que realiza o maior número de créditos e quantos são esses créditos?</p>
+<p><strong>25.</strong> Qual a média de créditos cursados por cada aluno?</p>
+<hr class="docutils" />
 <p class="rubric">Notas</p>
 <dl class="footnote brackets">
 <dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
@@ -198,7 +603,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe8ed5eed30>
+<jinja2.runtime.BlockReference object at 0x7f5465b923d0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

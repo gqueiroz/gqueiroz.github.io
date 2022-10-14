@@ -59,7 +59,8 @@ Vamos inserir as seguintes tuplas na tabela ``estudante``:
                           ('Antonio', '1985-03-04', 'M', '2021-01-08'),
                           ('Joana', '1985-04-04', 'F', '2019-01-01'),
                           ('Josi', '1985-05-04', 'F', '2022-01-12'),
-                          ('Antonio', '1976-06-30', 'M', '2019-01-01');
+                          ('Antonio', '1976-06-30', 'M', '2019-01-01'),
+                          ('Zuleica', '1986-06-30', 'M', '2019-01-01');
 
 
 -----
@@ -80,23 +81,25 @@ Vamos inserir as seguintes tuplas na tabela ``disciplina``:
 
 .. code-block:: sql
 
-    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Matemática', 6, 1);
+    INSERT INTO disciplina (titulo, creditos, professor_codigo) VALUES ('Matemática', 6, 1);
     
-    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Fisica', 4, 1);
+    INSERT INTO disciplina (titulo, creditos, professor_codigo) VALUES ('Fisica', 4, 1);
     
-    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Bilogia', 2, 2);
+    INSERT INTO disciplina (titulo, creditos, professor_codigo) VALUES ('Bilogia', 2, 2);
     
-    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Quimica', 3, 3);
+    INSERT INTO disciplina (titulo, creditos, professor_codigo) VALUES ('Quimica', 3, 3);
     
-    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Geografia', 2, 4);
+    INSERT INTO disciplina (titulo, creditos, professor_codigo) VALUES ('Geografia', 2, 4);
     
-    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Historia', 2, 4);
+    INSERT INTO disciplina (titulo, creditos, professor_codigo) VALUES ('Historia', 2, 4);
     
-    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Lingua Portuguesa', 4, 4);
+    INSERT INTO disciplina (titulo, creditos, professor_codigo) VALUES ('Lingua Portuguesa', 4, 4);
     
-    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Lingua Inglesa', 2, 5);
+    INSERT INTO disciplina (titulo, creditos, professor_codigo) VALUES ('Lingua Inglesa', 2, 5);
     
-    INSERT INTO disciplina (titulo, creditos, codigo_professor) VALUES ('Lingua Francesa', 1, 5);
+    INSERT INTO disciplina (titulo, creditos, professor_codigo) VALUES ('Lingua Francesa', 1, 5);
+    
+    INSERT INTO disciplina (titulo, creditos, professor_codigo) VALUES ('Ciências', 1, 4);
 
 
 -----

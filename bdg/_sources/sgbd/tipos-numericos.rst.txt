@@ -181,12 +181,12 @@ Trabalhando com Tabelas com Colunas Numéricas
 ---------------------------------------------
 
 
-Para ilustrar o uso dos tipos numéricos na definição de colunas de uma tabela, considere um evento de foco de queimada na vegetação. Cada foco será representado por um par de coordenadas (latitude e longitude), o número de dias sem chuva na localização do foco e a potência radiativa do fogo (*Fire Radiative Power*). Podemos então definir uma tabela denominada ``focos`` para armazenar esse tipo de evento através do seguinte comando SQL:
+Para ilustrar o uso dos tipos numéricos na definição de colunas de uma tabela, considere um evento de foco de queimada na vegetação. Cada foco será representado por um par de coordenadas (latitude e longitude), o número de dias sem chuva na localização do foco e a potência radiativa do fogo (*Fire Radiative Power*). Podemos então definir uma tabela denominada ``foco`` para armazenar esse tipo de evento através do seguinte comando SQL:
 
 
 .. code-block:: postgresql
 
-    CREATE TABLE focos
+    CREATE TABLE foco
     (
         latitude            DOUBLE PRECISION,
         longitude           DOUBLE PRECISION,
@@ -205,11 +205,11 @@ Vamos incluir alguns valores na tabela acima:
 
 .. code-block:: sql
 
-    INSERT INTO focos VALUES(-9.41792, -51.65176, 30, 89),
-                            (-6.63565,-51.73956, 28, 103),
-                            (-5.40959,-51.04929, 31, 31.9),
-                            (-7.04535,-52.24566, 27, 44.2),
-                            (-5.67382,-51.89861, 32, 97.8);
+    INSERT INTO foco VALUES(-9.41792, -51.65176, 30, 89),
+                           (-6.63565,-51.73956, 28, 103),
+                           (-5.40959,-51.04929, 31, 31.9),
+                           (-7.04535,-52.24566, 27, 44.2),
+                           (-5.67382,-51.89861, 32, 97.8);
 
 
 Agora, vamos fazer uma consulta para saber a distância euclidiana entre cada um dos focos e a localização da sede municipal de São Félix do Xingu, no Estado do Pará. Para isso adotaremos a localização de latitude -6.645 e longitude -51.995 para a sede municipal e que um grau decimal possui aproximadamente 111 km.
@@ -227,7 +227,22 @@ Agora, vamos fazer uma consulta para saber a distância euclidiana entre cada um
 .. code-block:: sql
 
     SELECT sqrt( (-51.995 - longitude)^2 + (-6.645 - latitude)^2 ) * 111 AS "distancia km"
-      FROM focos;
+      FROM foco;
+
+
+Saída:
+
+
+.. code-block:: text
+
+        distancia km    
+    --------------------
+      310.1431973697054
+      28.37282811719869
+      172.6970687613897
+       52.4303841903731
+     108.33063322746935
+    (5 rows)
 
 
 Exercícios
@@ -237,7 +252,55 @@ Exercícios
 **Exercício 1.** Faça uma consulta SQL que calcule o logaritmo do valor de FRP dos focos.
 
 
+.. collapse:: Solução:
+
+    .. code-block:: sql
+    
+        SELECT latitude, longitude, log(frp) AS log_frp
+          FROM foco;
+
+
+    Saída:
+
+
+    .. code-block:: text
+    
+         latitude | longitude |      log_frp       
+        ----------+-----------+--------------------
+         -9.41792 | -51.65176 | 1.9493900066449128
+         -6.63565 | -51.73956 | 2.0128372247051722
+         -5.40959 | -51.04929 | 1.5037906830571811
+         -7.04535 | -52.24566 | 1.6454222693490919
+         -5.67382 | -51.89861 | 1.9903388547876014
+        (5 rows)
+
+
+-----
+
+
 **Exercício 2:** Qual a média do número de dias sem chuva dos focos?
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+    
+        SELECT avg(num_dias_sem_chuva) AS media_sem_chuva
+          FROM foco;
+
+
+    Saída:
+
+
+    .. code-block:: text
+    
+           media_sem_chuva   
+        ---------------------
+         29.6000000000000000
+        (1 row)
+
+
+-----
 
 
 **Exercício 3:** Crie a tabela abaixo com os valores indicados.
@@ -258,7 +321,7 @@ Exercícios
     +-----------+--------+----------+
     + Amazonas  + 215681 + 203502   +
     +-----------+--------+----------+
-    +  Roraima  + 5509   + 5000     +
+    + Roraima   + 5509   + 5000     +
     +-----------+--------+----------+
     + Pará      + 457659 + 456238   +
     +-----------+--------+----------+
@@ -272,10 +335,102 @@ Exercícios
     +-----------+--------+----------+
 
 
+.. collapse:: Solução:
+
+
+    A tabela ``populacao_1940`` poder ser definida através do seguinte comando ``CREATE TABLE``:
+
+
+    .. code-block:: sql
+    
+        CREATE TABLE populacao_1940
+        (
+            uf       VARCHAR(20),
+            homens   INTEGER,
+            mulheres INTEGER
+        );
+
+
+    Para inserir valores na tabela ``populacao_1940`` usamos o comando ``INSERT TABLE``, como mostrado abaixo:
+    
+    
+    .. code-block:: sql
+    
+        INSERT INTO populacao_1940 VALUES ('Rondônia', 7879, 6538),
+                                          ('Acre', 44079, 35689),
+                                          ('Amazonas', 215681, 203502),
+                                          ('Roraima', 5509, 5000),
+                                          ('Pará', 457659, 456238),
+                                          ('Amapá', 15800, 14947),
+                                          ('Tocantins', 82268, 82128),
+                                          ('Maranhão', 613938, 621231),
+                                          ('Piauí', 404989, 412612);
+
+
+-----
+
+
 **Exercício 4:** Qual o total da população de cada estado?
 
 
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT uf, (homens + mulheres) AS total_populacao
+          FROM populacao_1940;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+
+            uf     | total_populacao 
+        -----------+-----------------
+         Rondônia  |           14417
+         Acre      |           79768
+         Amazonas  |          419183
+         Roraima   |           10509
+         Pará      |          913897
+         Amapá     |           30747
+         Tocantins |          164396
+         Maranhão  |         1235169
+         Piauí     |          809978
+        (9 rows)
+
+
+-----
+
+
 **Exercício 5:** Apresente a população de homens e de mulheres na forma de porcentagem?
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT uf, homens::numeric / (homens + mulheres) * 100 AS pct_homens, mulheres::numeric / (homens + mulheres)* 100 AS pct_mulheres
+          FROM populacao_1940;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+
+            uf     |       pct_homens        |      pct_mulheres       
+        -----------+-------------------------+-------------------------
+         Rondônia  | 54.65075952001109800900 | 45.34924047998890199100
+         Acre      | 55.25900110319927790600 | 44.74099889680072209400
+         Amazonas  | 51.45270681301484077400 | 48.54729318698515922600
+         Roraima   | 52.42173375202207631600 | 47.57826624797792368400
+         Pará      | 50.07774399084360710200 | 49.92225600915639289800
+         Amapá     | 51.38712719940156763300 | 48.61287280059843236700
+         Tocantins | 50.04258011143823450700 | 49.95741988856176549300
+         Maranhão  | 49.70477724100912506700 | 50.29522275899087493300
+         Piauí     | 50.00000000000000000000 | 50.00000000000000000000
+        (9 rows)
 
 
 -----

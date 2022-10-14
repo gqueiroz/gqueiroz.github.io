@@ -188,7 +188,89 @@ Os exercícios desta seção consideram as tabelas criadas na :numref:`Seção %
 **Exercício 1.** Faça uma consulta na tabela ``populacao_1940`` que converta o nome das Unidades da Federação para letras maiúsculas.
 
 
-**Exercício 2.** Liste as Unidades da Federação da tabela ``populacao_1940`` que começam pela letra ``a``.
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT upper(uf) AS uf
+          FROM populacao_1940;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+            uf     
+        -----------
+         RONDÔNIA
+         ACRE
+         AMAZONAS
+         RORAIMA
+         PARÁ
+         AMAPÁ
+         TOCANTINS
+         MARANHÃO
+         PIAUÍ
+        (9 rows)
+
+
+-----
+
+
+**Exercício 2.** Liste as Unidades da Federação da tabela ``populacao_1940`` que começam pela letra ``A``.
+
+
+.. collapse:: Solução:
+
+
+    Usando a função ``left``:
+
+
+    .. code-block:: sql
+
+        SELECT uf
+          FROM populacao_1940
+         WHERE left(uf, 1) = 'A';
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+            uf    
+        ----------
+         Acre
+         Amazonas
+         Amapá
+        (3 rows)
+
+
+    Usando o operador ``LIKE``:
+
+
+    .. code-block:: sql
+
+        SELECT uf
+          FROM populacao_1940
+         WHERE uf LIKE 'A%';
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+            uf    
+        ----------
+         Acre
+         Amazonas
+         Amapá
+        (3 rows)  
+
+
+-----
 
 
 **Exercício 3.** Faça uma consulta na tabela ``populacao_1940`` que apresente a seguinte listagem:
@@ -220,6 +302,34 @@ Os exercícios desta seção consideram as tabelas criadas na :numref:`Seção %
     +--------------------------+--------+----------+
     + Nome: TOCANTINS - Brasil +       t           +
     +--------------------------+--------+----------+
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+           SELECT 'Nome: ' || upper(uf) || ' - Brasil' AS "Estado", homens > mulheres AS "homens > mulheres"
+            FROM populacao_1940
+        ORDER BY "Estado";
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+                  Estado          | homens > mulheres 
+        --------------------------+-------------------
+         Nome: ACRE - Brasil      | t
+         Nome: AMAPÁ - Brasil     | t
+         Nome: AMAZONAS - Brasil  | t
+         Nome: MARANHÃO - Brasil  | f
+         Nome: PARÁ - Brasil      | t
+         Nome: PIAUÍ - Brasil     | f
+         Nome: RONDÔNIA - Brasil  | t
+         Nome: RORAIMA - Brasil   | t
+         Nome: TOCANTINS - Brasil | t
+        (9 rows)
 
 
 -----

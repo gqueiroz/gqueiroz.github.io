@@ -48,6 +48,7 @@ Sistemas de Bancos de Dados Relacionais
     ./atualizando-dados
     ./removendo-dados
     ./criando-views
+    ./esquemas
     ./restricoes-integridade
     ./importando-dados
     ./exportando-dados
