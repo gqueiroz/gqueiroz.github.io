@@ -44,7 +44,6 @@ Sistemas de Bancos de Dados Relacionais
     ./inserindo-dados
     ./consultas
     ./funcoes-operadores
-    ./consultas-agreg
     ./atualizando-dados
     ./removendo-dados
     ./criando-views
