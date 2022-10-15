@@ -1135,8 +1135,10 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
                 36 | Antonio        |               4 |             10
                 37 | Zuleica        |               0 |              0
         (37 rows)
-        
-        
+
+
+-----
+
 
 **25.** Qual estudante realizou o maior número de créditos e quantos são esses créditos?
 
