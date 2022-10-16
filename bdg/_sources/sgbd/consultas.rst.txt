@@ -1376,7 +1376,7 @@ A clásula ``FROM`` permite incluirmos não somenente nomes de tabelas mas tamb�
 .. collapse:: Solução:
 
 
-    Para criar uma consulta que atenda a esta pergunta, podemos utilizar a **consulta 24** como uma subconsulta e então tirar a média com a função ``AVG``:
+    Para criar uma consulta que atenda a esta pergunta, podemos utilizar a :ref:`consulta 24 <cap_sgbd_consultas_24>` como uma subconsulta e então tirar a média com a função ``AVG``:
 
 
     .. code-block:: sql
@@ -1421,10 +1421,10 @@ Funções de Janela (Window Functions)
 ------------------------------------
 
 
-Além das funções de agregação existem funções que operam em um conjunto relacionado de linhas. Essas funções são chamadas de **funções de janela** (**window functions**). Duas funções de janela muito úteis são a função ``rank`` e ``dense_rank``. Vamos explorar o uso da função ``dense_rank`` nessa seção. 
+Além das funções de agregação existem funções que operam em um conjunto relacionado de linhas. Essas funções são chamadas de **funções de janela** (**window functions**). Duas funções de janela muito úteis são: ``rank`` e ``dense_rank``. Vamos explorar o uso da função ``dense_rank`` nessa seção. 
 
 
-**28.** Qual a posição (*ranking*) de cada aluno em relação ao número de créditos cursado?
+**28.** Qual a posição (*ranking*) de cada aluno em relação ao número de créditos cursado ao longo dos anos?
 
 
 .. collapse:: Solução:
@@ -1467,6 +1467,7 @@ Além das funções de agregação existem funções que operam em um conjunto r
 
 
     .. code-block:: sql
+        :emphasize-lines: 2
 
           SELECT estudantes_creditos.*, 
                  dense_rank() OVER (PARTITION BY ano_matricula ORDER BY total_creditos DESC) AS posicao_aluno
@@ -1537,7 +1538,7 @@ Além das funções de agregação existem funções que operam em um conjunto r
         (37 rows)
 
 
-    Repare na consulta que a função de janela ``dense_rank()`` particiona as linhas resultantes da subconsulta pela ``ano_matricula`` e cria um *ranking* baseado na ordem dentro de cada partição pelo valor da coluna ``total_creditos``.
+    Repare na consulta que a função de janela ``dense_rank()`` particiona as linhas resultantes da subconsulta pela coluna de saída ``ano_matricula`` e cria um *ranking* baseado na ordem dentro de cada partição pelo valor da coluna ``total_creditos``.
 
 
     .. tip::
