@@ -727,6 +727,9 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
 - ``MIN``: menor valor na coluna.
 
 
+Nesta seção vamos explorar o uso das cláusulas ``GROUP BY`` e ``HAVING`` na construção de consultas que permitam realizar uma sumarização de valores a partir de grupos de linhas.
+
+
 **15.** Quantos estudantes estão cadastrados?
 
 
@@ -814,7 +817,8 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
 .. collapse:: Solução:
 
 
-    O número de estudantes do sexo masculino:
+    O número de estudantes do sexo masculino pode ser computado com a seguinte consulta:
+
 
     .. code-block:: sql
 
@@ -854,16 +858,68 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
         (1 row)
 
 
+    Outra forma de computar os dois valores numa única consulta consiste em utilizar a cláusula ``GROUP BY`` utilizando os valores da coluna ``genero`` para criação de dois grupos de linhas, como mostrado na :numref:`Figura %s <fig:sgbd:consultas:estudante-group-by-genero>`:
+    
+    
+    .. figure:: ../img/sgbd/estudante-group-by-genero.png
+        :alt: Tabela estudante com linhas agrupadas pelos valores da coluna genero 
+        :width: 60%
+        :figclass: align-center
+        :name: fig:sgbd:consultas:estudante-group-by-genero
+
+        Tabela ``estudante`` com linhas agrupadas pelos valores da coluna ``genero``
+
+
+    Desta forma, podemos construir a seguinte consulta:
+
+
+    .. code-block:: sql
+        :emphasize-lines: 1, 3
+
+          SELECT genero, COUNT(*) AS num_estudantes
+            FROM estudante
+        GROUP BY genero;
+
+
+    Resultado:
+
+
+    .. code-block:: text
+
+
+         genero | num_estudantes 
+        --------+----------------
+         M      |             22
+         F      |             15
+        (2 rows)
+
+
 -----
 
 
-**19.** Qual o número de estudantes em cada ano de matrícula?
+**19.** Qual o número de estudantes matriculados em cada ano?
 
 
 .. collapse:: Solução:
 
 
+    Para esta consulta utilizaremos a cláusula ``GROUP BY`` com os valores de ano da coluna ``data_matricula``. A :numref:`Figura %s <fig:sgbd:consultas:estudante-group-by-ano>` mostra quais os grupos de linhas que serão gerados:
+
+
+    .. figure:: ../img/sgbd/estudante-group-by-ano.png
+        :alt: Tabela estudante com linhas agrupadas pelos valores do ano de matrícula 
+        :width: 60%
+        :figclass: align-center
+        :name: fig:sgbd:consultas:estudante-group-by-ano
+
+        Tabela ``estudante`` com linhas agrupadas pelos valores do ano da coluna ``data_matricula``
+
+
+    Consulta:
+
+
     .. code-block:: sql
+        :emphasize-lines: 1, 5
 
           SELECT extract(year from data_matricula) AS ano, COUNT(*) AS num_estudantes
 
@@ -872,6 +928,7 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
         GROUP BY extract(year from data_matricula)
 
         ORDER BY ano;
+
 
     Saída:
 
@@ -940,13 +997,15 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
 -----
 
 
+.. _cap_sgbd_consultas_21:
+
 **21.** Quais estudantes cursam três ou mais disciplinas?
 
 
 .. collapse:: Solução:
 
 
-    Esta consulta precisará contar o número de disciplinas para cada estudante e em seguida aplica um filtro no resultado do grupo. Isto indica que precisaremos utilizar a cláusula ``HAVING`` como mostrado abaixo:
+    Esta consulta precisará contar o número de disciplinas para cada estudante e em seguida aplicar um filtro no resultado do grupo. Isto indica que precisaremos utilizar a cláusula ``HAVING`` como mostrado abaixo:
     
     
     .. code-block:: sql
@@ -992,7 +1051,7 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
 .. collapse:: Solução:
 
 
-    Esta consulta é muito parecida com a **consulta 21**, com a diferença de que precisaremos acrescentar a cláusula ``WHERE`` para eliminar os estudantes que não sejam do ano de 2020:
+    Esta consulta é muito parecida com a :ref:`consulta 21 <cap_sgbd_consultas_21>`, com a diferença de que precisaremos acrescentar a cláusula ``WHERE`` para selecionar os estudantes que sejam do ano de 2020:
 
 
     .. code-block:: sql
@@ -1064,6 +1123,8 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
 -----
 
 
+.. _cap_sgbd_consultas_24:
+
 **24.** Quantos créditos cada estudante cursa?
 
 
@@ -1105,7 +1166,7 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
         (37 rows)
 
     
-    Repare no resultado acima que a linha destacada possui uma soma nula (``NULL``). A função ``SUM`` assim como as demais funções de agregação com exceção de ``COUNT`` retornam ``NULL`` quando todas as linhas possuem valores nulo. Se nosso intuito é não ter valores nulo no resultado, podemos utilizar a função ``COALESCE`` junto com a função ``SUM``. Veja a nova versão da consulta abaixo:
+    Repare no resultado acima que a linha destacada possui uma soma nula (``NULL``). A função ``SUM`` assim como as demais funções de agregação, com exceção de ``COUNT``, retornam ``NULL`` quando todas as linhas possuem valores nulo. Se nosso intuito é não ter valores nulo no resultado, podemos utilizar a função ``COALESCE`` junto com a função ``SUM``. Veja a nova versão da consulta:
 
 
     .. code-block:: sql
@@ -1150,7 +1211,7 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
 .. collapse:: Solução:
 
 
-    Se alterarmos a cláusula ``ORDER BY`` na **consulta 24**, podemos ordenar de maneira decrescente pela coluna ``total_creditos`` e usar a cláusula ``LIMIT`` para obter apenas a quantidade de linhas desejada:
+    Se alterarmos a cláusula ``ORDER BY`` na :ref:`consulta 24 <cap_sgbd_consultas_24>`, podemos ordenar de maneira decrescente pela coluna ``total_creditos`` e usar a cláusula ``LIMIT`` para obter apenas a quantidade de linhas desejada:
 
 
     .. code-block:: sql
@@ -1262,7 +1323,7 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
         (9 rows)
 
 
-    Podemos ainda ordenar o resultado pelas discplinas mais cursadas e em caso de empate, utilizar a ordem alfabética como critério de desempate:
+    Podemos ainda ordenar o resultado pelas disciplinas mais cursadas e, em caso de empate, utilizar a ordem alfabética como critério de desempate:
 
 
     .. code-block:: sql
@@ -1299,7 +1360,7 @@ Temos vários operadores que trabalham com grupos de registros, sendo muito úte
 
 .. tip::
 
-    Para mais detalhes das consultas de janela, consulte o manual do PostgreSQL nas seções `2.7. Aggregate Functions <https://www.postgresql.org/docs/14/tutorial-agg.html>`__ e `9.21. Aggregate Functions <https://www.postgresql.org/docs/14/functions-aggregate.html>`__.
+    Para mais detalhes das consultas de agregação, consulte o manual do PostgreSQL nas seções `2.7. Aggregate Functions <https://www.postgresql.org/docs/14/tutorial-agg.html>`__ e `9.21. Aggregate Functions <https://www.postgresql.org/docs/14/functions-aggregate.html>`__.
 
 
 Sub-Consultas (Sub-Queries ou Sub-Selects)

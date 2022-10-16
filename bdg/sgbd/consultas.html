@@ -592,6 +592,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">MAX</span></code>: maior valor na coluna.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">MIN</span></code>: menor valor na coluna.</p></li>
 </ul>
+<p>Nesta seção vamos explorar o uso das cláusulas <code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> e <code class="docutils literal notranslate"><span class="pre">HAVING</span></code> na construção de consultas que permitam realizar uma sumarização de valores a partir de grupos de linhas.</p>
 <p><strong>15.</strong> Quantos estudantes estão cadastrados?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Neste caso precisamos apenas usar uma função de agregação que conte o número de linhas de uma tabela, tratando todas as linhas como um único grupo. A função de agregação <code class="docutils literal notranslate"><span class="pre">COUNT</span></code> pode ser usada para esta finalidade:</p>
@@ -637,7 +638,7 @@
 </details><hr class="docutils" />
 <p><strong>18.</strong> Qual o número de estudantes do sexo masculino e feminino?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><p>O número de estudantes do sexo masculino:</p>
+<summary>Solução:</summary><p>O número de estudantes do sexo masculino pode ser computado com a seguinte consulta:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes_masculino</span><span class="w"></span>
 <span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
 <span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">;</span><span class="w"></span>
@@ -663,15 +664,44 @@
 (1 row)
 </pre></div>
 </div>
+<p>Outra forma de computar os dois valores numa única consulta consiste em utilizar a cláusula <code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> utilizando os valores da coluna <code class="docutils literal notranslate"><span class="pre">genero</span></code> para criação de dois grupos de linhas, como mostrado na <a class="reference internal" href="#fig-sgbd-consultas-estudante-group-by-genero"><span class="std std-numref">Figura 2.20</span></a>:</p>
+<figure class="align-center align-default" id="fig-sgbd-consultas-estudante-group-by-genero">
+<a class="reference internal image-reference" href="../_images/estudante-group-by-genero.png"><img alt="Tabela estudante com linhas agrupadas pelos valores da coluna genero" src="../_images/estudante-group-by-genero.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 2.20 - </span><span class="caption-text">Tabela <code class="docutils literal notranslate"><span class="pre">estudante</span></code> com linhas agrupadas pelos valores da coluna <code class="docutils literal notranslate"><span class="pre">genero</span></code></span><a class="headerlink" href="#fig-sgbd-consultas-estudante-group-by-genero" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Desta forma, podemos construir a seguinte consulta:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">genero</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"></span>
+</span><span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
+<span class="hll"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">genero</span><span class="p">;</span><span class="w"></span>
+</span></pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> genero | num_estudantes
+--------+----------------
+ M      |             22
+ F      |             15
+(2 rows)
+</pre></div>
+</div>
 </details><hr class="docutils" />
-<p><strong>19.</strong> Qual o número de estudantes em cada ano de matrícula?</p>
+<p><strong>19.</strong> Qual o número de estudantes matriculados em cada ano?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"></span>
-
+<summary>Solução:</summary><p>Para esta consulta utilizaremos a cláusula <code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> com os valores de ano da coluna <code class="docutils literal notranslate"><span class="pre">data_matricula</span></code>. A <a class="reference internal" href="#fig-sgbd-consultas-estudante-group-by-ano"><span class="std std-numref">Figura 2.21</span></a> mostra quais os grupos de linhas que serão gerados:</p>
+<figure class="align-center align-default" id="fig-sgbd-consultas-estudante-group-by-ano">
+<a class="reference internal image-reference" href="../_images/estudante-group-by-ano.png"><img alt="Tabela estudante com linhas agrupadas pelos valores do ano de matrícula" src="../_images/estudante-group-by-ano.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 2.21 - </span><span class="caption-text">Tabela <code class="docutils literal notranslate"><span class="pre">estudante</span></code> com linhas agrupadas pelos valores do ano da coluna <code class="docutils literal notranslate"><span class="pre">data_matricula</span></code></span><a class="headerlink" href="#fig-sgbd-consultas-estudante-group-by-ano" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Consulta:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"></span>
+</span>
 <span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
 
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"></span>
-
+<span class="hll"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"></span>
+</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ano</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
@@ -718,9 +748,9 @@
 <p>Repare a diferença do resultado das formas da função de agregação <code class="docutils literal notranslate"><span class="pre">COUNT</span></code> na linha destacada acima.</p>
 </div>
 </details><hr class="docutils" />
-<p><strong>21.</strong> Quais estudantes cursam três ou mais disciplinas?</p>
+<p id="cap-sgbd-consultas-21"><strong>21.</strong> Quais estudantes cursam três ou mais disciplinas?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><p>Esta consulta precisará contar o número de disciplinas para cada estudante e em seguida aplica um filtro no resultado do grupo. Isto indica que precisaremos utilizar a cláusula <code class="docutils literal notranslate"><span class="pre">HAVING</span></code> como mostrado abaixo:</p>
+<summary>Solução:</summary><p>Esta consulta precisará contar o número de disciplinas para cada estudante e em seguida aplicar um filtro no resultado do grupo. Isto indica que precisaremos utilizar a cláusula <code class="docutils literal notranslate"><span class="pre">HAVING</span></code> como mostrado abaixo:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="n">INNET</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
@@ -751,7 +781,7 @@
 </details><hr class="docutils" />
 <p><strong>22.</strong> Quais estudantes matriculados no ano de 2020 cursam três ou mais disciplinas?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><p>Esta consulta é muito parecida com a <strong>consulta 21</strong>, com a diferença de que precisaremos acrescentar a cláusula <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> para eliminar os estudantes que não sejam do ano de 2020:</p>
+<summary>Solução:</summary><p>Esta consulta é muito parecida com a <a class="reference internal" href="#cap-sgbd-consultas-21"><span class="std std-ref">consulta 21</span></a>, com a diferença de que precisaremos acrescentar a cláusula <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> para selecionar os estudantes que sejam do ano de 2020:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="n">INNET</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
@@ -800,7 +830,7 @@
 </pre></div>
 </div>
 </details><hr class="docutils" />
-<p><strong>24.</strong> Quantos créditos cada estudante cursa?</p>
+<p id="cap-sgbd-consultas-24"><strong>24.</strong> Quantos créditos cada estudante cursa?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Para solução dessa consulta precisaremos das seguintes tabelas: <code class="docutils literal notranslate"><span class="pre">estudante</span></code>, <code class="docutils literal notranslate"><span class="pre">estudante_disciplina</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>.</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"></span>
@@ -828,7 +858,7 @@
 </span>(37 rows)
 </pre></div>
 </div>
-<p>Repare no resultado acima que a linha destacada possui uma soma nula (<code class="docutils literal notranslate"><span class="pre">NULL</span></code>). A função <code class="docutils literal notranslate"><span class="pre">SUM</span></code> assim como as demais funções de agregação com exceção de <code class="docutils literal notranslate"><span class="pre">COUNT</span></code> retornam <code class="docutils literal notranslate"><span class="pre">NULL</span></code> quando todas as linhas possuem valores nulo. Se nosso intuito é não ter valores nulo no resultado, podemos utilizar a função <code class="docutils literal notranslate"><span class="pre">COALESCE</span></code> junto com a função <code class="docutils literal notranslate"><span class="pre">SUM</span></code>. Veja a nova versão da consulta abaixo:</p>
+<p>Repare no resultado acima que a linha destacada possui uma soma nula (<code class="docutils literal notranslate"><span class="pre">NULL</span></code>). A função <code class="docutils literal notranslate"><span class="pre">SUM</span></code> assim como as demais funções de agregação, com exceção de <code class="docutils literal notranslate"><span class="pre">COUNT</span></code>, retornam <code class="docutils literal notranslate"><span class="pre">NULL</span></code> quando todas as linhas possuem valores nulo. Se nosso intuito é não ter valores nulo no resultado, podemos utilizar a função <code class="docutils literal notranslate"><span class="pre">COALESCE</span></code> junto com a função <code class="docutils literal notranslate"><span class="pre">SUM</span></code>. Veja a nova versão da consulta:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"></span>
 <span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"></span>
 <span class="hll"><span class="w">         </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"></span>
@@ -857,7 +887,7 @@
 </details><hr class="docutils" />
 <p><strong>25.</strong> Qual estudante realizou o maior número de créditos e quantos são esses créditos?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><p>Se alterarmos a cláusula <code class="docutils literal notranslate"><span class="pre">ORDER</span> <span class="pre">BY</span></code> na <strong>consulta 24</strong>, podemos ordenar de maneira decrescente pela coluna <code class="docutils literal notranslate"><span class="pre">total_creditos</span></code> e usar a cláusula <code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> para obter apenas a quantidade de linhas desejada:</p>
+<summary>Solução:</summary><p>Se alterarmos a cláusula <code class="docutils literal notranslate"><span class="pre">ORDER</span> <span class="pre">BY</span></code> na <a class="reference internal" href="#cap-sgbd-consultas-24"><span class="std std-ref">consulta 24</span></a>, podemos ordenar de maneira decrescente pela coluna <code class="docutils literal notranslate"><span class="pre">total_creditos</span></code> e usar a cláusula <code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> para obter apenas a quantidade de linhas desejada:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"></span>
 <span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"></span>
 <span class="w">         </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"></span>
@@ -939,7 +969,7 @@
 (9 rows)
 </pre></div>
 </div>
-<p>Podemos ainda ordenar o resultado pelas discplinas mais cursadas e em caso de empate, utilizar a ordem alfabética como critério de desempate:</p>
+<p>Podemos ainda ordenar o resultado pelas disciplinas mais cursadas e, em caso de empate, utilizar a ordem alfabética como critério de desempate:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"></span>
 <span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span><span class="w"></span>
 <span class="w">         </span><span class="n">disciplina</span><span class="w"></span>
@@ -967,7 +997,7 @@
 </details><hr class="docutils" />
 <div class="admonition tip">
 <p class="admonition-title">Dica</p>
-<p>Para mais detalhes das consultas de janela, consulte o manual do PostgreSQL nas seções <a class="reference external" href="https://www.postgresql.org/docs/14/tutorial-agg.html">2.7. Aggregate Functions</a> e <a class="reference external" href="https://www.postgresql.org/docs/14/functions-aggregate.html">9.21. Aggregate Functions</a>.</p>
+<p>Para mais detalhes das consultas de agregação, consulte o manual do PostgreSQL nas seções <a class="reference external" href="https://www.postgresql.org/docs/14/tutorial-agg.html">2.7. Aggregate Functions</a> e <a class="reference external" href="https://www.postgresql.org/docs/14/functions-aggregate.html">9.21. Aggregate Functions</a>.</p>
 </div>
 </section>
 <section id="sub-consultas-sub-queries-ou-sub-selects">
@@ -1254,7 +1284,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fb2f1ee12b0>
+<jinja2.runtime.BlockReference object at 0x7f8a3426f730>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 
