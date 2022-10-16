@@ -9,7 +9,7 @@ Consultas em SQL
 ================
 
 
-Na linguagem ``SQL``, o comando ``SELECT`` é utilizado para recuperação de dados das tabelas. A sintaxe geral deste comando\ [#f1]_ é a seguinte:
+Na linguagem ``SQL``, o comando ``SELECT`` é utilizado para recuperação de dados das tabelas. A sintaxe geral deste comando é a seguinte:
 
 
 .. code-block:: text
@@ -38,7 +38,7 @@ O comando ``SELECT`` é formado por várias cláusulas: ``SELECT``, ``FROM``, ``
 
 - Tudo que está entre os pares de colchetes (``[`` e ``]``) é opcional.
 
-- A cláusula ``SELECT`` permite especificar a lista de expressões, isto é, nomes de colunas ou fórmulas matemáticas ou chamadas de função ou até mesmo sub-consultas, que farão parte das linhas de saída da consulta. A palavra-chave ``DISTINCT`` faz com que linhas com valores duplicados sejam removidas do resultado, ficando apenas uma linha do grupo de linhas repetidas. ``DISTINCT ON ( expressão [, ...])`` tem um comportamento semelhante, mas considerando apenas a lista de expressões fornecida. A palavra-chave ``ALL`` inclui todas as linhas do resultado, que é o comportamento padrão e, portanto, pode ser omitida. A palavra chave ``AS`` possibilita renomearmos uma coluna ou expressão com um novo ``rótulo``. O caractere ``*`` é uma abreviação para a lista de todas as colunas dos conjuntos de dados presentes na cláusula ``FROM``.
+- A cláusula ``SELECT`` permite especificar a lista de expressões, isto é, nomes de colunas ou fórmulas matemáticas ou chamadas de função ou até mesmo sub-consultas, que farão parte das linhas de saída da consulta. A palavra-chave ``DISTINCT`` faz com que linhas com valores duplicados sejam removidas do resultado, ficando apenas uma linha do grupo de linhas repetidas. ``DISTINCT ON ( expressão [, ...])`` tem um comportamento semelhante, mas considerando apenas a lista de expressões fornecida. A palavra-chave ``ALL`` inclui todas as linhas do resultado, que é o comportamento padrão e, portanto, pode ser omitida. A palavra-chave ``AS`` possibilita renomear uma coluna ou expressão com um novo ``rótulo``. O caractere ``*`` é uma abreviação para a lista de todas as colunas dos conjuntos de dados presentes na cláusula ``FROM``.
 
 - A cláusula ``FROM`` especifica uma ou mais tabelas como fonte dos dados da consulta. Caso múltiplas tabelas sejam especificadas, o resultado é um produto cartesiano (ou ``CROSS JOIN``) de todas as tabelas envolvidas. No entanto, é muito comum o uso de uma cláusula ``WHERE`` para restringir as linhas retornadas a um subconjunto menor desse produto cartesiano. Vale ressaltar que na cláusula ``FROM``, o ``from_item`` pode ser o nome de uma tabela do banco de dados, o nome de uma *view* (visão), uma sub-consulta, ou até mesmo uma chamada de função que produza valores que são tratados como um conjunto de linhas. Portanto, a cláusula ``FROM`` faz o produto cartesiano dos conjuntos de dados informados.
 
@@ -46,16 +46,16 @@ O comando ``SELECT`` é formado por várias cláusulas: ``SELECT``, ``FROM``, ``
 
 - A cláusula ``GROUP BY`` é utilizada para criar grupos de linhas que são condensadas em uma única linha através das operações de agregação tais como: ``SUM``, ``MIN``, ``MAX``, ``AVG``, ``COUNT``, entre outras. O ``elemento_agrupamento`` pode ser o nome de uma coluna ou uma expressão formada a partir das colunas. Também podemos usar os nomes das colunas de saída da consulta nessa cláusula ou até mesmo a posição ordinal da coluna de saída. Quando esta cláusula está presente, apenas as colunas listadas nela ou funções de agregação podem ser usadas na lista da cláusula ``SELECT``.
 
-- A cláusula ``HAVING`` permite definirmos uma ``condição``, isto é, uma ``expressão lógica`` ou ``predicado``, para filtrar o resutado dos grupos de linhas. Dessa maneira, as linhas resultantes de agrupamentos que não satisfaçam essa condição, são eliminadas do resultado final.
+- A cláusula ``HAVING`` permite definir uma ``condição``, isto é, uma ``expressão lógica`` ou ``predicado``, para filtrar o resutado dos grupos de linhas. Dessa maneira, as linhas resultantes de agrupamentos que não satisfaçam essa condição, são eliminadas do resultado final.
 
 - A cláusula ``ORDER BY`` ordena o resultado final de acordo com a expressão fornecida. Lembrando que a expressão pode ser uma lista de colunas, expressões matemáticas, chamadas de função, ou a posição das colunas de saída de acordo com a lista da cláusula ``SELECT``.
 
 - As cláusulas ``LIMIT`` e ``OFFSET`` permitem, respectivamente, definir o número máximo de linhas a serem retornadas e o ponto onde esta contagem começa a valer.
 
 
-.. tip::
+.. note::
 
-    O comando ``SELECT`` possui várias outras cláusulas e detalhes. Para saber mais sobre a versão completa deste comando, consulte o seguite tópico do manual do PostgreSQL: `SELECT <https://www.postgresql.org/docs/14/sql-select.html>`__.
+    A sintaxe do comando de seleção apresentada acima foi feita de maneira simplificada. Para a versão completa, consulte o seguite tópico do manual do PostgreSQL: `SELECT <https://www.postgresql.org/docs/14/sql-select.html>`__.
 
 
 Consultas Simples
@@ -209,7 +209,7 @@ Nesta seção veremos exemplos de consultas que envolvem uma única tabela como 
 
     .. warning::
     
-        O exemplo acima deverá retornar um valor diferente dependendo da data e hora e que você estará executando a consulta!
+        O exemplo acima deverá retornar um valor diferente dependendo da data e hora em que você estará executando a consulta!
 
 
     Para tomar apenas a quantidade de anos entre as duas datas, podemos usar a função ``extract``, como mostrado abaixo:
@@ -285,7 +285,7 @@ Nesta seção veremos exemplos de consultas que envolvem uma única tabela como 
         (4 rows)
         
 
-    Essa consulta utiliza o operador ``LIKE``, que pode ser usado com strings. Este operador retorna verdadeiro caso a string à esquerda satisfaça o padrão fornecido à direita. O caracter ``%`` é um caracer "curinga", casando com qualquer sequencia de zero ou mais caracteres. Veja mais exemplos de uso desse operador abaixo:
+    Essa consulta utiliza o operador ``LIKE``, que pode ser usado com strings. Este operador retorna verdadeiro caso a string à esquerda satisfaça o padrão fornecido à direita. O caractere ``%`` é um caractere especial, casando com qualquer sequencia de zero ou mais caracteres. Veja mais exemplos de uso desse operador abaixo:
     
     .. code-block:: sql
     
@@ -411,10 +411,10 @@ Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas co
         (60 rows)
 
 
-    A cláusula ``FROM`` permite especificarmos uma lista de tabelas (ou itens de dados). Na consulta acima, a cláusula ``FROM`` realizou o produto cartesiano entre as duas tabelas. Como temos 06 professores e 10 discipllinas, o resultado contém 60 linhas, isto é, todas as linhas da tabela ``professor`` pareadas com todas as linhas da tabela ``disciplina``. 
+    A cláusula ``FROM`` permite especificar uma lista de tabelas (ou itens de dados). Na consulta acima, a cláusula ``FROM`` realizou o produto cartesiano entre as duas tabelas. Como temos 06 professores e 10 discipllinas, o resultado contém 60 linhas, isto é, todas as linhas da tabela ``professor`` pareadas com todas as linhas da tabela ``disciplina``. 
     
     
-    Repare também que por termos usado o caracter ``*`` na cláusula ``SELECT``, todas as colunas das duas tabelas participaram do resultado final. Na cláusula ``SELECT`` é possível controlar a lista de colunas de saída especificando o nome qualificado da coluna, isto é, o ``nome-tabela.nome-coluna``:
+    Repare também que por termos usado o caractere ``*`` na cláusula ``SELECT``, todas as colunas das duas tabelas participaram do resultado final. Na cláusula ``SELECT`` é possível controlar a lista de colunas de saída especificando o nome qualificado da coluna, isto é, o ``nome-tabela.nome-coluna``:
 
 
     .. code-block:: sql
@@ -445,7 +445,7 @@ Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas co
         (60 rows)
 
 
-    Nesse último exemplo, o item ``professor.*`` na cláusula ``SELECT`` é expandido para todas as colunas da tabela ``professor`` apenas, isto é, as colunas ``codigo`` e ``nome``. Já a expressão ``disciplina.titulo`` indica que queremos a coluna ``titulo`` da tabela ``disciplina`` no resultado.
+    Nesse último exemplo, o item ``professor.*`` na cláusula ``SELECT`` é expandido para todas as colunas da tabela ``professor``, isto é, as colunas ``codigo`` e ``nome``. Já a expressão ``disciplina.titulo`` indica que queremos a coluna ``titulo`` da tabela ``disciplina`` no resultado.
 
 
 -----
@@ -522,6 +522,8 @@ Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas co
 -----
 
 
+.. _cap_sgbd_consultas_10:
+
 **10.** Juntar as linhas correlatas das tabelas ``professor`` e ``disciplina``, exibindo também algum professor que não esteja associado a disciplinas:
 
 
@@ -529,9 +531,9 @@ Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas co
 .. collapse:: Solução:
 
 
-    Neste caso precisamo fazer um ``LEFT OUTER JOIN`` entre as tabelas ``professor`` e ``disciplina``:
+    Neste caso será necessário utilizar um tipo de junção (``JOIN``) que garanta que as linhas da tabela ``professor`` apareçam no resultado pelo menos uma vez, mesmo não havendo correspondência na tabela ``disciplina``. O tipo de junção necessária é conhecida como ``LEFT OUTER JOIN``:
 
-    
+
     .. code-block:: sql
 
         SELECT *
@@ -560,22 +562,23 @@ Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas co
         (11 rows)
 
 
-    Repare na saída acima que o registro (tupla) do professor ``Cleiton`` apareceu no resultado final, com as colunas da tabela ``disciplina`` com valores nulo (``NULL``)
+    Repare na saída acima que a linha (registro ou tupla) do professor ``Cleiton`` apareceu no resultado final, com as colunas da tabela ``disciplina`` preenchidas com valor nulo (``NULL``).
 
 
 -----
 
 
-**11.** Apresente os dados do professor que não está associado a disciplinas
+**11.** Liste os professores que não estão associados a disciplinas:
 
 
 .. collapse:: Solução:
 
 
-    Neste caso precisamo fazer um ``LEFT OUTER JOIN`` entre as tabelas ``professor`` e ``disciplina``:
+    Podemos utilizar uma estratégia semelhante à da :ref:`consulta 10 <cap_sgbd_consultas_10>`, usando ``LEFT OUTER JOIN`` entre as tabelas ``professor`` e ``disciplina``, acrescentando um predicado (ou filtro) com a cláusula ``WHERE`` que verifique se o ``codigo`` da tabela ``disciplina`` é ``NULL``:
 
-    
+
     .. code-block:: sql
+        :emphasize-lines: 3
 
           SELECT *
             FROM professor LEFT JOIN disciplina ON professor.codigo = disciplina.professor_codigo
@@ -603,13 +606,14 @@ Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas co
 .. collapse:: Solução:
 
 
-    Neste caso precisamos utilizar o ``FULL OUTER JOIN`` entre as tabelas ``estudante``, ``estudante_disciplina`` e ``disciplina``:
+    Neste caso precisamos utilizar o ``FULL OUTER JOIN`` entre as tabelas ``estudante``, ``estudante_disciplina`` e ``disciplina``, para que os estudantes que não estejam associados a disciplinas sejam listados, bem como as disciplinas que não tiverem estudantes associados:
 
-    
+
     .. code-block:: sql
 
         SELECT *
-          FROM estudante FULL OUTER JOIN estudante_disciplina ON estudante.matricula = estudante_disciplina.matricula FULL OUTER JOIN disciplina ON estudante_disciplina.codigo = disciplina.codigo;    
+          FROM estudante FULL OUTER JOIN estudante_disciplina ON (estudante.matricula = estudante_disciplina.matricula)
+                         FULL OUTER JOIN disciplina ON (estudante_disciplina.codigo = disciplina.codigo);    
 
 
     Saída:
@@ -636,7 +640,7 @@ Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas co
 -----
 
 
-**13.** Qual o nome das disciplinas cursadas pelo aluno ``Eduardo``?
+**13.** Qual o nome das disciplinas cursadas pelo estudante ``Eduardo``?
 
 
 .. collapse:: Solução:
@@ -667,7 +671,7 @@ Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas co
 -----
 
 
-**14.** Qual o nome dos professores do aluno ``eduardo``?
+**14.** Qual o nome dos professores do estudante ``Eduardo``?
 
 
 .. collapse:: Solução:
@@ -701,7 +705,7 @@ Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas co
 
 .. tip::
 
-    Para mais detalhes das consultas de janela, consulte o manual do PostgreSQL nas seções `2.6. Joins Between Tables <https://www.postgresql.org/docs/14/tutorial-join.html>`__ e `7.2. Table Expressions <https://www.postgresql.org/docs/14/queries-table-expressions.html>`__.
+    Para mais detalhes das consultas com junção entre tabelas, consulte o manual do PostgreSQL nas seções `2.6. Joins Between Tables <https://www.postgresql.org/docs/14/tutorial-join.html>`__ e `7.2. Table Expressions <https://www.postgresql.org/docs/14/queries-table-expressions.html>`__.
 
 
 Consultas de Agregação
@@ -1653,11 +1657,3 @@ Além das funções de agregação existem funções que operam em um conjunto r
 .. tip::
 
     Para mais detalhes das consultas de janela, consulte o manual do PostgreSQL nas seções `3.5. Window Functions <https://www.postgresql.org/docs/14/tutorial-window.html>`__ e `9.22. Window Functions <https://www.postgresql.org/docs/14/functions-window.html>`__.
-
-
-.. rubric:: Notas
-
-
-.. [#f1]
-
-    Trata-se de uma versão simplificada da sintaxe de consultas ``SELECT``. Para a versão completa, consulte o seguite tópico do manual do PostgreSQL: `SELECT <https://www.postgresql.org/docs/14/sql-select.html>`__.
