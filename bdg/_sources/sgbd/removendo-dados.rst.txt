@@ -9,22 +9,58 @@ Removendo Dados
 ===============
 
 
-Exemplos:
+O comando SQL ``DELETE`` permite remover linhas de uma tabela. A sintaxe básica desse comando é a seguinte:
 
 
-**1.** Eliminando o estudante de código de matrícula ``11``:
+.. code-block:: text
+
+    DELETE FROM nome-tabela [ WHERE <expressão> ];
+
+
+.. tip::
+
+    A sintaxe completa do comando de remoção de linhas pode ser vista no manual do PostgreSQL: `DELETE <https://www.postgresql.org/docs/14/sql-delete.html>`__.
+
+
+Exemplos
+--------
+
+
+**1.** Eliminando o estudante de código de matrícula ``37``:
 
 
 .. code-block:: sql
 
-    DELETE FROM estudante WHERE matricula = 11;
+    DELETE FROM estudante WHERE matricula = 37;
 
 
-**2.** Eliminando a disciplina de ``Bilogia``:
+-----
+
+
+**2.** Eliminando a associação entre o estudante de matrícula ``36`` e a disciplina ``Lingua Inglesa``:
+
+
+Neste caso estamos supondo que exista apenas uma disciplina com o título ``Lingua Inglesa``.
 
 
 .. code-block:: sql
 
-    DELETE FROM disciplina WHERE titulo = 'Bilogia';
+    DELETE FROM estudante_disciplina 
+          WHERE matricula = 36
+            AND codigo = (SELECT codigo FROM disciplina WHERE titulo = 'Lingua Inglesa');
 
 
+.. warning::
+
+    Tome muito cuidado ao usar subconsultas como no exemplo acima para não remover linhas erradas de sua tabela. Prefira usar valores de chave primária para ter certeza de estar eliminando a linha correta.
+
+
+-----
+
+
+**3.** Removendo a associação entre os estudantes e disciplinas do ano de 2021:
+
+
+.. code-block:: sql
+
+    DELETE FROM estudante_disciplina WHERE extract(year from data) = 2021;

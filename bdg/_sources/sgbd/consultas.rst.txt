@@ -1719,3 +1719,53 @@ Além das funções de agregação existem funções que operam em um conjunto r
 .. tip::
 
     Para mais detalhes das consultas de janela, consulte o manual do PostgreSQL nas seções `3.5. Window Functions <https://www.postgresql.org/docs/14/tutorial-window.html>`__ e `9.22. Window Functions <https://www.postgresql.org/docs/14/functions-window.html>`__.
+    
+
+-----
+
+
+Criando Tabelas a partir de Consultas
+-------------------------------------
+
+
+Podemos utilizar os comandos ``CREATE TABLE`` e ``SELECT`` em conjunto, para criar tabelas a partir do resultado de consultas.
+
+
+A sintaxe básica desse comando é a seguinte:
+
+
+.. code-block:: text
+
+    CREATE TABLE nome-tabela AS consulta;
+
+
+Vamos criar uma tabela chamada ``prof_disciplina`` a partir da relação entre professores e disciplinas:
+
+
+.. code-block:: sql
+
+    CREATE TABLE prof_disciplina AS
+
+        SELECT professor.nome, disciplina.* 
+          FROM professor INNER JOIN disciplina ON professor.codigo = disciplina.professor_codigo;
+
+
+Se realizarmos uma consulta na nova tabela criada ``prof_disciplina``, obteremos o seguinte resultado:
+
+
+.. code-block:: text
+
+       nome   | codigo |      titulo       | creditos | professor_codigo 
+    ----------+--------+-------------------+----------+------------------
+     Romildo  |      1 | Matemática        |        6 |                1
+     Romildo  |      2 | Fisica            |        4 |                1
+     Thales   |      3 | Bilogia           |        2 |                2
+     Karine   |      4 | Quimica           |        3 |                3
+     Tamara   |      5 | Geografia         |        2 |                4
+     Tamara   |      6 | Historia          |        2 |                4
+     Tamara   |      7 | Lingua Portuguesa |        4 |                4
+     Carolina |      8 | Lingua Inglesa    |        2 |                5
+     Carolina |      9 | Lingua Francesa   |        1 |                5
+     Tamara   |     10 | Ciências          |        1 |                4
+    (10 rows)
+

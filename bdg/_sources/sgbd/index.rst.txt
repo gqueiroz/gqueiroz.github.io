@@ -43,15 +43,13 @@ Sistemas de Bancos de Dados Relacionais
     ./criando-tabelas
     ./inserindo-dados
     ./consultas
-    ./funcoes-operadores
     ./atualizando-dados
     ./removendo-dados
+    ./restricoes-integridade
     ./criando-views
     ./esquemas
-    ./restricoes-integridade
+    ./removendo-objetos
+    ./alterando-estrutura
     ./importando-dados
     ./exportando-dados
-    ./alterando-estrutura
-
-
 

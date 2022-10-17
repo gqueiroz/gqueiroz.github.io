@@ -9,16 +9,37 @@ Atualizando Dados
 =================
 
 
-Exemplos:
+O comando SQL ``UPDATE`` permite atualizar linhas de uma tabela. A sintaxe básica desse comando é a seguinte:
 
 
-**1.** Alterando o número de creditos de todas as disciplinas para 04:
+.. code-block:: text
+
+    UPDATE nome-tabela SET coluna-1 = novo-valor [, coluna-2 = novo-valor] [ WHERE <expressão> ];
+
+
+.. tip::
+
+    A sintaxe completa do comando de atualização de linhas pode ser vista no manual do PostgreSQL: `UPDATE <https://www.postgresql.org/docs/14/sql-update.html>`__.
+
+
+Exemplos
+--------
+
+
+**1.** Alterando o número de créditos de todas as disciplinas para 04:
 
 
 .. code-block:: sql
 
-    UPDATE disciplina
-       SET creditos = 4;
+    UPDATE disciplina SET creditos = 4;
+
+
+.. note::
+
+    Este comando é executado pelo PostgreSQL em uma única transação. Isso garante que somente após todas as linhas serem alteradas sem a ocorrência de erros, o resultado seja refletido de fato no banco de dados. Se durante a execução desse comando ocorrer um erro, por exemplo, como queda de energia, o servidor ao voltar a funcionar, irá preservar os valores antes desse comando.
+
+
+-----
 
 
 **2.** Alterando o nome da disciplina ``Matemática`` para ``Matemática Avançada``:
@@ -27,5 +48,37 @@ Exemplos:
 .. code-block:: sql
 
     UPDATE disciplina
-       SET titulo = 'Matemática'
-     WHERE titulo = 'Matemática Avançada';
+       SET titulo = 'Matemática Avançada'
+     WHERE codigo = 1;
+
+
+.. note::
+
+    Neste exemplo, apenas a linha de código 1 na tabela ``disciplina`` é alterada.
+
+
+-----
+
+
+**3.** Alterando a linha da disciplina ``Quimica``:
+
+
+Podemos usar uma notação onde especificamos a lista de colunas a serem alteradas e os novos valores:
+
+
+.. code-block:: sql
+
+    UPDATE disciplina
+       SET (titulo, creditos, professor_codigo) = ('Quimica Organiza', 3, 6)
+     WHERE codigo = 4;
+
+
+ou, utilizar pares ``coluna = valor``:
+
+
+.. code-block:: sql
+
+    UPDATE disciplina
+       SET titulo = 'Quimica Organiza', creditos = 3, professor_codigo = 6
+     WHERE codigo = 4;
+

@@ -30,7 +30,7 @@
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
     <link rel="next" title="2.19. Esquemas" href="esquemas.html" />
-    <link rel="prev" title="2.17. Removendo Dados" href="removendo-dados.html" /> 
+    <link rel="prev" title="2.17. Restrições de Integridade" href="restricoes-integridade.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -70,15 +70,15 @@
 <li class="toctree-l2"><a class="reference internal" href="criando-tabelas.html">2.12. Criando Tabelas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inserindo-dados.html">2.13. Inserindo Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="consultas.html">2.14. Consultas em SQL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="funcoes-operadores.html">2.15. Funções e Operadores</a></li>
-<li class="toctree-l2"><a class="reference internal" href="atualizando-dados.html">2.16. Atualizando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="removendo-dados.html">2.17. Removendo Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atualizando-dados.html">2.15. Atualizando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removendo-dados.html">2.16. Removendo Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.17. Restrições de Integridade</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">2.18. Criando Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="esquemas.html">2.19. Esquemas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.20. Restrições de Integridade</a></li>
-<li class="toctree-l2"><a class="reference internal" href="importando-dados.html">2.21. Importando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.22. Exportando Dados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.23. Alterando a Estrutura de uma Tabela</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removendo-objetos.html">2.20. Removendo Objetos do Banco de Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.21. Alterando a Estrutura de uma Tabela</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importando-dados.html">2.22. Importando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.23. Exportando Dados</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
@@ -123,7 +123,7 @@
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
-        <a href="removendo-dados.html" class="btn btn-neutral float-left" title="2.17. Removendo Dados" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="restricoes-integridade.html" class="btn btn-neutral float-left" title="2.17. Restrições de Integridade" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
         <a href="esquemas.html" class="btn btn-neutral float-right" title="2.19. Esquemas" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
@@ -133,13 +133,88 @@
              
   <section id="criando-views">
 <span id="cap-sgbd-criando-views"></span><h1><span class="section-number">2.18. </span>Criando Views<a class="headerlink" href="#criando-views" title="Link permanente para este cabeçalho"></a></h1>
+<p>Os SGBD-R fornecem mecanismos para criação de visões (<em>views</em>) que são objetos do banco associados a uma consulta. O comando <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">VIEW</span></code> permite atribuirmos um nome a uma consulta SQL do tipo <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> que ficará salva no banco de dados e que poderá ser referida por este nome dentro de outras consultas do tipo <code class="docutils literal notranslate"><span class="pre">SELECT</span></code>. Deve-se observar que as linhas da <em>view</em> não são materializadas fisicamente no banco de dados. O que é feito, é a gravação da consulta subjacente. Portanto, não há riscos de duplicação de dados.</p>
+<p>A sintaxe básica do comando <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">VIEW</span></code> é a seguinte:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CREATE [ OR REPLACE ] VIEW nome-view AS consulta;
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>A sintaxe completa do comando de criação de visões pode ser vista no manual do PostgreSQL: <a class="reference external" href="https://www.postgresql.org/docs/14/sql-createview.html">CREATE VIEW</a>.</p>
+</div>
+<p>Vamos criar uma <em>view</em> chamada <code class="docutils literal notranslate"><span class="pre">professor_disciplina</span></code> que nos forneça uma forma rápida de referenciar a lista de disciplinas por professor:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="o">*</span><span class="w"></span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Agora, podemos utilizar essa função em uma consulta SQL do tipo <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> como mostrado abaixo:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   nome   | codigo |      titulo       | creditos | professor_codigo
+----------+--------+-------------------+----------+------------------
+ Romildo  |      1 | Matemática        |        6 |                1
+ Romildo  |      2 | Fisica            |        4 |                1
+ Thales   |      3 | Bilogia           |        2 |                2
+ Karine   |      4 | Quimica           |        3 |                3
+ Tamara   |      5 | Geografia         |        2 |                4
+ Tamara   |      6 | Historia          |        2 |                4
+ Tamara   |      7 | Lingua Portuguesa |        4 |                4
+ Carolina |      8 | Lingua Inglesa    |        2 |                5
+ Carolina |      9 | Lingua Francesa   |        1 |                5
+ Tamara   |     10 | Ciências          |        1 |                4
+(10 rows)
+</pre></div>
+</div>
+<p>Podemos também utilizar a cláusulo <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> para selecionar linhas específicas retornadas pela <em>view</em>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Romildo&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Karine&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Carolina&#39;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   nome   | codigo |     titulo      | creditos | professor_codigo
+----------+--------+-----------------+----------+------------------
+ Romildo  |      1 | Matemática      |        6 |                1
+ Romildo  |      2 | Fisica          |        4 |                1
+ Karine   |      4 | Quimica         |        3 |                3
+ Carolina |      8 | Lingua Inglesa  |        2 |                5
+ Carolina |      9 | Lingua Francesa |        1 |                5
+(5 rows)
+</pre></div>
+</div>
+<p>Uma <em>view</em> é tratada como uma subconsulta ou tabela, de modo que podemos faezr junções também:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O PostgreSQL também suporta o conceito de <strong>views materializadas</strong>, isto é, <em>views</em> que são capazes de persistir os resultados.</p>
+<p>A sintaxe básica para criação de <em>views materializadas</em> é a seguinte:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CREATE MATERIALIZED VIEW nome-view AS consulta;
+</pre></div>
+</div>
+<p>Apesar de se parecer com um comando de criação de tabelas a partir de uma consulta (<code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TABLE</span> <span class="pre">nome-tabela</span> <span class="pre">AS</span> <span class="pre">consulta</span></code>), esse recurso introduz algumas facilidades, como o uso do comando <code class="docutils literal notranslate"><span class="pre">REFRESH</span> <span class="pre">MATERIALIZED</span> <span class="pre">VIEW</span> <span class="pre">nome-view</span></code> para atualizar o conteúdo. Além disso, sem uma programação prévia, os objetos do tipo <em>view</em> não podem ser usados para inserção ou atualização de linhas.</p>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>A sintaxe completa do comando de criação de visões materializadas pode ser vista no manual do PostgreSQL: <a class="reference external" href="https://www.postgresql.org/docs/14/sql-creatematerializedview.html">CREATE MATERIALIZED VIEW</a>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Veja também a discussão apresentada na Seção <a class="reference external" href="https://www.postgresql.org/docs/14/rules-materializedviews.html">41.2. Views and the Rule System</a>.</p>
+</div>
+</div>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="removendo-dados.html" class="btn btn-neutral float-left" title="2.17. Removendo Dados" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="restricoes-integridade.html" class="btn btn-neutral float-left" title="2.17. Restrições de Integridade" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
         <a href="esquemas.html" class="btn btn-neutral float-right" title="2.19. Esquemas" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
@@ -150,7 +225,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f83c5984a00>
+<jinja2.runtime.BlockReference object at 0x7f382729b160>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

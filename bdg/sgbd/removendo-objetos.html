@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2.21. Alterando a Estrutura de uma Tabela &mdash; BDGeo</title>
+  <title>2.20. Removendo Objetos do Banco de Dados &mdash; BDGeo</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -12,7 +12,7 @@
       <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
       <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-    <link rel="canonical" href="https://prog-geo.github.io/sgbd/alterando-estrutura.html" />
+    <link rel="canonical" href="https://prog-geo.github.io/sgbd/removendo-objetos.html" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -26,12 +26,11 @@
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script src="../_static/translations.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="2.22. Importando Dados" href="importando-dados.html" />
-    <link rel="prev" title="2.20. Removendo Objetos do Banco de Dados" href="removendo-objetos.html" /> 
+    <link rel="next" title="2.21. Alterando a Estrutura de uma Tabela" href="alterando-estrutura.html" />
+    <link rel="prev" title="2.19. Esquemas" href="esquemas.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -76,14 +75,13 @@
 <li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.17. Restrições de Integridade</a></li>
 <li class="toctree-l2"><a class="reference internal" href="criando-views.html">2.18. Criando Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="esquemas.html">2.19. Esquemas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="removendo-objetos.html">2.20. Removendo Objetos do Banco de Dados</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.21. Alterando a Estrutura de uma Tabela</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#adicionando-colunas">2.21.1. Adicionando Colunas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#definindo-uma-coluna-como-not-null">2.21.2. Definindo uma Coluna como <code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">NULL</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#adicionando-restricoes-de-linha-a-tabela">2.21.3. Adicionando Restrições de Linha à Tabela</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#removendo-uma-coluna">2.21.4. Removendo uma Coluna</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.20. Removendo Objetos do Banco de Dados</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#removendo-tabelas">2.20.1. Removendo Tabelas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#removendo-schemas">2.20.2. Removendo Schemas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#removendo-views">2.20.3. Removendo Views</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.21. Alterando a Estrutura de uma Tabela</a></li>
 <li class="toctree-l2"><a class="reference internal" href="importando-dados.html">2.22. Importando Dados</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exportando-dados.html">2.23. Exportando Dados</a></li>
 </ul>
@@ -126,61 +124,43 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
-      <li><span class="section-number">2.21. </span>Alterando a Estrutura de uma Tabela</li>
+      <li><span class="section-number">2.20. </span>Removendo Objetos do Banco de Dados</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
-        <a href="removendo-objetos.html" class="btn btn-neutral float-left" title="2.20. Removendo Objetos do Banco de Dados" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="importando-dados.html" class="btn btn-neutral float-right" title="2.22. Importando Dados" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="esquemas.html" class="btn btn-neutral float-left" title="2.19. Esquemas" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="alterando-estrutura.html" class="btn btn-neutral float-right" title="2.21. Alterando a Estrutura de uma Tabela" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="alterando-a-estrutura-de-uma-tabela">
-<span id="cap-sgbd-alterando-estrutura"></span><h1><span class="section-number">2.21. </span>Alterando a Estrutura de uma Tabela<a class="headerlink" href="#alterando-a-estrutura-de-uma-tabela" title="Link permanente para este cabeçalho"></a></h1>
-<p>O comando SQL <code class="docutils literal notranslate"><span class="pre">ALTER</span> <span class="pre">TABLE</span></code> permite realizar modificações na estrutura de uma tabela, como a criação de novas colunas, a remoção de colunas, a troca de tipo de dados de uma coluna, renomear as colunas, renomear a tabela e incluir restrições de integridade.</p>
-<p>Nesta seção vamos ilustrar uso desse comando.</p>
-<section id="adicionando-colunas">
-<h2><span class="section-number">2.21.1. </span>Adicionando Colunas<a class="headerlink" href="#adicionando-colunas" title="Link permanente para este cabeçalho"></a></h2>
-<p>Vamos adicionar uma coluna chamada <code class="docutils literal notranslate"><span class="pre">carga_horaria</span></code> na tabela <code class="docutils literal notranslate"><span class="pre">disciplina</span></code> para armazenar a carga horária da disciplina:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">carga_horaria</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">carga_horaria</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">90</span><span class="p">);</span><span class="w"></span>
+  <section id="removendo-objetos-do-banco-de-dados">
+<span id="cap-sgbd-removendo-objetos"></span><h1><span class="section-number">2.20. </span>Removendo Objetos do Banco de Dados<a class="headerlink" href="#removendo-objetos-do-banco-de-dados" title="Link permanente para este cabeçalho"></a></h1>
+<section id="removendo-tabelas">
+<h2><span class="section-number">2.20.1. </span>Removendo Tabelas<a class="headerlink" href="#removendo-tabelas" title="Link permanente para este cabeçalho"></a></h2>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Em seguida, vamos popular os valores dessa nova coluna, com a seguinte fórmula: <span class="math notranslate nohighlight">\(carga horária = creditos * 15\)</span>.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">carga_horaria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">creditos</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
-<section id="definindo-uma-coluna-como-not-null">
-<h2><span class="section-number">2.21.2. </span>Definindo uma Coluna como <code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">NULL</span></code><a class="headerlink" href="#definindo-uma-coluna-como-not-null" title="Link permanente para este cabeçalho"></a></h2>
-<p>Vamos definir a nova coluna <code class="docutils literal notranslate"><span class="pre">carga_horaria</span></code> como <code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">NULL</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">carga_horaria</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span><span class="w"></span>
+<section id="removendo-schemas">
+<h2><span class="section-number">2.20.2. </span>Removendo Schemas<a class="headerlink" href="#removendo-schemas" title="Link permanente para este cabeçalho"></a></h2>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
-<section id="adicionando-restricoes-de-linha-a-tabela">
-<h2><span class="section-number">2.21.3. </span>Adicionando Restrições de Linha à Tabela<a class="headerlink" href="#adicionando-restricoes-de-linha-a-tabela" title="Link permanente para este cabeçalho"></a></h2>
-<p>Vamos definir uma restrição que garanta que os valores de carga horária estejam entre 0 e 90:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">((</span><span class="n">carga_horaria</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">creditos</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">);</span><span class="w"></span>
+<section id="removendo-views">
+<h2><span class="section-number">2.20.3. </span>Removendo Views<a class="headerlink" href="#removendo-views" title="Link permanente para este cabeçalho"></a></h2>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="k">view</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>Essa restrição fará com que não seja possível atualizar as linhas da tabela <code class="docutils literal notranslate"><span class="pre">disciplina</span></code> com qualquer valor de carga horária. Faça um teste com o comando abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">carga_horaria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-</div>
-</section>
-<section id="removendo-uma-coluna">
-<h2><span class="section-number">2.21.4. </span>Removendo uma Coluna<a class="headerlink" href="#removendo-uma-coluna" title="Link permanente para este cabeçalho"></a></h2>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">carga_horaria</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-<hr class="docutils" />
-<p>Para mais detalhes do comando <code class="docutils literal notranslate"><span class="pre">ALTER</span> <span class="pre">TABLE</span></code>, consulte o manual do PostgreSQL na Seção <a class="reference external" href="https://www.postgresql.org/docs/14/sql-altertable.html">ALTER TABLE</a>.</p>
 </section>
 </section>
 
@@ -188,8 +168,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="removendo-objetos.html" class="btn btn-neutral float-left" title="2.20. Removendo Objetos do Banco de Dados" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="importando-dados.html" class="btn btn-neutral float-right" title="2.22. Importando Dados" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="esquemas.html" class="btn btn-neutral float-left" title="2.19. Esquemas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="alterando-estrutura.html" class="btn btn-neutral float-right" title="2.21. Alterando a Estrutura de uma Tabela" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -199,7 +179,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f3827d39d30>
+<jinja2.runtime.BlockReference object at 0x7f3827dd3700>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 
