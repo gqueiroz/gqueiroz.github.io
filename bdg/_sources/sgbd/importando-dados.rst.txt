@@ -9,6 +9,9 @@ Importando Dados
 ================
 
 
+O PostgreSQL fornece um comando para uso via SQL chamado ``COPY`` que permite mover dados de arquivos para tabelas do banco de dados e vice-versa. Este comando permite lidar com arquivos texto, CSV e binários. Nesta seção vamos explorar a importação de dados usando esse comando, que é usado pelo meta-comando ``\copy`` do aplicativo psql bem como pelo pgAdmin.
+
+
 CSV
 ---
 
@@ -16,9 +19,9 @@ CSV
 Considere o arquivo CSV mostrado abaixo, que contém dados sobre focos de queimada na vegetação localizados no município de São Félix do Xingu, no Pará, no dia 01 de setembro de 2022:
 
 
-.. literalinclude:: ../data/csv/focos-sao-felix-do-xingu-20220901.csv
+.. literalinclude:: ../data/inpe/focos-sao-felix-do-xingu-20220901.csv
     :lines: 1-16
-    :caption: :download:`focos-sao-felix-do-xingu-20220901.csv <../data/csv/focos-sao-felix-do-xingu-20220901.csv>`.
+    :caption: :download:`focos-sao-felix-do-xingu-20220901.csv <../data/inpe/focos-sao-felix-do-xingu-20220901.csv>`.
     :name: data:csv:focos-sao-felix-do-xingu-20220901
 
 
@@ -43,12 +46,12 @@ Os campos encontram-se separados pelo caractere ``,``:
     60e9d84c-b96e-3616-8433-5c4c979c5054,-9.45669,-51.60427,2022-09-01 01:34:00,TERRA_M-M,SÃO FÉLIX DO XINGU,PARÁ,Brasil,Amazônia,7.2
 
 
-Vamos criar uma tabela capaz de armazenar os dados desse arquivo:
+Para importar esse arquivo para o banco de dados usando o comando ``COPY``, primeiro devemos criar uma tabela capaz de armazenar esses dados:
 
 
 .. code-block:: sql
 
-    CREATE TABLE focos
+    CREATE TABLE foco
     (
         id             UUID,
         lat            DOUBLE PRECISION,
@@ -63,20 +66,30 @@ Vamos criar uma tabela capaz de armazenar os dados desse arquivo:
     );
 
 
-Para copiar o arquivo acima para a nova tabela criada, podemos utilizar o comando SQL ``COPY``, como mostrado abaixo:
+.. note::
+
+    Repare que não incluímos restrições na definição da tabela acima.
+
+
+Para copiar o arquivo acima para a nova tabela criada, podemos utilizar o comando SQL ``COPY`` utilizando na cláusula ``FROM`` o caminho completo para que o servidor encontre o arquivo de dados, como mostrado abaixo:
 
 
 .. code-block:: sql
 
-    COPY focos(id, lat, lon, data_hora_gmt, satelite, municipio, estado, pais, bioma, frp)
+    COPY foco(id, lat, lon, data_hora_gmt, satelite, municipio, estado, pais, bioma, frp)
     FROM '/data/focos-sao-felix-do-xingu-20220901.csv'
-    DELIMITER ',' CSV HEADER;
+    WITH (DELIMITER ',', FORMAT CSV, HEADER);
 
 
-No comando acima, o nome da tabela para onde importaremos o dado é especificado logo após a palavra chave ``COPY``. Se a tabela possuir as mesmas colunas do arquivo CSV, então podemos omitir a lista de colunas, caso contrário, as colunas para as quais copiaremos os dados deverão aperecer entre parênteses, como no exemplo acima. O caminho do arquivo CSV é colocado logo após a palavra chave ``FROM``. No caso de arquivos CSV, podemos especificar o delimitador e, opcionalmente, a existência de uma linha de cabeçalho.
+.. code-block:: text
+
+    COPY 4122
 
 
-Se o comando acima for bem sucedido, você receberá uma mensagem indicando que ``4122`` linhas foram copiadas para a tabela ``focos``.
+No comando acima o nome da tabela para onde importaremos o dado é especificado logo após a palavra-chave ``COPY``. Se a tabela possuir as mesmas colunas do arquivo CSV, então podemos omitir a lista de colunas, caso contrário, as colunas para as quais copiaremos os dados deverão aperecer entre parênteses, como feito no exemplo acima. O caminho do arquivo CSV é colocado logo após a palavra-chave ``FROM``. Ao final do comando podemos especificar algumas opções, tais como: o delimitador de valores usado no arquivo (``,``), o formato do arquivo (``CSV``) e a presença de uma linha de cabeçalho no início do arquivo (``HEADER``).
+
+
+Se o comando acima for bem sucedido, você receberá uma mensagem indicando que ``4122`` linhas foram copiadas para a tabela ``foco``.
 
 
 .. note::
@@ -91,9 +104,9 @@ Se o comando acima for bem sucedido, você receberá uma mensagem indicando que 
 
     .. code-block:: sql
 
-        COPY focos
+        COPY foco
         FROM '/data/focos-sao-felix-do-xingu-20220901.csv'
-        DELIMITER ',' CSV HEADER;
+        WITH (DELIMITER ',', FORMAT CSV, HEADER);
 
 
 .. note::
@@ -101,29 +114,39 @@ Se o comando acima for bem sucedido, você receberá uma mensagem indicando que 
     O arquivo CVS completo com dados de focos de calor para o dia  01 de setembro de 2022 pode ser contrado :download:`aqui <https://queimadas.dgi.inpe.br/home/downloadfile?path=/app/api/data/dados_abertos/focos/Diario/focos_abertos_24h_20220901.csv>`.
 
 
-.. tip::
-
-    Para limpar a tabela, faça:
-
-
-    .. code-block:: sql
-
-        TRUNCATE TABLE focos RESTART IDENTITY;
-
-
-O psql possui um meta-comando chamado ``\copy`` que pode ser usado de maneira análoga ao do comando SQL ``COPY``. A diferença essencial é que o ``\copy`` realiza a leitura do arquivo pelo cliente (psql), que envia os dados pela rede para o servidor. Portanto, o exemplo anterior poderia ser construído da seguinte forma:
+O psql possui um meta-comando chamado ``\copy`` que pode ser usado de maneira análoga ao comando ``COPY``. A diferença essencial é que o ``\copy`` realiza a leitura do arquivo pelo cliente (psql), que envia os dados pela rede para o servidor usando o comando ``COPY FROM STDIN``. Portanto, o exemplo anterior poderia ser construído da seguinte forma:
 
 
 .. code-block:: psql
 
-    \copy focos FROM '/data/focos-sao-felix-do-xingu-20220901.csv' DELIMITER ',' CSV HEADER;
+    \copy foco FROM '/data/focos-sao-felix-do-xingu-20220901.csv' WITH (DELIMITER ',', FORMAT CSV, HEADER);
+
+
+.. tip::
+
+    Para testar o meta-comando acima, limpe a tabela ``foco``:
+
+
+    .. code-block:: sql
+
+        TRUNCATE TABLE foco;
+
+
+.. note::
+
+    O meta-comando ``\copy`` utiliza o comando ``COPY`` na forma ``COPY FROM STDIN`` ou ``COPY TO STDOUT``.
+
+
+.. tip::
+
+    Para saber mais sobre o comando ``COPY``, consulte o manual do PostgreSQL na Seção `COPY <https://www.postgresql.org/docs/14/sql-copy.html>`__.
 
 
 Importando pelo pgAdmin
 +++++++++++++++++++++++
 
 
-Pela interface gráfica do pgAdmin é possível importar arquivos CSV. Ao selecionar a tabela para a qual se deseja copiar os dados, selecione o meno ``Import/Export Data...``, como mostrado na figura abaixo:
+Pela interface gráfica do pgAdmin é possível importar arquivos CSV. Ao selecionar a tabela para a qual se deseja copiar os dados, selecione o menu ``Import/Export Data...``, como mostrado na figura abaixo:
 
 
 .. figure:: ../img/pgadmin4/import-csv-01.png
@@ -147,7 +170,7 @@ Na janela aberta, com a opção ``Import`` selecionada, devemos indicar o arquiv
     Importando dados para a tabela focos
 
 
-O arquivo pode ser indicado de diversas formas. Uma delas consiste em fazer o upload do arquivo:
+O arquivo pode ser indicado de diversas formas. Uma delas consiste em fazer o *upload* do arquivo:
 
 
 .. figure:: ../img/pgadmin4/import-csv-03.png
@@ -211,3 +234,348 @@ O arquivo pode ser indicado de diversas formas. Uma delas consiste em fazer o up
     :name: fig:sgbd:import-csv-09
 
     Importando dados para a tabela focos
+
+
+Exercícios
+----------
+
+
+**Exercício 1.** Importe os dados do arquivo :download:`municipios-brasil.csv <../data/ibge/municipios-brasil.csv>` para uma tabela denominada ``municipio``. Este arquivo, obtido no `site do IBGE <https://sidra.ibge.gov.br/tabela/200>`__, contém uma lista dos código de munícipios brasileiros e o respectivo nome.
+
+
+.. collapse:: Solução:
+
+
+    Vamos criar uma tabela chamada ``municipio`` compatível com as linhas do arquivo ``municipios-brasil.csv``:
+
+
+    .. code-block:: sql
+
+        CREATE TABLE municipio
+        (
+            id   CHAR(7) PRIMARY KEY NOT NULL,
+            nome VARCHAR(40) NOT NULL
+        );
+
+
+    Em seguida, vamos importar o arquivo:
+
+
+    .. code-block:: psql
+
+        \copy municipio FROM '/data/municipios-brasil.csv' WITH (DELIMITER ';', FORMAT CSV, HEADER false);
+
+
+    Resultado:
+
+
+    .. code-block:: text
+
+        COPY 5570
+
+
+-----
+
+
+**Exercício 2.** Importe os dados do arquivo :download:`ipeadata-homicidios.csv <../data/ipea/ipeadata-homicidios.csv>` para uma tabela denominada ``homicidio_tmp``. Este arquivo, obtido no `site do IPEA <http://www.ipeadata.gov.br/>`__, contém uma série histórica do número de homicídios nos munícipios brasileiros.
+
+
+.. collapse:: Solução:
+
+
+    Vamos criar uma tabela chamada ``homicidio_tmp`` compatível com as linhas do arquivo ``ipeadata-homicidios.csv``:
+
+
+    .. code-block:: sql
+
+        CREATE TABLE homicidio_tmp
+        (
+            uf    CHAR(2),
+            id    CHAR(7),
+            nome  VARCHAR(40),
+            a1980 INTEGER,
+            a1981 INTEGER,
+            a1982 INTEGER,
+            a1983 INTEGER, 
+            a1984 INTEGER, 
+            a1985 INTEGER, 
+            a1986 INTEGER, 
+            a1987 INTEGER, 
+            a1988 INTEGER, 
+            a1989 INTEGER, 
+            a1990 INTEGER, 
+            a1991 INTEGER, 
+            a1992 INTEGER, 
+            a1993 INTEGER, 
+            a1994 INTEGER, 
+            a1995 INTEGER, 
+            a1996 INTEGER, 
+            a1997 INTEGER, 
+            a1998 INTEGER, 
+            a1999 INTEGER, 
+            a2000 INTEGER, 
+            a2001 INTEGER, 
+            a2002 INTEGER, 
+            a2003 INTEGER, 
+            a2004 INTEGER, 
+            a2005 INTEGER, 
+            a2006 INTEGER, 
+            a2007 INTEGER, 
+            a2008 INTEGER, 
+            a2009 INTEGER, 
+            a2010 INTEGER, 
+            a2011 INTEGER, 
+            a2012 INTEGER, 
+            a2013 INTEGER, 
+            a2014 INTEGER, 
+            a2015 INTEGER, 
+            a2016 INTEGER, 
+            a2017 INTEGER, 
+            a2018 INTEGER, 
+            a2019 INTEGER, 
+            a2020 INTEGER
+        );
+
+
+    Em seguida, vamos importar o arquivo:
+
+
+    .. code-block:: psql
+
+        \copy homicidio_tmp FROM '/data/ipeadata-homicidios.csv' WITH (DELIMITER ',', FORMAT CSV, HEADER true);
+
+
+    Resultado:
+
+
+    .. code-block:: text
+
+        COPY 5570
+
+
+-----
+
+
+**Exercício 3.** Crie uma nova tabela denominada ``homicidio`` com o esquema mostrado abaixo e preencha ela com os dados provenientes da tabela ``homicidio_tmp``: 
+
+
+.. table::
+    :name: tbl:sgbd:importando-dados:homicidio:esquema
+    :header-alignment: center center center
+    :column-alignment: left left left
+    
+
+    +----------------+---------------------------+-------------------------------------------------------------------------------------+
+    | nome tabela: **homicidio**                                                                                                       |
+    +----------------+---------------------------+-------------------------------------------------------------------------------------+
+    | colunas        | tipo de dados             | modificadores                                                                       |
+    +================+===========================+=====================================================================================+
+    |  id            | texto de tamanho fixo     | tamanho fixo de 07 caracteres, NOT NULL,                                            |
+    |                |                           | Chave Estrangeira associada à tabela ``municipio``                                  |
+    +----------------+---------------------------+-------------------------------------------------------------------------------------+
+    | ano            | número inteiro            | faixa de valores entre 1980 e 2020, NOT NULL                                        |
+    +----------------+---------------------------+-------------------------------------------------------------------------------------+
+    | num_homicidios | número inteiro            | NOT NULL                                                                            |
+    +----------------+---------------------------+-------------------------------------------------------------------------------------+
+
+
+.. collapse:: Solução:
+
+
+    Vamos criar a tabela ``homicidio`` através da seguinte definição:
+
+
+    .. code-block:: sql
+
+        CREATE TABLE homicidio
+        (
+            id             CHAR(7) NOT NULL REFERENCES municipio(id)
+                                                       ON DELETE NO ACTION
+                                                       ON UPDATE CASCADE,
+            ano            INTEGER NOT NULL CHECK (ano >= 1980 AND  ano <= 2020),
+            num_homicidios INTEGER NOT NULL
+        );
+
+
+    Em seguida, vamos inserir dados nessa tabela a partir da tabela temporária criada. Para isso poderíamos utilizar vários comandos como o mostrado abaixo:
+
+
+    .. code-block:: sql
+
+        INSERT INTO homicidio (SELECT id, 1980, a1980 FROM homicidio_tmp WHERE a1980 IS NOT NULL);
+
+
+    No entanto, teríamos que escrever uma linha dessa para cada coluna da tabela ``homicidio_tmp``. Uma maneira de fazermos isso facilmente é escrever um pequeno programa em Python como mostrado abaixo:
+
+
+    .. code-block:: python
+
+        SQL = 'INSERT INTO homicidio (SELECT id, {0}, a{0} FROM homicidio_tmp WHERE a{0} IS NOT NULL);'
+
+        for i in range (1980, 2021):
+            print(SQL.format(i))
+
+
+    Esse programa irá gerar todos os comandos necessários:
+
+
+    .. code-block:: sql
+
+        INSERT INTO homicidio (SELECT id, 1980, a1980 FROM homicidio_tmp WHERE a1980 IS NOT NULL);
+
+        ...
+
+
+        INSERT INTO homicidio (SELECT id, 2020, a2020 FROM homicidio_tmp WHERE a2020 IS NOT NULL);
+
+
+    Ao término da preparação dessa tabela, você deverá ter :math:`119791` linhas na tabela ``homicidio``:
+
+
+    .. code-block:: sql
+
+        SELECT COUNT(*) AS total_homicidios FROM homicidio;
+
+
+    .. code-block:: text
+
+         total_homicidios 
+        ------------------
+                   119791
+        (1 row)
+
+
+-----
+
+
+**Exercício 4.** Importe os dados do arquivo :download:`ipeadata-populacao-2010.csv <../data/ipea/ipeadata-populacao-2010.csv>` para uma tabela denominada ``populacao_2010_tmp``. Este arquivo, obtido no `site do IPEA <http://www.ipeadata.gov.br/>`__, contém dados populacionais dos munícipios brasileiros para o ano de 2010.
+
+
+.. collapse:: Solução:
+
+
+    Vamos criar uma tabela chamada ``populacao_2010_tmp`` compatível com as linhas do arquivo ``ipeadata-populacao-2010.csv``:
+
+
+    .. code-block:: sql
+
+        CREATE TABLE populacao_2010_tmp
+        (
+            uf               CHAR(2),
+            id               CHAR(7),
+            nome             VARCHAR(40),
+            urbana_feminina  INTEGER,
+            rural_feminina   INTEGER,
+            urbana_masculina INTEGER,
+            rural_masculina  INTEGER, 
+            urbana           INTEGER, 
+            rural            INTEGER,
+            feminia          INTEGER,
+            masculina        INTEGER,
+            total            INTEGER
+        );
+
+
+    Em seguida, vamos importar o arquivo:
+
+
+    .. code-block:: psql
+
+        \copy populacao_2010_tmp FROM '/data/ipeadata-populacao-2010.csv' WITH (DELIMITER ';', FORMAT CSV, HEADER true);
+
+
+    Resultado:
+
+
+    .. code-block:: text
+
+        COPY 5596
+
+
+    .. note::
+    
+        Ao importar o arquivo acima, verifique se existe alguma linha na nova tabela ``populacao_2010_tmp`` que não tenha um ``id`` correspondente na tabela ``municipio``:
+        
+        
+        .. code-block:: sql
+        
+            SELECT COUNT(*) FROM populacao_2010_tmp WHERE id NOT IN (SELECT id FROM municipio);
+
+
+        Resultado:
+
+
+        .. code-block:: text
+
+             count 
+            -------
+                26
+            (1 row)
+
+
+        Logo, temos 26 linhas sem correspondência na tabela ``municipio``. Vamos exercitar o comando ``DELETE`` removendo essas linhas sem correspondência:
+        
+        
+        .. code-block:: sql
+        
+            DELETE FROM populacao_2010_tmp WHERE id NOT IN (SELECT id FROM municipio);
+    
+    
+        Resultado:
+        
+        
+        .. code-block:: text
+        
+            DELETE 26
+
+
+-----
+
+
+**Exercício 5.** Assim como no exercício anterior, importe os dados dos seguintes arquivos:
+
+- :download:`ipeadata-populacao-2000.csv <../data/ipea/ipeadata-populacao-2000.csv>`
+
+- :download:`ipeadata-populacao-1996.csv <../data/ipea/ipeadata-populacao-1996.csv>` 
+
+- :download:`ipeadata-populacao-1991.csv <../data/ipea/ipeadata-populacao-1991.csv>`
+
+- :download:`ipeadata-populacao-1980.csv <../data/ipea/ipeadata-populacao-1980.csv>`
+
+- :download:`ipeadata-populacao-1970.csv <../data/ipea/ipeadata-populacao-1970.csv>`
+
+
+
+-----
+
+
+**Exercício 6.** Crie uma nova tabela denominada ``populacao`` com o esquema mostrado abaixo e preencha suas linhas com os dados provenientes das tabelas ``populacao_2010_tmp`` e demais tabelas criadas no **exercício 5**: 
+
+
+.. table::
+    :name: tbl:sgbd:importando-dados:populacao:esquema
+    :header-alignment: center center center
+    :column-alignment: left left left
+    
+
+    +------------------+---------------------------+-------------------------------------------------------------------------------------+
+    | nome tabela: **populacao**                                                                                                         |
+    +------------------+---------------------------+-------------------------------------------------------------------------------------+
+    | colunas          | tipo de dados             | modificadores                                                                       |
+    +==================+===========================+=====================================================================================+
+    |  id              | texto de tamanho fixo     | tamanho fixo de 07 caracteres, NOT NULL,                                            |
+    |                  |                           | Chave Estrangeira associada à tabela ``municipio``                                  |
+    +------------------+---------------------------+-------------------------------------------------------------------------------------+
+    | ano              | número inteiro            | faixa de valores entre 1960 e 2010, NOT NULL                                        |
+    +------------------+---------------------------+-------------------------------------------------------------------------------------+
+    | urbana_feminina  | número inteiro            | NOT NULL                                                                            |
+    +------------------+---------------------------+-------------------------------------------------------------------------------------+
+    | rural_feminina   | número inteiro            | NOT NULL                                                                            |
+    +------------------+---------------------------+-------------------------------------------------------------------------------------+
+    | urbana_masculina | número inteiro            | NOT NULL                                                                            |
+    +------------------+---------------------------+-------------------------------------------------------------------------------------+
+    | rural_masculina  | número inteiro            | NOT NULL                                                                            |
+    +------------------+---------------------------+-------------------------------------------------------------------------------------+
+
+
+

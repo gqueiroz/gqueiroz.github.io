@@ -50,6 +50,5 @@ Sistemas de Bancos de Dados Relacionais
     ./esquemas
     ./removendo-objetos
     ./alterando-estrutura
-    ./importando-dados
-    ./exportando-dados
+    ./import-export
 
