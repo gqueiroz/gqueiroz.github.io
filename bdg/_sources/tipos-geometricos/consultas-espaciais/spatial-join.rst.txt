@@ -1,0 +1,660 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../../def.rst
+
+
+.. _cap_tipos_geometricos_consultas_espaciais_spatial_join:
+
+Junção Espacial
+===============
+
+
+Carga de Dados - Terras Indígenas
+---------------------------------
+
+
+Considere o conjunto ESRI Shapefile mostrado na :numref:`Tabela %s <tbl:consultas-espaciais:spatial-join:terras-indigenas>`, que contem os limites de terras indígenas no Brasil. Faça a carga desse conjunto de dados para o servidor PostgreSQL de acordo com as informações apresentadas nessa tabela.
+
+
+.. |terras-indigenas| image:: ../../img/consultas-espaciais/terras-indigenas.png
+
+
+.. table:: Terras Indígenas |br| **Fonte Original:** :download:`FUNAI <http://geoserver.funai.gov.br/geoserver/Funai/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Funai:tis_poligonais&outputFormat=SHAPE-ZIP>`.
+    :widths: 60 40
+    :width: 100%
+    :align: center
+    :column-alignment: center left
+    :name: tbl:consultas-espaciais:spatial-join:terras-indigenas
+
+    +--------------------+-------------------------------------------+
+    | |terras-indigenas| | **Terras Indígenas**                      |
+    |                    |                                           |
+    |                    | - terras_indigenas.cpg                    |
+    |                    | - terras_indigenas.dbf                    |
+    |                    | - terras_indigenas.prj                    |
+    |                    | - terras_indigenas.shp                    |
+    |                    | - terras_indigenas.shx                    |
+    |                    |                                           |
+    |                    | **Tipo Geométrico:** MultiPolygon         |
+    |                    | |br|  |br|                                |
+    |                    | **Número de Feições:** 616                |
+    |                    | |br|  |br|                                |
+    |                    | **CRS:** Lat/Long SIRGAS 2000             |
+    |                    | |br|  |br|                                |
+    |                    | **SRID:** 4674                            |
+    |                    | |br|  |br|                                |
+    |                    | **Codificação Caracteres:** UTF-8         |
+    |                    | |br|  |br|                                |
+    |                    | **Nome Tabela:** terras_indigenas         |
+    +--------------------+-------------------------------------------+
+
+
+.. collapse:: Carga Dados:
+
+    |br|
+
+    Para converter este conjunto de dados do formato ESRI Shapefile para um arquivo contendo uma sequência de comandos SQL, vamos utilizar o comando ``shp2pgsql``:
+
+
+    .. code-block:: bash
+
+        shp2pgsql -c -g "geom" -s 4674 -i -I -t "2D" -W UTF-8 terras_indigenas.shp public.terras_indigenas > terras_indigenas.sql
+
+
+    Para carregar o arquivo ``terras_indigenas.sql`` para um banco de dados PostgreSQL, utilize o ``psql``, como mostrado abaixo:
+
+
+    .. code-block:: bash
+
+        psql -U postgres -h localhost -p 5432 -d bdgeo -f terras_indigenas.sql
+
+
+-----
+
+
+Consulta 1
+----------
+
+
+**Consulta:**  Quais as áreas de terras indígenas no Estado do Tocantins?
+
+
+.. figure:: ../../img/consultas-espaciais/juncao-espacial-01.png
+    :alt: Junção Espacial
+    :width: 60%
+    :figclass: align-center
+    :name: fig:consultas-espaciais:spatial-join:01
+
+    Junção Espacial - Terras Indigenas :math:`\times` Unidades Federação.
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT ti.*
+          FROM uf,
+               terras_indigenas AS ti
+         WHERE ST_Intersects(uf.geom, ti.geom)
+           AND uf.nome = 'TOCANTINS';
+
+
+-----
+
+
+Carga de Dados - Unidades de Conservação
+----------------------------------------
+
+
+Considere o conjunto ESRI Shapefile mostrado na :numref:`Tabela %s <tbl:consultas-espaciais:spatial-join:unidades-conservacao>`, que contem os limites das unidades de conservação no Brasil. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.
+
+
+.. |unidades-conservacao| image:: ../../img/consultas-espaciais/unidades-conservacao.png
+
+
+.. table:: Unidades de Conservação |br| **Fonte Original:** `MMA <http://mapas.mma.gov.br/i3geo/datadownload.htm>`_.
+    :widths: 60 40
+    :width: 100%
+    :align: center
+    :column-alignment: center left
+    :name: tbl:consultas-espaciais:spatial-join:unidades-conservacao
+
+    +------------------------+-------------------------------------------+
+    | |unidades-conservacao| | **Terras Indígenas**                      |
+    |                        |                                           |
+    |                        | - unidades_conservacao.cpg                |
+    |                        | - unidades_conservacao.dbf                |
+    |                        | - unidades_conservacao.prj                |
+    |                        | - unidades_conservacao.shp                |
+    |                        | - unidades_conservacao.shx                |
+    |                        |                                           |
+    |                        | **Tipo Geométrico:** MultiPolygon         |
+    |                        | |br|  |br|                                |
+    |                        | **Número de Feições:** 1.934              |
+    |                        | |br|  |br|                                |
+    |                        | **CRS:** Lat/Long SAD69                   |
+    |                        | |br|  |br|                                |
+    |                        | **SRID:** 4618                            |
+    |                        | |br|  |br|                                |
+    |                        | **Codificação Caracteres:** UTF-8         |
+    |                        | |br|  |br|                                |
+    |                        | **Nome Tabela:** unidades_conservacao     |
+    +------------------------+-------------------------------------------+
+
+
+.. collapse:: Carga Dados:
+
+    |br|
+
+    Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o ``shp2pgsql``, use o seguinte comando:
+
+
+    .. code-block:: bash
+
+        shp2pgsql -c -g "geom" -s 4618 -i -t "2D" -W UTF-8 unidades_conservacao.shp public.unidades_conservacao > unidades_conservacao.sql
+
+
+    .. note::
+
+        Repare no comando acima que não iremos criar o índice espacial sobre a coluna geométrica, isto é, não incluímos a opção ``-I`` no comando acima.
+
+
+    Para carregar o arquivo ``unidades_conservacao.sql`` para um banco de dados PostgreSQL, utilize o ``psql``::
+
+        psql -h localhost -p 5432 -d bdgeo -U postgres -f unidades_conservacao.sql
+
+
+    Transforme as coordenadas das geometria para o sistema de referência espacial formada pela projeção geográfica para ``LAT/LONG`` e sistema geodésico de referência ``SIRGAS 2000`` (SRID 4674):
+
+
+    .. code-block:: sql
+
+        ALTER TABLE unidades_conservacao
+            ALTER COLUMN geom
+                TYPE GEOMETRY(MULTIPOLYGON, 4674)
+                USING ST_Transform(geom, 4674);
+
+
+    Agora, vamos criar um índice espacial sobre a coluna ``geom``:
+
+    .. code-block:: postgresql
+
+        CREATE INDEX unidades_conservacao_geom_idx ON unidades_conservacao USING GIST ( geom );
+
+
+-----
+
+
+Carga de Dados - Focos de Queimada (Janeiro de 2020)
+----------------------------------------------------
+
+
+Considere o conjunto ESRI Shapefile mostrado na :numref:`Tabela %s <tbl:consultas-espaciais:spatial-join:focos-2020>`, que contém focos de incêndio na vegetação entre o dia 01/01/2020 e 25/01/2020. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.
+
+
+.. |focos-2020| image:: ../../img/consultas-espaciais/focos-2020.png
+
+
+.. table:: Focos de Queimada – 2020 |br| **Fonte Original:** `Programa Queimadas/INPE <http://queimadas.dgi.inpe.br/queimadas/bdqueimadas>`_.
+    :widths: 60 40
+    :width: 100%
+    :align: center
+    :column-alignment: center left
+    :name: tbl:consultas-espaciais:spatial-join:focos-2020
+
+    +--------------+-------------------------------------------+
+    | |focos-2020| | **Focos de Queimada – 2020**              |
+    |              |                                           |
+    |              | - focos_2020.dbf                          |
+    |              | - focos_2020.prj                          |
+    |              | - focos_2020.shp                          |
+    |              | - focos_2020.shx                          |
+    |              |                                           |
+    |              | **Tipo Geométrico:** Point                |
+    |              | |br|  |br|                                |
+    |              | **Número de Feições:** 38.793             |
+    |              | |br|  |br|                                |
+    |              | **CRS:** Lat/Long WGS84                   |
+    |              | |br|  |br|                                |
+    |              | **SRID:** 4326                            |
+    |              | |br|  |br|                                |
+    |              | **Codificação Caracteres:** UTF-8         |
+    |              | |br|  |br|                                |
+    |              | **Nome Tabela:** focos_2020               |
+    +--------------+-------------------------------------------+
+
+
+.. collapse:: Carga Dados:
+
+    |br|
+
+    Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o ``shp2pgsql``, use o seguinte comando:
+
+
+    .. code-block:: bash
+
+        shp2pgsql -c -g "geom" -s 4326 -i -t "2D" -W UTF-8 focos_2020.shp public.focos_2020 > focos_2020.sql
+
+
+    .. note::
+
+        Repare no comando acima que não iremos criar o índice espacial sobre a coluna geométrica, isto é, não incluímos a opção ``-I`` no comando acima.
+
+
+    Para carregar o arquivo ``focos_2020.sql`` para um banco de dados PostgreSQL, utilize o ``psql``:
+
+
+    .. code-block:: bash
+
+        psql -h localhost -p 5432 -d bdgeo -U postgres -f focos_2020.sql
+
+
+    Veja se o atributo com a data de observação (``datahora``) foi importado com o tipo correto: ``TIMESTAMP WITHOUT TIME ZONE``. Caso não tenha sido, use o seguinte comando para acertar o tipo da coluna:
+
+
+    .. code-block:: sql
+
+        ALTER TABLE focos_2020
+            ALTER COLUMN datahora
+                TYPE TIMESTAMP WITHOUT TIME ZONE
+                USING datahora::timestamp without time zone;
+
+
+    Faça uma reprojeção das geometrias do foco:
+
+
+    .. code-block:: sql
+
+        ALTER TABLE focos_2020
+            ALTER COLUMN geom
+                TYPE GEOMETRY(POINT, 4674)
+                USING ST_Transform(geom, 4674);
+
+
+    Uma vez que iremos realizar consultas sobre a coluna ``datahora``, vamos criar um índice sobre esta coluna:
+
+
+    .. code-block:: sql
+
+        CREATE INDEX focos_2020_datahora_idx ON focos_2020 ( datahora );
+
+
+    Também vamos criar um índice espacial sobre a coluna ``geom``:
+
+    .. code-block:: postgresql
+
+        CREATE INDEX focos_2020_geom_idx ON focos USING GIST ( geom );
+
+
+-----
+
+
+Consulta 2
+----------
+
+
+**Consulta:** Quantos focos de incêndio na vegetação foram detectados em Unidades de Conservação Estaduais do Estado do Tocantins em 2020?
+
+
+.. figure:: ../../img/consultas-espaciais/juncao-espacial-02.png
+    :alt: Junção Espacial
+    :width: 60%
+    :figclass: align-center
+    :name: fig:consultas-espaciais:spatial-join:02
+
+    Junção Espacial - Unidades Federação :math:`\times` Focos de Queimada (Janeiro 2020).
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+          SELECT ucs.nome AS nome,
+                 COUNT(*) AS total_focos
+            FROM focos_2020,
+                 unidades_conservacao AS ucs,
+                 uf
+           WHERE uf.nome = 'TOCANTINS'
+             AND ST_Intersects(uf.geom, ucs.geom)
+             AND ucs.jurisdicao = 'Estadual'
+             AND ST_Contains(ucs.geom, focos_2020.geom)
+        GROUP BY ucs.id,
+                 ucs.nome
+        ORDER BY total_focos DESC;
+
+
+-----
+
+
+Carga de Dados - Focos 2017/2018
+--------------------------------
+
+
+Considere o conjunto ESRI Shapefile mostrado na :numref:`Tabela %s <tbl:consultas-espaciais:spatial-join:focos-1718>`, que contém focos de incêndio na vegetação dos anos de 2017 e 2018. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.
+
+
+.. |focos-1718| image:: ../../img/consultas-espaciais/focos-2017-2018.png
+
+
+.. table:: Focos de Queimada – 2017/2018 |br| **Fonte Original:** `Programa Queimadas/INPE <http://queimadas.dgi.inpe.br/queimadas/bdqueimadas>`_.
+    :widths: 60 40
+    :width: 100%
+    :align: center
+    :column-alignment: center left
+    :name: tbl:consultas-espaciais:spatial-join:focos-1718
+
+    +--------------+-------------------------------------------+
+    | |focos-1718| | **Focos de Queimada – 2017/2018**         |
+    |              |                                           |
+    |              | - focos_2017_2018.cpg                     |
+    |              | - focos_2017_2018.dbf                     |
+    |              | - focos_2017_2018.prj                     |
+    |              | - focos_2017_2018.shp                     |
+    |              | - focos_2017_2018.shx                     |
+    |              |                                           |
+    |              | **Tipo Geométrico:** Point                |
+    |              | |br|  |br|                                |
+    |              | **Número de Feições:** 4.705.075          |
+    |              | |br|  |br|                                |
+    |              | **CRS:** Lat/Long WGS84                   |
+    |              | |br|  |br|                                |
+    |              | **SRID:** 4326                            |
+    |              | |br|  |br|                                |
+    |              | **Codificação Caracteres:** UTF-8         |
+    |              | |br|  |br|                                |
+    |              | **Nome Tabela:** focos                    |
+    +--------------+-------------------------------------------+
+
+
+.. collapse:: Carga Dados:
+
+    |br|
+
+    Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o ``shp2pgsql``, use o seguinte comando:
+
+
+    .. code-block:: bash
+
+        shp2pgsql -c -g "geom" -s 4326 -i -t "2D" -W UTF-8 focos_2017_2018.shp public.focos > focos.sql
+
+
+    .. note::
+    
+        Repare no comando acima que não iremos criar o índice espacial, isto é, não incluímos a opção ``-I`` no comando acima.
+
+
+    .. note::
+
+        O comando acima levou cerca de 35 segundos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.
+
+
+    Para carregar o arquivo ``focos.sql`` para um banco de dados PostgreSQL, utilize o ``psql``:
+
+
+    .. code-block:: bash
+
+        psql -h localhost -p 5432 -d bdgeo -U postgres -f focos.sql
+
+
+    .. note::
+
+        O comando acima levou cerca de 9 minutos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.
+
+
+    Veja se o atributo com a data de observação (``data_obser``) foi importado com o tipo correto: ``TIMESTAMP WITHOUT TIME ZONE``. Caso não tenha sido, use o seguinte comando para acertar o tipo da coluna:
+
+
+    .. code-block:: sql
+
+        ALTER TABLE focos
+            ALTER COLUMN data_obser
+                TYPE TIMESTAMP WITHOUT TIME ZONE
+                USING data_obser::timestamp without time zone;
+
+
+    .. note::
+
+        O comando acima levou cerca de 32 segundos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.
+
+
+    Faça uma reprojeção das geometrias da tabela ``foco`` para o SRID 4674:
+
+
+    .. code-block:: sql
+
+        ALTER TABLE focos
+            ALTER COLUMN geom
+                TYPE GEOMETRY(POINT, 4674)
+                USING ST_Transform(geom, 4674);
+
+
+    .. note::
+
+        O comando acima levou cerca de 41 segundos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.
+
+
+    Uma vez que iremos realizar consultas sobre a coluna ``data_obser``, vamos criar um índice sobre esta coluna:
+
+
+    .. code-block:: sql
+
+        CREATE INDEX focos_data_obser_idx ON focos ( data_obser );
+
+
+    .. note::
+
+        O comando acima levou cerca de 3 segundos com o parâmero ``maintenance_work_mem`` ajustado para uso de 4GB de memória RAM.
+
+
+    Também vamos criar um índice espacial sobre a coluna ``geom``:
+
+    .. code-block:: postgresql
+
+        CREATE INDEX focos_geom_idx ON focos USING GIST ( geom );
+
+
+    .. note::
+
+        O comando acima levou cerca de 47 segundos com o parâmero ``maintenance_work_mem`` ajustado para uso de 4GB de memória RAM.
+
+
+-----
+
+
+Consulta 3
+----------
+
+
+**Consulta:** Quantos focos de incêndio na vegetação foram detectados mensalmente em Unidades de Conservação Estaduais do Estado do Tocantins ao longo de 2017?
+
+
+.. collapse:: Solução:
+
+
+    Versão 1:
+
+
+    .. code-block:: sql
+
+          SELECT Extract(month from focos.data_obser) AS mes,
+                 ucs.nome AS nome,
+                 COUNT(*) AS total_focos
+            FROM focos,
+                 unidades_conservacao AS ucs,
+                 uf
+           WHERE uf.nome = 'TOCANTINS'
+             AND ST_Intersects(uf.geom, ucs.geom)
+             AND ucs.jurisdicao = 'Estadual'
+             AND ST_Contains(ucs.geom, focos.geom)
+             AND Extract(year from focos.data_obser) = 2017
+        GROUP BY mes,
+                 ucs.id,
+                 ucs.nome
+        ORDER BY mes ASC, total_focos DESC, nome ASC;
+
+
+    Versão 2:
+
+
+    .. code-block:: sql
+
+            WITH tocantins AS (
+                     SELECT * FROM uf WHERE nome = 'TOCANTINS'
+                 ),
+                 ucs AS (
+                     SELECT unidades_conservacao.*
+                       FROM unidades_conservacao,
+                            tocantins
+                      WHERE unidades_conservacao.jurisdicao = 'Estadual'
+                        AND ST_Intersects(tocantins.geom, unidades_conservacao.geom)
+                 )
+          SELECT Extract(month from focos.data_obser) AS mes,
+                 ucs.nome AS nome,
+                 COUNT(*) AS total_focos
+            FROM focos,
+                 ucs
+           WHERE ST_Contains(ucs.geom, focos.geom)
+             AND Extract(year from focos.data_obser) = 2017
+        GROUP BY mes,
+                 ucs.id,
+                 ucs.nome
+        ORDER BY mes ASC, total_focos DESC, nome ASC;
+
+
+-----
+
+
+Carga de Dados - Trechos Rodoviários
+------------------------------------
+
+
+Considere o conjunto ESRI Shapefile mostrado na :numref:`Tabela %s <tbl:consultas-espaciais:spatial-join:trechos-rodoviarios>`, que contem os trechos rodoviários do Brasil, ano de referência 2019. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.
+
+
+.. |trechos-rodoviarios| image:: ../../img/consultas-espaciais/trechos-rodoviarios.png
+
+
+.. table:: Trechos Rodoviários – 2019 |br| **Fonte Original:** :download:`IBGE <https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2019/shapefile/bc250_shapefile_06_11_2019.zip>`.
+    :widths: 60 40
+    :width: 100%
+    :align: center
+    :column-alignment: center left
+    :name: tbl:consultas-espaciais:spatial-join:trechos-rodoviarios
+
+    +-----------------------+-------------------------------------------+
+    | |trechos-rodoviarios| | **Trechos Rodoviários – 2019**            |
+    |                       |                                           |
+    |                       | - rod_trecho_rodoviario_l.cpg             |
+    |                       | - rod_trecho_rodoviario_l.dbf             |
+    |                       | - rod_trecho_rodoviario_l.prj             |
+    |                       | - rod_trecho_rodoviario_l.shp             |
+    |                       | - rod_trecho_rodoviario_l.shx             |
+    |                       |                                           |
+    |                       | **Tipo Geométrico:** MultiLineString      |
+    |                       | |br|  |br|                                |
+    |                       | **Número de Feições:** 153.177            |
+    |                       | |br|  |br|                                |
+    |                       | **CRS:** Lat/Long SIRGAS 2000             |
+    |                       | |br|  |br|                                |
+    |                       | **SRID:** 4674                            |
+    |                       | |br|  |br|                                |
+    |                       | **Codificação Caracteres:** UTF-8         |
+    |                       | |br|  |br|                                |
+    |                       | **Nome Tabela:** trechos_rodoviarios      |
+    +-----------------------+-------------------------------------------+
+
+
+.. collapse:: Carga Dados:
+
+    |br|
+
+    Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o ``shp2pgsql``, use o seguinte comando:
+
+
+    .. code-block:: bash
+
+        shp2pgsql -c -g "geom" -s 4674 -i -I -t "2D" -W UTF-8 rod_trecho_rodoviario_l.shp public.trechos_rodoviarios > trechos_rodoviarios.sql
+
+
+    Para carregar o arquivo ``trechos_rodoviarios.sql`` para um banco de dados PostgreSQL, utilize o ``psql``:
+
+
+    .. code-block:: bash
+
+        psql -h localhost -p 5432 -d bdgeo -U postgres -f trechos_rodoviarios.sql
+
+
+-----
+
+
+Consulta 4
+----------
+
+
+**Consulta:** Quantos focos de incêndio ocorreram nas proximidades da rodovia BR-153 no mês de setembro de 2017?
+
+
+.. figure:: ../../img/consultas-espaciais/juncao-espacial-03.png
+    :alt: Junção Espacial - focos de incêndio nas proximidades da rodovia
+    :width: 60%
+    :figclass: align-center
+    :name: fig:consultas-espaciais:spatial-join:03
+
+    Junção Espacial - focos de incêndio nas proximidades da rodovia.
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT COUNT(*) as total_focos
+          FROM (
+              SELECT DISTINCT focos.id
+                FROM focos,
+                     trechos_rodoviarios AS trechos
+               WHERE ST_DWithin(trechos.geom, focos.geom, 1000.0 / 111000.0)
+                 AND codtrechor = 'BR-153'
+                 AND focos.data_obser >= '2017-09-01'
+                 AND focos.data_obser < '2017-10-01'
+          ) as focos_sel;
+
+-----
+
+
+Consulta 5
+----------
+
+
+**Consulta:** Quais os municípios vizinhos de Ouro Preto em Minas Gerais?
+
+
+.. figure:: ../../img/consultas-espaciais/juncao-espacial-04.png
+    :alt: Junção Espacial - Municípios vizinhos a Ouro Preto
+    :width: 60%
+    :figclass: align-center
+    :name: fig:consultas-espaciais:spatial-join:04
+
+    Junção Espacial - Municípios vizinhos a Ouro Preto.
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT m2.nome AS vizinho, m2.geom AS geom
+          FROM municipios AS m1,
+               municipios AS m2
+         WHERE ST_Touches(m1.geom, m2.geom)
+           AND m1.nome = 'OURO PRETO'
+           AND m2.nome != 'OURO PRETO';
+
+
+-----
+
+
+.. note::
+
+    As consultas vistas nesta seção também são conhecidas por **Spatial Join**.

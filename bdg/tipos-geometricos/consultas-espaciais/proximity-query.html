@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.5.4. Consultas de Proximidade &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/tipos-geometricos/consultas-espaciais/proximity-query.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../search.html" />
+    <link rel="next" title="3.5.5. Junção Espacial" href="spatial-join.html" />
+    <link rel="prev" title="3.5.3. Consultas de Janela ou Intervalo" href="window-query.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. Tipos de Dados e Operações Espaciais</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introducao.html">3.1. Introdução</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ogc-sfs.html">3.2. Tipos Geométricos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rel-espaciais.html">3.3. Relacionamentos Espaciais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../postgis-geometry.html">3.4. PostGIS Geometry</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.5. Consultas Espaciais</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="carga-dados.html">3.5.1. Carregando Dados no PostgreSQL/PostGIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="point-query.html">3.5.2. Consultas de Apontamento</a></li>
+<li class="toctree-l3"><a class="reference internal" href="window-query.html">3.5.3. Consultas de Janela ou Intervalo</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.5.4. Consultas de Proximidade</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spatial-join.html">3.5.5. Junção Espacial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overlay.html">3.5.6. Overlay de Mapas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spatial-aggregation.html">3.5.7. Agregação Espacial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="general-queries.html">3.5.8. Consultas Gerais</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a> &raquo;</li>
+      <li><span class="section-number">3.5.4. </span>Consultas de Proximidade</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="window-query.html" class="btn btn-neutral float-left" title="3.5.3. Consultas de Janela ou Intervalo" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="spatial-join.html" class="btn btn-neutral float-right" title="3.5.5. Junção Espacial" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="consultas-de-proximidade">
+<span id="cap-tipos-geometricos-consultas-espaciais-proximity-query"></span><h1><span class="section-number">3.5.4. </span>Consultas de Proximidade<a class="headerlink" href="#consultas-de-proximidade" title="Link permanente para este cabeçalho"></a></h1>
+<section id="carga-de-dados-municipios-do-brasil">
+<h2><span class="section-number">3.5.4.1. </span>Carga de Dados - Municípios do Brasil<a class="headerlink" href="#carga-de-dados-municipios-do-brasil" title="Link permanente para este cabeçalho"></a></h2>
+<p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-proximity-query-municipios-2018"><span class="std std-numref">Tabela 3.31</span></a>, que contem os limites municipais do Brasil referentes ao ano de 2018. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
+<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-proximity-query-municipios-2018" style="width: 100%">
+<caption><span class="caption-number">Tabela 3.31 - </span><span class="caption-text">Municípios do Brasil - 2018 <br/> <strong>Fonte Original:</strong> <a class="reference download external" download="" href="https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2018/Brasil/BR/br_municipios.zip"><code class="xref download docutils literal notranslate"><span class="pre">IBGE</span></code></a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-proximity-query-municipios-2018" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td class="center-align"><p><img alt="uf-2018" src="../../_images/municipios-2018.png" /></p></td>
+<td class="left-align"><p><strong>Municípios do Brasil - 2018</strong></p>
+<ul class="simple">
+<li><p>municipios_2018.cpg</p></li>
+<li><p>municipios_2018.dbf</p></li>
+<li><p>municipios_2018.prj</p></li>
+<li><p>municipios_2018.shp</p></li>
+<li><p>municipios2018.shx</p></li>
+</ul>
+<p><strong>Tipo Geométrico:</strong> MultiPolygon
+<br/>  <br/>
+<strong>Número de Feições:</strong> 5.572
+<br/>  <br/>
+<strong>CRS:</strong> Lat/Long SIRGAS 2000
+<br/>  <br/>
+<strong>SRID:</strong> 4674
+<br/>  <br/>
+<strong>Codificação Caracteres:</strong> UTF-8
+<br/>  <br/>
+<strong>Nome Tabela:</strong> municipios</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="summary-carga-dados">
+<summary>Carga Dados:</summary><p><br/></p>
+<p>Carregando os dados dos municípios brasileiros usando o comando <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code> e o <code class="docutils literal notranslate"><span class="pre">psql</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4674</span> -i -I -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 municipios_2018.shp public.municipios &gt; municipios.sql
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -U postgres -h localhost -p <span class="m">5432</span> -d bdgeo -f municipios.sql
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="consulta">
+<h2><span class="section-number">3.5.4.2. </span>Consulta<a class="headerlink" href="#consulta" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>Consulta:</strong> Quais os municípios num raio de 2 graus da coordenada <span class="math notranslate nohighlight">\((-43.59, -20.32)\)</span>?</p>
+<table class="colwidths-given styled-table docutils align-center" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td class="left-align"><ul class="simple">
+<li><p><strong>longitude:</strong> -43.59</p></li>
+<li><p><strong>Latitude:</strong> -20.32</p></li>
+</ul>
+</td>
+<td class="center-align"><p><img alt="proximity-query" src="../../_images/proximity-query.png" /></p></td>
+</tr>
+</tbody>
+</table>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">geom</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(-43.59 -20.32)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Este tipo de consulta também é conhecida por <strong>Proximity Query</strong>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="window-query.html" class="btn btn-neutral float-left" title="3.5.3. Consultas de Janela ou Intervalo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="spatial-join.html" class="btn btn-neutral float-right" title="3.5.5. Junção Espacial" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f6f794d71c0>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

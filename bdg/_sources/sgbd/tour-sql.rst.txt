@@ -1,0 +1,228 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_sgbd_tour:
+
+Um Tour pela Linguagem SQL
+==========================
+
+
+Os exemplos desta seção estão associados a duas tabelas, ``paises`` e ``cidades``, como mostrado abaixo:
+
+
+.. table::
+    :name: tbl:sgbd:tour:paises
+    :header-alignment: center center
+    :column-alignment: center left
+    
+
+    +-----+-----------+
+    | **paises**      |
+    +-----+-----------+
+    | pid | nome_pais |
+    +=====+===========+
+    + 1   + Alemanha  |
+    +-----+-----------+
+    + 2   + Brasil    |
+    +-----+-----------+
+
+
+.. table:: 
+    :name: tbl:sgbd:tour:cidades
+    :header-alignment: center center center center
+    :column-alignment: center left center center
+
+    +-----+-------------+-----------+---------+
+    |   **cidades**                           |
+    +-----+-------------+-----------+---------+
+    | cid | nome_cidade | populacao | pais_id |
+    +=====+=============+===========+=========+
+    + 1   + Ouro Preto  + 70227     + 2       +
+    +-----+-------------+-----------+---------+
+    + 2   + Mariana     + 58233     + 2       +
+    +-----+-------------+-----------+---------+
+    + 1   + Munster     + 291754    + 1       +
+    +-----+-------------+-----------+---------+
+    + 1   + Itabirito   + 45449     + 2       +
+    +-----+-------------+-----------+---------+
+
+
+Esquema das Tabelas
+-------------------
+
+
+A tabela ``paises`` possui o seguinte esquema:
+
+
+.. table::
+    :name: tbl:sgbd:tour:paises:esquema
+    :header-alignment: center center center
+    :column-alignment: left left left
+    
+
+    +-----------+---------------------------+---------------------------------------+
+    | nome tabela: **paises**                                                       +
+    +-----------+---------------------------+---------------------------------------+
+    | colunas   | tipo de dados             | modificadores                         |
+    +===========+===========================+=======================================+
+    + pid       + número inteiro            | faixa de valores na casa das centenas |
+    +           +                           |                                       |
+    +           +                           | chave primária                        |
+    +-----------+---------------------------+---------------------------------------+
+    + nome_pais + texto de tamanho variável | limitado a 50 caracteres              |
+    +-----------+---------------------------+---------------------------------------+
+
+
+A tabela ``cidades`` possui o seguinte esquema:
+
+
+.. table::
+    :name: tbl:sgbd:tour:cidades:esquema
+    :header-alignment: center center center
+    :column-alignment: left left left
+    
+
+    +-------------+---------------------------+-------------------------------------------------------------------------------------+
+    | nome tabela: **cidades**                                                                                                      +
+    +-------------+---------------------------+-------------------------------------------------------------------------------------+
+    | colunas     | tipo de dados             | modificadores                                                                       +
+    +=============+===========================+=====================================================================================+
+    + cid         + número inteiro            | faixa de valores na casa dos milhares                                               +
+    +             +                           |                                                                                     +
+    +             +                           | chave primária                                                                      +
+    +-------------+---------------------------+-------------------------------------------------------------------------------------+
+    + nome_cidade + texto de tamanho variável | limitado a 50 caracterers                                                           +
+    +-------------+---------------------------+-------------------------------------------------------------------------------------+
+    + populacao   +  número inteiro           + faixa de valores na casa dos bilhões                                                +
+    +-------------+---------------------------+-------------------------------------------------------------------------------------+
+    + pais_id     + número inteiro            + valores devem respeitar o conjunto existente na coluna ``pid`` da tabela ``paises`` +
+    +-------------+---------------------------+-------------------------------------------------------------------------------------+
+
+
+Definição de Dados
+------------------
+
+
+Vamos utilizar a linguagem SQL para criar essas duas tabelas:
+
+
+**1.** Criando uma tabela denominada ``paises``:
+
+
+.. code-block:: sql
+
+    CREATE TABLE paises
+    (
+        pid       INTEGER PRIMARY KEY,
+        nome_pais VARCHAR(50) NOT NULL
+    );
+
+
+**2.** Criando uma tabela denominada ``cidades``:
+
+
+.. code-block:: sql
+
+    CREATE TABLE cidades
+    (
+        cid           SERIAL PRIMARY KEY,
+        nome_cidade   VARCHAR(50) NOT NULL UNIQUE,
+        populacao     INTEGER,
+        pid           INTEGER,
+        FOREIGN KEY (pid) REFERENCES paises(pid)
+    );
+
+
+Manipulação de Dados
+--------------------
+
+
+**1.** Inserindo tuplas na tabela ``paises``:
+
+
+.. code-block:: sql
+
+    INSERT INTO paises (pid, nome_pais) VALUES(1, 'Alemanha');
+
+
+.. code-block:: sql
+
+    INSERT INTO paises VALUES(2, 'Brasil');
+
+
+**2.** Inserindo tuplas na tabela ``cidades``:
+
+
+.. code-block:: sql
+
+    INSERT INTO cidades (nome_cidade, populacao, pid) VALUES ('Ouro Preto', 70227, 2),
+                                                             ('Mariana', 58233, 2),
+                                                             ('Munster', 291754, 1),
+                                                             ('Itabirito', 45449, 2);
+
+
+**5.** Exemplos:
+
+  - **Projeção:** nome das cidades e populacao (em milhares)
+
+      .. collapse:: Solução:
+      
+          .. code-block:: sql
+          
+              SELECT nome_cidade, trunc(populacao / 1000.0) AS "populacao-milhares" FROM cidades;
+
+
+  - **Seleção Tuplas:** cidades acima de 60.000 habitantes (ordenação por população)
+
+      .. collapse:: Solução:
+      
+          .. code-block:: sql
+          
+              SELECT nome_cidade, populacao FROM cidades WHERE populacao > 60000;
+
+
+  - **Produto Cartesiano:** paises x cidades
+
+      .. collapse:: Solução:
+      
+          .. code-block:: sql
+          
+              SELECT * FROM paises, cidades;
+
+
+          ou:
+
+          .. code-block:: sql
+
+              SELECT * FROM paises CROSS JOIN cidades;
+
+
+  - **Junção Tabelas:** paises x cidades
+
+      .. collapse:: Solução:
+
+          .. code-block:: sql
+
+              SELECT * FROM paises, cidades WHERE paises.pid = cidades.pid;
+
+          ou:
+
+          .. code-block:: sql
+
+              SELECT * FROM paises NATURAL JOIN cidades;
+
+
+  - **Agregação:** população países
+
+      .. collapse:: Solução:
+
+          .. code-block:: sql
+
+                SELECT nome_pais, SUM(populacao) AS pop
+                  FROM paises, cidades
+                 WHERE paises.pid = cidades.pid
+              GROUP BY paises.pid, paises.nome_pais
+              ORDER BY pop DESC;
+

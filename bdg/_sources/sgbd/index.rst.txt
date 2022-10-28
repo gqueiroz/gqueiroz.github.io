@@ -1,0 +1,55 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_sgbd:
+
+Sistemas de Bancos de Dados Relacionais
+=======================================
+
+
+.. warning::
+
+    Se você ainda não instalou o PostgreSQL, consulte a :numref:`Seção %s <sec_instalacao_pg_pgis>`.
+
+
+.. note::
+
+    **Slides da Aula:** 
+    
+    
+    :download:`Introdução a Sistemas de Bancos de Dados <../pdf/introducao-sistemas-bd.pdf>`.
+    
+    
+    :download:`Introdução ao PostgreSQL <../pdf/introducao-postgresql.pdf>`.
+
+
+.. toctree::
+    :maxdepth: 1
+    :titlesonly:
+
+    ./postgresql
+    ./pgadmin4
+    ./tour-sql
+    ./conectando-bd
+    ./criando-bd
+    ./tipos-dados-sql
+    ./tipos-numericos
+    ./tipo-logico
+    ./op-relacionais
+    ./strings
+    ./tipos-data-hora
+    ./expressoes
+    ./criando-tabelas
+    ./inserindo-dados
+    ./consultas
+    ./atualizando-dados
+    ./removendo-dados
+    ./restricoes-integridade
+    ./criando-views
+    ./esquemas
+    ./alterando-estrutura
+    ./import-export
+    ./indexes
+    ./removendo-objetos

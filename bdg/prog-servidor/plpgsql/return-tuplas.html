@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.1.7. Retornando Conjuntos ou Tuplas &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/prog-servidor/plpgsql/return-tuplas.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../search.html" />
+    <link rel="next" title="7.1.8. Comandos de Repetição" href="comandos-repeticao.html" />
+    <link rel="prev" title="7.1.6. Execução de Comandos SQL" href="exec-sql.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. Programação do Lado Servidor no PostgreSQL</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.1. PL/pgSQL</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="introducao.html">7.1.1. Introdução</a></li>
+<li class="toctree-l3"><a class="reference internal" href="comentarios.html">7.1.2. Comentários</a></li>
+<li class="toctree-l3"><a class="reference internal" href="estruturas-condicionais.html">7.1.3. Estruturas Condicionais</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msg-excecoes.html">7.1.4. Mensagens e Exceções</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parametros.html">7.1.5. Tipos dos Parâmetros e Tipo de Retorno</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exec-sql.html">7.1.6. Execução de Comandos SQL</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.1.7. Retornando Conjuntos ou Tuplas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="comandos-repeticao.html">7.1.8. Comandos de Repetição</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blocos.html">7.1.9. Blocos</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../triggers.html">7.2. Triggers e Relacionamentos de Integridade Espacial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extensoes.html">7.3. Extensões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../consideracoes.html">7.4. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">7.1. </span>PL/pgSQL</a> &raquo;</li>
+      <li><span class="section-number">7.1.7. </span>Retornando Conjuntos ou Tuplas</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="exec-sql.html" class="btn btn-neutral float-left" title="7.1.6. Execução de Comandos SQL" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="comandos-repeticao.html" class="btn btn-neutral float-right" title="7.1.8. Comandos de Repetição" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="retornando-conjuntos-ou-tuplas">
+<h1><span class="section-number">7.1.7. </span>Retornando Conjuntos ou Tuplas<a class="headerlink" href="#retornando-conjuntos-ou-tuplas" title="Link permanente para este cabeçalho"></a></h1>
+<p>Podemos definir o tipo de retorno de uma função como sendo um conjunto de valores usando o construtor <code class="docutils literal notranslate"><span class="pre">SETOF</span></code> ou <code class="docutils literal notranslate"><span class="pre">TABLE</span></code>. Neste caso, ao invés de usar uma única instrução <code class="docutils literal notranslate"><span class="pre">RETURN</span></code>, utilizamos as instruções <code class="docutils literal notranslate"><span class="pre">RETURN</span> <span class="pre">NEXT</span></code> ou <code class="docutils literal notranslate"><span class="pre">RETURN</span> <span class="pre">QUERY</span></code>.</p>
+<p>A função <code class="docutils literal notranslate"><span class="pre">generate_4pts</span></code> irá gerar um conjunto com quatro pontos sorteados de forma aleatória:</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">generate_4pts</span><span class="p">()</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="k">SETOF</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="w"></span>
+<span class="k">AS</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">DECLARE</span><span class="w"></span>
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">;</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Atente-se a um detalhe importante no código da função <code class="docutils literal notranslate"><span class="pre">generate_4pts</span></code>: ela termina com uma instrução <code class="docutils literal notranslate"><span class="pre">RETURN</span></code>.</p>
+<p>Podemos invocar a função <code class="docutils literal notranslate"><span class="pre">generate_4pts</span></code> da seguinte forma:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">generate_4pts</span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                 <span class="n">geom</span>
+<span class="o">--------------------------------------------</span>
+<span class="n">POINT</span><span class="p">(</span><span class="mf">163.76629723236</span> <span class="mf">85.4808924626559</span><span class="p">)</span>
+<span class="n">POINT</span><span class="p">(</span><span class="o">-</span><span class="mf">55.0152626819909</span> <span class="mf">55.0285322405398</span><span class="p">)</span>
+<span class="n">POINT</span><span class="p">(</span><span class="o">-</span><span class="mf">1.04462971910834</span> <span class="o">-</span><span class="mf">35.6856297980994</span><span class="p">)</span>
+<span class="n">POINT</span><span class="p">(</span><span class="o">-</span><span class="mf">123.348454702646</span> <span class="mf">31.6837284341455</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">4</span> <span class="n">rows</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Outra possibilidade de retornar um conjunto de valores é através do comando <code class="docutils literal notranslate"><span class="pre">RETURN</span> <span class="pre">QUERY</span></code>. A função <code class="docutils literal notranslate"><span class="pre">nearest_pluviometros</span></code> ilustra como podemos utilizar este comando:</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">nearest_pluviometros</span><span class="p">(</span><span class="k">location</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                                </span><span class="n">distance</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">)</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="k">SETOF</span><span class="w"> </span><span class="n">pluviometros</span><span class="w"></span>
+<span class="k">AS</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">DECLARE</span><span class="w"></span>
+<span class="w">    </span><span class="n">q</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">;</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
+<span class="w">    </span><span class="n">q</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s1">&#39;SELECT * FROM pluviometros&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"></span>
+<span class="w">         </span><span class="s1">&#39; WHERE ST_DWithin(location, $1, $2)&#39;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">QUERY</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="n">q</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="k">location</span><span class="p">,</span><span class="w"> </span><span class="n">distance</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Invocando a função <code class="docutils literal notranslate"><span class="pre">nearest_pluviometros</span></code> obtemos o resultado mostrado abaixo:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="k">location</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">nearest_pluviometros</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">23</span><span class="p">),</span><span class="w"> </span><span class="mi">4326</span><span class="p">),</span><span class="w"></span>
+<span class="w">           </span><span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">gid</span> <span class="o">|</span>        <span class="n">st_astext</span>
+<span class="o">-----+--------------------------</span>
+   <span class="mi">1</span> <span class="o">|</span> <span class="n">POINT</span><span class="p">(</span><span class="o">-</span><span class="mf">45.8872</span> <span class="o">-</span><span class="mf">23.1791</span><span class="p">)</span>
+   <span class="mi">2</span> <span class="o">|</span> <span class="n">POINT</span><span class="p">(</span><span class="o">-</span><span class="mf">43.6419</span> <span class="o">-</span><span class="mf">20.393</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Outra possibilidade de escrita da função <code class="docutils literal notranslate"><span class="pre">nearest_pluviometros</span></code> seria sem a utilização do comando <code class="docutils literal notranslate"><span class="pre">EXECUTE</span></code>:</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">nearest_pluviometros</span><span class="p">(</span><span class="k">location</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                                </span><span class="n">distance</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">)</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="k">SETOF</span><span class="w"> </span><span class="n">pluviometros</span><span class="w"></span>
+<span class="k">AS</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">QUERY</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">                   </span><span class="k">FROM</span><span class="w"> </span><span class="n">pluviometros</span><span class="w"></span>
+<span class="w">                  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span><span class="n">pluviometros</span><span class="mf">.</span><span class="k">location</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                   </span><span class="n">nearest_pluviometros</span><span class="mf">.</span><span class="k">location</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                   </span><span class="n">distance</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">FOUND</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
+<span class="w">        </span><span class="k">RAISE</span><span class="w"> </span><span class="k">EXCEPTION</span><span class="w"> </span><span class="s1">&#39;Nenhum pluviometro nas proximidades: %&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="nv">$1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="exec-sql.html" class="btn btn-neutral float-left" title="7.1.6. Execução de Comandos SQL" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="comandos-repeticao.html" class="btn btn-neutral float-right" title="7.1.8. Comandos de Repetição" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f6f79860c10>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

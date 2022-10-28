@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.1.6. Execução de Comandos SQL &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/prog-servidor/plpgsql/exec-sql.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../search.html" />
+    <link rel="next" title="7.1.7. Retornando Conjuntos ou Tuplas" href="return-tuplas.html" />
+    <link rel="prev" title="7.1.5. Tipos dos Parâmetros e Tipo de Retorno" href="parametros.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. Programação do Lado Servidor no PostgreSQL</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.1. PL/pgSQL</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="introducao.html">7.1.1. Introdução</a></li>
+<li class="toctree-l3"><a class="reference internal" href="comentarios.html">7.1.2. Comentários</a></li>
+<li class="toctree-l3"><a class="reference internal" href="estruturas-condicionais.html">7.1.3. Estruturas Condicionais</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msg-excecoes.html">7.1.4. Mensagens e Exceções</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parametros.html">7.1.5. Tipos dos Parâmetros e Tipo de Retorno</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.1.6. Execução de Comandos SQL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="return-tuplas.html">7.1.7. Retornando Conjuntos ou Tuplas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="comandos-repeticao.html">7.1.8. Comandos de Repetição</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blocos.html">7.1.9. Blocos</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../triggers.html">7.2. Triggers e Relacionamentos de Integridade Espacial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extensoes.html">7.3. Extensões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../consideracoes.html">7.4. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">7.1. </span>PL/pgSQL</a> &raquo;</li>
+      <li><span class="section-number">7.1.6. </span>Execução de Comandos SQL</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="parametros.html" class="btn btn-neutral float-left" title="7.1.5. Tipos dos Parâmetros e Tipo de Retorno" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="return-tuplas.html" class="btn btn-neutral float-right" title="7.1.7. Retornando Conjuntos ou Tuplas" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="execucao-de-comandos-sql">
+<h1><span class="section-number">7.1.6. </span>Execução de Comandos SQL<a class="headerlink" href="#execucao-de-comandos-sql" title="Link permanente para este cabeçalho"></a></h1>
+<p>Podemos utilizar comandos SQL com instruções válidas dentro de funções <code class="docutils literal notranslate"><span class="pre">PL/pgSQL</span></code>. Esses comandos podem utilizar nomes de variáveis definidas na própria função para compor o comando.</p>
+<p>Para ilustrar a execução de comandos, vamos criar uma tabela chamada <code class="docutils literal notranslate"><span class="pre">pluviometros</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pluviometros</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">gid</span><span class="w">      </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">location</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">POINT</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">)</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<section id="comandos-que-nao-retornam-resultados">
+<h2><span class="section-number">7.1.6.1. </span>Comandos que não retornam resultados<a class="headerlink" href="#comandos-que-nao-retornam-resultados" title="Link permanente para este cabeçalho"></a></h2>
+<p>Vamos criar uma função em <code class="docutils literal notranslate"><span class="pre">PL/pgSQL</span></code> que faça a inserção na tabela <code class="docutils literal notranslate"><span class="pre">pluviometros</span></code> tomando como entrada os valores de longitude e latitude onde se encontra instalado um pluviômetro:</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">my_insert</span><span class="p">(</span><span class="n">longitude</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                     </span><span class="n">latitude</span><span class="w">  </span><span class="nb">NUMERIC</span><span class="p">)</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="nb">VOID</span><span class="w"></span>
+<span class="k">AS</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">pluviometros</span><span class="p">(</span><span class="k">location</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">VALUES</span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="w"></span>
+<span class="w">                </span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">latitude</span><span class="p">),</span><span class="w"></span>
+<span class="w">                </span><span class="mf">4326</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Agora, podemos chamar a função <code class="docutils literal notranslate"><span class="pre">my_insert</span></code> que irá montar a tupla a ser inserida na tabela <code class="docutils literal notranslate"><span class="pre">pluviometros</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">my_insert</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">.</span><span class="mi">8872</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">23</span><span class="p">.</span><span class="mi">1791</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Repare que o comando <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> sem a cláusula <code class="docutils literal notranslate"><span class="pre">RETURNING</span></code> não retorna nenhum resultado. Para realizar a avaliação de expressões ou consultas do tipo <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> descartando o resultado, pode-se utilizar o comando <code class="docutils literal notranslate"><span class="pre">PERFORM</span></code>. Este comando é necessário, principalmente, quando se tem uma consulta do tipo <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> cuja finalidade é apenas produzir um efeito colateral (<em>side-effect</em>).</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">PERFORM</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pluviometros</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">gid</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Se você quiser testar o comando acima, deverá incluí-lo dentro de uma função <code class="docutils literal notranslate"><span class="pre">PL/pgSQL</span></code>.</p>
+</div>
+</section>
+<section id="comandos-que-retornam-uma-unica-tupla-como-resultado">
+<span id="comando-retorno-unica-tupla"></span><h2><span class="section-number">7.1.6.2. </span>Comandos que retornam uma única tupla como resultado<a class="headerlink" href="#comandos-que-retornam-uma-unica-tupla-como-resultado" title="Link permanente para este cabeçalho"></a></h2>
+<p>Podemos também recuperar o resultado de uma consulta que retorne uma única tupla, ou seja, um resultado que pode ser composto de um ou mais valores.</p>
+<p>Como exemplo desse tipo de comando, vamos alterar a função <code class="docutils literal notranslate"><span class="pre">my_insert</span></code> para que ela retorne como resultado o valor gerado automaticamente pela sequência (<code class="docutils literal notranslate"><span class="pre">SEQUENCE</span></code>) associada à coluna <code class="docutils literal notranslate"><span class="pre">gid</span></code>, que é a chave primária da tabela <code class="docutils literal notranslate"><span class="pre">pluviometros</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Provavelmete você terá que remover a definição da função <code class="docutils literal notranslate"><span class="pre">my_insert</span></code> realizada anteriormente. Para tal, utilize o seguinte comando:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">my_insert</span><span class="p">(</span><span class="nb">numeric</span><span class="p">,</span><span class="nb">numeric</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">my_insert</span><span class="p">(</span><span class="n">longitude</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                     </span><span class="n">latitude</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">)</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="n">pluviometros</span><span class="mf">.</span><span class="n">gid</span><span class="nb">%TYPE</span><span class="w"></span>
+<span class="k">AS</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">DECLARE</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="n">pluviometros</span><span class="mf">.</span><span class="n">gid</span><span class="nb">%TYPE</span><span class="p">;</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">pluviometros</span><span class="p">(</span><span class="k">location</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">VALUES</span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="w"></span>
+<span class="w">                </span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">latitude</span><span class="p">),</span><span class="w"></span>
+<span class="w">                </span><span class="mf">4326</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="k">RETURNING</span><span class="w"> </span><span class="n">gid</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Com essa modificação, ao invocarmos a função <code class="docutils literal notranslate"><span class="pre">my_insert</span></code> obtemos o novo identificador da linha criada:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">my_insert</span><span class="p">(</span><span class="o">-</span><span class="mi">43</span><span class="p">.</span><span class="mi">6419</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">20</span><span class="p">.</span><span class="mi">393</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">my_insert</span>
+<span class="o">-----------</span>
+    <span class="mi">2</span>
+ <span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Repare na declaração do tipo de retorno da função e no tipo da variável <code class="docutils literal notranslate"><span class="pre">id</span></code>. Utilizamos <code class="docutils literal notranslate"><span class="pre">%TYPE</span></code> para deduzir o tipo através de uma referência ao nome da coluna <code class="docutils literal notranslate"><span class="pre">gid</span></code> da tabela <code class="docutils literal notranslate"><span class="pre">pluviometros</span></code>.</p>
+<p>Na prática, podemos associar o resultado de comandos SQL que produzam uma única tupla, a uma variável do tipo <code class="docutils literal notranslate"><span class="pre">RECORD</span></code>, tipos compostos (como os tipos definidos por tabelas e <code class="docutils literal notranslate"><span class="pre">%ROWTYPE</span></code>) ou listas de variáveis compatíveis com os tipos retornados. A sintaxe de cada comando é a seguinte:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="p">[</span><span class="k">STRICT</span><span class="p">]</span><span class="w"> </span><span class="n">variável</span><span class="p">[,</span><span class="w"> </span><span class="n">variável</span><span class="w"> </span><span class="p">...]</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">...;</span><span class="w"></span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">RETURNING</span><span class="w"> </span><span class="n">expressões</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="p">[</span><span class="k">STRICT</span><span class="p">]</span><span class="w"> </span><span class="n">variável</span><span class="p">[,</span><span class="w"> </span><span class="n">variável</span><span class="w"> </span><span class="p">...];</span><span class="w"></span>
+
+<span class="k">UPDATE</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">RETURNING</span><span class="w"> </span><span class="n">expressões</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="p">[</span><span class="k">STRICT</span><span class="p">]</span><span class="w"> </span><span class="n">variável</span><span class="p">[,</span><span class="w"> </span><span class="n">variável</span><span class="w"> </span><span class="p">...];</span><span class="w"></span>
+
+<span class="k">DELETE</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">RETURNING</span><span class="w"> </span><span class="n">expressões</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="p">[</span><span class="k">STRICT</span><span class="p">]</span><span class="w"> </span><span class="n">variável</span><span class="p">[,</span><span class="w"> </span><span class="n">variável</span><span class="w"> </span><span class="p">...];</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Caso a palavra <code class="docutils literal notranslate"><span class="pre">STRICT</span></code> seja omitida em comandos <code class="docutils literal notranslate"><span class="pre">SELECT</span></code>, a variável será associada ao primeiro valor retornado pelo comando ou a um valor nulo. Se a palavra <code class="docutils literal notranslate"><span class="pre">STRICT</span></code> for utilizada, a consulta deverá retornar uma única linha, caso contrário, será produzida uma exceção que irá interromper a execução da função. Para os comandos <code class="docutils literal notranslate"><span class="pre">INSERT</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> e <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> usando a cláusula <code class="docutils literal notranslate"><span class="pre">RETURNING</span></code>, mesmo omitindo a palavra <code class="docutils literal notranslate"><span class="pre">STRICT</span></code>, será lançada uma exceção se mais de uma tupla for retornada<a class="footnote-reference brackets" href="#f1" id="id1">1</a>.</p>
+<p>Uma variável que é automaticamente definida quando executamos um comando que retorna alguma tupla como resultado, é a variável <code class="docutils literal notranslate"><span class="pre">FOUND</span></code>. No caso de comandos que não usam a palavra <code class="docutils literal notranslate"><span class="pre">STRICT</span></code>, a próxima instrução da função pode verificar o valor desta variável para saber se alguma tupla foi ou não retornada. Por exemplo, se quisermos saber se existe algum pluviômetro a uma certa distância de uma dada localização, podemos construir uma função como a seguinte<a class="footnote-reference brackets" href="#f2" id="id2">2</a>:</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">existe_pluviometro</span><span class="p">(</span><span class="k">location</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                              </span><span class="n">distance</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">)</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="nb">BOOL</span><span class="w"></span>
+<span class="k">AS</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">DECLARE</span><span class="w"></span>
+<span class="w">    </span><span class="n">pluviometro</span><span class="w"> </span><span class="n">pluviometros</span><span class="nb">%ROWTYPE</span><span class="p">;</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">pluviometro</span><span class="w"></span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">pluviometros</span><span class="w"></span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span><span class="n">pluviometros</span><span class="mf">.</span><span class="k">location</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="n">existe_pluviometro</span><span class="mf">.</span><span class="k">location</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="n">distance</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">IF</span><span class="w"> </span><span class="n">FOUND</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
+<span class="w">        </span><span class="k">RAISE</span><span class="w"> </span><span class="k">NOTICE</span><span class="w"></span>
+<span class="w">              </span><span class="s1">&#39;Encontrado pelo menos um pluviometro próximo: %&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="n">ST_AsText</span><span class="p">(</span><span class="n">pluviometro</span><span class="mf">.</span><span class="k">location</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">RETURN</span><span class="w"> </span><span class="k">TRUE</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">ELSE</span><span class="w"></span>
+<span class="w">        </span><span class="k">RAISE</span><span class="w"> </span><span class="k">NOTICE</span><span class="w"></span>
+<span class="w">              </span><span class="s1">&#39;Não foi encontrado um único pluviômetro nas proximidades de: %&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="n">ST_AsText</span><span class="p">(</span><span class="n">existe_pluviometro</span><span class="mf">.</span><span class="k">location</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">RETURN</span><span class="w"> </span><span class="k">FALSE</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Se quisermos saber da existência ou não de um pluviômetro num raio de 1.0 grau das localizações <code class="docutils literal notranslate"><span class="pre">(-45,</span> <span class="pre">-23)</span></code> e <code class="docutils literal notranslate"><span class="pre">(-47,</span> <span class="pre">-25)</span></code>, podemos realizar a seguinte consulta:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">existe_pluviometro</span><span class="p">(</span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">23</span><span class="p">),</span><span class="w"> </span><span class="mi">4326</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">existe_pluviometro</span>
+<span class="o">--------------------</span>
+<span class="n">t</span>
+<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">existe_pluviometro</span><span class="p">(</span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="o">-</span><span class="mi">47</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">25</span><span class="p">),</span><span class="w"> </span><span class="mi">4326</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NOTICE</span><span class="p">:</span>  <span class="n">Não</span> <span class="n">foi</span> <span class="n">encontrado</span> <span class="n">um</span> <span class="n">único</span> <span class="n">pluviômetro</span> <span class="n">nas</span> <span class="n">proximidades</span> <span class="n">de</span><span class="p">:</span> <span class="n">POINT</span><span class="p">(</span><span class="o">-</span><span class="mi">47</span> <span class="o">-</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">existe_pluviometro</span>
+<span class="o">--------------------</span>
+<span class="n">f</span>
+<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>É muito comum usarmos a variável <code class="docutils literal notranslate"><span class="pre">FOUND</span></code> junto com testes condicionas para lançar uma exceção:</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="mf">...</span><span class="w"></span>
+<span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">FOUND</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
+<span class="w">    </span><span class="k">RAISE</span><span class="w"> </span><span class="k">EXCEPTION</span><span class="w"> </span><span class="s1">&#39;mensagem: nenhuma linha encontrada!&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span><span class="w"></span>
+<span class="mf">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>No caso de comandos que usam a palavra <code class="docutils literal notranslate"><span class="pre">STRICT</span></code>, existem outras duas variáveis muito úteis:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NO_DATA_FOUND</span></code>: indica que nenhuma tupla foi retornada.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOO_MANY_ROWS</span></code>: indica que mais do que uma tupla foi retornada.</p></li>
+</ul>
+<p>Podemos utilizar um bloco para capturar os possíveis tipos de exceções, como mostrado na função abaixo, que verifica se existe apenas um único pluviômetro a uma certa distância de uma dada localização:</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">unico_pluviometro</span><span class="p">(</span><span class="k">location</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                             </span><span class="n">distance</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">)</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="nb">BOOL</span><span class="w"></span>
+<span class="k">AS</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">DECLARE</span><span class="w"></span>
+<span class="w">    </span><span class="n">pluviometro</span><span class="w"> </span><span class="n">pluviometros</span><span class="nb">%ROWTYPE</span><span class="p">;</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="k">STRICT</span><span class="w"> </span><span class="n">pluviometro</span><span class="w"></span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">pluviometros</span><span class="w"></span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span><span class="n">pluviometros</span><span class="mf">.</span><span class="k">location</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="n">unico_pluviometro</span><span class="mf">.</span><span class="k">location</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="n">distance</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">TRUE</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">EXCEPTION</span><span class="w"></span>
+<span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">NO_DATA_FOUND</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
+<span class="w">        </span><span class="k">RAISE</span><span class="w"> </span><span class="k">NOTICE</span><span class="w"> </span><span class="s1">&#39;Nenhum pluviômetro encontrado próximo a: %&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="n">ST_AsText</span><span class="p">(</span><span class="n">unico_pluviometro</span><span class="mf">.</span><span class="k">location</span><span class="p">);</span><span class="w"></span>
+<span class="w">         </span><span class="k">RETURN</span><span class="w"> </span><span class="k">FALSE</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">TOO_MANY_ROWS</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
+<span class="w">        </span><span class="k">RAISE</span><span class="w"> </span><span class="k">NOTICE</span><span class="w"> </span><span class="s1">&#39;Vários pluviômetros encontrados próximo a: %&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="n">ST_AsText</span><span class="p">(</span><span class="n">unico_pluviometro</span><span class="mf">.</span><span class="k">location</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">RETURN</span><span class="w"> </span><span class="k">FALSE</span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Para testar a função acima, execute os comandos abaixo:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">unico_pluviometro</span><span class="p">(</span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">23</span><span class="p">),</span><span class="w"> </span><span class="mi">4326</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unico_pluviometro</span>
+<span class="o">-------------------</span>
+<span class="n">t</span>
+<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">unico_pluviometro</span><span class="p">(</span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="o">-</span><span class="mi">47</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">25</span><span class="p">.),</span><span class="w"> </span><span class="mi">4326</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unico_pluviometro</span>
+<span class="o">-------------------</span>
+<span class="n">f</span>
+<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Atente-se ao fato de que a variável <code class="docutils literal notranslate"><span class="pre">FOUND</span></code> é sempre associada ao valor <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> quando <code class="docutils literal notranslate"><span class="pre">STRICT</span></code> é utilizada e o comando retorna uma única tupla.</p>
+</div>
+</section>
+<section id="comandos-dinamicos">
+<h2><span class="section-number">7.1.6.3. </span>Comandos Dinâmicos<a class="headerlink" href="#comandos-dinamicos" title="Link permanente para este cabeçalho"></a></h2>
+<p>Outra facilidade para criação de funções em <code class="docutils literal notranslate"><span class="pre">PL/pgSQL</span></code> é a possibilidade de construirmos dinamicamente uma string representando um comando SQL para posterior execução. Vamos ilustrar o uso do comando <code class="docutils literal notranslate"><span class="pre">EXECUTE</span></code> com um exemplo que irá posicionar um pluviômetro em uma localização aleatória.</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">random_insert</span><span class="p">()</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="n">pluviometros</span><span class="mf">.</span><span class="n">gid</span><span class="nb">%TYPE</span><span class="w"></span>
+<span class="k">AS</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">DECLARE</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="n">pluviometros</span><span class="mf">.</span><span class="n">gid</span><span class="nb">%TYPE</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">r</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">longitude</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">latitude</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">query</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">;</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
+<span class="w">    </span><span class="k">query</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s1">&#39;INSERT INTO pluviometros (location) VALUES($1) RETURNING gid&#39;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">r</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">random</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">longitude</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">latitude</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">RAISE</span><span class="w"> </span><span class="k">NOTICE</span><span class="w"> </span><span class="s1">&#39;Localização: (%, %)&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">latitude</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">latitude</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">query</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="k">STRICT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Executando a função <code class="docutils literal notranslate"><span class="pre">random_insert</span></code> obtemos um resultado como:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">random_insert</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NOTICE</span><span class="p">:</span>  <span class="n">Localização</span><span class="p">:</span> <span class="p">(</span><span class="mf">17.3685365170239600</span><span class="p">,</span> <span class="mf">8.6842682585119800</span><span class="p">)</span>
+
+ <span class="n">random_insert</span>
+<span class="o">---------------</span>
+      <span class="mi">3</span>
+<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Os parâmetros como <code class="docutils literal notranslate"><span class="pre">$1</span></code> e <code class="docutils literal notranslate"><span class="pre">$2</span></code> só podem ser usados para os valores de atributos. Não é possível utilizá-los para substituir nomes de tabelas ou colunas. Neste caso, devemos concatenar o texto do comando ou usar a função <code class="docutils literal notranslate"><span class="pre">format()</span></code> com o caractere de substituição de nomes de tabelas e colunas (<code class="docutils literal notranslate"><span class="pre">%I</span></code>).</p>
+</div>
+<p class="rubric">Notas</p>
+<dl class="footnote brackets">
+<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>A explicação dada pelo time de desenvolvimento do PostgreSQL é que neste caso não há a possibilidade de usar uma cláusula como <code class="docutils literal notranslate"><span class="pre">ORDER</span> <span class="pre">BY</span></code> que possibilite a escolha da linha afetada a ser considerada.</p>
+</dd>
+<dt class="label" id="f2"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Obviamente não precisamos de uma função para isso, além de podermos escrever uma consulta de agregação com o operador <code class="docutils literal notranslate"><span class="pre">COUNT(*)</span></code>.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="parametros.html" class="btn btn-neutral float-left" title="7.1.5. Tipos dos Parâmetros e Tipo de Retorno" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="return-tuplas.html" class="btn btn-neutral float-right" title="7.1.7. Retornando Conjuntos ou Tuplas" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f6f797c08e0>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

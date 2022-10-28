@@ -1,0 +1,209 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../../def.rst
+
+
+.. _cap_tipos_geometricos_consultas_espaciais_overlay:
+
+Overlay de Mapas
+================
+
+
+Carga de Dados - Mapa Pedológico
+--------------------------------
+
+
+Considere o conjunto ESRI Shapefile mostrado na :numref:`Tabela %s <tbl:consultas-espaciais:overlay:pedologia-2017>`, que contem o mapa pedológico do Brazil, abo de referência 2017. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.
+
+
+.. |trechos-rodoviarios| image:: ../../img/consultas-espaciais/pedologia-2017.png
+
+
+.. table:: Mapa Pedológico – 2017 |br| **Fonte Original:** :download:`IBGE <https://geoftp.ibge.gov.br/informacoes_ambientais/pedologia/vetores/escala_250_mil/versao_2017/brasil/Brasil_pedo_area.zip>`.
+    :widths: 60 40
+    :width: 100%
+    :align: center
+    :column-alignment: center left
+    :name: tbl:consultas-espaciais:overlay:pedologia-2017
+
+    +-----------------------+-------------------------------------------+
+    | |trechos-rodoviarios| | **Mapa Pedológico – 2017**                |
+    |                       |                                           |
+    |                       | - pedologia_2017.cpg                      |
+    |                       | - pedologia_2017.dbf                      |
+    |                       | - pedologia_2017.prj                      |
+    |                       | - pedologia_2017.shp                      |
+    |                       | - pedologia_2017.shx                      |
+    |                       |                                           |
+    |                       | **Tipo Geométrico:** MultiPolygon         |
+    |                       | |br|  |br|                                |
+    |                       | **Número de Feições:** 113.907            |
+    |                       | |br|  |br|                                |
+    |                       | **CRS:** Lat/Long SIRGAS 2000             |
+    |                       | |br|  |br|                                |
+    |                       | **SRID:** 4674                            |
+    |                       | |br|  |br|                                |
+    |                       | **Codificação Caracteres:** UTF-8         |
+    |                       | |br|  |br|                                |
+    |                       | **Nome Tabela:** pedologia                |
+    +-----------------------+-------------------------------------------+
+
+
+.. collapse:: Carga Dados:
+
+    |br|
+
+    Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o ``shp2pgsql``, use o seguinte comando:
+
+
+    .. code-block:: bash
+
+        shp2pgsql -c -g "geom" -s 4674 -i -I -t "2D" -W UTF-8 pedologia_2017.shp public.pedologia > pedologia.sql
+
+
+    Para carregar o arquivo ``pedologia.sql`` para um banco de dados PostgreSQL, utilize o ``psql``:
+
+
+    .. code-block:: bash
+
+        psql -h localhost -p 5432 -d bdgeo -U postgres -f pedologia.sql
+
+
+-----
+
+
+Consulta 1
+----------
+
+
+**Consulta:** Quais os tipos de solo do Estado do Tocantins?
+
+
+.. figure:: ../../img/consultas-espaciais/overlay-01.png
+    :alt: Overlay - Intersecção entre Limite Estadual do Tocantins e o Mapa Pedológico
+    :width: 60%
+    :figclass: align-center
+    :name: fig:consultas-espaciais:overlay:01
+
+    Overlay - Intersecção entre Limite Estadual do Tocantins e o Mapa Pedológico.
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT pedologia.gid AS gid,
+               pedologia.ordem AS ordem,
+               ST_Intersection(pedologia.geom, uf.geom) AS geom
+          FROM pedologia,
+               uf
+         WHERE ST_Intersects(uf.geom, pedologia.geom)
+           AND uf.nome = 'TOCANTINS';
+
+
+-----
+
+
+Consulta 2
+----------
+
+
+**Consulta:** Qual o tipo de solo predominante em Ouro Preto?
+
+
+.. figure:: ../../img/consultas-espaciais/overlay-02.png
+    :alt: Overlay - Intersecção entre limite municipal de Ouro Preto e o Mapa Pedológico
+    :width: 60%
+    :figclass: align-center
+    :name: fig:consultas-espaciais:overlay:02
+
+    Overlay - Intersecção entre limite municipal de Ouro Preto e o Mapa Pedológico.
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT ordem,
+               SUM( ST_Area( geom::geography ) / 10000.0 ) AS area
+          FROM
+              (       
+                   SELECT p.ordem as ordem,
+                          ST_Intersection( m.geom, p.geom ) AS geom         
+                     FROM municipios AS m,
+                          pedologia AS p
+                    WHERE ST_Intersects(m.geom, p.geom)
+                      AND m.nome = 'OURO PRETO'
+              ) AS solos     
+        GROUP BY ordem
+        ORDER BY area DESC LIMIT 1;
+
+
+-----
+
+
+Consulta 3
+----------
+
+
+**Consulta:**  Recuperar os trechos de rodovia no Estado do Tocantins com o tipo de revestimento "Pavimentado"?
+
+
+.. figure:: ../../img/consultas-espaciais/overlay-03.png
+    :alt: Overlay - Intersecção entre trechos rodoviários e o limite estadual de Tocantins
+    :width: 60%
+    :figclass: align-center
+    :name: fig:consultas-espaciais:overlay:03
+
+    Overlay - Intersecção entre trechos rodoviários e o limite estadual de Tocantins.
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT trechos.gid,
+               codtrechor,
+               ST_Intersection(uf.geom, trechos.geom) AS geom
+          FROM uf,
+               trechos_rodoviarios AS trechos
+         WHERE ST_Intersects(uf.geom, trechos.geom)
+           AND trechos.revestimen = 'Pavimentado'
+           AND uf.nome = 'TOCANTINS';
+
+
+-----
+
+
+Consulta 4
+----------
+
+
+**Consulta:** Quantos KM de rodovia existem no Estado do Tocantins com o tipo de revestimento "Pavimentado"?
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT SUM(
+                   ST_Length(
+                        ST_Intersection(uf.geom, trechos.geom)::geography
+                   ) / 1000.0
+               )
+          FROM uf,
+               trechos_rodoviarios AS trechos
+         WHERE ST_Intersects(uf.geom, trechos.geom)
+           AND trechos.revestimen = 'Pavimentado'
+           AND uf.nome = 'TOCANTINS';
+
+
+-----
+
+
+.. note::
+
+    As consultas desta seção também são conhecidas por **Overlay**.

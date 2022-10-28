@@ -1,0 +1,263 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _sec_prog_servidor_triggers_rel_espacial:
+
+Triggers e Relacionamentos de Integridade Espacial
+==================================================
+
+
+Uma restrição do tipo *check-constraint* permite definir regras básicas que devem ser asseguradas pelo SGBD quando realizamos operações de escrita sobre uma tabela. Para ilustrar o uso desse tipo de restrição, considere um empreendimento imobiliário de vendas de terrenos (ou lotes). Poderíamos criar uma tabela chamada ``lotes`` para armazenar as feições de cada terreno. Uma regra básica que poderia ser estabelecida, seria a de que o menor lote deva ter uma área mínima de 360m\ :sup:`2`. A definição abaixo mostra como poderíamos construir essa tabela.
+
+
+.. code-block:: sql
+
+    CREATE TABLE lotes
+    (
+        gid  SERIAL PRIMARY KEY,
+        geom GEOMETRY(POLYGON, 0),
+        CHECK(ST_Area(geom) >= 360.0)
+    );
+
+
+Ao inserir a feição de um terreno com dimensões 12mx30m, respeitamos a regra imposta. Logo obteríamos uma mensagem de que a nova tupla foi adicionada à nossa tabela:
+
+
+.. code-block:: sql
+
+    INSERT INTO lotes (geom)
+        VALUES (ST_GeomFromText(
+                    'POLYGON((0 0, 12 0, 12 30, 0 30, 0 0))', 0));
+
+
+Saída::
+
+    Query returned successfully: one row affected, 16 ms execution time.
+
+
+No entanto, se tentarmos adicionar uma nova tupla com dados de um terreno com dimensões de 10mx24m, fora da regra, o SGBD iria abortar a operação de inserção, mantendo assim a consistência da tabela com a regra estabelecida:
+
+
+.. code-block:: sql
+
+    INSERT INTO lotes (geom)
+        VALUES (ST_GeomFromText(
+                    'POLYGON((12 0, 22 0, 22 24, 12 24, 12 0))', 0));
+
+
+Saída::
+
+    ERROR: new row for relation "lotes" violates check constraint "lotes_geom_check"
+    SQL state: 23514
+    Detail: Failing row contains (6, 0103000000010000000500000000000000000028400000000000000000000000...).
+
+
+Suponha agora que queiramos incluir uma nova regra na nossa tabela a fim de evitar que um novo lote seja cadastrado de forma a ter sobreposição com algum outro lote já cadastrado. Neste caso, não é possível definir esta regra como uma restrição do tipo *check-constraint*. Precisamos de um mecanismo que possibilite expressar essa verificação do novo conteúdo sendo inserido na nossa tabela com dados que já existem na própria tabela.
+
+
+Um mecanismo útil para estabelecer este tipo de restrição é conhecido por *trigger*, que é uma ação associada a uma tabela, invocada automaticamente sempre que modificamos o conteúdo dessa tabela\ [#f1]_.
+
+
+No PostgreSQL, um *trigger* nada mais é do que uma função com uma notação especial e algumas facilidades para gerenciar o tipo de evento responsável por disparar esta função.
+
+
+A função ``PL/pgSQL`` usada para definir o *trigger* não possui parâmetros e o tipo de retorno é do tipo *trigger*, como mostrado abaixo:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION nome-da-função-trigger()
+    RETURNS trigger
+    AS
+    $$
+    DECLARE
+        lista-variáveis;
+    BEGIN
+        comandos;
+    END;
+    $$ LANGUAGE plpgsql;
+
+
+A definição do *trigger* é realizada através do comando ``CREATE TRIGGER``, que possui a seguinte sintaxe:
+
+
+.. code-block:: plpgsql
+
+    CREATE [CONSTRAINT] TRIGGER nome-trigger
+      {BEFORE | AFTER | INSTEAD OF} {tipo-evento [OR ...]}
+      ON nome-tabela
+      [FROM referenced_table_name ]
+      [NOT DEFERRABLE |
+        [DEFERRABLE] [INITIALLY IMMEDIATE | INITIALLY DEFERRED]]
+      [FOR [EACH] {ROW | STATEMENT}]
+      [WHEN (condition)]
+      EXECUTE PROCEDURE nome-função-trigger(argumentos)
+
+
+No caso de tabelas, um *trigger* pode ser definido para execução antes (``BEFORE``) ou após (``AFTER``) qualquer operação de inserção (``INSERT``), atualização (``UPDATE``) ou remoção (``DELETE``). Também podemos definir que o *trigger* será disparado por múltiplos eventos, neste caso usamos um *ou-lógico* (``OR``) para encadear os tipos de eventos. Portanto, no comando acima, os tipos de eventos suportados são:
+
+- ``INSERT``.
+
+- ``UPDATE [ OF column\_name [, ... ] ]``.
+
+- ``DELETE``.
+
+- ``TRUNCATE``.
+
+
+Também podemos controlar se a função associada ao *trigger* será executada uma vez para cada linha modificada ou se será chamada uma única vez para todo o comando SQL que disparou o *trigger*.
+
+
+Para um *trigger* ser executado para cada linha modificada usamos:
+
+
+.. code-block:: plpgsql
+
+    FOR EACH ROW EXECUTE PROCEDURE nome-da-função-trigger()
+
+
+Para um *trigger* ser executado uma única vez para todo o comando SQL que o disparou, usamos:
+
+
+.. code-block:: plpgsql
+
+    FOR EACH STATEMENT EXECUTE PROCEDURE nome-da-função-trigger()
+
+
+Uma função ``PL/pgSQL`` invocada como um *trigger* possui diversas variáveis especiais que são automaticamente criadas:
+
+- ``TG_OP``: uma constante string (``TEXT``) que diz o tipo de operação que disparou o *trigger*: ``'INSERT'``, ``'UPDATE'``, ``'DELETE'`` ou ``'TRUNCATE'``.
+
+- ``TG_WHEN``: uma constante string (``TEXT``) que diz quando o *trigger* foi disparado: ``'BEFORE'``, ``'AFTER'`` ou ``'INSTEAD OF'``.
+
+- ``NEW``: variável do tipo registro (``RECORD``}) contendo a nova tupla em operações de inserção (``INSERT``) e atualização (``UPDATE``) em *triggers*, para *triggers* definidos em nível de linha\ [#f2]_.
+
+- ``OLD``: variável do tipo registro (``RECORD``) contendo o valor da antiga tupla em operações de atualização (``UPDATE``) e remoção (``DELETE``), para *triggers* definidos em nível de linha\ [#f3]_.
+
+
+A função que implementa a ação do *trigger* deve retornar ``NULL`` ou um valor do tipo registro (ou tupla) com a mesma estrutura da tabela para a qual o *trigger* foi disparado.
+
+
+Retomando o nosso exemplo do lote, podemos criar um *trigger* associado à tabela ``lotes`` que ajude a manter a integridade dos dados de forma a não haver sobreposição entre os lotes.
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION verifica_overlap_lote()
+    RETURNS trigger
+    AS
+    $$
+    DECLARE
+        lote lotes%ROWTYPE; -- ou: RECORD
+    BEGIN
+        IF TG_OP = 'INSERT' THEN
+            FOR lote IN SELECT *
+                          FROM lotes
+                         WHERE ST_Intersects(NEW.geom, geom) LOOP
+                IF NOT ST_Touches(NEW.geom, lote.geom) THEN
+                    RAISE EXCEPTION 'Lote viola restrição de integridade espacial!';
+                END IF;
+            END LOOP;
+        ELSIF TG_OP = 'UPDATE' THEN
+            FOR lote IN SELECT *
+                          FROM lotes
+                         WHERE ST_Intersects(NEW.geom, geom)
+                           AND (lotes.gid != OLD.gid) LOOP
+                IF NOT ST_Touches(NEW.geom, lote.geom) THEN
+                    RAISE EXCEPTION 'Lote viola restrição de integridade espacial!';
+                END IF;
+            END LOOP;
+        END IF;
+
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+
+Agora, precisamos definir o *trigger* sobre a tabela:
+
+
+.. code-block:: plpgsql
+
+    CREATE TRIGGER trigger_verifica_overlap_lote
+      BEFORE INSERT OR UPDATE
+      ON lotes
+      FOR EACH ROW EXECUTE PROCEDURE verifica_overlap_lote();
+
+
+Se inserirmos um lote que não viole nossa restrição de integridade espacial, o trigger irá executar normalmente e retornará o registro com o valor da nova linha que será inserida na tabela:
+
+
+.. code-block:: sql
+
+    INSERT INTO lotes
+        (geom)
+        VALUES (
+            ST_GeomFromText(
+                'POLYGON((12 0, 24 0, 24 30, 12 30, 12 0))',
+                0));
+
+
+Saída::
+
+    INSERT 0 1
+
+
+No entanto, se tentarmos inserir um novo lote que viole a restrição de integridade espacial definida pelo *trigger*, o SGBD irá cancelar a operação de inserção:
+
+
+.. code-block:: sql
+
+    INSERT INTO lotes
+        (geom)
+        VALUES (
+            ST_GeomFromText(
+                'POLYGON((-5 0, 7 0, 7 30, -5 30, -5 0))',
+                 0));
+
+
+Saída::
+
+    ERROR:  Lote viola restrição de integridade espacial!
+
+
+No caso de alterarmos a geometria do primeiro lote, o *trigger* também irá ajudar a manter a consistência do banco de dados, conforme podemos observar com o exemplo abaixo:
+
+
+.. code-block:: sql
+
+    UPDATE lotes
+       SET geom = ST_GeomFromText(
+                      'POLYGON((11 0, 23 0, 23 30, 11 30, 11 0))',
+                      0)
+     WHERE gid = 3;
+
+
+.. note::
+
+    Para remover o objeto *trigger* use um comando como:
+
+
+    .. code-block:: sql
+
+        DROP TRIGGER trigger_verifica_overlap_lote ON lotes;
+
+
+.. rubric:: Notas
+
+
+.. [#f1]
+
+    Aqui a palavra modificação pode ser traduzida em um dos comandos ``INSERT``, ``UPDATE`` ou ``DELETE``.
+
+
+.. [#f2]
+
+    Essa variável não é definida em operações do tipo ``DELETE`` ou em *triggers* definidos em nível de comandos.
+
+
+.. [#f3]
+
+    Essa variável não é definida em operações do tipo ``INSERT`` ou em *triggers* definidos em nível de comandos.

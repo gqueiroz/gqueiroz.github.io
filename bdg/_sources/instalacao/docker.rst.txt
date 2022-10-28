@@ -1,0 +1,113 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _sec_instalacao_docker:
+
+Docker
+======
+
+
+.. image:: ../img/logos/docker-logo.png
+    :alt: Docker
+    :width: 128
+    :align: right
+
+
+O Docker é uma tecnologia baseada em código aberto para criação de contêiners de aplicações. Encontra-se disponível para Microsoft Windows 10, Linux e macOS. É uma tecnologia poderosa para pesquisa reprodutível, que combina muitos recursos, como virtualização de sistema operacional, reutilização e compartilhamento de componentes de software. O Docker permite encapsular todo o ambiente de software de forma a isolar o usuário da tarefa, muitas vezes árdua, de preparar o ambiente computacional original com todas as suas dependências. Esta tecnologia pode ser útil para você instalar versões do servidor PostgreSQL e dos aplicativos QGIS e pgAdmin sem a necessidade de instalação de dependências no seu sistema.
+
+
+Instalação no Linux Ubuntu
+--------------------------
+
+
+.. note::
+
+    Os passos abaixo descrevem a instalação do Docker para as seguintes versões do Ubuntu:
+
+    - Ubuntu Groovy 20.10
+    - Ubuntu Focal 20.04 (LTS)
+    - Ubuntu Bionic 18.04 (LTS)
+    - Ubuntu Xenial 16.04 (LTS)
+
+    Para outras versões de Linux, consulte a seguinte página do manual do Docker: `Install Docker Engine <https://docs.docker.com/engine/install/>`_.
+
+
+**1.** Atualize a lista de pacotes do seu sistema::
+
+    sudo apt update
+
+
+**2.** Instale os programas auxiliares necessários à instalação do Docker::
+
+    sudo apt install ca-certificates \
+                     curl \
+                     gnupg \
+                     lsb-release
+
+
+**3.** Adicione a chave GPG oficial do Docker::
+
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+
+**4.**  inclua o repositório do Docker na lista de pacotes do seu sistema::
+
+    echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+
+**5.** Atualize novamente a lista de pacotes do seu sistema::
+
+    sudo apt update
+
+
+**6.** Faça a instalação do Docker e do plugin ``docker-compose``::
+
+    sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+
+**7.** Faça um teste para ver se o Docker foi corretamente instalado, lançando um contêiner de teste a partir da imagem ``hello-world``::
+
+    sudo docker run hello-world
+
+
+**8.** Adicione seu usuário ao grupo ``docker`` para que seus próximos comandos não precisem ser executados através do ``sudo``::
+
+    sudo usermod -aG docker $USER
+
+
+.. warning::
+
+    Após o último passo acima, faça o **logout** do seu sistema e o **login** novamente para que as alterações tenham efeito. Para testar, use o seguinte comando::
+
+        docker run hello-world
+
+
+.. note::
+
+    Para mais informações sobre a instalação do Docker, consulte a documentação oficial online.
+
+
+    .. tabs::
+
+        .. tab:: Microsoft Windows
+
+            .. rst-class:: open
+
+            - `Install Docker Desktop on Windows 10 64-bit (Pro, Enterprise, or Education) <https://docs.docker.com/docker-for-windows/install/>`_.
+
+            - `Install Docker Desktop on Windows 10 Home <https://docs.docker.com/docker-for-windows/install-windows-home/>`_.
+
+
+        .. tab:: macOS
+
+            - `Install Docker Desktop on Mac <https://docs.docker.com/docker-for-mac/install/>`_.
+
+
+        .. tab:: Linux
+
+            - `Install Docker Engine on Ubuntu <https://docs.docker.com/engine/install/ubuntu/>`_.

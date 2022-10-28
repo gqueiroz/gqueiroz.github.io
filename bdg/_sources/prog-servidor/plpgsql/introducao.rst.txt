@@ -1,0 +1,106 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+Introdução
+==========
+
+
+A Linguagem ``PL/pgSQL``\ [#f1]_ permite que comandos SQL sejam executados dentro de uma linguagem procedural, isto é, de uma linguagem com comandos de decisão (*if-then-else*) e repetição (laços *do-while*), e que facilita o trabalho de manipulação do resultado da execução de consultas.
+
+
+A sintaxe geral de funções em ``PL/pgSQL`` é a seguinte\ [#f2]_\ :sup:`,`\ [#f3]_:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION nome-da-função(parâmetros)
+    RETURNS tipo-retorno
+    AS
+    $$
+    [<<rótulo>>]
+    [DECLARE
+        lista-variáveis;]
+    BEGIN
+        comandos;
+        [EXCEPTION
+            [WHEN condição THEN
+                comandos;
+        ...]]
+    END [rótulo];
+    $$
+    LANGUAGE plpgsql;
+
+
+Vamos começar criando uma função chamada ``my_distance`` capaz de computar a distância euclideana entre dois pontos. O código desta função é mostrado a seguir:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION my_distance(first GEOMETRY,
+                                           second GEOMETRY)
+    RETURNS NUMERIC
+    AS
+    $$
+    DECLARE
+        dx NUMERIC DEFAULT 0.0;
+        dy NUMERIC DEFAULT 0.0;
+        d  NUMERIC DEFAULT 0.0;
+    BEGIN
+        dx := ST_X(first) - ST_X(second);
+        dy := ST_Y(first) - ST_Y(second);
+
+        d := sqrt(power(dx, 2) + power(dy, 2));
+
+        RETURN d;
+    END;
+    $$
+    LANGUAGE plpgsql;
+
+
+As funções ``PL/pgSQL`` podem ser usadas em qualquer parte das consultas SQL onde uma função comum possa ser incluída. Uma vez criada, uma função pode ser chamada de dentro de uma consulta submetida tanto do lado cliente quanto do lado servidor. No entanto, a execução da função ocorrerá sempre do lado servidor.
+
+
+Para executar a função ``my_distance`` podemos utilizar uma consulta do tipo ``SELECT`` usando uma das duas construções:
+
+
+.. code-block:: sql
+
+    SELECT my_distance(
+               ST_GeometryFromText('POINT(0 0)', 4326),
+               ST_GeometryFromText('POINT(1 1)', 4326));
+
+
+ou:
+
+
+.. code-block:: sql
+
+
+    SELECT *
+      FROM my_distance(
+               ST_GeometryFromText('POINT(0 0)', 4326),
+               ST_GeometryFromText('POINT(1 1)', 4326));
+
+
+
+
+
+.. rubric:: Notas
+
+
+.. [#f1]
+
+    *PL* vem de *Programming Language*.
+
+
+.. [#f2]
+
+    Para maiores detalhes da sintaxe da linguagem ``PL/pgSQL``, consulte :ref:`Postgresql 9.5.3 documentation - chapter 40. pl/pgsql - sql procedural language <PGGlobalPLPGSQL>`.
+
+
+.. [#f3]
+
+    As partes entre ``[`` e ``]`` são opcionais.
+

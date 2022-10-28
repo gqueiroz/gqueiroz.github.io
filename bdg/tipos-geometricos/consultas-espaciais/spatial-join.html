@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.5.5. Junção Espacial &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/tipos-geometricos/consultas-espaciais/spatial-join.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../search.html" />
+    <link rel="next" title="3.5.6. Overlay de Mapas" href="overlay.html" />
+    <link rel="prev" title="3.5.4. Consultas de Proximidade" href="proximity-query.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. Tipos de Dados e Operações Espaciais</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introducao.html">3.1. Introdução</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ogc-sfs.html">3.2. Tipos Geométricos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rel-espaciais.html">3.3. Relacionamentos Espaciais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../postgis-geometry.html">3.4. PostGIS Geometry</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.5. Consultas Espaciais</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="carga-dados.html">3.5.1. Carregando Dados no PostgreSQL/PostGIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="point-query.html">3.5.2. Consultas de Apontamento</a></li>
+<li class="toctree-l3"><a class="reference internal" href="window-query.html">3.5.3. Consultas de Janela ou Intervalo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="proximity-query.html">3.5.4. Consultas de Proximidade</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.5.5. Junção Espacial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overlay.html">3.5.6. Overlay de Mapas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spatial-aggregation.html">3.5.7. Agregação Espacial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="general-queries.html">3.5.8. Consultas Gerais</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a> &raquo;</li>
+      <li><span class="section-number">3.5.5. </span>Junção Espacial</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="proximity-query.html" class="btn btn-neutral float-left" title="3.5.4. Consultas de Proximidade" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="overlay.html" class="btn btn-neutral float-right" title="3.5.6. Overlay de Mapas" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="juncao-espacial">
+<span id="cap-tipos-geometricos-consultas-espaciais-spatial-join"></span><h1><span class="section-number">3.5.5. </span>Junção Espacial<a class="headerlink" href="#juncao-espacial" title="Link permanente para este cabeçalho"></a></h1>
+<section id="carga-de-dados-terras-indigenas">
+<h2><span class="section-number">3.5.5.1. </span>Carga de Dados - Terras Indígenas<a class="headerlink" href="#carga-de-dados-terras-indigenas" title="Link permanente para este cabeçalho"></a></h2>
+<p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-spatial-join-terras-indigenas"><span class="std std-numref">Tabela 3.32</span></a>, que contem os limites de terras indígenas no Brasil. Faça a carga desse conjunto de dados para o servidor PostgreSQL de acordo com as informações apresentadas nessa tabela.</p>
+<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-terras-indigenas" style="width: 100%">
+<caption><span class="caption-number">Tabela 3.32 - </span><span class="caption-text">Terras Indígenas <br/> <strong>Fonte Original:</strong> <a class="reference download external" download="" href="http://geoserver.funai.gov.br/geoserver/Funai/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=Funai:tis_poligonais&amp;outputFormat=SHAPE-ZIP"><code class="xref download docutils literal notranslate"><span class="pre">FUNAI</span></code></a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-spatial-join-terras-indigenas" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td class="center-align"><p><img alt="terras-indigenas" src="../../_images/terras-indigenas.png" /></p></td>
+<td class="left-align"><p><strong>Terras Indígenas</strong></p>
+<ul class="simple">
+<li><p>terras_indigenas.cpg</p></li>
+<li><p>terras_indigenas.dbf</p></li>
+<li><p>terras_indigenas.prj</p></li>
+<li><p>terras_indigenas.shp</p></li>
+<li><p>terras_indigenas.shx</p></li>
+</ul>
+<p><strong>Tipo Geométrico:</strong> MultiPolygon
+<br/>  <br/>
+<strong>Número de Feições:</strong> 616
+<br/>  <br/>
+<strong>CRS:</strong> Lat/Long SIRGAS 2000
+<br/>  <br/>
+<strong>SRID:</strong> 4674
+<br/>  <br/>
+<strong>Codificação Caracteres:</strong> UTF-8
+<br/>  <br/>
+<strong>Nome Tabela:</strong> terras_indigenas</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="summary-carga-dados">
+<summary>Carga Dados:</summary><p><br/></p>
+<p>Para converter este conjunto de dados do formato ESRI Shapefile para um arquivo contendo uma sequência de comandos SQL, vamos utilizar o comando <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4674</span> -i -I -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 terras_indigenas.shp public.terras_indigenas &gt; terras_indigenas.sql
+</pre></div>
+</div>
+<p>Para carregar o arquivo <code class="docutils literal notranslate"><span class="pre">terras_indigenas.sql</span></code> para um banco de dados PostgreSQL, utilize o <code class="docutils literal notranslate"><span class="pre">psql</span></code>, como mostrado abaixo:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -U postgres -h localhost -p <span class="m">5432</span> -d bdgeo -f terras_indigenas.sql
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="consulta-1">
+<h2><span class="section-number">3.5.5.2. </span>Consulta 1<a class="headerlink" href="#consulta-1" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>Consulta:</strong>  Quais as áreas de terras indígenas no Estado do Tocantins?</p>
+<figure class="align-center align-default" id="fig-consultas-espaciais-spatial-join-01">
+<a class="reference internal image-reference" href="../../_images/juncao-espacial-01.png"><img alt="Junção Espacial" src="../../_images/juncao-espacial-01.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.42 - </span><span class="caption-text">Junção Espacial - Terras Indigenas <span class="math notranslate nohighlight">\(\times\)</span> Unidades Federação.</span><a class="headerlink" href="#fig-consultas-espaciais-spatial-join-01" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ti</span><span class="p">.</span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">terras_indigenas</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ti</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ti</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="carga-de-dados-unidades-de-conservacao">
+<h2><span class="section-number">3.5.5.3. </span>Carga de Dados - Unidades de Conservação<a class="headerlink" href="#carga-de-dados-unidades-de-conservacao" title="Link permanente para este cabeçalho"></a></h2>
+<p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-spatial-join-unidades-conservacao"><span class="std std-numref">Tabela 3.33</span></a>, que contem os limites das unidades de conservação no Brasil. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
+<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-unidades-conservacao" style="width: 100%">
+<caption><span class="caption-number">Tabela 3.33 - </span><span class="caption-text">Unidades de Conservação <br/> <strong>Fonte Original:</strong> <a class="reference external" href="http://mapas.mma.gov.br/i3geo/datadownload.htm">MMA</a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-spatial-join-unidades-conservacao" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td class="center-align"><p><img alt="unidades-conservacao" src="../../_images/unidades-conservacao.png" /></p></td>
+<td class="left-align"><p><strong>Terras Indígenas</strong></p>
+<ul class="simple">
+<li><p>unidades_conservacao.cpg</p></li>
+<li><p>unidades_conservacao.dbf</p></li>
+<li><p>unidades_conservacao.prj</p></li>
+<li><p>unidades_conservacao.shp</p></li>
+<li><p>unidades_conservacao.shx</p></li>
+</ul>
+<p><strong>Tipo Geométrico:</strong> MultiPolygon
+<br/>  <br/>
+<strong>Número de Feições:</strong> 1.934
+<br/>  <br/>
+<strong>CRS:</strong> Lat/Long SAD69
+<br/>  <br/>
+<strong>SRID:</strong> 4618
+<br/>  <br/>
+<strong>Codificação Caracteres:</strong> UTF-8
+<br/>  <br/>
+<strong>Nome Tabela:</strong> unidades_conservacao</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="summary-carga-dados">
+<summary>Carga Dados:</summary><p><br/></p>
+<p>Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>, use o seguinte comando:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4618</span> -i -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 unidades_conservacao.shp public.unidades_conservacao &gt; unidades_conservacao.sql
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Repare no comando acima que não iremos criar o índice espacial sobre a coluna geométrica, isto é, não incluímos a opção <code class="docutils literal notranslate"><span class="pre">-I</span></code> no comando acima.</p>
+</div>
+<p>Para carregar o arquivo <code class="docutils literal notranslate"><span class="pre">unidades_conservacao.sql</span></code> para um banco de dados PostgreSQL, utilize o <code class="docutils literal notranslate"><span class="pre">psql</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psql</span> <span class="o">-</span><span class="n">h</span> <span class="n">localhost</span> <span class="o">-</span><span class="n">p</span> <span class="mi">5432</span> <span class="o">-</span><span class="n">d</span> <span class="n">bdgeo</span> <span class="o">-</span><span class="n">U</span> <span class="n">postgres</span> <span class="o">-</span><span class="n">f</span> <span class="n">unidades_conservacao</span><span class="o">.</span><span class="n">sql</span>
+</pre></div>
+</div>
+<p>Transforme as coordenadas das geometria para o sistema de referência espacial formada pela projeção geográfica para <code class="docutils literal notranslate"><span class="pre">LAT/LONG</span></code> e sistema geodésico de referência <code class="docutils literal notranslate"><span class="pre">SIRGAS</span> <span class="pre">2000</span></code> (SRID 4674):</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="w"></span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">MULTIPOLYGON</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Agora, vamos criar um índice espacial sobre a coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code>:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">unidades_conservacao_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="carga-de-dados-focos-de-queimada-janeiro-de-2020">
+<h2><span class="section-number">3.5.5.4. </span>Carga de Dados - Focos de Queimada (Janeiro de 2020)<a class="headerlink" href="#carga-de-dados-focos-de-queimada-janeiro-de-2020" title="Link permanente para este cabeçalho"></a></h2>
+<p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-spatial-join-focos-2020"><span class="std std-numref">Tabela 3.34</span></a>, que contém focos de incêndio na vegetação entre o dia 01/01/2020 e 25/01/2020. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
+<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-focos-2020" style="width: 100%">
+<caption><span class="caption-number">Tabela 3.34 - </span><span class="caption-text">Focos de Queimada – 2020 <br/> <strong>Fonte Original:</strong> <a class="reference external" href="http://queimadas.dgi.inpe.br/queimadas/bdqueimadas">Programa Queimadas/INPE</a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-spatial-join-focos-2020" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td class="center-align"><p><img alt="focos-2020" src="../../_images/focos-2020.png" /></p></td>
+<td class="left-align"><p><strong>Focos de Queimada – 2020</strong></p>
+<ul class="simple">
+<li><p>focos_2020.dbf</p></li>
+<li><p>focos_2020.prj</p></li>
+<li><p>focos_2020.shp</p></li>
+<li><p>focos_2020.shx</p></li>
+</ul>
+<p><strong>Tipo Geométrico:</strong> Point
+<br/>  <br/>
+<strong>Número de Feições:</strong> 38.793
+<br/>  <br/>
+<strong>CRS:</strong> Lat/Long WGS84
+<br/>  <br/>
+<strong>SRID:</strong> 4326
+<br/>  <br/>
+<strong>Codificação Caracteres:</strong> UTF-8
+<br/>  <br/>
+<strong>Nome Tabela:</strong> focos_2020</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="summary-carga-dados">
+<summary>Carga Dados:</summary><p><br/></p>
+<p>Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>, use o seguinte comando:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4326</span> -i -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 focos_2020.shp public.focos_2020 &gt; focos_2020.sql
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Repare no comando acima que não iremos criar o índice espacial sobre a coluna geométrica, isto é, não incluímos a opção <code class="docutils literal notranslate"><span class="pre">-I</span></code> no comando acima.</p>
+</div>
+<p>Para carregar o arquivo <code class="docutils literal notranslate"><span class="pre">focos_2020.sql</span></code> para um banco de dados PostgreSQL, utilize o <code class="docutils literal notranslate"><span class="pre">psql</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -h localhost -p <span class="m">5432</span> -d bdgeo -U postgres -f focos_2020.sql
+</pre></div>
+</div>
+<p>Veja se o atributo com a data de observação (<code class="docutils literal notranslate"><span class="pre">datahora</span></code>) foi importado com o tipo correto: <code class="docutils literal notranslate"><span class="pre">TIMESTAMP</span> <span class="pre">WITHOUT</span> <span class="pre">TIME</span> <span class="pre">ZONE</span></code>. Caso não tenha sido, use o seguinte comando para acertar o tipo da coluna:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos_2020</span><span class="w"></span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">datahora</span><span class="w"></span>
+<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="w"></span>
+<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">datahora</span><span class="p">::</span><span class="k">timestamp</span><span class="w"> </span><span class="k">without</span><span class="w"> </span><span class="k">time</span><span class="w"> </span><span class="k">zone</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Faça uma reprojeção das geometrias do foco:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos_2020</span><span class="w"></span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">POINT</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Uma vez que iremos realizar consultas sobre a coluna <code class="docutils literal notranslate"><span class="pre">datahora</span></code>, vamos criar um índice sobre esta coluna:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_2020_datahora_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos_2020</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">datahora</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Também vamos criar um índice espacial sobre a coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code>:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_2020_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="consulta-2">
+<h2><span class="section-number">3.5.5.5. </span>Consulta 2<a class="headerlink" href="#consulta-2" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>Consulta:</strong> Quantos focos de incêndio na vegetação foram detectados em Unidades de Conservação Estaduais do Estado do Tocantins em 2020?</p>
+<figure class="align-center align-default" id="fig-consultas-espaciais-spatial-join-02">
+<a class="reference internal image-reference" href="../../_images/juncao-espacial-02.png"><img alt="Junção Espacial" src="../../_images/juncao-espacial-02.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.43 - </span><span class="caption-text">Junção Espacial - Unidades Federação <span class="math notranslate nohighlight">\(\times\)</span> Focos de Queimada (Janeiro 2020).</span><a class="headerlink" href="#fig-consultas-espaciais-spatial-join-02" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos_2020</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">unidades_conservacao</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ucs</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">uf</span><span class="w"></span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="w"></span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">jurisdicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Estadual&#39;</span><span class="w"></span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos_2020</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">total_focos</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="carga-de-dados-focos-2017-2018">
+<h2><span class="section-number">3.5.5.6. </span>Carga de Dados - Focos 2017/2018<a class="headerlink" href="#carga-de-dados-focos-2017-2018" title="Link permanente para este cabeçalho"></a></h2>
+<p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-spatial-join-focos-1718"><span class="std std-numref">Tabela 3.35</span></a>, que contém focos de incêndio na vegetação dos anos de 2017 e 2018. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
+<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-focos-1718" style="width: 100%">
+<caption><span class="caption-number">Tabela 3.35 - </span><span class="caption-text">Focos de Queimada – 2017/2018 <br/> <strong>Fonte Original:</strong> <a class="reference external" href="http://queimadas.dgi.inpe.br/queimadas/bdqueimadas">Programa Queimadas/INPE</a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-spatial-join-focos-1718" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td class="center-align"><p><img alt="focos-1718" src="../../_images/focos-2017-2018.png" /></p></td>
+<td class="left-align"><p><strong>Focos de Queimada – 2017/2018</strong></p>
+<ul class="simple">
+<li><p>focos_2017_2018.cpg</p></li>
+<li><p>focos_2017_2018.dbf</p></li>
+<li><p>focos_2017_2018.prj</p></li>
+<li><p>focos_2017_2018.shp</p></li>
+<li><p>focos_2017_2018.shx</p></li>
+</ul>
+<p><strong>Tipo Geométrico:</strong> Point
+<br/>  <br/>
+<strong>Número de Feições:</strong> 4.705.075
+<br/>  <br/>
+<strong>CRS:</strong> Lat/Long WGS84
+<br/>  <br/>
+<strong>SRID:</strong> 4326
+<br/>  <br/>
+<strong>Codificação Caracteres:</strong> UTF-8
+<br/>  <br/>
+<strong>Nome Tabela:</strong> focos</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="summary-carga-dados">
+<summary>Carga Dados:</summary><p><br/></p>
+<p>Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>, use o seguinte comando:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4326</span> -i -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 focos_2017_2018.shp public.focos &gt; focos.sql
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Repare no comando acima que não iremos criar o índice espacial, isto é, não incluímos a opção <code class="docutils literal notranslate"><span class="pre">-I</span></code> no comando acima.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O comando acima levou cerca de 35 segundos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.</p>
+</div>
+<p>Para carregar o arquivo <code class="docutils literal notranslate"><span class="pre">focos.sql</span></code> para um banco de dados PostgreSQL, utilize o <code class="docutils literal notranslate"><span class="pre">psql</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -h localhost -p <span class="m">5432</span> -d bdgeo -U postgres -f focos.sql
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O comando acima levou cerca de 9 minutos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.</p>
+</div>
+<p>Veja se o atributo com a data de observação (<code class="docutils literal notranslate"><span class="pre">data_obser</span></code>) foi importado com o tipo correto: <code class="docutils literal notranslate"><span class="pre">TIMESTAMP</span> <span class="pre">WITHOUT</span> <span class="pre">TIME</span> <span class="pre">ZONE</span></code>. Caso não tenha sido, use o seguinte comando para acertar o tipo da coluna:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos</span><span class="w"></span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">data_obser</span><span class="w"></span>
+<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="w"></span>
+<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">data_obser</span><span class="p">::</span><span class="k">timestamp</span><span class="w"> </span><span class="k">without</span><span class="w"> </span><span class="k">time</span><span class="w"> </span><span class="k">zone</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O comando acima levou cerca de 32 segundos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.</p>
+</div>
+<p>Faça uma reprojeção das geometrias da tabela <code class="docutils literal notranslate"><span class="pre">foco</span></code> para o SRID 4674:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos</span><span class="w"></span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">POINT</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O comando acima levou cerca de 41 segundos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.</p>
+</div>
+<p>Uma vez que iremos realizar consultas sobre a coluna <code class="docutils literal notranslate"><span class="pre">data_obser</span></code>, vamos criar um índice sobre esta coluna:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_data_obser_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">data_obser</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O comando acima levou cerca de 3 segundos com o parâmero <code class="docutils literal notranslate"><span class="pre">maintenance_work_mem</span></code> ajustado para uso de 4GB de memória RAM.</p>
+</div>
+<p>Também vamos criar um índice espacial sobre a coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code>:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O comando acima levou cerca de 47 segundos com o parâmero <code class="docutils literal notranslate"><span class="pre">maintenance_work_mem</span></code> ajustado para uso de 4GB de memória RAM.</p>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="consulta-3">
+<h2><span class="section-number">3.5.5.7. </span>Consulta 3<a class="headerlink" href="#consulta-3" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>Consulta:</strong> Quantos focos de incêndio na vegetação foram detectados mensalmente em Unidades de Conservação Estaduais do Estado do Tocantins ao longo de 2017?</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><p>Versão 1:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">month</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">unidades_conservacao</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ucs</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">uf</span><span class="w"></span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="w"></span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">jurisdicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Estadual&#39;</span><span class="w"></span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2017</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="w"> </span><span class="k">ASC</span><span class="p">,</span><span class="w"> </span><span class="n">total_focos</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Versão 2:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">tocantins</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">             </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="w"></span>
+<span class="w">         </span><span class="p">),</span><span class="w"></span>
+<span class="w">         </span><span class="n">ucs</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">             </span><span class="k">SELECT</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">.</span><span class="o">*</span><span class="w"></span>
+<span class="w">               </span><span class="k">FROM</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">,</span><span class="w"></span>
+<span class="w">                    </span><span class="n">tocantins</span><span class="w"></span>
+<span class="w">              </span><span class="k">WHERE</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">.</span><span class="n">jurisdicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Estadual&#39;</span><span class="w"></span>
+<span class="w">                </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">tocantins</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">month</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">ucs</span><span class="w"></span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2017</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="w"> </span><span class="k">ASC</span><span class="p">,</span><span class="w"> </span><span class="n">total_focos</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="carga-de-dados-trechos-rodoviarios">
+<h2><span class="section-number">3.5.5.8. </span>Carga de Dados - Trechos Rodoviários<a class="headerlink" href="#carga-de-dados-trechos-rodoviarios" title="Link permanente para este cabeçalho"></a></h2>
+<p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-spatial-join-trechos-rodoviarios"><span class="std std-numref">Tabela 3.36</span></a>, que contem os trechos rodoviários do Brasil, ano de referência 2019. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
+<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-trechos-rodoviarios" style="width: 100%">
+<caption><span class="caption-number">Tabela 3.36 - </span><span class="caption-text">Trechos Rodoviários – 2019 <br/> <strong>Fonte Original:</strong> <a class="reference download external" download="" href="https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2019/shapefile/bc250_shapefile_06_11_2019.zip"><code class="xref download docutils literal notranslate"><span class="pre">IBGE</span></code></a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-spatial-join-trechos-rodoviarios" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td class="center-align"><p><img alt="trechos-rodoviarios" src="../../_images/trechos-rodoviarios.png" /></p></td>
+<td class="left-align"><p><strong>Trechos Rodoviários – 2019</strong></p>
+<ul class="simple">
+<li><p>rod_trecho_rodoviario_l.cpg</p></li>
+<li><p>rod_trecho_rodoviario_l.dbf</p></li>
+<li><p>rod_trecho_rodoviario_l.prj</p></li>
+<li><p>rod_trecho_rodoviario_l.shp</p></li>
+<li><p>rod_trecho_rodoviario_l.shx</p></li>
+</ul>
+<p><strong>Tipo Geométrico:</strong> MultiLineString
+<br/>  <br/>
+<strong>Número de Feições:</strong> 153.177
+<br/>  <br/>
+<strong>CRS:</strong> Lat/Long SIRGAS 2000
+<br/>  <br/>
+<strong>SRID:</strong> 4674
+<br/>  <br/>
+<strong>Codificação Caracteres:</strong> UTF-8
+<br/>  <br/>
+<strong>Nome Tabela:</strong> trechos_rodoviarios</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="summary-carga-dados">
+<summary>Carga Dados:</summary><p><br/></p>
+<p>Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>, use o seguinte comando:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4674</span> -i -I -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 rod_trecho_rodoviario_l.shp public.trechos_rodoviarios &gt; trechos_rodoviarios.sql
+</pre></div>
+</div>
+<p>Para carregar o arquivo <code class="docutils literal notranslate"><span class="pre">trechos_rodoviarios.sql</span></code> para um banco de dados PostgreSQL, utilize o <code class="docutils literal notranslate"><span class="pre">psql</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -h localhost -p <span class="m">5432</span> -d bdgeo -U postgres -f trechos_rodoviarios.sql
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="consulta-4">
+<h2><span class="section-number">3.5.5.9. </span>Consulta 4<a class="headerlink" href="#consulta-4" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>Consulta:</strong> Quantos focos de incêndio ocorreram nas proximidades da rodovia BR-153 no mês de setembro de 2017?</p>
+<figure class="align-center align-default" id="fig-consultas-espaciais-spatial-join-03">
+<a class="reference internal image-reference" href="../../_images/juncao-espacial-03.png"><img alt="Junção Espacial - focos de incêndio nas proximidades da rodovia" src="../../_images/juncao-espacial-03.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.44 - </span><span class="caption-text">Junção Espacial - focos de incêndio nas proximidades da rodovia.</span><a class="headerlink" href="#fig-consultas-espaciais-spatial-join-03" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">id</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="n">trechos_rodoviarios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">trechos</span><span class="w"></span>
+<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">111000</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="k">AND</span><span class="w"> </span><span class="n">codtrechor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;BR-153&#39;</span><span class="w"></span>
+<span class="w">         </span><span class="k">AND</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="s1">&#39;2017-09-01&#39;</span><span class="w"></span>
+<span class="w">         </span><span class="k">AND</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="s1">&#39;2017-10-01&#39;</span><span class="w"></span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">focos_sel</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="consulta-5">
+<h2><span class="section-number">3.5.5.10. </span>Consulta 5<a class="headerlink" href="#consulta-5" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>Consulta:</strong> Quais os municípios vizinhos de Ouro Preto em Minas Gerais?</p>
+<figure class="align-center align-default" id="fig-consultas-espaciais-spatial-join-04">
+<a class="reference internal image-reference" href="../../_images/juncao-espacial-04.png"><img alt="Junção Espacial - Municípios vizinhos a Ouro Preto" src="../../_images/juncao-espacial-04.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.45 - </span><span class="caption-text">Junção Espacial - Municípios vizinhos a Ouro Preto.</span><a class="headerlink" href="#fig-consultas-espaciais-spatial-join-04" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">vizinho</span><span class="p">,</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">geom</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">m1</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">municipios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">m2</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="n">m1</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">m1</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;OURO PRETO&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;OURO PRETO&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>As consultas vistas nesta seção também são conhecidas por <strong>Spatial Join</strong>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="proximity-query.html" class="btn btn-neutral float-left" title="3.5.4. Consultas de Proximidade" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="overlay.html" class="btn btn-neutral float-right" title="3.5.6. Overlay de Mapas" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f6f795fbdc0>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

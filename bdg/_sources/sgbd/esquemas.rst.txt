@@ -1,0 +1,81 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_sgbd_esquemas:
+
+Esquemas
+========
+
+
+Um banco de dados no PostgreSQL pode ser organizado logicamente através do uso de *esquemas* (``SCHEMA``). Por padrão, ao criar um banco de dados a partir do banco ``template1``, haverá um esquema geral chamado ``public``. Através do comando ``CREATE SCHEMA nome-esquema``, podemos criar novos esquemas e associar as tabelas e outros objetos do banco a esse esquema.
+
+
+Vamos criar um esquema chamado ``geo``:
+
+
+.. code-block:: sql
+
+    CREATE SCHEMA geo;
+
+
+.. tip::
+
+    Após executar o comando acima, veja os esquemas apresentados na interface gráfica do pgAdmin.
+
+
+Em seguida, vamos criar uma nova tabela chamada ``foco`` que será associada a esse esquema:
+
+
+.. code-block:: sql
+
+    CREATE TABLE geo.foco
+    (
+        id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        latitude            DOUBLE PRECISION,
+        longitude           DOUBLE PRECISION,
+        num_dias_sem_chuva  INTEGER,
+        frp                 NUMERIC(4,1),
+        data                TIMESTAMP WITHOUT TIME ZONE,
+        satelite            VARCHAR(30)
+    );
+
+
+Repare no comando acima que utilizamos a notação qualificada para o nome da tabela: ``geo.foco``.
+
+
+Para se referir a essa tabela, devemos utilizar o nome do esquema, uma vez que ele não é o esquema padrão para o nosso usuário:
+
+
+.. code-block:: sql
+
+    INSERT INTO geo.foco (latitude, longitude, num_dias_sem_chuva, frp, data, satelite)
+                  VALUES (-9.41792, -51.65176, 30, 89, '2022-09-01 16:30:00', 'AQUA');
+
+
+.. code-block:: sql
+
+    SELECT * FROM geo.foco;
+
+
+Para apagar um esquema e todos os objetos associados a ele, use o comando ``DROP SCHEMA nome-esquema CASCADE``, como mostrado abaixo:
+
+
+.. code-block:: sql
+
+    DROP SCHEMA geo CASCADE;
+
+
+Resultado:
+
+
+.. code-block:: text
+
+    NOTICE:  drop cascades to table geo.foco
+    DROP SCHEMA
+
+
+.. tip::
+
+    Para uma discussão detalhada do suporte a esquemas no PostgreSQL, veja `5.9. Schemas <https://www.postgresql.org/docs/14/ddl-schemas.html>`__.

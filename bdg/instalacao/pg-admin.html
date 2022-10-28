@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.3. pgAdmin 4 &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/instalacao/pg-admin.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="1.4. QGIS" href="qgis.html" />
+    <link rel="prev" title="1.2.3. Instalação no Microsoft Windows 10" href="pg-pgis-win.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Instalando e Configurando o Ambiente de Trabalho</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="docker.html">1.1. Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pg-pgis.html">1.2. PostgreSQL e PostGIS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.3. pgAdmin 4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#instalacao-no-linux-ubuntu">1.3.1. Instalação no Linux Ubuntu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#instalando-o-pgadmin-atraves-de-um-conteiner-docker">1.3.2. Instalando o pgAdmin através de um Contêiner Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qgis.html">1.4. QGIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuracao.html">1.5. Configurações</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">1. </span>Instalando e Configurando o Ambiente de Trabalho</a> &raquo;</li>
+      <li><span class="section-number">1.3. </span>pgAdmin 4</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="pg-pgis-win.html" class="btn btn-neutral float-left" title="1.2.3. Instalação no Microsoft Windows 10" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="qgis.html" class="btn btn-neutral float-right" title="1.4. QGIS" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pgadmin-4">
+<span id="sec-instalacao-pg-admin"></span><h1><span class="section-number">1.3. </span>pgAdmin 4<a class="headerlink" href="#pgadmin-4" title="Link permanente para este cabeçalho"></a></h1>
+<p>Uma das ferramentas mais populares para trabalhar com o PostgreSQL é o <a class="reference external" href="https://www.pgadmin.org/">pgAdmin</a>. Este documento apresenta os passos necessários para instalação deste sistema para as plataformas Linux (Ubuntu) ou através do Docker.</p>
+<section id="instalacao-no-linux-ubuntu">
+<span id="sec-instalacao-pg-admin-ubuntu"></span><h2><span class="section-number">1.3.1. </span>Instalação no Linux Ubuntu<a class="headerlink" href="#instalacao-no-linux-ubuntu" title="Link permanente para este cabeçalho"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Os passos apresentados abaixo foram realizados no <em>Ubuntu Focal (20.04 LTS)</em>. No entanto, também devem funcionar para as versões <em>Ubuntu Bionic (18.04 LTS)</em> e <em>Ubuntu Xenial (16.04 LTS)</em>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Ao invés de instalar o pgAdmin diretamente no sistema operacional da sua máquina, é possível usar o Docker. Neste caso, consulte a <a class="reference internal" href="#sec-instalacao-pg-admin-docker"><span class="std std-numref">Seção 1.3.2</span></a>.</p>
+</div>
+<p>Vamos criar um arquivo chamado <code class="docutils literal notranslate"><span class="pre">pgadmin4.list</span></code> contendo as informações do repositório de pacotes do pgAdmin para sua versão do Ubuntu:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;echo &quot;deb https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main&quot; &gt; /etc/apt/sources.list.d/pgadmin4.list&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>No Ubuntu 18.04 LTS, o comando acima irá criar o arquivo <code class="docutils literal notranslate"><span class="pre">/etc/apt/sources.list.d/pgadmin4.list</span></code> com o seguinte conteúdo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">deb</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="o">.</span><span class="n">postgresql</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">pgadmin</span><span class="o">/</span><span class="n">pgadmin4</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">bionic</span> <span class="n">pgadmin4</span> <span class="n">main</span>
+</pre></div>
+</div>
+<p>No Ubuntu 20.04 LTS, o conteúdo será:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">deb</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="o">.</span><span class="n">postgresql</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">pgadmin</span><span class="o">/</span><span class="n">pgadmin4</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">focal</span> <span class="n">pgadmin4</span> <span class="n">main</span>
+</pre></div>
+</div>
+</div>
+<p>Após criar o arquivo, utilize o seguinte comando para importar a chave de assinatura do repositório:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">--</span><span class="n">quiet</span> <span class="o">-</span><span class="n">O</span> <span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">pgadmin</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">static</span><span class="o">/</span><span class="n">packages_pgadmin_org</span><span class="o">.</span><span class="n">pub</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
+</pre></div>
+</div>
+<p>Em seguida, atualize sua lista de pacotes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+</pre></div>
+</div>
+<p>O pgAdmin pode ser instalado para uso por um único usuário (<em>Desktop Mode</em>) ou, pode ser instalado para que múltiplos usuários compartilhem a instalação (<em>Server Mode</em>). Para instalar o pgAdmin no primeiro modo, basta instalar o pacote <code class="docutils literal notranslate"><span class="pre">pgadmin4-desktop</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">pgadmin4</span><span class="o">-</span><span class="n">desktop</span>
+</pre></div>
+</div>
+<p>A instalação para múltiplos usuários, através de um <em>web server</em> comum, pode ser feita com o pacote <code class="docutils literal notranslate"><span class="pre">pgadmin4-web</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">pgadmin4</span><span class="o">-</span><span class="n">web</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>A instalação com a opção <em>Server Mode</em> necessita uma configuração do <em>web server</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">pgadmin4</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">setup</span><span class="o">-</span><span class="n">web</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Para acessar o pgAdmin, utilize seu navegador, como mostrado abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">firefox</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">pgadmin4</span>
+</pre></div>
+</div>
+<p>Uma janela como a da <a class="reference internal" href="#fig-instalacao-pgadmin4-login-page"><span class="std std-numref">Figura 1.29</span></a> deverá ser apresentada no seu navegador.</p>
+<figure class="align-center align-default" id="fig-instalacao-pgadmin4-login-page">
+<a class="reference internal image-reference" href="../_images/login-page.png"><img alt="Janela de login do pgAdmin4" src="../_images/login-page.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 1.29 - </span><span class="caption-text">Janela de <em>login</em> do pgAdmin4</span><a class="headerlink" href="#fig-instalacao-pgadmin4-login-page" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Se você quiser instalar as duas versões, faça a instalação do pacote <code class="docutils literal notranslate"><span class="pre">pgadmin4</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">pgadmin4</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>A versão instalada no meu ambiente é a 6.14.</p>
+</div>
+</section>
+<section id="instalando-o-pgadmin-atraves-de-um-conteiner-docker">
+<span id="sec-instalacao-pg-admin-docker"></span><h2><span class="section-number">1.3.2. </span>Instalando o pgAdmin através de um Contêiner Docker<a class="headerlink" href="#instalando-o-pgadmin-atraves-de-um-conteiner-docker" title="Link permanente para este cabeçalho"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Se você já tiver instalado o pgAdmin4 com os passos descritos na <a class="reference internal" href="#sec-instalacao-pg-admin-ubuntu"><span class="std std-numref">Seção 1.3.1</span></a>, não há necessidade de seguir os passos desta seção.</p>
+</div>
+<p>Vamos utilizar a <a class="reference external" href="https://hub.docker.com/r/dpage/pgadmin4">imagem Docker</a> disponível para o pgAdmin4 Versão 6.8:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">dpage</span><span class="o">/</span><span class="n">pgadmin4</span><span class="p">:</span><span class="mf">6.14</span>
+</pre></div>
+</div>
+<p>Após baixar a imagem Docker, crie um contêiner através do seguinte comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">detach</span> \
+           <span class="o">--</span><span class="n">name</span> <span class="n">my</span><span class="o">-</span><span class="n">pgadmin</span> \
+           <span class="o">--</span><span class="n">publish</span> <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span><span class="p">:</span><span class="mi">80</span> \
+           <span class="o">--</span><span class="n">env</span> <span class="s2">&quot;PGADMIN_DEFAULT_EMAIL=gilberto@domain.org&quot;</span> \
+           <span class="o">--</span><span class="n">env</span> <span class="s2">&quot;PGADMIN_DEFAULT_PASSWORD=secreto&quot;</span> \
+           <span class="n">dpage</span><span class="o">/</span><span class="n">pgadmin4</span><span class="p">:</span><span class="mf">6.14</span>
+</pre></div>
+</div>
+<p>O comando acima irá criar um contêiner chamado <code class="docutils literal notranslate"><span class="pre">my-pgadmin</span></code>, ligando a porta 8080 do <em>host</em> com a porta 80 do contêiner. Nesse comando, substitua o valor associado à variável <code class="docutils literal notranslate"><span class="pre">PGADMIN_DEFAULT_EMAIL</span></code> com o seu e-mail, pois este será o nome de usuário necessário ao login na aplicação web do pgAdmin4. A senha padrão desse usuário será definida pelo valor associado à variável <code class="docutils literal notranslate"><span class="pre">PGADMIN_DEFAULT_PASSWORD</span></code> (<code class="docutils literal notranslate"><span class="pre">secreto</span></code>).</p>
+<p>Verifique se o contêiner com o servidor web do pgAdmin4 se encontra em execução. Para isso, utilize o seguinte comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">container</span> <span class="n">ls</span>
+</pre></div>
+</div>
+<p>Uma saída como amostrada abaixo deverá ser apresentada:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONTAINER</span> <span class="n">ID</span>   <span class="n">IMAGE</span>                <span class="n">COMMAND</span>            <span class="n">CREATED</span>              <span class="n">STATUS</span>              <span class="n">PORTS</span>                                      <span class="n">NAMES</span>
+<span class="mi">7880</span><span class="n">a7e90df9</span>   <span class="n">dpage</span><span class="o">/</span><span class="n">pgadmin4</span><span class="p">:</span><span class="mf">6.8</span>   <span class="s2">&quot;/entrypoint.sh&quot;</span>   <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span> <span class="n">ago</span>   <span class="n">Up</span> <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span>   <span class="mi">443</span><span class="o">/</span><span class="n">tcp</span><span class="p">,</span> <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span><span class="o">-&gt;</span><span class="mi">80</span><span class="o">/</span><span class="n">tcp</span>   <span class="n">my</span><span class="o">-</span><span class="n">pgadmin</span>
+</pre></div>
+</div>
+<p>Para acessar o pgAdmin, utilize seu navegador, como mostrado abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">firefox</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span>
+</pre></div>
+</div>
+<p>Uma janela como a da <a class="reference internal" href="#fig-instalacao-pgadmin4-login-page"><span class="std std-numref">Figura 1.29</span></a> deverá ser apresentada no seu navegador.</p>
+<section id="dicas-gerenciamento-do-conteiner">
+<h3><span class="section-number">1.3.2.1. </span>Dicas Gerenciamento do Contêiner<a class="headerlink" href="#dicas-gerenciamento-do-conteiner" title="Link permanente para este cabeçalho"></a></h3>
+<p>Para parar o contêiner, faça:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">stop</span> <span class="n">my</span><span class="o">-</span><span class="n">pgadmin</span>
+</pre></div>
+</div>
+<p>Para remover o contêiner (parado):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">rm</span> <span class="n">my</span><span class="o">-</span><span class="n">pgadmin</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Nesta seção, utilizamos uma imagem do pgAdmin baseada na distribuição Alpine Linux v3.15.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="pg-pgis-win.html" class="btn btn-neutral float-left" title="1.2.3. Instalação no Microsoft Windows 10" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="qgis.html" class="btn btn-neutral float-right" title="1.4. QGIS" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f6f79f2d280>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
