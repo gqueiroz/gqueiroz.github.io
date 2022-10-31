@@ -273,7 +273,7 @@ As árvores binárias de pesquisa com altura :math:`O(\log_2n)` são conhecidas 
 +++++++++++++++++++
 
 
-As árvores binárias são usadas, principalmente, em problemas que cabem completamente em memória principal (RAM). No caso de grandes bancos de dados a memória principal pode não ser suficiente para armazenar todos os *nós* da árvore que compõe o índice. Por isso, é comum armazenar a estrutura de árvore (ou índice) em disco.​ Nesse caso, devemos utilizar uma representação que procure minimizar o acesso a disco para acesso aos elementos da árvore. A forma mais comum, e mais largamente empregada pelos SGBDs atuais, tanto os baseados em software livre quanto os comerciais, é a representação do índice através de uma Árvore-B\ :sup:`+`.​
+As árvores binárias são usadas, principalmente, em problemas que cabem completamente em memória principal (RAM). No caso de grandes bancos de dados a memória principal pode não ser suficiente para armazenar todos os *nós* da árvore que compõe o índice. Por isso, é comum armazenar a estrutura de árvore (ou índice) em disco.​ Nesse caso, devemos utilizar uma representação que procure minimizar o acesso a disco para recuperação dos elementos da árvore. A forma mais comum, e mais largamente empregada pelos SGBDs atuais, tanto os baseados em software livre quanto os comerciais, é a representação do índice através de uma Árvore-B\ :sup:`+`.​
 
 
 A :numref:`Figura %s <fig:sgbd:indexes:b-plus-tree>` ilustra o esquema da estrutura de uma Árvore-B\ :sup:`+`, que é uma árvore **multivias** (**multiway tree**), isto é, uma árvore cujos os *nós* podem ter mais de dois descendentes.
@@ -288,73 +288,31 @@ A :numref:`Figura %s <fig:sgbd:indexes:b-plus-tree>` ilustra o esquema da estrut
     Esquema de uma Árvore-B\ :sup:`+`.
 
 
-Numa Árvore-B\ :sup:`+`, cada *nó* pode conter :math:`k` descendentes e :math:`k - 1` chaves, com :math:`m ​\leqslant k ​\leqslant M`, onde, em geral, adota-se :math:`m = \lceil \frac{M}{2}  \rceil`. O fator :math:`M` é conhecido como **ordem da árvore** ou **fator de ramificação** (**branch factor** ou **fanout**). Apenas o *nó raiz* pode conter um número menor do que :math:`m - 1` chaves. Se a árvore possuir mais de um nível de profundidade, a raiz deve ter pelo menos 2 filhos. Todas as folhas da árvore estão no mesmo nível, isto é, trata-se de uma **árvore balanceada**. As chaves em cada nó devem encontrar-se em ordem crescente (ou decrescente), para permitir o uso de pesquisa binária nos valores armazendados no *nó*. Os *nós* também são conhecidos como **páginas**.​ Todas as chaves encontram-se nas folhas e algumas chaves são usadas como guias dos *nós internos​*.
+Numa Árvore-B\ :sup:`+`, cada *nó* pode conter :math:`k` descendentes e :math:`k - 1` chaves, com :math:`m ​\leqslant k ​\leqslant M`, onde, em geral, adota-se :math:`m = \lceil \frac{M}{2}  \rceil`. O fator :math:`M` é conhecido como **ordem da árvore** ou **fator de ramificação** (**branch factor** ou **fanout**). Apenas o *nó raiz* pode conter um número menor do que :math:`m - 1` chaves. Se a árvore possuir mais de um nível de profundidade, a raiz deve ter pelo menos 2 filhos. Todas as folhas da árvore estão no mesmo nível, isto é, trata-se de uma **árvore balanceada**. As chaves em cada nó devem encontrar-se em ordem crescente (ou decrescente), para permitir o uso de pesquisa binária nos valores armazendados no *nó*. Todas as chaves encontram-se nas folhas e algumas chaves são usadas como guias dos *nós internos​*.
 
 
-Uma Árvore-B\ :sup:`+` é mais profunda (ou possui a maior altura) quando todo *nó* possui o menor fator de ramificação, isto é, quando :math:`m = \lceil \frac{M}{2}  \rceil`. Neste caso, teríamos em cada nó a seguinte quantidade de chaves:
+Os *nós* também são conhecidos como **páginas** pois comportam várias chaves além de valores que permitem estabelecer as ligações entre as *páginas* ou localizar o objeto indexado. Chamaremos de **ponteiros** os valores que permitem estabelecer as ligações entre os *nós* (arcos pretos ou vermelhos) ou localizar os objetos indexados (arcos azuis). 
 
 
-.. math::
-
-    \text{nível 0: } 1\text{ chave}\\
-    \text{nível 1: } 2(m-1)\text{ chaves}\\
-    \text{nível 2: } 2m(m-1)\text{ chaves}\\
-    \text{nível 3: } 2m^2(m-1)\text{ chaves}\\
-    \dots\\
-    \text{nível h: } 2m^{h-1}(m-1)\text{ chaves}\\
+Nos *nós internos*, o *i-th* ponteiro leva à sub-árvore com valores inferiores à *i-th* chave, com :math:`1 \leqslant i ​\leqslant M`. O último ponteiro em cada *nó interno* leva à sub-árvore com valores maiores ou iguais ao último valor de chave nessa *página*. Por exemplo, o círculo preto com o arco saindo à esquerda da chave de valor 23 no *nó raiz*, é um ponteiro para a raiz da sub-árvore contendo todos os valores menores do que 23. De maneira similar, o círculo preto com o arco saindo à esquerda da chave de valor 43 no *nó interno*, é um ponteiro para a sub-árvore contendo todos os valores maiores ou iguais a 37 e menores que 43. Desta forma, cada uma das chaves ajuda a definir um intervalo de valores indexados pelas sub-árvores.
 
 
-.. note::
-
-    Note que aqui estamos adotando a altura como o número de arestas no caminho mais comprido da raiz até a folha.
+A estrutura das *páginas* dos *nós folhas* possui, além das chaves, ponteiros para os objetos indexados relacionados ao valor de chave. Esse valor é indicado pelos arcos azuis. No nosso exemplo, estamos considerando que o índice fornece o endereço da linha associada à chave e, por isso, utilizamos o termo **TID** (*tuple identifier*) para indicar a informação de um indentificador da linha referenciada pelo índice no respectivo valor de chave. O último elemento das *páginas* dos *nós folhas* possui uma ligação para a *página* contendo os valores de chave na sequência, indicado na figura por uma seta em vermelho. Essa ligação entre as *páginas* no nível das folhas pemite utilizar o índice da Árvore-B\ :sup:`+` para recuperação de intervalos.
 
 
-.. note::
-
-    Podemos ler a sequência acima da seguinte forma:
-
-    .. rst-class:: open
-
-    - No nível 0, teremos uma :math:`1` chave e, logo esse *nó* dará origem a outros 2 *nós* no próximo nível (nível 1), cada um com :math:`m-1` chaves.
-
-    - No nível 1, cada um dos *nós* vai dar origem a outros :math:`m` *nós*, de forma que teremos :math:`2m` *nós* no próximo nível (nível 2), cada um com :math:`m-1` chaves.
-    
-    - e assim, sucessivamente até o último nível da árvore denominado :math:`h` (altura da árvore).​
+Para exemplificar o uso dessa estrutura na localização de um objeto indexado por ela, vamos considerar uma busca pela chave de valor 41. Partindo do *nó raiz*, verificamos que a chave procurada é maior que a única chave presente nesse nó, que é 23. Nesse caso, tomamos a direção da sub-árvore com valores maiores ou iguais a 23, chegando à *página* com as chaves :math:`\{37, 43\}`. Como a chave procurada é maior ou igual a 37 e menor que 43, seguimos a ligação para *página* contendo as chaves :math:`\{37, 41\}`. Como essa *página* é uma folha e ela contém a chave procurada, podemos reportar o identificador da linha associada à chave 41.
 
 
-Somando todas as chaves, teremos:​
+Essa estrutura ainda permite responder **consultas de intervalos unidimensionais**. Considere a busca pelas linhas com chaves de valores maiores que 29 e menores que 43. Assim como no exemplo anterior, a busca é iniciada pelo *nó raiz*. Como o menor valor do intervalo procurado é maior ou igual à chave na *raiz*, tomamos o caminho da *página* com as chaves :math:`\{37, 41\}`. Como a chave procurada é menor do que a chave 37, seguimos o caminho da *página* na folha da árvore contendo as chaves :math:`\{23, 29, 31\}`. A partir dessa *página*, podemos varrer sequencialmente as *páginas* no nível das folhas até encontrar um valor de chave maior ou igual a 43. As ligações entre as *páginas* no nível da folha, mostradas em vermelho, possibilitam esse acesso sequencial de maneira eficiente. 
 
 
-.. math::
-
-    1 + 2(m-1) + 2m(m-1) + 2m^2(m-1) + \dots + 2m^{h-1}(m-1)\\
-    1 + 2(m-1)(1 + m + m^2 + \dots + m^{h-1})\\
-    1 + 2(m-1)(m^0 + m^1 + m^2 + \dots + m^{h-1})\\
-    1 + 2(m-1) \sum_{i=0}^{h-1} m^i = 1 + 2(m-1) \left( \frac{1-m^h}{1-m} \right) = 2m^h - 1
+Uma Árvore-B\ :sup:`+` será mais profunda (ou terá a maior altura) quando todo *nó* possui o menor fator de ramificação, isto é, quando :math:`m = \lceil \frac{M}{2}  \rceil`. Dessa forma, a altura da árvore em relação ao número :math:`n` de objetos indexados é dado por: :math:`h \leqslant \lceil \log_m n \rceil - 1`.
 
 
-Isso significa que o número de chaves :math:`n` será: :math:`n \geq 2m^h-1`, ou seja:
+A partir dessa equação, podemos assumir que para uma Árvore-B\ :sup:`+` de ordem :math:`M = 200`, onde iremos manipular :math:`2.000.000` chaves, se tomarmos :math:`m = 100`, teremos: :math:`h \leqslant \lceil \log_{100} 2.000.000 \rceil - 1 \leqslant 3`. Portanto, encontrar uma chave nessa árvore exige, no pior caso, avaliarmos chaves em 4 *páginas*.​
 
 
-.. math::
-
-    \frac{n+1}{2} \geq m^h
-
-
-.. math::
-
-    \log_m \left( \frac{n+1}{2} \right) \geq \log_m m^h
-
-
-.. math::
-
-    \therefore h \leqslant \log_m \left( \frac{n+1}{2} \right)
-
-
-A partir dessa equação, podemos assumir que para uma Árvore-B\ :sup:`+` de ordem :math:`M = 200`, onde iremos manipular :math:`2.000.000` chaves, se tomarmos :math:`m = 100`, teremos: :math:`h \leqslant \log_{100} \frac{2.000.000 + 1}{2} \leqslant 3`. Portanto, encontrar uma chave nessa árvore exige, no pior caso, avaliarmos chaves em 4 *nós*.​
-
-
-Podemos, portanto, concluir que para :math:`M` suficientemente grande, :math:`h` será pequeno, mesmo que exista um grande número de chaves na árvore. Obviamente, que deve existir um balanceamento da **ordem da árvore** com a **capacidade de uma página do disco**, que é a unidade manipulada nas operações de leitura e gravação em disco.​ O PostgreSQL, por exemplo, utiliza por padrão blocos de 8.192 bytes (ou 8 kB). Se adotarmos que as chaves sejam formadas por um número inteiro de 4 bytes e que os ponteiros de ligação entre os nós sejam formados por inteiros de 4 bytes, uma página de 8.192 bytes seria capaz de comportar *nós* (ou páginas) de uma Árvore-B\ :sup:`+` de ordem :math:`M = 1024`, isto é, cada *nó* seria capaz de ramificar em até 1024 descendentes e comportar 1023 chaves (números inteiros de 4 bytes).
+Podemos, portanto, concluir que para :math:`M` suficientemente grande, :math:`h` será pequeno, mesmo que exista um grande número de chaves na árvore. Obviamente, que deve existir um balanceamento da **ordem da árvore** com a **capacidade de uma página do disco**, que é a unidade manipulada nas operações de leitura e gravação em disco.​ O PostgreSQL, por exemplo, utiliza por padrão **blocos** de 8.192 bytes (ou 8 kB). Se adotarmos que as chaves sejam formadas por um número inteiro de 4 bytes e que os ponteiros de ligação entre as *páginas* sejam formados por inteiros de 4 bytes, uma página de 8.192 bytes seria capaz de comportar *páginas* de uma Árvore-B\ :sup:`+` de ordem :math:`M = 1024`, isto é, cada *página* seria capaz de ramificar em até 1024 descendentes e comportar 1023 chaves (números inteiros de 4 bytes).
 
 
 .. tip::

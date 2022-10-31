@@ -28,6 +28,76 @@ Consulta 1
     Agregação Espacial - Mapas de Regiões a parir do Mapa de UF.
 
 
+.. collapse:: Solução:
+
+
+    |br|
+
+    Podemos utilizar a função de agregação ``ST_Union`` para computar a geometria formada pela união de todos as geometrias de um grupo definido pela coluna ``regiao_sig``:
+
+    .. code-block:: sql
+
+        CREATE TABLE regioes_brasil AS
+
+              SELECT uf.regiao_sig AS sigla,
+                     ST_Union(uf.geom) AS geom
+                FROM uf 
+            GROUP BY regiao_sig;
+
+
+    Apesar do comando acima funcionar e gerar uma nova tabela chamada ``regioes_brasil``, podemos notar que a estrutura da tabela, isto é, seu esquema, não terá  a coluna ``geom`` definida com os modificadores de subtipo geométrico e SRID. Verificando a estrutura da tabela:
+
+
+    .. code-block:: psql
+    
+        \d regioes_brasil
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+                         Table "public.regioes_brasil"
+         Column |         Type         | Collation | Nullable | Default 
+        --------+----------------------+-----------+----------+---------
+         sigla  | character varying(2) |           |          | 
+         geom   | geometry             |           |          | 
+
+
+    Podemos notar que não foi definido automaticamente o SRID (4674) e o subtipo geométrico da coluna ``geom``. Apesar das geometrias da tabela de entrada serem formadas apenas pelo tipo ``MultiPolygon``, a função ``ST_Union`` irá gerar uma geometria do tipo mais simples possível. Nesse caso, teremos linhas com o tipo ``MultiPolygon`` ou ``Polygon``. Podemos identificar isso através da seguinte consulta:
+
+
+    .. code-block:: sql
+
+        SELECT DISTINCT ST_GeometryType(geom) FROM regioes_brasil;
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         st_geometrytype
+        -----------------
+         ST_MultiPolygon
+         ST_Polygon
+        (2 rows)    
+
+
+    Se nossa intenção é obter uma coluna geométrica de um tipo homogeneo, como o subtipo ``MultiPolygon``, poderíamos aplicar a função ``ST_Multi`` ao resultado gerado pela função ``ST_Union``, de maneira a garantir que a geometria final da região seja de uma coleção. Também incluiremos um ``CAST`` explícito, como mostrado no comando abaixo:
+
+
+    .. code-block:: sql
+
+        CREATE TABLE regioes_brasil AS
+
+              SELECT uf.regiao_sig AS sigla,
+                     ST_Multi( ST_Union(uf.geom) )::geometry(MultiPolygon, 4674) AS geom
+                FROM uf 
+            GROUP BY regiao_sig;
+
+
 -----
 
 
@@ -36,6 +106,7 @@ Consulta 2
 
 
 **Consulta:** Utilizando os dados dos anos de 2017 e 2018 de focos, apresente uma contagem por bioma.
+
 
 
 -----

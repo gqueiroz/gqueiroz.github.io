@@ -136,7 +136,51 @@
 <p><span class="caption-number">Figura 3.49 - </span><span class="caption-text">Agregação Espacial - Mapas de Regiões a parir do Mapa de UF.</span><a class="headerlink" href="#fig-consultas-espaciais-spatial-agregation-agregacao-espacial" title="Link Permanente para essa imagem"></a></p>
 </figcaption>
 </figure>
-</section>
+<details class="summary-solucao">
+<summary>Solução:</summary><p><br/></p>
+<p>Podemos utilizar a função de agregação <code class="docutils literal notranslate"><span class="pre">ST_Union</span></code> para computar a geometria formada pela união de todos as geometrias de um grupo definido pela coluna <code class="docutils literal notranslate"><span class="pre">regiao_sig</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">regioes_brasil</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">regiao_sig</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sigla</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="n">ST_Union</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">regiao_sig</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Apesar do comando acima funcionar e gerar uma nova tabela chamada <code class="docutils literal notranslate"><span class="pre">regioes_brasil</span></code>, podemos notar que a estrutura da tabela, isto é, seu esquema, não terá  a coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code> definida com os modificadores de subtipo geométrico e SRID. Verificando a estrutura da tabela:</p>
+<div class="highlight-psql notranslate"><div class="highlight"><pre><span></span><span class="kp">\d</span><span class="w"> </span><span class="ss">regioes_brasil</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                 Table &quot;public.regioes_brasil&quot;
+ Column |         Type         | Collation | Nullable | Default
+--------+----------------------+-----------+----------+---------
+ sigla  | character varying(2) |           |          |
+ geom   | geometry             |           |          |
+</pre></div>
+</div>
+<p>Podemos notar que não foi definido automaticamente o SRID (4674) e o subtipo geométrico da coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code>. Apesar das geometrias da tabela de entrada serem formadas apenas pelo tipo <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code>, a função <code class="docutils literal notranslate"><span class="pre">ST_Union</span></code> irá gerar uma geometria do tipo mais simples possível. Nesse caso, teremos linhas com o tipo <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code> ou <code class="docutils literal notranslate"><span class="pre">Polygon</span></code>. Podemos identificar isso através da seguinte consulta:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">ST_GeometryType</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">regioes_brasil</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> st_geometrytype
+-----------------
+ ST_MultiPolygon
+ ST_Polygon
+(2 rows)
+</pre></div>
+</div>
+<p>Se nossa intenção é obter uma coluna geométrica de um tipo homogeneo, como o subtipo <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code>, poderíamos aplicar a função <code class="docutils literal notranslate"><span class="pre">ST_Multi</span></code> ao resultado gerado pela função <code class="docutils literal notranslate"><span class="pre">ST_Union</span></code>, de maneira a garantir que a geometria final da região seja de uma coleção. Também incluiremos um <code class="docutils literal notranslate"><span class="pre">CAST</span></code> explícito, como mostrado no comando abaixo:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">regioes_brasil</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">regiao_sig</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sigla</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="n">ST_Multi</span><span class="p">(</span><span class="w"> </span><span class="n">ST_Union</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="p">)::</span><span class="n">geometry</span><span class="p">(</span><span class="n">MultiPolygon</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">regiao_sig</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</details></section>
 <hr class="docutils" />
 <section id="consulta-2">
 <h2><span class="section-number">3.5.7.2. </span>Consulta 2<a class="headerlink" href="#consulta-2" title="Link permanente para este cabeçalho"></a></h2>
@@ -164,7 +208,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f6f78d4ed60>
+<jinja2.runtime.BlockReference object at 0x7f1ca3a11970>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

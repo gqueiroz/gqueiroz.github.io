@@ -26,6 +26,7 @@
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
@@ -57,7 +58,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#arvores-r">4.1. Árvores-R</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arvores-r-no-postgresql-com-postgis">4.2. Árvores-R no PostgreSQL com PostGIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercicios">4.3. Exercícios</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
@@ -108,6 +114,110 @@
              
   <section id="estruturas-de-dados-e-metodos-de-acesso-multidimensionais">
 <span id="cap-estrutura-dados"></span><h1><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais<a class="headerlink" href="#estruturas-de-dados-e-metodos-de-acesso-multidimensionais" title="Link permanente para este cabeçalho"></a></h1>
+<section id="arvores-r">
+<h2><span class="section-number">4.1. </span>Árvores-R<a class="headerlink" href="#arvores-r" title="Link permanente para este cabeçalho"></a></h2>
+<p>Uma <strong>Árvore-R</strong> é uma árvore balanceada, com uma estrutura semelhante a uma Árvore-B. Trata-se do método de indexação mais empregado na indústria de bancos de dados geoespaciais, estando presente em produtos como o Oracle Spatial, PostgreSQL/PostGIS e o MySQL.​</p>
+<p>Considere o conjunto de retângulos mostrados na <a class="reference internal" href="#fig-estrutura-dados-rtree-leaf-rectangles"><span class="std std-numref">Figura 4.1</span></a>. Esses retângulos, numerados de 1 a 20, podem representar, por exemplo, a aproximação geométrica de polígonos ou linhas poligonais.</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-rtree-leaf-rectangles">
+<a class="reference internal image-reference" href="../_images/rtree-leaf-rectangles.png"><img alt="Esquema de uma Árvore-R" src="../_images/rtree-leaf-rectangles.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.1 - </span><span class="caption-text">Retângulos envolventes das geometrias indexadas.</span><a class="headerlink" href="#fig-estrutura-dados-rtree-leaf-rectangles" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Uma Árvore-R organiza o espaço subjacente em uma hierarquia de retângulos, possivelmente com sobreposições. A  Árvore-R apresentada na <a class="reference internal" href="#fig-estrutura-dados-rtree"><span class="std std-numref">Figura 4.2</span></a> ilustra uma hierarquia criada a partir dos retêngulos da <a class="reference internal" href="#fig-estrutura-dados-rtree-leaf-rectangles"><span class="std std-numref">Figura 4.1</span></a>. Nessa árvore, os <em>nós</em> ou <em>páginas internas</em> são formados por <strong>entradas</strong> definidas por pares <span class="math notranslate nohighlight">\((\text{retângulo}, \text{ponteiro-descendente})\)</span>. O retângulo de uma entrada contém os retângulos da sub-árvore indicada pelo ponteiro de ligação. Assim, o retângulo da entrada <span class="math notranslate nohighlight">\(R_a\)</span> contém os retângulos <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span> e <span class="math notranslate nohighlight">\(G\)</span>, respectivamente, assim como todos os demais retângulos abaixo deles. As páginas no nível das folhas são formadas por entradas do tipo <span class="math notranslate nohighlight">\((\text{retângulo}, \text{ponteiro-objeto})\)</span>, para que seja possível recuperar o objeto indexado. No nosso exemplo, esses retângulos estarão associados a geometrias de uma determinada coluna de uma tabela e, portanto, o índice conterá informações para que a linha possa ser recuperada (<code class="docutils literal notranslate"><span class="pre">TID</span></code>  é a abreviação de <em>tuple identifier</em>).</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-rtree">
+<a class="reference internal image-reference" href="../_images/rtree.png"><img alt="Esquema de uma Árvore-R" src="../_images/rtree.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.2 - </span><span class="caption-text">Esquema de uma Árvore-R.</span><a class="headerlink" href="#fig-estrutura-dados-rtree" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>As Figuras <a class="reference internal" href="#fig-estrutura-dados-rtree-root-rectangles"><span class="std std-numref">4.3</span></a> e <a class="reference internal" href="#fig-estrutura-dados-rtree-internal-node-rectangles-1"><span class="std std-numref">4.4</span></a> ilustram a hierarquia de retêngulos definida pela árvore mostrada acima.</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-rtree-root-rectangles">
+<a class="reference internal image-reference" href="../_images/rtree-root-rectangles.png"><img alt="Esquema de uma Árvore-R" src="../_images/rtree-root-rectangles.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.3 - </span><span class="caption-text">Retângulos do <em>nó raiz</em> e seus descendentes diretos.</span><a class="headerlink" href="#fig-estrutura-dados-rtree-root-rectangles" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<figure class="align-center align-default" id="fig-estrutura-dados-rtree-internal-node-rectangles-1">
+<a class="reference internal image-reference" href="../_images/rtree-internal-node-rectangles-1.png"><img alt="Agrupando os retângulos envolventes das geometrias em uma nova hierarquia de retângulos" src="../_images/rtree-internal-node-rectangles-1.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.4 - </span><span class="caption-text">Hierarquia dos retângulos dos <em>nós internos</em> e das <em>folhas</em>.</span><a class="headerlink" href="#fig-estrutura-dados-rtree-internal-node-rectangles-1" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Uma Árvore-R deve satisfazer as seguintes propriedades:</p>
+<ul class="open">
+<li><p>O <strong>número máximo de entradas</strong> em uma <em>página</em> é dado por <span class="math notranslate nohighlight">\(M\)</span>.</p></li>
+<li><p>O <strong>número mínimo de entradas</strong> em uma página é definido como <span class="math notranslate nohighlight">\(m = \lceil \frac{M}{2}  \rceil\)</span>. Esse parâmetro é responsável pelo balanceamento da árvore.</p></li>
+<li><p>Toda <em>página</em> contém entre <span class="math notranslate nohighlight">\(m\)</span> e <span class="math notranslate nohighlight">\(M\)</span> entradas válidas. A única exceção é o <em>nó raiz</em>.</p></li>
+<li><p>Se a árvore tiver mais do que um nível, isto é, pelo menos <span class="math notranslate nohighlight">\(altura = 1\)</span>, a raiz terá ao menos dois descendentes.</p></li>
+<li><p>Para cada entrada dos <em>nós internos</em>, que são formados por entradas representadas pelos pares <span class="math notranslate nohighlight">\((\text{retângulo}, \text{ponteiro-descendente})\)</span>, o <span class="math notranslate nohighlight">\(retângulo\)</span> dessa entrada será o menor retângulo a conter todos os retângulos das entradas do <em>nó descendente</em>. Repare nas figuras acima, que o retângulo <span class="math notranslate nohighlight">\(R_a\)</span> contém os retângulos <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span> e <span class="math notranslate nohighlight">\(G\)</span>. Por sua vez, o retângulo :math`G` contém o retângulos <span class="math notranslate nohighlight">\(R_{10}\)</span>, <span class="math notranslate nohighlight">\(R_{13}\)</span> e <span class="math notranslate nohighlight">\(R_{17}\)</span>.</p></li>
+<li><p>Para cada entrada dos <em>nós folhas</em>, que são formados por entradas representadas pelos pares <span class="math notranslate nohighlight">\((\text{retângulo}, \text{ponteiro-objeto})\)</span>, o <span class="math notranslate nohighlight">\(retângulo\)</span> dessa entrada será o retângulo envolvente do objeto indexado.</p></li>
+<li><p>Todas as folhas encontram-se no mesmo nível.</p></li>
+<li><p>A altura <span class="math notranslate nohighlight">\(h\)</span> de uma Árvore-R indexando <span class="math notranslate nohighlight">\(n\)</span> objetos espaciais é: <span class="math notranslate nohighlight">\(h \leqslant (\log_m n) - 1\)</span>.</p></li>
+</ul>
+<p>Como é o algoritmo de busca nessa árvore?</p>
+</section>
+<section id="arvores-r-no-postgresql-com-postgis">
+<h2><span class="section-number">4.2. </span>Árvores-R no PostgreSQL com PostGIS<a class="headerlink" href="#arvores-r-no-postgresql-com-postgis" title="Link permanente para este cabeçalho"></a></h2>
+<p>O PostGIS implementa ums Árvore-R sobre o GiST do PostgreSQL. Para criar um <strong>índice espacial</strong> em uma <strong>coluna geométrica</strong> podemos usar a seguinte sintaxe:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span><span class="n">_</span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">coluna</span><span class="o">-</span><span class="n">geometrica</span><span class="o">&gt;</span><span class="n">_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GiST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">coluna</span><span class="o">-</span><span class="n">geometrica</span><span class="o">&gt;</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Vamos ver a definição das tabelas com colunas geométricas importadas para o banco de dados.</p>
+</div>
+</section>
+<section id="exercicios">
+<span id="cap-estrutura-dados-exercicios"></span><h2><span class="section-number">4.3. </span>Exercícios<a class="headerlink" href="#exercicios" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>Exercício 1.</strong> Vamos criar uma tabela chamada <code class="docutils literal notranslate"><span class="pre">pts_pgis</span></code> com a seguinte definição:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w">     </span><span class="n">UUID</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">gen_random_uuid</span><span class="p">(),</span><span class="w"></span>
+<span class="w">    </span><span class="n">geom</span><span class="w">   </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">POINT</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">word</span><span class="w">   </span><span class="nb">TEXT</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Em seguida, vamos inserir um conjunto sintético de dados nessa tabela:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">word</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="p">(</span><span class="w"></span>
+<span class="w">             </span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="w"></span>
+<span class="w">                        </span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="w"></span>
+<span class="w">                            </span><span class="mi">360</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">180</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">                            </span><span class="mi">180</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">90</span><span class="p">.</span><span class="mi">0</span><span class="w"></span>
+<span class="w">                        </span><span class="p">),</span><span class="w"></span>
+<span class="w">                        </span><span class="mi">4326</span><span class="w"></span>
+<span class="w">                    </span><span class="p">),</span><span class="w"></span>
+<span class="w">                    </span><span class="n">rpad</span><span class="p">(</span><span class="n">i</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">word</span><span class="w"></span>
+<span class="w">               </span><span class="k">FROM</span><span class="w"> </span><span class="n">generate_series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1000000</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+<span class="w">         </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Verifique como a seguinte consulta é realizada:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ST_MakeEnvelope</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">4326</span><span class="p">)</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Exercício 2.</strong> Crie um índice espacial sobre a coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code> da tabela <code class="docutils literal notranslate"><span class="pre">pts_pgis</span></code>:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">pts_pgis_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GiST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Em seguida, refaça as estatísticas sobre a tabela:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="n">pts_pgis</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Analise novamente a consulta abaixo:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ST_MakeEnvelope</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">4326</span><span class="p">)</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -125,7 +235,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f6f799fe280>
+<jinja2.runtime.BlockReference object at 0x7f1ca3a72940>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

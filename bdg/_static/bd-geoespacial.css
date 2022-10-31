@@ -32,6 +32,11 @@ p {
 }
 
 /* Caption das imagens centralizados. */
+figcaption {
+    padding-top: 1rem;
+}
+
+/* Caption das imagens centralizados. */
 div.figure > p.caption {
     text-align: center;
 }
