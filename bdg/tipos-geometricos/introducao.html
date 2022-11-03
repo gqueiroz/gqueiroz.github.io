@@ -152,6 +152,18 @@
 <p><span class="caption-number">Figura 3.1 - </span><span class="caption-text">Coleção de Feições (<em>Feature Collection</em>).</span><a class="headerlink" href="#fig-tipos-geometricos-introducao-feature-collection" title="Link Permanente para essa imagem"></a></p>
 </figcaption>
 </figure>
+<p>Repare que essa forma de representação, em geral, assume que todos os objetos da coleção possuem uma estrutura comum, a qual denominamos de <strong>esquema das feições</strong>. O esquema das feições é formado pelo conjunto de atributos usados para caracterizar as feições do conjunto. Além disso, cada atributo é associado a um tipo de dado. No caso da coleção mostrada na <a class="reference internal" href="#fig-tipos-geometricos-introducao-feature-collection"><span class="std std-numref">Figura 3.1</span></a> o esquema denominado <code class="docutils literal notranslate"><span class="pre">unidades_federativas</span></code> possui o seguinte conjunto de atributos:</p>
+<ul class="open">
+<li><p><code class="docutils literal notranslate"><span class="pre">ufid</span></code>: código do IBGE, um número inteiro usado para identificar as unidades federativas.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nome</span></code>: nome da unidade federativa, uma string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">populacao</span></code>: total da população da unidade federativa, um número inteiro.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">e_vida</span></code>: expectativa de vida, um número real.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fronteira</span></code>: limite da unidade federativa, representada por um tipo geométrico (<code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code>).</p></li>
+</ul>
+<p>Atualmente existem inúmeros formatos para codificação de dados geoespaciais vetoriais: GeoJSON, GML, KML, ESRI Shapefile, Geomedia, Atlas BNA, entre outros. Além desses formatos de arquivo ainda encontramos dados geoespaciais armazenados e gerenciados por Sistemas Gerenciadores de Bancos de Dados (SGBD) como MySQL, PostgreSQL, IBM DB2, Oracle e Microsoft SQL Server. Outra forte tendência é a disponibilização de dados através de serviços Web, como o OGC WFS (<em>Web Feature Service</em>). Por conta disso, é importante usarmos tecnologias que nos abstraiam ao máximo dos detalhes de cada um desses formatos e sistemas.</p>
+<p>Antes de começarmos a trabalhar com as coleções de feições, temos que compreender o modelo geométrico e as operações espaciais que permeiam as geotecnologias voltadas para manipulação de dados vetoriais.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
 <p>As entidades codificados como dados matriciais, também chamadas de <strong>raster</strong> ou <strong>imagens</strong>, formam um plano subdividido em células de tamanho fixo, frequentemente chamadas de <strong>pixels</strong>. Para cada par de coordenada <span class="math notranslate nohighlight">\((x, y)\)</span> nesse plano há um valor de intensidade, por vezes chamado <strong>nível de cinza</strong>, que indica o valor de alguma medida para aquele ponto.</p>
 <p>A <a class="reference internal" href="#fig-tipos-geometricos-introducao-img-cbers4"><span class="std std-numref">Figura 3.2</span></a> apresenta uma imagem do satélite CBERS-4 sensor AWFI. Trata-se de um dado matricial em que cada célula, representa uma área de 64 metros da superfície terrestre e o valor de intensidade indica uma aproximação da cor refletida por essa superfície.</p>
 <figure class="align-center align-default" id="fig-tipos-geometricos-introducao-img-cbers4">
@@ -160,7 +172,11 @@
 <p><span class="caption-number">Figura 3.2 - </span><span class="caption-text">Imagem do satélite CBERS-4 sensor AWFI com 64 metros de resolução espacial, em composição colorida.</span><a class="headerlink" href="#fig-tipos-geometricos-introducao-img-cbers4" title="Link Permanente para essa imagem"></a></p>
 </figcaption>
 </figure>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
 <p>Nesta parte do curso estamos interessados em discutir sobre a representação geométrica usada em coleções e feições, como mostrado na <a class="reference internal" href="#fig-tipos-geometricos-introducao-feature-collection"><span class="std std-numref">Figura 3.1</span></a>.</p>
+</div>
 </section>
 
 
@@ -178,7 +194,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f1ca3189610>
+<jinja2.runtime.BlockReference object at 0x7fde83987df0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

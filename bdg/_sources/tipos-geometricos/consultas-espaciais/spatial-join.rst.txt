@@ -188,6 +188,8 @@ Considere o conjunto ESRI Shapefile mostrado na :numref:`Tabela %s <tbl:consulta
 -----
 
 
+.. _cap_tipos_geometricos_consultas_espaciais_spatial_join_focos_2020:
+
 Carga de Dados - Focos de Queimada (Janeiro de 2020)
 ----------------------------------------------------
 

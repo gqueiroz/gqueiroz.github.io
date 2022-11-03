@@ -1,0 +1,332 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_json_carga_dados:
+
+Carregando Dados no Formato JSON
+================================
+
+
+O comando ``COPY`` do servidor PostgreSQL, assim como o metacomando ``\copy``  do *psql*, não suportam diretamente a importação de dados no formato JSON. Como vimos na :numref:`Seção %s - Importando e Exportando Dados <cap_sgbd_import_export>`, esses comandos podem trabalhar diretamente com os formatos CSV, texto e binário. No entanto, esses comandos possuem uma forma de especificar a conexão com programas externos para leitura ou escrita de dados. Neste caso, é possível utilizar a forma ``FROM PROGRAM`` desses comandos para especificar que a leitura ou escrita de dados deverá interagir com um programa auxiliar.
+
+
+Para ajudar no processo de carga de dados no formato JSON iremos utilizar uma ferramenta de linha de comando chamada `jq <https://stedolan.github.io/jq/>`__, que é um processador de dados estruturados em JSON que pode ser facilmente utilizado com os comandos ``COPY`` do PostgreSQL ou o metacomando ``\copy`` do *psql*, usando a forma ``FROM PROGRAM`` desses dois comandos. Esse processador irá permitir realizar as transformações necessárias no dado de entrada para que ele possa ser inserido em tabelas do PostgreSQL.
+
+
+Os dados que usaremos nessa seção são derivados do arquivo usado na :numref:`Seção % s <cap_tipos_geometricos_consultas_espaciais_spatial_join_focos_2020>` e, contém uma seleção de 2.283 focos de calor na vegetação codificados em um arquivo JSON. O conteúdo do arquivo :download:`focos.json <../data/json/focos.json>` é mostrado parcialmente abaixo:
+
+
+.. literalinclude:: ../data/json/focos.json
+    :lines: 1-8
+    :language: json
+    :caption: Arquivo :download:`focos.json <../data/json/focos.json>`.
+
+
+Repare que o documento mostrado acima contém um objeto, com três pares *chave-valor*. Os focos estão codificados como elementos do *array* de chave ``features``. Nosso objetivo será criar uma tabela com uma única coluna do tipo ``JSONB`` e importar cada um dos itens do array da chave ``"features"`` para uma linha dessa tabela.
+
+
+A ferramenta *jq* permite que realizemos vários processamentos interessantes sobre documentos JSON. Na linha de comando do Linux, ou do macOS ou do Windows, podemos utilizar o comando *jq* para ler o conteúdo do arquivo acima, da seguinte forma: 
+
+
+.. code-block:: shell
+
+    jq < focos.json
+
+
+Esse comando fará com que o arquivo ``focos.json`` seja lido e então escrito na saída padrão, isto é, na tela do terminal de comandos. Esse comando produzirá um saída formatada, como mostrado na saída parcial abaixo:
+
+
+.. code-block:: text
+
+    {
+      "type": "FeatureCollection",
+      "name": "focos",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {
+            "gid": 247,
+            "datahora": "2020-01-01 16:45:00",
+            "satelite": "AQUA_M-T",
+            "pais": "Brasil",
+            "estado": "MATO GROSSO DO SUL",
+            "municipio": "AMAMBAI",
+            "bioma": "Mata Atlantica",
+            "diasemchuv": 0,
+            "precipitac": 0,
+            "riscofogo": 0,
+            "latitude": -23.17,
+            "longitude": -54.732,
+            "frp": 46.2
+          },
+          ...
+
+
+Essa saída, assim como a forma original do arquivo não se encontram estruturadas para importação direta para o banco de dados. Queremos realizar um processamento no arquivo ``focos.json`` de maneira a produzir uma linha de texto para cada objeto que represente um foco. Para isso, será preciso extrair parte do conteúdo do documento de entrada e garantir que os objetos sejam reportados em uma única linha. No comando anterior, se acrescentarmos uma expressão de filtro como ``'.features[]'``, teremos cada elemento do *array* ``features`` reportado separadamente:
+
+
+.. code-block:: bash
+
+    jq '.features[]' < focos.json
+
+
+Saída (parcial):
+
+
+.. code-block:: text
+
+    {
+      "type": "Feature",
+      "properties": {
+        "gid": 247,
+        "datahora": "2020-01-01 16:45:00",
+        "satelite": "AQUA_M-T",
+        "pais": "Brasil",
+        "estado": "MATO GROSSO DO SUL",
+        "municipio": "AMAMBAI",
+        "bioma": "Mata Atlantica",
+        "diasemchuv": 0,
+        "precipitac": 0,
+        "riscofogo": 0,
+        "latitude": -23.17,
+        "longitude": -54.732,
+        "frp": 46.2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -54.732,
+          -23.17
+        ]
+      }
+    }
+    {
+      "type": "Feature",
+      "properties": {
+        "gid": 248,
+        "datahora": "2020-01-01 16:45:00",
+        "satelite": "AQUA_M-T",
+        "pais": "Brasil",
+        "estado": "MATO GROSSO DO SUL",
+        "municipio": "AMAMBAI",
+        "bioma": "Mata Atlantica",
+        "diasemchuv": 0,
+        "precipitac": 0,
+        "riscofogo": 0,
+        "latitude": -23.176,
+        "longitude": -54.727,
+        "frp": 44.3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -54.727,
+          -23.176
+        ]
+      }
+    }
+    ...
+
+
+Agora, tudo que precisamos é que cada objeto representando um foco seja reportado em uma única linha de texto. As opções ``-r`` e ``-c`` nos darão esse resultado:
+
+
+.. code-block:: bash
+
+     jq -r -c '.features[]' < focos.json
+
+
+Saída (parcial):
+
+
+.. code-block:: text
+
+    {"type":"Feature","properties":{"gid":247,"datahora":"2020-01-01 16:45:00","satelite":"AQUA_M-T","pais":"Brasil","estado":"MATO GROSSO DO SUL","municipio":"AMAMBAI","bioma":"Mata Atlantica","diasemchuv":0,"precipitac":0,"riscofogo":0,"latitude":-23.17,"longitude":-54.732,"frp":46.2},"geometry":{"type":"Point","coordinates":[-54.732,-23.17]}}
+    {"type":"Feature","properties":{"gid":248,"datahora":"2020-01-01 16:45:00","satelite":"AQUA_M-T","pais":"Brasil","estado":"MATO GROSSO DO SUL","municipio":"AMAMBAI","bioma":"Mata Atlantica","diasemchuv":0,"precipitac":0,"riscofogo":0,"latitude":-23.176,"longitude":-54.727,"frp":44.3},"geometry":{"type":"Point","coordinates":[-54.727,-23.176]}}
+    {"type":"Feature","properties":{"gid":249,"datahora":"2020-01-01 16:45:00","satelite":"AQUA_M-T","pais":"Brasil","estado":"SAO PAULO","municipio":"SAO ROQUE","bioma":"Mata Atlantica","diasemchuv":0,"precipitac":0,"riscofogo":0,"latitude":-23.487,"longitude":-47.109,"frp":7},"geometry":{"type":"Point","coordinates":[-47.109,-23.487]}}
+    ...
+
+
+Agora estamos prontos para poder importar esse arquivo para o banco. Vamos então criar a tabela abaixo:
+
+
+.. code-block:: sql
+
+    CREATE TABLE focos_2020_json
+    (
+        dados JSONB
+    );
+
+
+Em seguida, podemos usar o metacomando ``\copy`` da seguinte forma:
+
+
+.. code-block:: psql
+
+    \copy focos_2020_json FROM PROGRAM 'jq -c -r ''.features[]'' < /data/json/focos.json';
+
+
+Se todas as 2.283 linhas forem importadas sem problemas, o comando produzirá uma saída como:
+
+
+.. code-block:: text
+
+    COPY 2283
+
+
+Para ver o resultado da importação, consulte a tabela ``focos_2020_json``:
+
+
+.. code-block:: sql
+
+    SELECT * FROM focos_2020_json LIMIT 3;
+
+
+Saída:
+
+
+.. code-block:: text
+
+                                                                                            dados                                                                       
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-54.732, -23.17]}, "properties": {"frp": 46.2, "gid": 247, "pais": "Brasil", "bioma": "Mata Atlantica", "estado": "MATO GROSSO DO SUL", "datahora": "2020-01-01 16:45:00", "latitude": -23.17, "satelite": "AQUA_M-T", "longitude": -54.732, "municipio": "AMAMBAI", "riscofogo": 0, "diasemchuv": 0, "precipitac": 0}}
+     {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-54.727, -23.176]}, "properties": {"frp": 44.3, "gid": 248, "pais": "Brasil", "bioma": "Mata Atlantica", "estado": "MATO GROSSO DO SUL", "datahora": "2020-01-01 16:45:00", "latitude": -23.176, "satelite": "AQUA_M-T", "longitude": -54.727, "municipio": "AMAMBAI", "riscofogo": 0, "diasemchuv": 0, "precipitac": 0}}
+     {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-47.109, -23.487]}, "properties": {"frp": 7, "gid": 249, "pais": "Brasil", "bioma": "Mata Atlantica", "estado": "SAO PAULO", "datahora": "2020-01-01 16:45:00", "latitude": -23.487, "satelite": "AQUA_M-T", "longitude": -47.109, "municipio": "SAO ROQUE", "riscofogo": 0, "diasemchuv": 0, "precipitac": 0}}
+    (3 rows)
+
+
+Usando índices GIN com o tipo ``jsonb``
+---------------------------------------
+
+
+Veja como a consulta abaixo é executa:
+
+
+.. code-block:: sql
+
+    EXPLAIN ANALYZE
+        SELECT * 
+          FROM focos_2020_json 
+         WHERE dados @> '{"properties": {"bioma": "Pampa"}}';
+
+
+Saída:
+
+
+.. code-block:: text
+
+                                                      QUERY PLAN                                                  
+    --------------------------------------------------------------------------------------------------------------
+     Seq Scan on focos_2020_json  (cost=0.00..171.54 rows=1 width=471) (actual time=0.112..3.627 rows=17 
+    loops=1)
+       Filter: (dados @> '{"properties": {"bioma": "Pampa"}}'::jsonb)
+       Rows Removed by Filter: 2266
+     Planning Time: 0.490 ms
+     Execution Time: 3.664 ms
+    (5 rows)
+
+    Time: 4.793 ms
+
+
+Agora, vamos criar um índice GIN sobre a coluna ``dados``:
+
+
+.. code-block:: sql
+
+    CREATE INDEX focos_2020_json_dados_idx ON focos_2020_json USING GIN (dados);
+
+    ANALYZE focos_2020_json;
+
+
+Refazendo a análise da consulta, obteremos:
+
+
+.. code-block:: sql
+
+    EXPLAIN ANALYZE
+        SELECT * 
+          FROM focos_2020_json 
+         WHERE dados @> '{"properties": {"bioma": "Pampa"}}';
+
+
+Saída:
+
+
+.. code-block:: text
+
+                                                                 QUERY PLAN                                                             
+    ------------------------------------------------------------------------------------------------------------------------------------
+     Bitmap Heap Scan on focos_2020_json  (cost=28.00..32.01 rows=1 width=471) (actual time=0.153..0.218 rows=17 loops=1)
+       Recheck Cond: (dados @> '{"properties": {"bioma": "Pampa"}}'::jsonb)
+       Heap Blocks: exact=12
+       ->  Bitmap Index Scan on focos_2020_json_dados_idx  (cost=0.00..28.00 rows=1 width=0) (actual time=0.128..0.129 rows=17 loops=1)
+             Index Cond: (dados @> '{"properties": {"bioma": "Pampa"}}'::jsonb)
+     Planning Time: 0.904 ms
+     Execution Time: 0.288 ms
+    (7 rows)
+
+    Time: 2.109 ms
+
+
+Dicas
+-----
+
+
+**1.** Se você quiser selecionar os objetos que representam geometrias nos dados JSON, utilize o opetrador ``->`` como mostrado abaixo: 
+
+
+.. code-block:: sql
+
+    SELECT dados->'geometry' FROM focos_2020_json ;
+
+
+**2.** Para transformar o objeto GeoJSON em uma geometria do PostGIS, use a função ``ST_GeomFromGeoJSON``, como mostrado abaixo:
+
+
+.. code-block:: sql
+
+    SELECT ST_GeomFromGeoJSON(dados->'geometry') FROM focos_2020_json ;
+
+
+**3.** Para gerar um único objeto JSON contendo tanto as propriedades alfanuméricas quanto a geometria, use a função ``jsonb_insert`` como mostrado abaixo:
+
+.. code-block:: sql
+
+    SELECT jsonb_insert(dados->'properties', '{geom}', dados->'geometry') FROM focos_2020_json;
+
+
+**4.** Para transformar os objetos JSON em uma tabela convencional, crie uma tabela com a seguinte estrutura:
+
+
+.. code-block:: sql
+
+    CREATE TABLE foco_2020_v2
+    (
+        gid          INTEGER,
+        datahora     TIMESTAMP WITHOUT TIME ZONE,
+        satelite     CHARACTER VARYING(80),
+        pais         CHARACTER VARYING(80),
+        estado       CHARACTER VARYING(80),
+        municipio    CHARACTER VARYING(80),
+        bioma        CHARACTER VARYING(80),
+        diasemchuv   INTEGER,
+        precipitac   NUMERIC,
+        riscofogo    NUMERIC,
+        latitude     NUMERIC,
+        longitude    NUMERIC,
+        frp          NUMERIC,
+        geom         GEOMETRY(POINT,4326)
+    );
+
+
+Em seguida, importe os dados para essa tabela usando a função ``jsonb_populate_record``: 
+
+
+.. code-block:: sql
+
+    INSERT INTO foco_2020_v2
+        SELECT (jsonb_populate_record(NULL::foco_2020_v2, jsonb_insert(dados->'properties', '{geom}', dados->'geometry'))).* 
+          FROM focos_2020_json;
+

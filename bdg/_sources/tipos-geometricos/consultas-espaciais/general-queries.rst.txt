@@ -16,3 +16,26 @@ Consulta
 **Consulta:** Qual a porcentagem de cada bioma em relação à extensão do Brasil?
 
 
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        WITH area_brasil AS
+            (
+                SELECT SUM( ST_Area(geom::geography) ) AS area
+                  FROM biomas
+            )
+
+          SELECT biomas.bioma,
+                 ST_Area(geom::geography) / area_brasil.area * 100.0 AS "area(%)"
+            FROM biomas,
+                 area_brasil
+        ORDER BY 2;
+
+
+-----
+
+
+.. tip::
+
+    Tente refazer a consulta acima usando operadores de janela do PostgreSQL.

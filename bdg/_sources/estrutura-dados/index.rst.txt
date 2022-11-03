@@ -92,15 +92,82 @@ Como é o algoritmo de busca nessa árvore?
 
 
 Árvores-R no PostgreSQL com PostGIS
------------------------------------
++++++++++++++++++++++++++++++++++++
 
 
-O PostGIS implementa ums Árvore-R sobre o GiST do PostgreSQL. Para criar um **índice espacial** em uma **coluna geométrica** podemos usar a seguinte sintaxe:
+O PostGIS implementa uma Árvore-R sobre o GiST do PostgreSQL. Para criar um **índice espacial** associado a uma **coluna geométrica**, podemos usar o comando ``CREATE INDEX`` com seguinte sintaxe:
 
 
 .. code-block:: postgresql
 
-    CREATE INDEX <nome-tabela>_<nome-coluna-geometrica>_idx ON <nome-tabela> USING GiST ( <nome-coluna-geometrica> );
+    CREATE INDEX <nome-indice> ON <nome-tabela> USING GIST ( <coluna-geometrica> );
+
+
+A opção ``USING GIST`` indica que o método de indexação a ser usado na criação do índice deverá ser baseado no GiST. Desta forma, o índice criado será uma Árvore-R no caso do tipo ``GEOMETRY`` do PostGIS.
+
+
+O índice espacial baseado no GIST é importante para consultas envolvendo relacionamentos topológicos, como ``ST_Contains``, ``ST_Within``, ``ST_CoveredBy``, ``ST_Covers``, ``ST_Crosses``, ``ST_Equals``, ``ST_Overlaps``, ST_Touches e ``ST_Intersects``. Esses operadores na verdade utilizam automaticamente um teste entre os retângulos envolventes das geometrias antes de realizar um processamento completo dos vértices das duas geometrias. Nas consultas, o teste baseado em retângulo pode explorar o uso do índice espacial. Por isso , esses operadores topológicos são definidos da seguinte forma:
+
+
+
+
+Assim como no caso do índice baseado em Árvore-B\ :sup:`+`, onde operadores como ``<``, ``>``, ``<=``, ``>=`` e ``=`` permitem explorar a existência de índices no processamento de uma consulta, com o tipo ``GEOMETRY`` do PostGIS, também temos um conjunto de operadores que podem explorar a existência de um índice espacial. Os seguintes operadores podem ser usados pelo processador de consultas para explorar um índice espacial:
+
+.. rst-class:: open
+
+- ``<<``: Em expressões como ``geometria-1 << geometria-2``, o operador ``<<`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` encontra-se completamente à esquerda do retângulo envolvente da ``geometria-2``.
+
+- ``>>``: Em expressões como ``geometria-1 >> geometria-2``, o operador ``>>`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` encontra-se completamente à direita do retângulo envolvente da ``geometria-2``.
+
+- ``<<|``: Em expressões como ``geometria-1 <<| geometria-2``, o operador ``<<|`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` encontra-se completamente abaixo do retângulo envolvente da ``geometria-2``.
+
+- ``|>>``: Em expressões como ``geometria-1 |>> geometria-2``, o operador ``|>>`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` encontra-se completamente acima do retângulo envolvente da ``geometria-2``.
+
+- ``&<``: Em expressões como ``geometria-1 &< geometria-2``, o operador ``&<`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` sobrepõem ou encontra-se à esquerda do retângulo envolvente da ``geometria-2``.
+
+- ``&>``: Em expressões como ``geometria-1 &> geometria-2``, o operador ``&>`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` sobrepõem ou encontra-se à direita do retângulo envolvente da ``geometria-2``.
+
+- ``&<``: Em expressões como ``geometria-1 &<| geometria-2``, o operador ``&<`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` sobrepõem ou encontra-se abaixo do retângulo envolvente da ``geometria-2``.
+
+- ``|&>``: Em expressões como ``geometria-1 |&> geometria-2``, o operador ``|&>`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` sobrepõem ou encontra-se acima do retângulo envolvente da ``geometria-2``.
+
+- ``&&``: Em expressões como ``geometria-1 && geometria-2``, o operador ``&&`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` intercepta o retângulo envolvente da ``geometria-2``. Isso significa que se os retângulos tiverem qualquer interação espacial, esse operador retornar ``TRUE``.
+
+- ``@``: Em expressões como ``geometria-1 @ geometria-2``, o operador ``@`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` encontra-se completamente contido no retângulo envolvente da ``geometria-2``.
+
+- ``~``: Em expressões como ``geometria-1 ~ geometria-2``, o operador ``~`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` contem completamente o retângulo envolvente da ``geometria-2``.
+
+- ``~=``: Em expressões como ``geometria-1 ~= geometria-2``, o operador ``~=`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` é exatamente igual ao retângulo envolvente da ``geometria-2``.
+
+
+
+
+.. note::
+
+    A sintaxe acima cria um índice bidimensional. Para criar um índice :math:`n\text{-dimensional}` para tipos geométricos 3D, com :math:`n > 2`, podemos utilizar a seguinte sintaxe:
+
+
+    .. code-block:: postgresql
+
+        CREATE INDEX <nome-indice> ON <nome-tabela> USING GIST (<coluna-geometrica> gist_geometry_ops_nd);
+
+
+.. tip::
+
+    Ao criar um índice espacial, lembre-se de atualizar as estatísticas da tabela:
+
+
+    .. code-block:: postgresql
+
+        ANALYZE <nome-tabela>
+
+
+    ou:
+
+
+    .. code-block:: postgresql
+
+        VACUUM ANALYZE <nome-tabela>
 
 
 .. note::
