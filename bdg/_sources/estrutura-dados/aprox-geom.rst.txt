@@ -1,0 +1,68 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_estrutura_dados_aprox_geom:
+
+Aproximações Geométricas
+========================
+
+
+O **retângulo envolvente mínimo** (**REM**) é uma das aproximações mais utilizadas em aplicações geoespaciais para geometrias do tipo polígonais e lineares. A :numref:`Figura %s <fig:estrutura-dados:mbr>` apresenta o retângulo envolvente da geometria representando os limites territoriais do Brasil (um ``MultiPolygon``). O que faz o REM ser uma aproximação muito utilizada é o fato de que, no espaço bidimensional, apenas um par de pontos seja necessário para representá-lo :math:`(X_{min}, X_{max}, Y_{min}, Y_{max})`. 
+
+
+.. figure:: ../img/sam/mbr.png
+    :alt: Retângulo envolvente da geometria representando os limites territoriais do Brasil
+    :width: 100%
+    :figclass: align-center
+    :name: fig:estrutura-dados:mbr
+
+    Retângulo envolvente da geometria representando os limites territoriais do Brasil.
+
+
+.. note::
+
+    O REM muitas vezes é chamado de **Minimum Bounding Box** (**MBB**) ou **Bounding Box** (**BBOX**).
+
+
+Além disso, o REM funciona como um filtro rápido para testes de relacionamento espacial. Considere a :numref:`Figura %s <fig:estrutura-dados:mbr-case-1>`, quando os REM de duas geometrias não possuem intersecção, então essas duas geometrias com certeza serão *disjuntas*. Portanto, um simples teste com o REM das geometrias é suficiente para descartar o processamento considerando todos os vértices dessas geometrias.
+
+
+.. figure:: ../img/sam/mbr-case-1.png
+    :alt: Dois REM disjuntos implicam em duas geometrias disjuntas
+    :width: 100%
+    :figclass: align-center
+    :name: fig:estrutura-dados:mbr-case-1
+
+    Dois REM disjuntos implicam em duas geometrias disjuntas.
+
+
+Obviamente que quando os REM possuem intersecção, podemos ter outros dois casos. O primeiro, ilustrado na :numref:`Figura %s <fig:estrutura-dados:mbr-case-2>`, mostra que apesar dos dois REM terem intersecção, não há garantias de que as respectivas geometrias tenham algum tipo de interação espacial. O caso mostrado na :numref:`Figura %s <fig:estrutura-dados:mbr-case-3>`, ilustra que se um par de geometrias possui intersecção, então seus REM também possuem. 
+
+
+.. figure:: ../img/sam/mbr-case-2.png
+    :alt: Dois REM com intersecção não necessariamente implicam em duas geometrias com interação espacial
+    :width: 100%
+    :figclass: align-center
+    :name: fig:estrutura-dados:mbr-case-2
+
+    Dois REM com intersecção não necessariamente implicam em duas geometrias com interação espacial.
+
+
+|br|
+
+
+.. figure:: ../img/sam/mbr-case-3.png
+    :alt: Se duas geometrias possuem intersecção, então seus REM também terão intersecção.
+    :width: 100%
+    :figclass: align-center
+    :name: fig:estrutura-dados:mbr-case-3
+
+    Se duas geometrias possuem intersecção, então seus REM também terão intersecção.
+
+
+A grande maioria dos **métodos de indexação espacial** são projetados sobre o MBR das geometrias. Afinal, seria muito complexo as chaves dos índices serem formadas ou representadas pelas geometrias exatas de elementos geométricos como linhas e polígonos. Além disso, os índices seriam extremamente custosos e proibitivos, com as geometrias exatas. Portanto, todos os SGBDs com suporte a tipos espaciais utilizam bastante as propriedades dos REM das geometrias para construção das estruturas de índices.

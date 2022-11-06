@@ -1,0 +1,430 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_sgbd_tipos_data_hora:
+
+Tipos de Dados para Data e Hora
+===============================
+
+
+Representação
+-------------
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP WITH TIME ZONE '2022-10-11 06:15:00';
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP '2022-10-11 06:15:00';
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP WITH TIME ZONE '2022-10-11 06:15:00-03';
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP '2022-10-11 06:15:00-03';
+
+
+.. note::
+
+    Veja que o PostgreSQL descarta o *time zone* nesse último caso.
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP WITH TIME ZONE 'epoch';
+
+
+.. code-block:: sql
+
+    SELECT DATE 'tomorrow';
+
+
+.. code-block:: sql
+
+    SELECT TIME 'now';
+
+
+.. code-block::sql
+
+    SELECT INTERVAL '1' YEAR;
+
+
+.. code-block::sql
+
+    SELECT INTERVAL '16' DAY;
+
+
+.. code-block::sql
+
+    SELECT INTERVAL '1 YEAR 2 MONTHS 3 DAYS 4 HOURS 5 MINUTES 6 SECONDS';
+
+
+Extraindo Partes de um tipo temporal
+------------------------------------
+
+
+Sintaxe::
+
+    EXTRACT(field FROM source)
+
+
+Exemplos:
+
+
+.. code-block:: sql
+
+    SELECT EXTRACT(DAY FROM TIMESTAMP '2022-10-10 06:15:00');
+
+
+.. code-block:: sql
+
+    SELECT EXTRACT(DOY FROM TIMESTAMP '2022-10-10 06:15:00');
+
+
+.. code-block:: sql
+
+    SELECT EXTRACT(MONTH FROM TIMESTAMP '2022-10-10 06:15:00');
+
+
+.. code-block:: sql
+
+    SELECT EXTRACT(YEAR FROM TIMESTAMP '2022-10-10 06:15:00');
+
+
+
+
+Operadores
+----------
+
+
+Adicionando um número de dias a uma data:
+
+
+.. code-block:: sql
+
+
+    SELECT DATE '2022-10-10' + 30;
+
+
+Calculando o número de dias entre duas datas:
+
+
+.. code-block:: sql
+
+    SELECT DATE '2022-11-09' - DATE '2022-10-10';
+
+
+Intervalo de tempo entre dois instantes de tempo:
+
+
+.. code-block:: sql
+
+    SELECT TIMESTAMP '2022-11-09 06:15' - TIMESTAMP '2022-10-10 06:10';
+
+
+.. tip::
+
+    O padrão SQL define algumas funções para fornecer valores específicos de data e hora:
+
+    .. code-block:: sql
+
+        SELECT CURRENT_DATE, CURRENT_TIME, CURRENT_TIMESTAMP, LOCALTIME, LOCALTIMESTAMP;
+
+
+.. tip::
+
+    Para converter um valor do tipo ``TIMESTAMP`` para ``TIME`` faça:
+    
+    
+    .. code-block:: sql
+    
+        SELECT (TIMESTAMP '2022-11-09 06:15')::time;
+    
+    
+    O operador ``::`` permite fazer a **coerção explícita de tipos**.
+
+
+
+Exercícios
+----------
+
+
+**Exercício 1.** Crie a tabela de focos abaixo com uma coluna do tipo data e hora sem fuso horário.
+
+
+.. code-block:: postgresql
+
+    CREATE TABLE foco_v2
+    (
+        latitude            DOUBLE PRECISION,
+        longitude           DOUBLE PRECISION,
+        num_dias_sem_chuva  INTEGER,
+        frp                 NUMERIC(4,1),
+        data                TIMESTAMP WITHOUT TIME ZONE,
+        satelite            VARCHAR(30)
+    );
+
+
+Vamos incluir alguns valores na tabela acima:
+
+
+.. code-block:: sql
+
+    INSERT INTO foco_v2 VALUES(-9.41792, -51.65176, 30, 89, '2022-09-01 16:30:00', 'AQUA'),
+                              (-6.63565,-51.73956, 28, 103, '2022-08-30 14:30:00', 'TERRA'),
+                              (-5.40959,-51.04929, 31, 31.9, '2022-09-03 08:30:00', 'NOAA-20'),
+                              (-7.04535,-52.24566, 27, 44.2, '2022-09-03 07:30:00', 'GOES-16'),
+                              (-5.67382,-51.89861, 32, 97.8, '2022-08-03 17:30:00', 'GOES-16');
+
+
+**Exercício 2.** Apresente os dados de focos com duas colunas extras, uma apresentando o ano e outra o mês.
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT *, extract(YEAR FROM data) AS ano, extract(MONTH FROM data) AS mes
+          FROM foco_v2;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+         latitude | longitude | num_dias_sem_chuva |  frp  |        data         | satelite | ano  | mes 
+        ----------+-----------+--------------------+-------+---------------------+----------+------+-----
+         -9.41792 | -51.65176 |                 30 |  89.0 | 2022-09-01 16:30:00 | AQUA     | 2022 |   9
+         -6.63565 | -51.73956 |                 28 | 103.0 | 2022-08-30 14:30:00 | TERRA    | 2022 |   8
+         -5.40959 | -51.04929 |                 31 |  31.9 | 2022-09-03 08:30:00 | NOAA-20  | 2022 |   9
+         -7.04535 | -52.24566 |                 27 |  44.2 | 2022-09-03 07:30:00 | GOES-16  | 2022 |   9
+         -5.67382 | -51.89861 |                 32 |  97.8 | 2022-08-03 17:30:00 | GOES-16  | 2022 |   8
+        (5 rows)
+
+
+-----
+
+
+**Exercício 3.** Quais os focos detectados no período da manhã?
+
+
+.. collapse:: Solução:
+
+
+    Para solução desse exercício, você deverá extrair apenas a parte da **hora do dia** da coluna ``data`` que é do tipo ``TIMESTAMP``. Para isso, devemos realizar uma conversão de tipos, que pode ser feita usando a notação específica do PostgreSQL com o operador ``::tipo`` ou a função padrão SQL ``cast``.
+    
+    
+    Na primeira solução, usaremos o operador ``::tipo``:
+
+
+    .. code-block:: sql
+
+        SELECT *
+          FROM foco_v2
+         WHERE (data::time >= '06:00'::time) AND (data::time < '12:00'::time);
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+         latitude | longitude | num_dias_sem_chuva | frp  |        data         | satelite 
+        ----------+-----------+--------------------+------+---------------------+----------
+         -5.40959 | -51.04929 |                 31 | 31.9 | 2022-09-03 08:30:00 | NOAA-20
+         -7.04535 | -52.24566 |                 27 | 44.2 | 2022-09-03 07:30:00 | GOES-16
+        (2 rows)
+
+
+    Na segunda solução, usaremos a função SQL ``cast(expressão AS tipo)``:
+
+
+    .. code-block:: sql
+
+        SELECT *
+          FROM foco_v2
+         WHERE ( cast(data AS TIME) >= TIME '06:00' ) AND ( cast(data AS TIME) < TIME '12:00' );
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+         latitude | longitude | num_dias_sem_chuva | frp  |        data         | satelite 
+        ----------+-----------+--------------------+------+---------------------+----------
+         -5.40959 | -51.04929 |                 31 | 31.9 | 2022-09-03 08:30:00 | NOAA-20
+         -7.04535 | -52.24566 |                 27 | 44.2 | 2022-09-03 07:30:00 | GOES-16
+        (2 rows)
+
+
+-----
+
+
+
+**Exercício 4.** Quais os focos detectados no período da tarde?
+
+
+.. collapse:: Solução:
+
+
+    .. code-block:: sql
+
+        SELECT *
+          FROM foco_v2
+         WHERE ( cast(data AS TIME) >= TIME '12:00' ) AND  ( cast(data AS TIME) < TIME '18:00' );
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+         latitude | longitude | num_dias_sem_chuva |  frp  |        data         | satelite 
+        ----------+-----------+--------------------+-------+---------------------+----------
+         -9.41792 | -51.65176 |                 30 |  89.0 | 2022-09-01 16:30:00 | AQUA
+         -6.63565 | -51.73956 |                 28 | 103.0 | 2022-08-30 14:30:00 | TERRA
+         -5.67382 | -51.89861 |                 32 |  97.8 | 2022-08-03 17:30:00 | GOES-16
+        (3 rows)
+
+
+-----
+
+
+
+**Exercício 5.** Quais os focos detectados no mês de agosto?
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT *
+          FROM foco_v2
+         WHERE extract(MONTH FROM data) = 8;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+         latitude | longitude | num_dias_sem_chuva |  frp  |        data         | satelite 
+        ----------+-----------+--------------------+-------+---------------------+----------
+         -6.63565 | -51.73956 |                 28 | 103.0 | 2022-08-30 14:30:00 | TERRA
+         -5.67382 | -51.89861 |                 32 |  97.8 | 2022-08-03 17:30:00 | GOES-16
+        (2 rows)
+
+
+-----
+
+
+**Exercício 6.** Qual o número de focos reportado por cada satélite?
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+          SELECT satelite, COUNT(*) AS num_focos
+            FROM foco_v2
+        GROUP BY satelite
+        ORDER BY num_focos DESC;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+         satelite | num_focos 
+        ----------+-----------
+         GOES-16  |         2
+         NOAA-20  |         1
+         AQUA     |         1
+         TERRA    |         1
+        (4 rows)
+
+
+-----
+
+
+
+**Exercício 7.** Qual o número de focos reportado mensalmente?
+
+
+.. collapse:: Solução:
+
+    Vamos apresentar duas soluções para esse exercício. A primeira solução irá extrair a parte do mês do campo ``data`` associado ao foco para realizar um agrupamento e então contar o total de focos no grupo:
+
+
+    .. code-block:: sql
+
+          SELECT extract(MONTH FROM data) AS mes, COUNT(*) AS num_focos
+            FROM foco_v2
+        GROUP BY extract(MONTH FROM data)
+        ORDER BY num_focos DESC;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+         mes | num_focos 
+        -----+-----------
+           9 |         3
+           8 |         2
+        (2 rows)
+
+
+    A segunda solução irá utilizar a função ``to_char`` para extrair o mês na forma textual, para então realizar o agrupamento dos focos pelo mês e depois realizar a contagem de linhas de cada grupo:
+    
+    
+    .. code-block:: sql
+
+          SELECT to_char(data, 'month') AS mes, COUNT(*) AS num_focos
+            FROM foco_v2
+        GROUP BY to_char(data, 'month')
+        ORDER BY num_focos DESC;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+            mes    | num_focos 
+        -----------+-----------
+         september |         3
+         august    |         2
+        (2 rows)
+
+
+    .. tip::
+    
+        Veja o resultado da consulta abaixo:
+        
+        
+        .. code-block:: sql
+        
+            SELECT latitude, longitude, data, to_char(data, 'Month'), to_char(data, 'MONTH'), to_char(data, 'month')
+              FROM foco_v2;
+
+
+-----
+
+
+.. tip::
+
+    Para uma lista completa das funções e operações com tipos associados a data, hora e intervalos, consulte o manual do PostgreSQL na `Seção 9.9. Date/Time Functions and Operators <https://www.postgresql.org/docs/14/functions-datetime.html>`__. Veja também as funções de formatção de tipos na `Seção 9.8. Data Type Formatting Functions <https://www.postgresql.org/docs/current/functions-formatting.html>`__.

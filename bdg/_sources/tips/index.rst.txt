@@ -1,0 +1,104 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_dicas:
+
+Dicas
+=====
+
+
+**D001.** Constantes de outros tipos que não os valores numéricos podem ser representados por uma das seguintes formas:
+
+.. code-block:: sql
+
+    type 'string'
+    'string'::type
+    CAST ( 'string' AS type )
+
+
+-----
+
+
+**D002.** Para aumentar a quantdade de memória RAM utilizada na criação de índices, faça:
+
+
+Consulte o valor atual do parâmetro ``maintenance_work_mem``:
+
+
+.. code-block:: postgresql
+
+    SHOW maintenance_work_mem;
+
+
+Para aumentar esse valor, digamos para 4GB , e garantir que esse valor seja mantido mesmo após reinicializações do servidor, faça:
+
+
+.. code-block:: postgresql
+
+    ALTER SYSTEM SET maintenance_work_mem TO '4GB';
+
+
+Para que o servidor passe a usar esse valor em todas as conexões abertas, podemos utilizar o comando ``pg_reload_conf``:
+
+
+.. code-block:: postgresql
+
+    SELECT pg_reload_conf();
+
+
+-----
+
+
+**D003.** Para forçar que uma consulta sempre utilize um índice existente em seu processamento, defina a variável ``ENABLE_SEQSCAN`` como ``OFF``:
+
+
+.. code-block:: postgresql
+
+    SET ENABLE_SEQSCAN TO OFF;
+
+
+Para que o otimizador de consultas possa optar por uma busca sequencial novamente, faça:
+
+
+.. code-block:: postgresql
+
+    SET ENABLE_SEQSCAN TO ON;
+
+
+-----
+
+
+**D004.** Para verificar o número de tuplas e páginas usadas por uma tabela e seus índices faça:
+
+
+.. code-block:: postgresql
+
+    SELECT relname, relkind, reltuples, relpages
+      FROM pg_class
+     WHERE relname LIKE 'focos%';
+
+
+-----
+
+
+**D005.** Para saber o volume de dados ocupado por uma tabela, seus índices e arquivos auxiliares (TOAST), use os seguintes comandos:
+
+- ``pg_table_size ('nome-tabela')``: Computa o espaço em disco usado pela tabela, isto é, por seus dados, pelo arquivo auxiliar TOAST, o *free space map* e o *visibility map*. O valor retornado exclui o volume usado por índices. Esse comando também aceita que o argumento seja o nome de um índice.
+
+- ``pg_indexes_size ('nome-tabela')``: Computa o espaço em disco usado pelos índices de uma tabela.
+
+- ``pg_total_relation_size ('nome-tabela')``: Computa o espaço total usado por uma tabela incluindo seus indices.
+
+
+Exemplo de uso:
+
+.. code-block:: postgresql
+
+    SELECT pg_size_pretty( pg_table_size('pts') ) AS volume_tabela,
+           pg_size_pretty( pg_table_size('pts_x_y_idx') ) AS volume_indice_x_y,
+           pg_size_pretty( pg_indexes_size('pts') ) AS volume_indices,
+           pg_size_pretty( pg_total_relation_size('pts') ) AS volume_total_tabela;
+
+

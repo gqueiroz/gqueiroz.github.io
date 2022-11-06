@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.2. Árvores-R &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/estrutura-dados/rtree.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="4.3. Árvores-R no PostgreSQL com PostGIS" href="postgis-gist.html" />
+    <link rel="prev" title="4.1. Aproximações Geométricas" href="aprox-geom.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aprox-geom.html">4.1. Aproximações Geométricas</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. Árvores-R</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#realizando-buscas-numa-arvore-r">4.2.1. Realizando Buscas numa Árvore-R</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="postgis-gist.html">4.3. Árvores-R no PostgreSQL com PostGIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="space-partitioning.html">4.4. Árvores de Partição do Espaço</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postgis-spgist.html">4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">4.6. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais</a> &raquo;</li>
+      <li><span class="section-number">4.2. </span>Árvores-R</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="aprox-geom.html" class="btn btn-neutral float-left" title="4.1. Aproximações Geométricas" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="postgis-gist.html" class="btn btn-neutral float-right" title="4.3. Árvores-R no PostgreSQL com PostGIS" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="arvores-r">
+<span id="cap-estrutura-dados-rtree"></span><h1><span class="section-number">4.2. </span>Árvores-R<a class="headerlink" href="#arvores-r" title="Link permanente para este cabeçalho"></a></h1>
+<p>Uma <strong>Árvore-R</strong> é uma árvore balanceada, com uma estrutura semelhante a uma Árvore-B. Trata-se do método de indexação mais empregado na indústria de bancos de dados geoespaciais, estando presente em produtos como o Oracle Spatial, PostgreSQL/PostGIS e o MySQL.​</p>
+<p>Considere o conjunto de retângulos mostrados na <a class="reference internal" href="#fig-estrutura-dados-rtree-leaf-rectangles"><span class="std std-numref">Figura 4.5</span></a>. Esses retângulos, numerados de 1 a 20, podem representar, por exemplo, a aproximação geométrica de polígonos ou linhas poligonais.</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-rtree-leaf-rectangles">
+<a class="reference internal image-reference" href="../_images/rtree-leaf-rectangles.png"><img alt="Esquema de uma Árvore-R" src="../_images/rtree-leaf-rectangles.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.5 - </span><span class="caption-text">Retângulos envolventes das geometrias indexadas.</span><a class="headerlink" href="#fig-estrutura-dados-rtree-leaf-rectangles" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Uma Árvore-R organiza o espaço subjacente em uma hierarquia de retângulos, possivelmente com sobreposições. A  Árvore-R apresentada na <a class="reference internal" href="#fig-estrutura-dados-rtree"><span class="std std-numref">Figura 4.6</span></a> ilustra uma hierarquia criada a partir dos retêngulos da <a class="reference internal" href="#fig-estrutura-dados-rtree-leaf-rectangles"><span class="std std-numref">Figura 4.5</span></a>. Nessa árvore, os <em>nós</em> ou <em>páginas internas</em> são formados por <strong>entradas</strong> definidas por pares <span class="math notranslate nohighlight">\((\text{retângulo}, \text{ponteiro-descendente})\)</span>. O retângulo de uma entrada contém os retângulos da sub-árvore indicada pelo ponteiro de ligação. Assim, o retângulo da entrada <span class="math notranslate nohighlight">\(R_a\)</span> contém os retângulos <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span> e <span class="math notranslate nohighlight">\(G\)</span>, respectivamente, assim como todos os demais retângulos abaixo deles. As páginas no nível das folhas são formadas por entradas do tipo <span class="math notranslate nohighlight">\((\text{retângulo}, \text{ponteiro-objeto})\)</span>, para que seja possível recuperar o objeto indexado. No nosso exemplo, esses retângulos estarão associados a geometrias de uma determinada coluna de uma tabela e, portanto, o índice conterá informações para que a linha possa ser recuperada (<code class="docutils literal notranslate"><span class="pre">TID</span></code>  é a abreviação de <em>tuple identifier</em>).</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-rtree">
+<a class="reference internal image-reference" href="../_images/rtree.png"><img alt="Esquema de uma Árvore-R" src="../_images/rtree.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.6 - </span><span class="caption-text">Esquema de uma Árvore-R.</span><a class="headerlink" href="#fig-estrutura-dados-rtree" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>As Figuras <a class="reference internal" href="#fig-estrutura-dados-rtree-root-rectangles"><span class="std std-numref">4.7</span></a> e <a class="reference internal" href="#fig-estrutura-dados-rtree-internal-node-rectangles-1"><span class="std std-numref">4.8</span></a> ilustram a hierarquia de retêngulos definida pela árvore mostrada acima.</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-rtree-root-rectangles">
+<a class="reference internal image-reference" href="../_images/rtree-root-rectangles.png"><img alt="Esquema de uma Árvore-R" src="../_images/rtree-root-rectangles.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.7 - </span><span class="caption-text">Retângulos do <em>nó raiz</em> e seus descendentes diretos.</span><a class="headerlink" href="#fig-estrutura-dados-rtree-root-rectangles" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<figure class="align-center align-default" id="fig-estrutura-dados-rtree-internal-node-rectangles-1">
+<a class="reference internal image-reference" href="../_images/rtree-internal-node-rectangles-1.png"><img alt="Agrupando os retângulos envolventes das geometrias em uma nova hierarquia de retângulos" src="../_images/rtree-internal-node-rectangles-1.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.8 - </span><span class="caption-text">Hierarquia dos retângulos dos <em>nós internos</em> e das <em>folhas</em>.</span><a class="headerlink" href="#fig-estrutura-dados-rtree-internal-node-rectangles-1" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Uma Árvore-R deve satisfazer as seguintes propriedades:</p>
+<ul class="open">
+<li><p>O <strong>número máximo de entradas</strong> em uma <em>página</em> é dado por <span class="math notranslate nohighlight">\(M\)</span>.</p></li>
+<li><p>O <strong>número mínimo de entradas</strong> em uma página é definido como <span class="math notranslate nohighlight">\(m = \lceil \frac{M}{2}  \rceil\)</span>. Esse parâmetro é responsável pelo balanceamento da árvore.</p></li>
+<li><p>Toda <em>página</em> contém entre <span class="math notranslate nohighlight">\(m\)</span> e <span class="math notranslate nohighlight">\(M\)</span> entradas válidas. A única exceção é o <em>nó raiz</em>.</p></li>
+<li><p>Se a árvore tiver mais do que um nível, isto é, pelo menos <span class="math notranslate nohighlight">\(altura = 1\)</span>, a raiz terá ao menos dois descendentes.</p></li>
+<li><p>Para cada entrada dos <em>nós internos</em>, que são formados por entradas representadas pelos pares <span class="math notranslate nohighlight">\((\text{retângulo}, \text{ponteiro-descendente})\)</span>, o <span class="math notranslate nohighlight">\(retângulo\)</span> dessa entrada será o menor retângulo a conter todos os retângulos das entradas do <em>nó descendente</em>. Repare nas figuras acima, que o retângulo <span class="math notranslate nohighlight">\(R_a\)</span> contém os retângulos <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span> e <span class="math notranslate nohighlight">\(G\)</span>. Por sua vez, o retângulo <span class="math notranslate nohighlight">\(G\)</span> contém os retângulos <span class="math notranslate nohighlight">\(R_{10}\)</span>, <span class="math notranslate nohighlight">\(R_{13}\)</span> e <span class="math notranslate nohighlight">\(R_{17}\)</span>.</p></li>
+<li><p>Para cada entrada dos <em>nós folhas</em>, que são formados por entradas representadas pelos pares <span class="math notranslate nohighlight">\((\text{retângulo}, \text{ponteiro-objeto})\)</span>, o <span class="math notranslate nohighlight">\(retângulo\)</span> dessa entrada será o retângulo envolvente do objeto indexado.</p></li>
+<li><p>Todas as folhas encontram-se no mesmo nível.</p></li>
+<li><p>A altura <span class="math notranslate nohighlight">\(h\)</span> de uma Árvore-R indexando <span class="math notranslate nohighlight">\(n\)</span> objetos espaciais é: <span class="math notranslate nohighlight">\(h \leqslant (\log_m n) - 1\)</span>.</p></li>
+</ul>
+<section id="realizando-buscas-numa-arvore-r">
+<h2><span class="section-number">4.2.1. </span>Realizando Buscas numa Árvore-R<a class="headerlink" href="#realizando-buscas-numa-arvore-r" title="Link permanente para este cabeçalho"></a></h2>
+<p>Considere uma pesquisa por objetos de uma tabela cujo retângulo envolvente possui algum tipo de interação com o retângulo de busca destacado em vermelho na <a class="reference internal" href="#fig-estrutura-dados-rtree-search-1"><span class="std std-numref">Figura 4.9</span></a>. A busca em uma Árvore-R começa sempre pelo <em>nó raiz</em> (<a class="reference internal" href="#fig-estrutura-dados-rtree"><span class="std std-numref">Figura 4.6</span></a>). No <em>nó raiz</em>, o retângulo de busca intercepta o retângulo da entrada <span class="math notranslate nohighlight">\(R_a\)</span>. Assim, a busca terá que verificar a <em>sub-árvore</em> indicada pelo <em>ponteiro de ligação</em> associado ao retângulo <span class="math notranslate nohighlight">\(R_a\)</span>. Ao verificar o <em>nó</em> de entradas <span class="math notranslate nohighlight">\(\{A, B, G\}\)</span>, apenas o retângulo <span class="math notranslate nohighlight">\(A\)</span> é interceptado pelo retângulo de busca. Portanto, a busca seguirá a <em>sub-árvore</em> indicada pelo <em>ponteiro de ligação</em> associado ao retângulo <span class="math notranslate nohighlight">\(A\)</span>. Ao chegar no <em>nó folha</em>, com as entradas de retângulos <span class="math notranslate nohighlight">\(\{R_{12}, R_{20}\}\)</span>, todas as entradas devem ser verificadas e aquelas cujo retângulo tiverem interseção com o retângulo de busca devem ser reportadas. Portanto, apenas o <code class="docutils literal notranslate"><span class="pre">TID</span></code> associado ao retângulo <span class="math notranslate nohighlight">\(R{20}\)</span> será reportado nessa busca.</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-rtree-search-1">
+<a class="reference internal image-reference" href="../_images/rtree-search-1.png"><img alt="Pesquisa em Árvores-R" src="../_images/rtree-search-1.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.9 - </span><span class="caption-text">Pesquisa em Árvores-R.</span><a class="headerlink" href="#fig-estrutura-dados-rtree-search-1" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Agora, considere o novo <em>retângulo de busca</em> mostrado na <a class="reference internal" href="#fig-estrutura-dados-rtree-search-2"><span class="std std-numref">Figura 4.10</span></a>. Partindo do <em>nó raiz</em> (<a class="reference internal" href="#fig-estrutura-dados-rtree"><span class="std std-numref">Figura 4.6</span></a>), podemos observar que esse novo retângulo intercepta os retângulos <span class="math notranslate nohighlight">\(R_a\)</span> e <span class="math notranslate nohighlight">\(R_c\)</span>. Aqui começa a primeira diferença em relação às Árvores-B. Uma busca pode seguir mais de um caminho da <em>raiz</em> até os <em>nós folhas</em>. Nesse exemplo, será necessário verificar tanto a sub-árvore associada à entrada <span class="math notranslate nohighlight">\(R_a\)</span> quanto a sub-árvore associada à entrada <span class="math notranslate nohighlight">\(R_c\)</span>. No <em>nó filho</em> da entrada de retângulo <span class="math notranslate nohighlight">\(R_a\)</span>, nenhum dos retângulos (<span class="math notranslate nohighlight">\(\{A, B, G\}\)</span>) das entradas possui interseção e, logo, não será preciso verificar mais nenhum caminho abaixo desse nó. No entanto, a busca ainda precisa verificar o <em>nó filho</em> da entrada de retângulo <span class="math notranslate nohighlight">\(R_c\)</span>. Nesse <em>nó</em>, o retângulo de busca intercepta os retângulos das entradas <span class="math notranslate nohighlight">\(D\)</span> e <span class="math notranslate nohighlight">\(E\)</span>. Novamente, as <em>sub-árvores</em> dessas duas entradas precisarão ser verificadas. Chegando aos dois <em>nós folhas</em>, os valores de <code class="docutils literal notranslate"><span class="pre">TID</span></code> das entradas <span class="math notranslate nohighlight">\(\{R_5, R_4, R_{14}\}\)</span> serão reportados.</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-rtree-search-2">
+<a class="reference internal image-reference" href="../_images/rtree-search-2.png"><img alt="Pesquisa em Árvores-R" src="../_images/rtree-search-2.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.10 - </span><span class="caption-text">Pesquisa em Árvores-R.</span><a class="headerlink" href="#fig-estrutura-dados-rtree-search-2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Os algoritmos de busca realizam uma travessia na Árvore-R a partir da <em>raiz</em>, de forma similar a uma Árvore-B. No entanto, diferentemente de uma Árvore-B, mais de um caminho ou <em>sub-árvore</em> de um <em>nó</em> pode ter que ser visitado, o que não garante um bom desempenho no pior caso. No entanto, é esperado que os algoritmos de atualização mantenham a árvore com uma forma que possibilite eliminar regiões irrelevantes nas buscas.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O fato de um <em>retângulo de busca</em> poder interceptar mais de um retângulo no mesmo <em>nó</em>, faz com que a busca possa ter que pesquisar em vários caminhos da <em>raiz</em> até as <em>folhas</em>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="aprox-geom.html" class="btn btn-neutral float-left" title="4.1. Aproximações Geométricas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="postgis-gist.html" class="btn btn-neutral float-right" title="4.3. Árvores-R no PostgreSQL com PostGIS" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f27d98977c0>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

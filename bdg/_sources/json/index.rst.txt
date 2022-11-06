@@ -1,0 +1,23 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_json:
+
+JSON (Java Script Object Notation)
+==================================
+
+
+.. toctree::
+    :maxdepth: 1
+    :titlesonly:
+
+    ./introducao
+    ./sintaxe
+    ./validadores
+    ./python
+    ./geojson
+    ./json
+    ./carga-dados
+

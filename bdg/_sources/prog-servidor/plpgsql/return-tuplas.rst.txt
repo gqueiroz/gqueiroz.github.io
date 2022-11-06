@@ -1,0 +1,138 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+Retornando Conjuntos ou Tuplas
+==============================
+
+
+Podemos definir o tipo de retorno de uma função como sendo um conjunto de valores usando o construtor ``SETOF`` ou ``TABLE``. Neste caso, ao invés de usar uma única instrução ``RETURN``, utilizamos as instruções ``RETURN NEXT`` ou ``RETURN QUERY``.
+
+
+A função ``generate_4pts`` irá gerar um conjunto com quatro pontos sorteados de forma aleatória:
+
+
+.. code-block:: plpgsql
+
+
+    CREATE OR REPLACE FUNCTION generate_4pts()
+    RETURNS SETOF GEOMETRY
+    AS
+    $$
+    DECLARE
+        pt GEOMETRY;
+    BEGIN
+        pt := ST_SetSRID(ST_MakePoint(360.0 * random() - 180.0,
+                                      180.0 * random() - 90.0), 4326);
+        RETURN NEXT pt;
+
+        pt := ST_SetSRID(ST_MakePoint(360.0 * random() - 180.0,
+                                      180.0 * random() - 90.0), 4326);
+        RETURN NEXT pt;
+
+        pt := ST_SetSRID(ST_MakePoint(360.0 * random() - 180.0,
+                                      180.0 * random() - 90.0), 4326);
+        RETURN NEXT pt;
+
+        pt := ST_SetSRID(ST_MakePoint(360.0 * random() - 180.0,
+                                      180.0 * random() - 90.0), 4326);
+        RETURN NEXT pt;
+
+        RETURN;
+    END;
+    $$
+    LANGUAGE plpgsql;
+
+
+Atente-se a um detalhe importante no código da função ``generate_4pts``: ela termina com uma instrução ``RETURN``.
+
+
+Podemos invocar a função ``generate_4pts`` da seguinte forma:
+
+
+.. code-block:: sql
+
+    SELECT ST_AsText(pt) AS geom FROM generate_4pts() AS pt;
+
+
+Saída::
+
+                     geom
+    --------------------------------------------
+    POINT(163.76629723236 85.4808924626559)
+    POINT(-55.0152626819909 55.0285322405398)
+    POINT(-1.04462971910834 -35.6856297980994)
+    POINT(-123.348454702646 31.6837284341455)
+    (4 rows)
+
+
+Outra possibilidade de retornar um conjunto de valores é através do comando ``RETURN QUERY``. A função ``nearest_pluviometros`` ilustra como podemos utilizar este comando:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION nearest_pluviometros(location GEOMETRY,
+                                                    distance NUMERIC)
+    RETURNS SETOF pluviometros
+    AS
+    $$
+    DECLARE
+        q TEXT;
+    BEGIN
+        q := 'SELECT * FROM pluviometros' ||
+             ' WHERE ST_DWithin(location, $1, $2)';
+
+        RETURN QUERY EXECUTE q USING location, distance;
+
+        RETURN;
+    END;
+    $$
+    LANGUAGE plpgsql;
+
+
+Invocando a função ``nearest_pluviometros`` obtemos o resultado mostrado abaixo:
+
+
+.. code-block:: sql
+
+    SELECT gid, ST_AsText(location)
+      FROM nearest_pluviometros(
+               ST_SetSRID(ST_MakePoint(-45, -23), 4326),
+               10.0);
+
+
+Saída::
+
+     gid |        st_astext
+    -----+--------------------------
+       1 | POINT(-45.8872 -23.1791)
+       2 | POINT(-43.6419 -20.393)
+
+
+Outra possibilidade de escrita da função ``nearest_pluviometros`` seria sem a utilização do comando ``EXECUTE``:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION nearest_pluviometros(location GEOMETRY,
+                                                    distance NUMERIC)
+    RETURNS SETOF pluviometros
+    AS
+    $$
+    BEGIN
+        RETURN QUERY SELECT *
+                       FROM pluviometros
+                      WHERE ST_DWithin(pluviometros.location,
+                                       nearest_pluviometros.location,
+                                       distance);
+
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'Nenhum pluviometro nas proximidades: %', ST_AsText($1);
+        END IF;
+
+        RETURN;
+    END;
+    $$
+    LANGUAGE plpgsql;
+

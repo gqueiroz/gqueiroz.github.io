@@ -1,0 +1,39 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_sgbd_postgresql:
+
+PostgreSQL
+==========
+
+
+.. image:: ../img/logos/pg.svg
+    :alt: PostgreSQL
+    :width: 48
+    :align: right
+
+
+O `PostgreSQL <http://www.postgresql.org>`_ é um sistema gerenciador de banco de dados objeto-relacional, gratuito e de código fonte aberto, desenvolvido a partir do projeto ``POSTGRES``, iniciado em 1986, na Universidade da Califórnia em Berkeley, sob a liderança do professor `Michael Stonebraker <https://en.wikipedia.org/wiki/Michael_Stonebraker>`_. O código fonte do núcleo do PostgreSQL encontra-se escrito na Linguagem de Programação C. Isso garante a ele grande portabilidade, estando disponível para as principais plataformas de hardware e sistemas operacionais, entre eles, Linux, macOS e Microsoft Windows. Esse SGBD fornece inúmeras facilidades, entre elas:
+
+.. rst-class:: open
+
+- Possibilidade de criação de funções ou *User-Defined Functions* (UDFs) através de diversas linguagens, tais como ``PL/pgSQL``, ``PL/Perl``, ``PL/Python``, ``PL/Tcl``, ``C``, ``C++``, entre outras.
+
+- Criação de gatilhos (``triggers``).
+
+- Vários métodos de indexação, entre eles, B\ :sup:`+`\ -tree, Hash, R-Tree, GiST.
+
+- Suporte a transação e concorrência.
+
+- Criação de chaves estrangeiras (*foreign keys*) ou relacionamentos de integridade referencial.
+
+- Extensibilidade dos tipos de dados.
+
+- Busca textual (*Full-Text Search* ou FTS)
+
+- Replicação.

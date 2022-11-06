@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.12. Expressões &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/sgbd/expressoes.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="2.13. Criando Tabelas" href="criando-tabelas.html" />
+    <link rel="prev" title="2.11. Tipos de Dados para Data e Hora" href="tipos-data-hora.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. Sistemas de Bancos de Dados Relacionais</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="postgresql.html">2.1. PostgreSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pgadmin4.html">2.2. pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tour-sql.html">2.3. Um Tour pela Linguagem SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conectando-bd.html">2.4. Conectando ao Servidor PostgreSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="criando-bd.html">2.5. Criando um Novo Banco de Dados no PostgreSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipos-dados-sql.html">2.6. Tipos de Dados SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipos-numericos.html">2.7. Tipos Numéricos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipo-logico.html">2.8. Tipo Lógico</a></li>
+<li class="toctree-l2"><a class="reference internal" href="op-relacionais.html">2.9. Operadores Relacionais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">2.10. Tipos Textuais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tipos-data-hora.html">2.11. Tipos de Dados para Data e Hora</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.12. Expressões</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ordem-de-avaliacao-de-expressoes">2.12.1. Ordem de Avaliação de Expressões</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#expressoes-logicas">2.12.2. Expressões Lógicas</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="criando-tabelas.html">2.13. Criando Tabelas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inserindo-dados.html">2.14. Inserindo Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consultas.html">2.15. Consultas em SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atualizando-dados.html">2.16. Atualizando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removendo-dados.html">2.17. Removendo Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricoes-integridade.html">2.18. Restrições de Integridade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="criando-views.html">2.19. Criando Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="esquemas.html">2.20. Esquemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="alterando-estrutura.html">2.21. Alterando a Estrutura de uma Tabela</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import-export.html">2.22. Importando e Exportando Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="indexes.html">2.23. Índices - Estruturas de Acesso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removendo-objetos.html">2.24. Removendo Objetos do Banco de Dados</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
+      <li><span class="section-number">2.12. </span>Expressões</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="tipos-data-hora.html" class="btn btn-neutral float-left" title="2.11. Tipos de Dados para Data e Hora" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="criando-tabelas.html" class="btn btn-neutral float-right" title="2.13. Criando Tabelas" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="expressoes">
+<span id="cap-sgbd-expressoes"></span><h1><span class="section-number">2.12. </span>Expressões<a class="headerlink" href="#expressoes" title="Link permanente para este cabeçalho"></a></h1>
+<p>Através da <strong>combinação das operações e operandos</strong>, podemos criar <strong>expressões</strong>, como as expressões matemáticas convencionais:</p>
+<figure class="align-center align-default">
+<img alt="Expressão" src="../_images/expressao.png" />
+</figure>
+<p>Uma expressão deve resultar em um valor de um certo tipo:</p>
+<figure class="align-center align-default">
+<img alt="Expressão" src="../_images/expressao-explicacao.png" />
+</figure>
+<section id="ordem-de-avaliacao-de-expressoes">
+<h2><span class="section-number">2.12.1. </span>Ordem de Avaliação de Expressões<a class="headerlink" href="#ordem-de-avaliacao-de-expressoes" title="Link permanente para este cabeçalho"></a></h2>
+<p>Considere a seguinte expressão: <span class="math notranslate nohighlight">\(5 * 2 + 3 / 4\)</span>. Qual o resultado dessa expressão?</p>
+<ul class="open">
+<li><p>3.25?</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">((5 * 2) + 3) / 4 → 3.25</div>
+</div>
+</div></blockquote>
+</li>
+<li><p>10.75?</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">(5 * 2) + (3 / 4) → 10.75</div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Por quê?</strong></p></li>
+</ul>
+<p>Quando uma expressão contém mais de dois <strong>operadores</strong>, a ordem em que eles são avaliados é significativa. Por isso, existe uma convenção bem definida da <strong>precedência de cada operador</strong>. No caso das operações aritméticas, a prioridade é a seguinte:</p>
+<ul class="open">
+<li><p>multiplicação, divisão, potenciação e resto da divisão;</p></li>
+<li><p>adição e subtração.</p></li>
+</ul>
+<p>Assim como na matemática, podemos usar parênteses para controlar essa prioridade.</p>
+<p>Além das regras de precedência, temos também a ordem de aplicação. Vários operadores são <strong>infixos</strong>, isto é, temos um literal ou variável ou expressão, seguido do operador, seguido por outro literal ou variável ou expressão.</p>
+<p>Nas linguagens de programação, vários operadores possuem uma associatividade da esquerda para direita.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Também podemos usar a função <code class="docutils literal notranslate"><span class="pre">pg_typeof</span></code> para descobrir o tipo de uma expressão:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_typeof</span><span class="p">(</span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="expressoes-logicas">
+<h2><span class="section-number">2.12.2. </span>Expressões Lógicas<a class="headerlink" href="#expressoes-logicas" title="Link permanente para este cabeçalho"></a></h2>
+<p>A expressão lógica a seguir verifica se o ano de 2022 é ou não bissexto:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">(</span><span class="mi">2022</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="mi">2022</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="mi">2022</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">400</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p><a class="reference external" href="https://pt.wikipedia.org/wiki/Ano_bissexto">Anos bissextos</a> ocorrem a cada quatro anos, exceto anos múltiplos de 100 que não são múltiplos de 400.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="tipos-data-hora.html" class="btn btn-neutral float-left" title="2.11. Tipos de Dados para Data e Hora" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="criando-tabelas.html" class="btn btn-neutral float-right" title="2.13. Criando Tabelas" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f27d94b06a0>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

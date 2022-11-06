@@ -1,0 +1,50 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_tipos_geometricos_postgis_geometry_feature_table:
+
+Tabelas com Colunas Geométricas
+===============================
+
+
+.. figure:: ../../img/tipos-geometricos/feature-table.png
+    :alt: Feature Table
+    :width: 75%
+    :figclass: align-center
+    :name: fig:tipos-geometricos:postgis-geometry:feature-table:feature-table
+
+    Feature Table
+
+
+**1.** Criando uma tabela para armazenar as localizações de escolas de primeiro e segundo grau:
+
+
+.. code-block:: sql
+
+    CREATE TABLE escolas
+    (
+        gid          SERIAL PRIMARY KEY,
+        nome         VARCHAR(100),
+        localizacao  GEOMETRY(POINT, 4326)
+    );
+
+
+**2.** Inserindo tuplas (linhas ou registros) na tabela ``escolas``:
+
+
+.. code-block:: sql
+
+    INSERT INTO escolas (nome, localizacao)
+         VALUES ('Escola Estadual Arlindo Bittencourt', ST_GeomFromText('POINT(-47.88497 -22.02557)', 4326) ),
+                ('Colégio Arquidiocesano de Ouro Preto', ST_GeomFromText('POINT(-43.51592 -20.38144)', 4326) ),
+                ('Instituto São José', ST_GeomFromText('POINT(-45.90245 -23.20000)', 4326) );
+
+
+**3.** Consultando os metadados da tabela com feições denominada ``escolas``:
+
+
+.. code-block:: sql
+
+    SELECT * FROM geometry_columns WHERE f_table_name = 'escolas';

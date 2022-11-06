@@ -1,0 +1,115 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../../def.rst
+
+
+.. _cap_tipos_geometricos_consultas_espaciais_proximity_query:
+
+Consultas de Proximidade
+========================
+
+
+Carga de Dados - Municípios do Brasil
+-------------------------------------
+
+
+Considere o conjunto ESRI Shapefile mostrado na :numref:`Tabela %s <tbl:consultas-espaciais:proximity-query:municipios-2018>`, que contem os limites municipais do Brasil referentes ao ano de 2018. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.
+
+
+.. |uf-2018| image:: ../../img/consultas-espaciais/municipios-2018.png
+
+
+.. table:: Municípios do Brasil - 2018 |br| **Fonte Original:** :download:`IBGE <https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2018/Brasil/BR/br_municipios.zip>`.
+    :widths: 60 40
+    :width: 100%
+    :align: center
+    :column-alignment: center left
+    :name: tbl:consultas-espaciais:proximity-query:municipios-2018
+
+    +-----------+-------------------------------------------+
+    | |uf-2018| | **Municípios do Brasil - 2018**           |
+    |           |                                           |
+    |           | - municipios_2018.cpg                     |
+    |           | - municipios_2018.dbf                     |
+    |           | - municipios_2018.prj                     |
+    |           | - municipios_2018.shp                     |
+    |           | - municipios2018.shx                      |
+    |           |                                           |
+    |           | **Tipo Geométrico:** MultiPolygon         |
+    |           | |br|  |br|                                |
+    |           | **Número de Feições:** 5.572              |
+    |           | |br|  |br|                                |
+    |           | **CRS:** Lat/Long SIRGAS 2000             |
+    |           | |br|  |br|                                |
+    |           | **SRID:** 4674                            |
+    |           | |br|  |br|                                |
+    |           | **Codificação Caracteres:** UTF-8         |
+    |           | |br|  |br|                                |
+    |           | **Nome Tabela:** municipios               |
+    +-----------+-------------------------------------------+
+
+
+.. collapse:: Carga Dados:
+
+    |br|
+
+    Carregando os dados dos municípios brasileiros usando o comando ``shp2pgsql`` e o ``psql``:
+
+    .. code-block:: bash
+
+        shp2pgsql -c -g "geom" -s 4674 -i -I -t "2D" -W UTF-8 municipios_2018.shp public.municipios > municipios.sql
+
+
+    .. code-block:: bash
+
+        psql -U postgres -h localhost -p 5432 -d bdgeo -f municipios.sql
+
+
+-----
+
+
+Consulta
+--------
+
+
+**Consulta:** Quais os municípios num raio de 2 graus da coordenada :math:`(-43.59, -20.32)`?
+
+
+.. |proximity-query| image:: ../../img/consultas-espaciais/proximity-query.png
+
+
+.. table::
+    :widths: 30 70
+    :width: 100%
+    :align: center
+    :column-alignment: left center
+
+    +-------------------------+-------------------+
+    | - **longitude:** -43.59 | |proximity-query| |
+    | - **Latitude:** -20.32  |                   |
+    +-------------------------+-------------------+
+    
+
+.. collapse:: Solução:
+
+
+    .. code-block:: sql
+
+        SELECT *
+          FROM municipios
+         WHERE ST_DWithin(
+                   geom,
+                   ST_GeomFromText('POINT(-43.59 -20.32)', 4674),
+                   2.0
+               );
+
+
+-----
+
+
+.. note::
+
+    Este tipo de consulta também é conhecida por **Proximity Query**.

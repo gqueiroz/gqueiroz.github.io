@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.4. Árvores de Partição do Espaço &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/estrutura-dados/space-partitioning.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS" href="postgis-spgist.html" />
+    <link rel="prev" title="4.3. Árvores-R no PostgreSQL com PostGIS" href="postgis-gist.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aprox-geom.html">4.1. Aproximações Geométricas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rtree.html">4.2. Árvores-R</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postgis-gist.html">4.3. Árvores-R no PostgreSQL com PostGIS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. Árvores de Partição do Espaço</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postgis-spgist.html">4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">4.6. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais</a> &raquo;</li>
+      <li><span class="section-number">4.4. </span>Árvores de Partição do Espaço</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="postgis-gist.html" class="btn btn-neutral float-left" title="4.3. Árvores-R no PostgreSQL com PostGIS" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="postgis-spgist.html" class="btn btn-neutral float-right" title="4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="arvores-de-particao-do-espaco">
+<span id="cap-estrutura-dados-space-partitioning"></span><h1><span class="section-number">4.4. </span>Árvores de Partição do Espaço<a class="headerlink" href="#arvores-de-particao-do-espaco" title="Link permanente para este cabeçalho"></a></h1>
+<p>As Árvores-B e suas variantes, assim como as Árvore-R e suas variantes, e o GiST, dão suporte à classe de árvores balanceadas. Existe também uma classe de árvores denomina de <strong>Árvores de Partição do Espaço</strong> (<strong>Space-partitioning Trees</strong>) que particionam o espaço multidimensional em subregiões disjuntas. As Árvore-<em>k-d</em> <span id="id1">[<a class="reference internal" href="../referencias.html#id6" title="Jon Louis Bentley. Multidimensional binary search trees used for associative searching. Commun. ACM, 18(9):509–517, 1975. doi:10.1145/361002.361007.">5</a>]</span> <span id="id2">[<a class="reference internal" href="../referencias.html#id7" title="Jon Louis Bentley. Multidimensional binary search trees in database applications. IEEE Trans. Software Eng., 5(4):333–340, 1979. doi:10.1109/TSE.1979.234200.">6</a>]</span> e as Quad-trees <span id="id3">[<a class="reference internal" href="../referencias.html#id16" title="Raphael A. Finkel and Jon Louis Bentley. Quad trees: A data structure for retrieval on composite keys. Acta Informatica, 4:1–9, 1974. doi:10.1007/BF00288933.">13</a>]</span> <span id="id4">[<a class="reference internal" href="../referencias.html#id34" title="Hanan Samet. The quadtree and related hierarchical data structures. ACM Comput. Surv., 16(2):187–260, 1984. doi:10.1145/356924.356930.">30</a>]</span> se enquadram nessa classe de árvores.</p>
+<p>Para ilustrar a idéia dessa classe de árvores, considere os 38 pontos mostrados na <a class="reference internal" href="#fig-estrutura-dados-cidades-triangulo-mg"><span class="std std-numref">Figura 4.11</span></a>, que representam os centróides de algumas das cidades da região do triângulo mineiro no Estado de Minas Gerais.</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-cidades-triangulo-mg">
+<a class="reference internal image-reference" href="../_images/cidades-triangulo-mg.png"><img alt="Centróides de cidades do triângulo mineiro" src="../_images/cidades-triangulo-mg.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.11 - </span><span class="caption-text">Centróides de cidades do triângulo mineiro.</span><a class="headerlink" href="#fig-estrutura-dados-cidades-triangulo-mg" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Uma possível forma de estruturarmos esses pontos para suportar <strong>consultas de retângulo</strong> (<em>range query</em>) ou <strong>janela</strong> (<em>window query</em>) seria através de uma Árvore-<em>k-d</em>. Uma Árvore-<em>k-d</em> é uma <strong>árvore binária</strong>, ou seja, cada nó interno possui no máximo dois descendentes, não importando a dimensionalidade <span class="math notranslate nohighlight">\(k\)</span> do espaço envolvido. Esta árvore foi proposta originalmente por Bentley em 1975 <span id="id5">[<a class="reference internal" href="../referencias.html#id6" title="Jon Louis Bentley. Multidimensional binary search trees used for associative searching. Commun. ACM, 18(9):509–517, 1975. doi:10.1145/361002.361007.">5</a>]</span> como uma alternativa à solução de um problema mais genérico do que o geométrico, que é o de <strong>busca baseada em chaves com vários atributos</strong>.</p>
+<p>A construção de uma Árvore-<em>k-d</em> é feita tomando-se de maneira alternada o valor ao longo de uma das dimensões do dado para particionar os conjuntos de elementos da sub-árvore esquerda e da sub-árvore direita. Na <a class="reference internal" href="#fig-estrutura-dados-kdtree-particao-espaco"><span class="std std-numref">Figura 4.12</span></a>, podemos observar que os valores das dimensões <span class="math notranslate nohighlight">\(x\)</span> e <cite>math:`y</cite> foram usadas alternadamente para estabelecer as partições.</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-kdtree-particao-espaco">
+<a class="reference internal image-reference" href="../_images/kdtree-particao-espaco.png"><img alt="Partição do espaço através de um Árvore-k-d" src="../_images/kdtree-particao-espaco.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.12 - </span><span class="caption-text">Partição do espaço através de um Árvore-k-d.</span><a class="headerlink" href="#fig-estrutura-dados-kdtree-particao-espaco" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>A <a class="reference internal" href="#fig-estrutura-dados-kdtree"><span class="std std-numref">Figura 4.13</span></a> mostra a estrutura da Árvore-<em>k-d</em> para um espaço bidimensional. Repare que no primeiro nível da árvore a coordenda <span class="math notranslate nohighlight">\(x\)</span> da localização correspondente ao centróide da cidade <em>PRATA</em> divide o espaço em dois sub-conjuntos, as cidades à esquerda dessa coordenada e as cidades à direita. No segundo nível da árvore, a coordenda <span class="math notranslate nohighlight">\(y\)</span> das cidades de <em>GURINHATÃ</em> e <em>NOVA PONTE</em>, particionam novamente os seus respectivos sub-espaços em dois novos sub-espaços, com os sub-conjuntos de pontos acima e abaixo da coordenada <span class="math notranslate nohighlight">\(y\)</span> dessas cidades. Esse processo de partição é aplicado a todos os pontos do conjunto, produzindo a árvore da <a class="reference internal" href="#fig-estrutura-dados-kdtree"><span class="std std-numref">Figura 4.13</span></a> e as partições da <a class="reference internal" href="#fig-estrutura-dados-kdtree-particao-espaco"><span class="std std-numref">Figura 4.12</span></a>.</p>
+<figure class="align-center align-default" id="fig-estrutura-dados-kdtree">
+<a class="reference internal image-reference" href="../_images/kdtree.png"><img alt="Árvore-k-d" src="../_images/kdtree.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.13 - </span><span class="caption-text">Árvore-k-d.</span><a class="headerlink" href="#fig-estrutura-dados-kdtree" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Assim como as Árvores Binárias de Pesquisa, as Árvores-<em>k-d</em> são utilizadas para problemas que cabem completamente na memória principal (RAM), não sendo apropriadas como índices armazenados em meio secundário (disco). Existem variantes dessa estrutura que foram projetadas para permitir seu uso eficiente em meio secundário. A K-D-B-Tree é uma dessas variantes <span id="id6">[<a class="reference internal" href="../referencias.html#id32" title="John T. Robinson. The k-d-b-tree: A search structure for large multidimensional dynamic indexes. In Y. Edmund Lien, editor, Proceedings of the 1981 ACM SIGMOD International Conference on Management of Data, Ann Arbor, Michigan, USA, April 29 - May 1, 1981, 10–18. ACM Press, 1981. doi:10.1145/582318.582321.">28</a>]</span>, mas no entanto não é muita utilizada na prática pelos atuais sistemas de bancos de dados.</p>
+<p>Outro tipo de árvore importante pertencente a esta classe denomina de Árvores de Partição do Espaço são as <strong>Quad-trees</strong> <span id="id7">[<a class="reference internal" href="../referencias.html#id16" title="Raphael A. Finkel and Jon Louis Bentley. Quad trees: A data structure for retrieval on composite keys. Acta Informatica, 4:1–9, 1974. doi:10.1007/BF00288933.">13</a>]</span>. Para uma revisão da literatura sobre essa estrutura, consulte <span id="id8">[<a class="reference internal" href="../referencias.html#id34" title="Hanan Samet. The quadtree and related hierarchical data structures. ACM Comput. Surv., 16(2):187–260, 1984. doi:10.1145/356924.356930.">30</a>]</span>.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="postgis-gist.html" class="btn btn-neutral float-left" title="4.3. Árvores-R no PostgreSQL com PostGIS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="postgis-spgist.html" class="btn btn-neutral float-right" title="4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f27d9831430>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

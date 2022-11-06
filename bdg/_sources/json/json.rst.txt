@@ -1,0 +1,212 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_json_json:
+
+O Tipo JSON no PostgreSQL
+=========================
+
+
+O PostgreSQL fornece dois tipos de dados para trabalhar com valores expressos no formato JSON: ``json`` e ``jsonb``. 
+
+
+O tipo ``json`` possui uma representação interna textual, onde o dado é armazenado na forma textual original de entrada. Desta forma, todas as operações realizadas sobre valores desse tipo acabam realizando uma análise sintática do texto. Além disso, colunas definidas com esse tipo não suportam a criação de índices. Por outro lado, esse tipo garante que o texto original seja preservado, isto é, até mesmo espaços desnecessários serão preservados. 
+
+
+O tipo ``jsonb`` é representado internamente numa estrutura de dados binária, decompondo o dado textual de entrada em valores de tipos primitivos do PostgreSQL, que são também representados de forma binária. Desta forma, as operações sobre valores desse tipo não necessitam de novas análises sintáticas. Outra vantagem desse tipo é a possibilidade de criação de índices associados a colunas definidas com base nele.
+
+
+.. note::
+
+    Nesta seção iremos focar no tipo ``jsonb``. Para mais detalhes sobre o suporte JSON no PostgreSQL consulte as seções `8.14. JSON Types <https://www.postgresql.org/docs/14/datatype-json.html>`__ e `9.16. JSON Functions and Operators <https://www.postgresql.org/docs/14/functions-json.html>`__.
+
+
+Abaixo ilustramos alguns exemplos de como expressar valores desses dois tipos de dados:
+
+
+- Números:
+
+
+    .. code-block:: postgresql
+
+        SELECT '1234'::jsonb;
+
+
+    .. code-block:: postgresql
+
+        SELECT '8.9'::jsonb;
+
+
+- Strings:
+
+
+    .. code-block:: postgresql
+
+        SELECT '"Uma string deve\n aparecer entre aspas duplas"'::jsonb;
+
+
+- Valores lógicos:
+
+
+    .. code-block:: postgresql
+
+        SELECT 'true'::jsonb;
+
+
+    .. code-block:: postgresql
+
+        SELECT 'false'::jsonb;
+
+
+- Arrays:
+
+
+    .. code-block:: postgresql
+
+        SELECT '["CAP-419", "SER-347", 2021, true ]'::jsonb;
+        
+
+- Objetos:
+
+
+    .. code-block:: postgresql
+
+        SELECT '{'
+                  '"nome": "Gilberto",'
+                  '"sobrenome": "Queiroz",'
+                  '"idade": null,'
+                  '"pesquisador": true,'
+                  '"pais": [ "Gilberto Queiroz", "Telma Queiroz" ],'
+                  '"endereco": {'
+                     '"rua": "Av. dos Astronautas",'
+                     '"numero": 1758,'
+                     '"bairro": "Jardim da Granja",'
+                     '"cidade": "São José dos Campos",'
+                     '"uf": "SP",'
+                     '"cep": "12227-010"'
+                  '}'
+               '}'::jsonb;    
+
+
+    ou, escrevendo a string toda do valor JSON em uma única linha:
+
+
+    .. code-block:: postgresql
+
+        SELECT '{"nome": "Gilberto", "sobrenome": "Queiroz", "idade": null, "pesquisador": true, "pais": [ "Gilberto Queiroz", "Telma Queiroz" ], "endereco": { "rua": "Av. dos Astronautas", "numero": 1758, "bairro": "Jardim da Granja", "cidade": "São José dos Campos", "uf": "SP", "cep": "12227-010" } }'::jsonb;
+
+
+Operadores Básicos
+------------------
+
+
+O tipo ``jsonb`` possui os seguintes operadores:
+
+.. rst-class:: open
+
+- ``@>``: Trata-se de um operador binário infixo que verifica se o valor à esquerda contém o valor à direita. Exemplo:
+
+    .. code-block:: sql
+    
+        SELECT '["CAP-419", "SER-347", 2021, true ]'::jsonb @> '["SER-347", 2021]'::jsonb;
+
+
+    .. code-block:: sql
+    
+        SELECT '{"nome": "Gilberto", "sobrenome": "Queiroz", "idade": null, "pesquisador": true, "pais": [ "Gilberto Queiroz", "Telma Queiroz" ], "endereco": { "rua": "Av. dos Astronautas", "numero": 1758, "bairro": "Jardim da Granja", "cidade": "São José dos Campos", "uf": "SP", "cep": "12227-010" } }'::jsonb @> '{"nome": "Gilberto"}';
+
+
+    .. code-block:: sql
+
+        SELECT '{"nome": "Gilberto", "sobrenome": "Queiroz", "idade": null, "pesquisador": true, "pais": [ "Gilberto Queiroz", "Telma Queiroz" ], "endereco": { "rua": "Av. dos Astronautas", "numero": 1758, "bairro": "Jardim da Granja", "cidade": "São José dos Campos", "uf": "SP", "cep": "12227-010" } }'::jsonb @> '{"endereco": {}}';
+
+
+- ``?``: Trata-se de um operador binário infixo que verifica se a string à direita do operador aparece como uma chave ou elemento de um array no valor ``jsonb`` à esquerda. Exemplo:
+
+    .. code-block:: sql
+
+        SELECT '["CAP-419", "SER-347", 2021, true ]'::jsonb ? 'SER-347';
+
+
+    .. code-block:: sql
+
+        SELECT '["CAP-419", "SER-347", 2021, true ]'::jsonb ? 'SER-347';
+
+
+    .. code-block:: sql
+
+        SELECT '{"nome": "Gilberto", "sobrenome": "Queiroz", "idade": null, "pesquisador": true, "pais": [ "Gilberto Queiroz", "Telma Queiroz" ], "endereco": { "rua": "Av. dos Astronautas", "numero": 1758, "bairro": "Jardim da Granja", "cidade": "São José dos Campos", "uf": "SP", "cep": "12227-010" } }'::jsonb ? 'endereco';
+
+
+Criando uma Tabela com uma Coluna ``jsonb``
+-------------------------------------------
+
+
+Criando uma tabela chamada ``focos_json`` com uma coluna do tipo ``jsonb``:
+
+
+.. code-block:: sql
+
+    CREATE TABLE focos_json
+    (
+        dados JSONB
+    );
+
+
+Inserindo dados:
+
+
+.. code-block:: sql
+
+    INSERT INTO focos_json VALUES ('{"frp": 46.2, "gid": 247, "pais": "Brasil", "bioma": "Mata Atlantica", "estado": "MATO GROSSO DO SUL", "datahora": "2020-01-01 16:45:00", "latitude": -23.17, "satelite": "AQUA_M-T", "longitude": -54.732, "municipio": "AMAMBAI", "riscofogo": 0, "diasemchuv": 0, "precipitac": 0}'),
+                                  ('{"frp": 22.2, "gid": 702, "pais": "Brasil", "bioma": "Mata Atlantica", "estado": "PARAIBA", "datahora": "2020-01-02 15:55:00", "latitude": -7.456, "satelite": "AQUA_M-T", "longitude": -34.867, "municipio": "ALHANDRA", "riscofogo": 0.21, "diasemchuv": null, "precipitac": 2.19}'),
+                                  ('{"frp": 5.9, "gid": 268, "geom": {"type": "Point", "coordinates": [-42.912, -22.95]}, "pais": "Brasil", "bioma": "Mata Atlantica", "estado": "RIO DE JANEIRO", "datahora": "2020-01-01 16:45:00", "latitude": -22.95, "satelite": "AQUA_M-T", "longitude": -42.912, "municipio": "MARICA", "riscofogo": 0, "diasemchuv": 0, "precipitac": 0}');
+
+
+Acessando Componentes de um dados JSON
+--------------------------------------
+
+
+Para recuperar o campo ``municipio`` dos documentos JSON armazenados na tabela ``focos_json`` podemos utilizar o operador ``->``:
+
+
+.. code-block:: sql
+
+    SELECT dados->'municipio' FROM focos_json;
+
+
+Para recuperar as linhas que contém a chave ``municipio`` igual a ``AMAMBAI``, podemos fazer:
+
+
+.. code-block:: sql
+
+    SELECT * FROM focos_json WHERE dados @> '{"municipio": "ALHANDRA"}';
+
+
+Para recuperar as linhas que contém a chave ``geom``, podemos fazer:
+
+
+.. code-block:: sql
+
+    SELECT * FROM focos_json WHERE dados ? 'geom';
+
+
+Indexando Colunas ``jsonb``
+---------------------------
+
+
+Colunas do tipo ``jsonb`` podem ser indexadas com o tipo de índice **GIN** (**Generalized Inverted Indexes**), que é um índice de lista invertida.
+
+
+A sintaxe de uso desse índice é a seguinte:
+
+
+.. code-block:: postgresql
+
+    CREATE INDEX <nome-indice> ON <nome-tabela> USING GIN ( <coluna-jsonb> );
+

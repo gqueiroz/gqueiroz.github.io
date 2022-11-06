@@ -1,0 +1,121 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_estrutura_dados_rtree:
+
+Árvores-R
+=========
+
+
+Uma **Árvore-R** é uma árvore balanceada, com uma estrutura semelhante a uma Árvore-B. Trata-se do método de indexação mais empregado na indústria de bancos de dados geoespaciais, estando presente em produtos como o Oracle Spatial, PostgreSQL/PostGIS e o MySQL.​
+
+
+Considere o conjunto de retângulos mostrados na :numref:`Figura %s <fig:estrutura-dados:rtree-leaf-rectangles>`. Esses retângulos, numerados de 1 a 20, podem representar, por exemplo, a aproximação geométrica de polígonos ou linhas poligonais.
+
+
+.. figure:: ../img/sam/rtree-leaf-rectangles.png
+    :alt: Esquema de uma Árvore-R
+    :width: 70%
+    :figclass: align-center
+    :name: fig:estrutura-dados:rtree-leaf-rectangles
+
+    Retângulos envolventes das geometrias indexadas.
+
+
+Uma Árvore-R organiza o espaço subjacente em uma hierarquia de retângulos, possivelmente com sobreposições. A  Árvore-R apresentada na :numref:`Figura %s <fig:estrutura-dados:rtree>` ilustra uma hierarquia criada a partir dos retêngulos da :numref:`Figura %s <fig:estrutura-dados:rtree-leaf-rectangles>`. Nessa árvore, os *nós* ou *páginas internas* são formados por **entradas** definidas por pares :math:`(\text{retângulo}, \text{ponteiro-descendente})`. O retângulo de uma entrada contém os retângulos da sub-árvore indicada pelo ponteiro de ligação. Assim, o retângulo da entrada :math:`R_a` contém os retângulos :math:`A`, :math:`B` e :math:`G`, respectivamente, assim como todos os demais retângulos abaixo deles. As páginas no nível das folhas são formadas por entradas do tipo :math:`(\text{retângulo}, \text{ponteiro-objeto})`, para que seja possível recuperar o objeto indexado. No nosso exemplo, esses retângulos estarão associados a geometrias de uma determinada coluna de uma tabela e, portanto, o índice conterá informações para que a linha possa ser recuperada (``TID``  é a abreviação de *tuple identifier*).
+
+
+.. figure:: ../img/sam/rtree.png
+    :alt: Esquema de uma Árvore-R
+    :width: 100%
+    :figclass: align-center
+    :name: fig:estrutura-dados:rtree
+
+    Esquema de uma Árvore-R.
+    
+
+As Figuras :numref:`%s <fig:estrutura-dados:rtree-root-rectangles>` e :numref:`%s <fig:estrutura-dados:rtree-internal-node-rectangles-1>` ilustram a hierarquia de retêngulos definida pela árvore mostrada acima.
+
+
+.. figure:: ../img/sam/rtree-root-rectangles.png
+    :alt: Esquema de uma Árvore-R
+    :width: 70%
+    :figclass: align-center
+    :name: fig:estrutura-dados:rtree-root-rectangles
+
+    Retângulos do *nó raiz* e seus descendentes diretos.
+
+
+|br|
+
+
+.. figure:: ../img/sam/rtree-internal-node-rectangles-1.png
+    :alt: Agrupando os retângulos envolventes das geometrias em uma nova hierarquia de retângulos
+    :width: 70%
+    :figclass: align-center
+    :name: fig:estrutura-dados:rtree-internal-node-rectangles-1
+
+    Hierarquia dos retângulos dos *nós internos* e das *folhas*.
+
+
+Uma Árvore-R deve satisfazer as seguintes propriedades:
+
+.. rst-class:: open
+
+- O **número máximo de entradas** em uma *página* é dado por :math:`M`.
+
+- O **número mínimo de entradas** em uma página é definido como :math:`m = \lceil \frac{M}{2}  \rceil`. Esse parâmetro é responsável pelo balanceamento da árvore.
+
+- Toda *página* contém entre :math:`m` e :math:`M` entradas válidas. A única exceção é o *nó raiz*.
+
+- Se a árvore tiver mais do que um nível, isto é, pelo menos :math:`altura = 1`, a raiz terá ao menos dois descendentes.
+
+- Para cada entrada dos *nós internos*, que são formados por entradas representadas pelos pares :math:`(\text{retângulo}, \text{ponteiro-descendente})`, o :math:`retângulo` dessa entrada será o menor retângulo a conter todos os retângulos das entradas do *nó descendente*. Repare nas figuras acima, que o retângulo :math:`R_a` contém os retângulos :math:`A`, :math:`B` e :math:`G`. Por sua vez, o retângulo :math:`G` contém os retângulos :math:`R_{10}`, :math:`R_{13}` e :math:`R_{17}`.
+
+- Para cada entrada dos *nós folhas*, que são formados por entradas representadas pelos pares :math:`(\text{retângulo}, \text{ponteiro-objeto})`, o :math:`retângulo` dessa entrada será o retângulo envolvente do objeto indexado. 
+
+- Todas as folhas encontram-se no mesmo nível.
+
+- A altura :math:`h` de uma Árvore-R indexando :math:`n` objetos espaciais é: :math:`h \leqslant (\log_m n) - 1`.
+
+
+Realizando Buscas numa Árvore-R
+-------------------------------
+
+
+Considere uma pesquisa por objetos de uma tabela cujo retângulo envolvente possui algum tipo de interação com o retângulo de busca destacado em vermelho na :numref:`Figura %s <fig:estrutura-dados:rtree-search-1>`. A busca em uma Árvore-R começa sempre pelo *nó raiz* (:numref:`Figura %s <fig:estrutura-dados:rtree>`). No *nó raiz*, o retângulo de busca intercepta o retângulo da entrada :math:`R_a`. Assim, a busca terá que verificar a *sub-árvore* indicada pelo *ponteiro de ligação* associado ao retângulo :math:`R_a`. Ao verificar o *nó* de entradas :math:`\{A, B, G\}`, apenas o retângulo :math:`A` é interceptado pelo retângulo de busca. Portanto, a busca seguirá a *sub-árvore* indicada pelo *ponteiro de ligação* associado ao retângulo :math:`A`. Ao chegar no *nó folha*, com as entradas de retângulos :math:`\{R_{12}, R_{20}\}`, todas as entradas devem ser verificadas e aquelas cujo retângulo tiverem interseção com o retângulo de busca devem ser reportadas. Portanto, apenas o ``TID`` associado ao retângulo :math:`R{20}` será reportado nessa busca.
+
+
+.. figure:: ../img/sam/rtree-search-1.png
+    :alt: Pesquisa em Árvores-R
+    :width: 70%
+    :figclass: align-center
+    :name: fig:estrutura-dados:rtree-search-1
+
+    Pesquisa em Árvores-R.
+
+
+Agora, considere o novo *retângulo de busca* mostrado na :numref:`Figura %s <fig:estrutura-dados:rtree-search-2>`. Partindo do *nó raiz* (:numref:`Figura %s <fig:estrutura-dados:rtree>`), podemos observar que esse novo retângulo intercepta os retângulos :math:`R_a` e :math:`R_c`. Aqui começa a primeira diferença em relação às Árvores-B. Uma busca pode seguir mais de um caminho da *raiz* até os *nós folhas*. Nesse exemplo, será necessário verificar tanto a sub-árvore associada à entrada :math:`R_a` quanto a sub-árvore associada à entrada :math:`R_c`. No *nó filho* da entrada de retângulo :math:`R_a`, nenhum dos retângulos (:math:`\{A, B, G\}`) das entradas possui interseção e, logo, não será preciso verificar mais nenhum caminho abaixo desse nó. No entanto, a busca ainda precisa verificar o *nó filho* da entrada de retângulo :math:`R_c`. Nesse *nó*, o retângulo de busca intercepta os retângulos das entradas :math:`D` e :math:`E`. Novamente, as *sub-árvores* dessas duas entradas precisarão ser verificadas. Chegando aos dois *nós folhas*, os valores de ``TID`` das entradas :math:`\{R_5, R_4, R_{14}\}` serão reportados.
+
+
+.. figure:: ../img/sam/rtree-search-2.png
+    :alt: Pesquisa em Árvores-R
+    :width: 70%
+    :figclass: align-center
+    :name: fig:estrutura-dados:rtree-search-2
+
+    Pesquisa em Árvores-R.
+
+
+Os algoritmos de busca realizam uma travessia na Árvore-R a partir da *raiz*, de forma similar a uma Árvore-B. No entanto, diferentemente de uma Árvore-B, mais de um caminho ou *sub-árvore* de um *nó* pode ter que ser visitado, o que não garante um bom desempenho no pior caso. No entanto, é esperado que os algoritmos de atualização mantenham a árvore com uma forma que possibilite eliminar regiões irrelevantes nas buscas.
+
+
+.. note::
+
+    O fato de um *retângulo de busca* poder interceptar mais de um retângulo no mesmo *nó*, faz com que a busca possa ter que pesquisar em vários caminhos da *raiz* até as *folhas*.
+

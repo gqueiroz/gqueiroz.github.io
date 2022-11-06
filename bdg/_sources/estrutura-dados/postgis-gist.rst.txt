@@ -1,0 +1,166 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_estrutura_dados_postgis_gist:
+
+Árvores-R no PostgreSQL com PostGIS
+===================================
+
+
+O PostGIS implementa uma Árvore-R sobre o GiST do PostgreSQL. Para criar um **índice espacial** associado a uma **coluna geométrica**, podemos usar o comando ``CREATE INDEX`` com seguinte sintaxe:
+
+
+.. code-block:: postgresql
+
+    CREATE INDEX <nome-indice> ON <nome-tabela> USING GIST ( <coluna-geometrica> );
+
+
+A opção ``USING GIST`` indica que o método de indexação a ser usado na criação do índice deverá ser baseado no GiST. Desta forma, o índice criado será uma Árvore-R no caso do tipo ``GEOMETRY`` do PostGIS.
+
+
+O índice espacial baseado no GIST é importante para consultas envolvendo relacionamentos topológicos, como ``ST_Contains``, ``ST_Within``, ``ST_CoveredBy``, ``ST_Covers``, ``ST_Crosses``, ``ST_Equals``, ``ST_Overlaps``, ST_Touches e ``ST_Intersects``. Esses operadores na verdade utilizam automaticamente um teste entre os retângulos envolventes das geometrias antes de realizar um processamento completo dos vértices das duas geometrias. Nas consultas, o teste baseado em retângulo pode explorar o uso do índice espacial. Por isso , esses operadores topológicos são definidos da seguinte forma:
+
+
+Assim como no caso do índice baseado em Árvore-B\ :sup:`+`, onde operadores como ``<``, ``>``, ``<=``, ``>=`` e ``=`` permitem explorar a existência de índices no processamento de uma consulta, com o tipo ``GEOMETRY`` do PostGIS, também temos um conjunto de operadores que podem explorar a existência de um índice espacial. Os seguintes operadores podem ser usados pelo processador de consultas para explorar um índice espacial:
+
+.. rst-class:: open
+
+- ``<<``: Em expressões como ``geometria-1 << geometria-2``, o operador ``<<`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` encontra-se completamente à esquerda do retângulo envolvente da ``geometria-2``.
+
+- ``>>``: Em expressões como ``geometria-1 >> geometria-2``, o operador ``>>`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` encontra-se completamente à direita do retângulo envolvente da ``geometria-2``.
+
+- ``<<|``: Em expressões como ``geometria-1 <<| geometria-2``, o operador ``<<|`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` encontra-se completamente abaixo do retângulo envolvente da ``geometria-2``.
+
+- ``|>>``: Em expressões como ``geometria-1 |>> geometria-2``, o operador ``|>>`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` encontra-se completamente acima do retângulo envolvente da ``geometria-2``.
+
+- ``&<``: Em expressões como ``geometria-1 &< geometria-2``, o operador ``&<`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` sobrepõem ou encontra-se à esquerda do retângulo envolvente da ``geometria-2``.
+
+- ``&>``: Em expressões como ``geometria-1 &> geometria-2``, o operador ``&>`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` sobrepõem ou encontra-se à direita do retângulo envolvente da ``geometria-2``.
+
+- ``&<``: Em expressões como ``geometria-1 &<| geometria-2``, o operador ``&<`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` sobrepõem ou encontra-se abaixo do retângulo envolvente da ``geometria-2``.
+
+- ``|&>``: Em expressões como ``geometria-1 |&> geometria-2``, o operador ``|&>`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` sobrepõem ou encontra-se acima do retângulo envolvente da ``geometria-2``.
+
+- ``&&``: Em expressões como ``geometria-1 && geometria-2``, o operador ``&&`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` intercepta o retângulo envolvente da ``geometria-2``. Isso significa que se os retângulos tiverem qualquer interação espacial, esse operador retornar ``TRUE``.
+
+- ``@``: Em expressões como ``geometria-1 @ geometria-2``, o operador ``@`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` encontra-se completamente contido no retângulo envolvente da ``geometria-2``.
+
+- ``~``: Em expressões como ``geometria-1 ~ geometria-2``, o operador ``~`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` contem completamente o retângulo envolvente da ``geometria-2``.
+
+- ``~=``: Em expressões como ``geometria-1 ~= geometria-2``, o operador ``~=`` retorna ``TRUE`` se o retângulo envolvente da ``geometria-1`` é exatamente igual ao retângulo envolvente da ``geometria-2``.
+
+
+
+
+.. note::
+
+    A sintaxe acima cria um índice bidimensional. Para criar um índice :math:`n\text{-dimensional}` para tipos geométricos 3D, com :math:`n > 2`, podemos utilizar a seguinte sintaxe:
+
+
+    .. code-block:: postgresql
+
+        CREATE INDEX <nome-indice> ON <nome-tabela> USING GIST (<coluna-geometrica> gist_geometry_ops_nd);
+
+
+.. tip::
+
+    Ao criar um índice espacial, lembre-se de atualizar as estatísticas da tabela:
+
+
+    .. code-block:: postgresql
+
+        ANALYZE <nome-tabela>
+
+
+    ou:
+
+
+    .. code-block:: postgresql
+
+        VACUUM ANALYZE <nome-tabela>
+
+
+.. note::
+
+    Vamos ver a definição das tabelas com colunas geométricas importadas para o banco de dados.
+
+
+.. _cap_estrutura_dados_postgis_gist_exercicios:
+
+Exercícios
+----------
+
+
+**Exercício 1.** Vamos criar uma tabela chamada ``pts_pgis`` com a seguinte definição:
+
+
+.. code-block:: sql
+
+    CREATE TABLE pts_pgis
+    (
+        id     UUID DEFAULT gen_random_uuid(),
+        geom   GEOMETRY(POINT, 4326),
+        word   TEXT
+    );
+
+
+Em seguida, vamos inserir um conjunto sintético de dados nessa tabela:
+
+
+.. code-block:: sql
+
+    INSERT INTO pts_pgis (geom, word)
+             (
+                 SELECT ST_SetSRID(
+                            ST_MakePoint(
+                                360.0 * random() - 180.0,
+                                180.0 * random() - 90.0
+                            ),
+                            4326
+                        ), 
+                        rpad(i::text, 10) AS word
+                   FROM generate_series(1, 1000000) AS i
+             );
+
+
+Verifique como a seguinte consulta é realizada:
+
+
+.. code-block:: postgresql
+
+    EXPLAIN ANALYZE
+        SELECT * 
+          FROM pts_pgis
+         WHERE ST_Intersects( geom, ST_MakeEnvelope(1.0, 1.0, 2.0, 2.0, 4326) );
+
+
+**Exercício 2.** Crie um índice espacial sobre a coluna ``geom`` da tabela ``pts_pgis``:
+
+
+.. code-block:: postgresql
+
+    CREATE INDEX pts_pgis_geom_idx ON pts_pgis USING GIST ( geom );
+
+
+Em seguida, refaça as estatísticas sobre a tabela:
+
+
+.. code-block:: postgresql
+
+    ANALYZE pts_pgis;
+
+
+Analise novamente a consulta abaixo:
+
+
+.. code-block:: postgresql
+
+    EXPLAIN ANALYZE
+        SELECT * 
+          FROM pts_pgis
+         WHERE ST_Intersects( geom, ST_MakeEnvelope(1.0, 1.0, 2.0, 2.0, 4326) );

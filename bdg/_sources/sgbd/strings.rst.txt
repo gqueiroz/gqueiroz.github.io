@@ -1,0 +1,340 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_sgbd_strings:
+
+Tipos Textuais
+==============
+
+
+Os tipos ``character``, ``character varying`` e ``text`` são capazes de representar uma **sequência de caracteres**, ou **cadeia de caracteres**, ou **string**.
+
+
+Uma **string** pode ser expressa entre **aspas simples** ou entre marcações especiais como um **duplo sinal de dólar**:
+
+
+.. code-block:: sql
+
+    SELECT 'Bancos de Dados Geográficos';
+
+
+ou:
+
+
+.. code-block:: postgresql
+
+    SELECT $$Bancos de Dados Geográficos$$;
+
+
+Para escrever **literais string** que expandem por **múltiplas linhas**, podemos fazer:
+
+
+.. code-block:: sql
+
+    SELECT 'Bancos de Dados'
+    ' Geográficos';
+
+
+Para representar o caracter ``'`` (aspas simples), devemos dobrar o número de caracteres, como mostrado abaixo:
+
+
+.. code-block:: sql
+
+    SELECT '''Bancos de Dados Geográficos''';
+
+
+Operações com Strings
+---------------------
+
+
+Concatenação de Strings: :math:`s || t`
++++++++++++++++++++++++++++++++++++++++
+
+
+O ``operador ||`` para strings realiza a concatenação de duas strings:
+
+
+.. code-block:: sql
+
+    SELECT 'Bancos' || 'Dados';
+
+
+.. code-block:: sql
+
+    SELECT 'Bancos ' || 'Dados';
+
+
+.. code-block:: sql
+
+    SELECT 'Bancos ' || 'de Dados ' || 'Geográficos';
+
+
+Se um dos valores envolvidos não for um dos tipos string, o PostgreSQL realiza a conversão do valor para uma string:
+
+.. code-block:: sql
+
+    SELECT 'Bancos ' || 'de Dados ' || 'Geográficos ' || 2022;
+
+
+Comprimento da cadeia: ``length(s)``
+++++++++++++++++++++++++++++++++++++
+
+
+O operador ``length(s)`` retorna o número de caracteres (ou tamanho) da string :math:`s`.
+
+
+Exemplos:
+
+
+.. code-block:: sql
+
+    SELECT length('Bancos de Dados Geográficos');
+
+
+.. code-block:: sql
+
+    SELECT length('');
+ 
+ 
+Conversão para Letras Minúsculas ou Maiúsculas
+++++++++++++++++++++++++++++++++++++++++++++++
+
+
+A função ``lower(s)`` retorna uma cópia da string com todos os caracteres em minúsculo:
+
+
+.. code-block:: sql
+
+    SELECT lower('Bancos de Dados Geográficos');
+
+
+A função ``upper(s)`` retorna uma cópia da string com todos os caracteres em maiúsculo:
+
+
+.. code-block:: sql
+
+    SELECT upper('Bancos de Dados Geográficos');
+
+
+Posição de Ocorrência de uma Substring
+++++++++++++++++++++++++++++++++++++++
+
+
+Sintaxe::
+
+    position(sub IN s)
+
+
+.. rst-class:: open
+
+- **Descrição:** A função ``position`` procura a ocorrência da substring ``sub`` na string ``s``.
+
+- **Parâmetros:**
+
+    * ``sub``: Substring cuja ocorrência deseja-se ser localizada.
+    * ``s``: String a ser avaliada.
+
+- **Retorno:** Esse método retorna a posição do primeiro caractere na string ``s`` onde a ocorrência da substring ``sub`` é encontrada, ou ``0`` caso não seja encontrada.
+
+
+Exemplos:
+
+
+.. code-block:: sql
+
+    SELECT position('co' IN 'Bancos de Dados Geográficos');
+
+
+.. code-block:: sql
+
+    SELECT position('gra' IN 'A grade de aulas');
+
+
+.. code-block:: sql
+
+    SELECT position('gra' IN 'Landsat');
+
+
+
+Extração de Substring
++++++++++++++++++++++
+
+
+Sintaxe::
+
+    substring ( string text [ FROM start integer ] [ FOR count integer ] ) → text
+
+
+Exemplos:
+
+
+.. code-block:: sql
+
+    SELECT substring('Bancos de Dados Geográficos' FROM 1 FOR 6);
+
+
+Exercícios
+----------
+
+
+Os exercícios desta seção consideram as tabelas criadas na :numref:`Seção %s - Tipos Numéricos <cap_sgbd_tipos_numericos>`.
+
+
+**Exercício 1.** Faça uma consulta na tabela ``populacao_1940`` que converta o nome das Unidades da Federação para letras maiúsculas.
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT upper(uf) AS uf
+          FROM populacao_1940;
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+            uf     
+        -----------
+         RONDÔNIA
+         ACRE
+         AMAZONAS
+         RORAIMA
+         PARÁ
+         AMAPÁ
+         TOCANTINS
+         MARANHÃO
+         PIAUÍ
+        (9 rows)
+
+
+-----
+
+
+**Exercício 2.** Liste as Unidades da Federação da tabela ``populacao_1940`` que começam pela letra ``A``.
+
+
+.. collapse:: Solução:
+
+
+    Usando a função ``left``:
+
+
+    .. code-block:: sql
+
+        SELECT uf
+          FROM populacao_1940
+         WHERE left(uf, 1) = 'A';
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+            uf    
+        ----------
+         Acre
+         Amazonas
+         Amapá
+        (3 rows)
+
+
+    Usando o operador ``LIKE``:
+
+
+    .. code-block:: sql
+
+        SELECT uf
+          FROM populacao_1940
+         WHERE uf LIKE 'A%';
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+            uf    
+        ----------
+         Acre
+         Amazonas
+         Amapá
+        (3 rows)  
+
+
+-----
+
+
+**Exercício 3.** Faça uma consulta na tabela ``populacao_1940`` que apresente a seguinte listagem:
+
+
+.. table:: 
+    :name: tbl:sgbd:tipos-numericos:cidades
+    :header-alignment: center center
+    :column-alignment: left center
+
+    +--------------------------+-------------------+
+    |  Estado                  | homens > mulheres |
+    +==========================+===================+
+    + Nome: ACRE - Brasil      +       t           +
+    +--------------------------+--------+----------+
+    + Nome: AMAPÁ - Brasil     +       t           +
+    +--------------------------+--------+----------+
+    + Nome: AMAZONAS - Brasil  +       t           +
+    +--------------------------+--------+----------+
+    + Nome: MARANHÃO - Brasil  +       f           +
+    +--------------------------+--------+----------+
+    + Nome: PARÁ - Brasil      +       t           +
+    +--------------------------+--------+----------+
+    + Nome: PIAUÍ - Brasil     +       f           +
+    +--------------------------+--------+----------+
+    + Nome: RONDÔNIA - Brasil  +       t           +
+    +--------------------------+--------+----------+
+    + Nome: RORAIMA - Brasil   +       t           +
+    +--------------------------+--------+----------+
+    + Nome: TOCANTINS - Brasil +       t           +
+    +--------------------------+--------+----------+
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+           SELECT 'Nome: ' || upper(uf) || ' - Brasil' AS "Estado", homens > mulheres AS "homens > mulheres"
+            FROM populacao_1940
+        ORDER BY "Estado";
+
+
+    Saída:
+    
+    
+    .. code-block:: text
+    
+                  Estado          | homens > mulheres 
+        --------------------------+-------------------
+         Nome: ACRE - Brasil      | t
+         Nome: AMAPÁ - Brasil     | t
+         Nome: AMAZONAS - Brasil  | t
+         Nome: MARANHÃO - Brasil  | f
+         Nome: PARÁ - Brasil      | t
+         Nome: PIAUÍ - Brasil     | f
+         Nome: RONDÔNIA - Brasil  | t
+         Nome: RORAIMA - Brasil   | t
+         Nome: TOCANTINS - Brasil | t
+        (9 rows)
+
+
+-----
+
+
+.. tip::
+
+    Para uma lista completa das funções e operações com strings, consulte o manual do PostgreSQL na `Seção 9.4. String Functions and Operators <https://www.postgresql.org/docs/14/functions-string.html>`__.

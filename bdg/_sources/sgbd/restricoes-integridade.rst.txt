@@ -1,0 +1,132 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_sgbd_restricoes_integridade:
+
+Restrições de Integridade
+=========================
+
+
+Durante a criação das tabelas ``estudante``, ``disciplina``, ``professor`` e ``estudante_diciplina``, especificamos uma série de restrições sobre os valores a serem incluídos ou alterados nessas tabelas. Nesta seção vamos discutir em detalhes essas restrições.
+
+
+Restrições de Valor nas Colunas
+-------------------------------
+
+
+A tabela ``estudante`` teve a coluna ``genero`` definida com uma restrição que avalia se o caractere usado esteja restrito aos valores ``M`` ou ``F``. Vamos tentar inserir um valor nessa tabela com um valor de gênero fora desse conjunto de valores para compreender o que o SGBD fará:
+
+
+.. code-block:: sql
+
+    INSERT INTO estudante (nome, data_nascimento, genero, data_matricula)
+                   VALUES ('Zuleica', '1986-06-30', 'O', '2019-01-01');
+
+
+Resultado:
+
+
+.. code-block:: text
+
+    ERROR:  new row for relation "estudante" violates check constraint "estudante_genero_check"
+    DETAIL:  Failing row contains (38, Zuleica, 1986-06-30, O, 2019-01-01).
+
+
+Repare na mensagem acima que o SGBD fez a verificação do valor fornecido na coluna ``genero``.
+
+
+De maneira similar, se tentarmos alterar o valor do número de créditos das linhas da tabela ``disciplina`` para um valor fora do interval ``[1, 6]``, seremos alertados pelo SGBD da impossibilidade:
+
+
+.. code-block:: sql
+
+    UPDATE disciplina SET creditos = 8;
+
+
+Resultado:
+
+
+.. code-block:: text
+
+    ERROR:  new row for relation "disciplina" violates check constraint "disciplina_creditos_check"
+    DETAIL:  Failing row contains (1, Matemática, 8, 1).
+
+
+Repare na mensagem acima que a tentativa de alterar a primeira linha causou um erro por violar a restrição imposta na coluna ``creditos`` da tabela ``disciplina``.
+
+
+Restrições de Chave Estrangeira
+-------------------------------
+
+
+A tabela ``disciplina`` possui uma **chave estrangeira**, a coluna ``professor_codigo``, que referencia a coluna ``codigo`` da tabela ``professor``.
+
+
+O professor ``Romildo``, que possui ``codigo`` 1, leciona as disciplinas ``Matemática`` e ``Fisica``. Vamos tentar remover a linha deste professor da tabela ``professor``:
+
+
+.. code-block:: sql
+
+    DELETE FROM professor WHERE codigo = 1;
+
+
+O SGBD irá retornar um erro com a seguinte mensagem:
+
+
+.. code-block:: text
+
+    ERROR:  update or delete on table "professor" violates foreign key constraint "disciplina_professor_codigo_fkey" on table "disciplina"
+    DETAIL:  Key (codigo)=(1) is still referenced from table "disciplina".
+
+
+Isto indica que existem linhas na tabela ``disciplina`` que referenciam a linha do professor ``Romildo`` na tabela ``professor``. A condição da chave estrangeira ``ON DELETE NO ACTION`` foi responsável por este controle.
+
+
+Agora, vamos alterar o código do professor ``Romildo``, isto é, o valor da sua chave primária, para o próximo valor da sequencia mantida para essa coluna:
+
+
+.. code-block:: sql
+
+    UPDATE professor SET codigo = DEFAULT WHERE codigo = 1;
+ 
+ 
+Resultado:
+ 
+ 
+ .. code-block:: text
+ 
+    UPDATE 1
+
+
+Agora, localize as linhas da tabela ``disciplina`` associadas a este professor:
+
+
+.. code-block:: sql
+
+    SELECT d.* 
+
+      FROM professor AS p,
+           disciplina AS d
+
+     WHERE p.codigo = d.professor_codigo 
+       AND p.nome = 'Romildo';
+
+
+Resultado:
+
+
+.. code-block:: text
+
+     codigo |   titulo   | creditos | professor_codigo 
+    --------+------------+----------+------------------
+          1 | Matemática |        4 |                7
+          2 | Fisica     |        4 |                7
+    (2 rows)
+
+
+Repare que a atualização do código do professor propagou o seu novo valor de chave (7) para as linhas da tabela ``disciplina``. Isso foi possível pela restrição de **chave estrangeira** ter especificado esse comportamento através da condição ``ON UPDATE CASCADE``.

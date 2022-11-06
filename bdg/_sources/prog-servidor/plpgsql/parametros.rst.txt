@@ -1,0 +1,65 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2021, Gilberto Queiroz.
+
+
+Tipos dos Parâmetros e Tipo de Retorno
+======================================
+
+
+Todos os tipos de dados e operadores disponíveis em SQL também encontram-se disponíveis para a construção de funções ``PL/pgSQL``. Desta forma, o tipo de um parâmetro de função e o tipo de valor de retorno pode ser qualquer um dos tipos manipulados pelo SGBD, incluindo: (a) tipos primitivos como ``NUMERIC``, ``TEXT``, ``TIMESTAMP``; (b) tipos compostos, como os tipos definidos pelas estruturas das tabelas ou por comandos ``CREATE TYPE``; (c) tipo registro (``RECORD``); (d) tipo ``SETOF``; (e) tipo ``TABLE``; e (f) tipos definidos pelo usuário, como os tipos ``GEOMETRY``, ``GEOGRAPHY`` e ``RASTER`` do PostGIS. Funções que não retornam valores podem ser definidas com o tipo de retorno ``VOID``.
+
+
+Os parâmetros das funções são nomeados com os identificadores ``$1``, ``$2``, ``...``, ``$n``. Nos exemplos anteriores, usamos nomes alternativos (ou *alias*) para renomear os parâmetros da função ``my_distance``: ``first`` e ``second``. Sem o uso de parâmetros nomeados, essa função seria definida da seguinte forma:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION my_distance(GEOMETRY, GEOMETRY)
+    RETURNS NUMERIC
+    AS
+    $$
+    DECLARE
+        dx NUMERIC DEFAULT 0.0;
+        dy NUMERIC DEFAULT 0.0;
+        d  NUMERIC DEFAULT 0.0;
+    BEGIN
+        IF((ST_GeometryType($1) <> 'ST_Point') OR
+           (ST_GeometryType($2) <> 'ST_Point')) THEN
+            RAISE EXCEPTION 'Tipos geométricos inválidos!';
+        END IF;
+
+        IF(ST_SRID($1) <> ST_SRID($2)) THEN
+            RAISE EXCEPTION 'Pontos com SRIDs diferentes!';
+        END IF;
+
+        dx := ST_X($1) - ST_X($2);
+        dy := ST_Y($1) - ST_Y($2);
+
+        d := sqrt(power(dx, 2) + power(dy, 2));
+
+        RETURN d;
+    END;
+    $$
+    LANGUAGE plpgsql;
+
+
+.. note::
+
+    Para remover a função ``my_distance``, use o comando:
+
+
+    .. code-block:: sql
+
+        DROP FUNCTION my_distance(geometry,geometry);
+
+
+.. note::
+
+    Podemos declarar funções com o mesmo nome, porém essas funções deverão ter diferentes parâmetros. Essa capacidade é conhecida por *sobrecarga de funções* (*function overloading*).
+
+
+.. note::
+
+    A saída de uma função pode ser realizada tanto na forma de valores de retorno quanto como parâmetros de saída (``OUT``). Consulte :ref:`Postgresql 9.5.3 documentation - chapter 40. pl/pgsql - sql procedural language <PGGlobalPLPGSQL>` para maiores informações sobre como trabalhar com parâmetros de saída.
+

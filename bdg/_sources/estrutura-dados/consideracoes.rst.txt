@@ -1,0 +1,30 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_estrutura_dados_consideracoes:
+
+Considerações Finais
+====================
+
+
+Neste capítulo discutimos a criação e uso de índices espaciais para processamento das consultas espaciais. 
+
+
+Vários SGBD's optaram por utilizar métodos de idexação espacial baseados em Árvores-R, mais especificamente, com a variante conhecida por Árvore-R\ :sup:`*` :cite:`beckmann:1990`. Os SGBDs Oracle, PostgreSQL + PostGIS, SQLite + SpatiaLite e MySQL utilizam este tipo de índice. Uma grande vantagem das Árvores-R é que tratam-se de um índice dinâmico, isto é, auto-ajustável à medida que as operações de atualização são realizadas. Em geral, os algoritmos de inserção e remoção de entradas em uma Árvore-R procuram minimizar a sobreposição entre os retângulos nos *nós internos*. Para saber mais detalhes sobre as variantes de Árvores-R e suas estratégias, consulte :cite:`guttman:1984` e :cite:`beckmann:1990`. 
+
+
+Existem métodos para construção *bottom-up* de uma Árvore-R, que partem do princípio de tentar maximizar o *fator de preenchimento* (*fill factor*) dos *nós*. As variações mais bem conhecidas são: *Lower-x packed R-tree*, *Distance Sorted R-tree* e *Hilbert R-tree*. Para mais detalhes, consulte :cite:`roussopoulos:1985`, :cite:`kamel:1993` e :cite:`kamel:1994`.
+
+
+Para mais detalhes sobre o GiST e SP-GiST, consulte :cite:`hellerstein:1995`, :cite:`aref:2001` e :cite:`eltabakh:2006`.
+
+
+Para saber mais sobre o processamento de consultas espaciais, consulte :cite:`kriegel:1993` e :cite:`brinkhoff:1993`.
+
+
+Um bom artigo de revisão sobre os diversos métodos de indexação muldimensionais pode ser encontrado em :cite:`gaede:1998`. 

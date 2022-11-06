@@ -1,0 +1,67 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_estrutura_dados_space_partitioning:
+
+Árvores de Partição do Espaço
+=============================
+
+
+As Árvores-B e suas variantes, assim como as Árvore-R e suas variantes, e o GiST, dão suporte à classe de árvores balanceadas. Existe também uma classe de árvores denomina de **Árvores de Partição do Espaço** (**Space-partitioning Trees**) que particionam o espaço multidimensional em subregiões disjuntas. As Árvore-*k-d* :cite:`bentley:1975` :cite:`bentley:1979` e as Quad-trees :cite:`finkel:1974` :cite:`samet:1984` se enquadram nessa classe de árvores.
+
+
+Para ilustrar a idéia dessa classe de árvores, considere os 38 pontos mostrados na :numref:`Figura %s <fig:estrutura-dados:cidades-triangulo-mg>`, que representam os centróides de algumas das cidades da região do triângulo mineiro no Estado de Minas Gerais.
+
+
+.. figure:: ../img/sam/cidades-triangulo-mg.png
+    :alt: Centróides de cidades do triângulo mineiro
+    :width: 100%
+    :figclass: align-center
+    :name: fig:estrutura-dados:cidades-triangulo-mg
+
+    Centróides de cidades do triângulo mineiro.
+
+
+Uma possível forma de estruturarmos esses pontos para suportar **consultas de retângulo** (*range query*) ou **janela** (*window query*) seria através de uma Árvore-*k-d*. Uma Árvore-*k-d* é uma **árvore binária**, ou seja, cada nó interno possui no máximo dois descendentes, não importando a dimensionalidade :math:`k` do espaço envolvido. Esta árvore foi proposta originalmente por Bentley em 1975 :cite:`bentley:1975` como uma alternativa à solução de um problema mais genérico do que o geométrico, que é o de **busca baseada em chaves com vários atributos**. 
+
+
+A construção de uma Árvore-*k-d* é feita tomando-se de maneira alternada o valor ao longo de uma das dimensões do dado para particionar os conjuntos de elementos da sub-árvore esquerda e da sub-árvore direita. Na :numref:`Figura %s <fig:estrutura-dados:kdtree-particao-espaco>`, podemos observar que os valores das dimensões :math:`x` e `math:`y` foram usadas alternadamente para estabelecer as partições. 
+
+
+.. figure:: ../img/sam/kdtree-particao-espaco.png
+    :alt: Partição do espaço através de um Árvore-k-d
+    :width: 100%
+    :figclass: align-center
+    :name: fig:estrutura-dados:kdtree-particao-espaco
+
+    Partição do espaço através de um Árvore-k-d.
+
+
+A :numref:`Figura %s <fig:estrutura-dados:kdtree>` mostra a estrutura da Árvore-*k-d* para um espaço bidimensional. Repare que no primeiro nível da árvore a coordenda :math:`x` da localização correspondente ao centróide da cidade *PRATA* divide o espaço em dois sub-conjuntos, as cidades à esquerda dessa coordenada e as cidades à direita. No segundo nível da árvore, a coordenda :math:`y` das cidades de *GURINHATÃ* e *NOVA PONTE*, particionam novamente os seus respectivos sub-espaços em dois novos sub-espaços, com os sub-conjuntos de pontos acima e abaixo da coordenada :math:`y` dessas cidades. Esse processo de partição é aplicado a todos os pontos do conjunto, produzindo a árvore da :numref:`Figura %s <fig:estrutura-dados:kdtree>` e as partições da :numref:`Figura %s <fig:estrutura-dados:kdtree-particao-espaco>`.
+
+
+.. figure:: ../img/sam/kdtree.png
+    :alt: Árvore-k-d
+    :width: 100%
+    :figclass: align-center
+    :name: fig:estrutura-dados:kdtree
+
+    Árvore-k-d.
+
+
+Assim como as Árvores Binárias de Pesquisa, as Árvores-*k-d* são utilizadas para problemas que cabem completamente na memória principal (RAM), não sendo apropriadas como índices armazenados em meio secundário (disco). Existem variantes dessa estrutura que foram projetadas para permitir seu uso eficiente em meio secundário. A K-D-B-Tree é uma dessas variantes :cite:`robinson:1981`, mas no entanto não é muita utilizada na prática pelos atuais sistemas de bancos de dados.
+
+
+Outro tipo de árvore importante pertencente a esta classe denomina de Árvores de Partição do Espaço são as **Quad-trees** :cite:`finkel:1974`. Para uma revisão da literatura sobre essa estrutura, consulte :cite:`samet:1984`.
+
+
+
+
+
+
+

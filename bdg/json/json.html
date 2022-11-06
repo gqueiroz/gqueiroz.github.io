@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.6. O Tipo JSON no PostgreSQL &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/json/json.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="6.7. Carregando Dados no Formato JSON" href="carga-dados.html" />
+    <link rel="prev" title="6.5. Documentos GeoJSON" href="geojson.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. JSON (Java Script Object Notation)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introducao.html">6.1. Documentos JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sintaxe.html">6.2. Sintaxe de Documentos JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validadores.html">6.3. Validadores de Documentos JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">6.4. Leitura e Escrita de Arquivos JSON em Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geojson.html">6.5. Documentos GeoJSON</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.6. O Tipo JSON no PostgreSQL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#operadores-basicos">6.6.1. Operadores Básicos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#criando-uma-tabela-com-uma-coluna-jsonb">6.6.2. Criando uma Tabela com uma Coluna <code class="docutils literal notranslate"><span class="pre">jsonb</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acessando-componentes-de-um-dados-json">6.6.3. Acessando Componentes de um dados JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#indexando-colunas-jsonb">6.6.4. Indexando Colunas <code class="docutils literal notranslate"><span class="pre">jsonb</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="carga-dados.html">6.7. Carregando Dados no Formato JSON</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">6. </span>JSON (Java Script Object Notation)</a> &raquo;</li>
+      <li><span class="section-number">6.6. </span>O Tipo JSON no PostgreSQL</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="geojson.html" class="btn btn-neutral float-left" title="6.5. Documentos GeoJSON" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="carga-dados.html" class="btn btn-neutral float-right" title="6.7. Carregando Dados no Formato JSON" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="o-tipo-json-no-postgresql">
+<span id="cap-json-json"></span><h1><span class="section-number">6.6. </span>O Tipo JSON no PostgreSQL<a class="headerlink" href="#o-tipo-json-no-postgresql" title="Link permanente para este cabeçalho"></a></h1>
+<p>O PostgreSQL fornece dois tipos de dados para trabalhar com valores expressos no formato JSON: <code class="docutils literal notranslate"><span class="pre">json</span></code> e <code class="docutils literal notranslate"><span class="pre">jsonb</span></code>.</p>
+<p>O tipo <code class="docutils literal notranslate"><span class="pre">json</span></code> possui uma representação interna textual, onde o dado é armazenado na forma textual original de entrada. Desta forma, todas as operações realizadas sobre valores desse tipo acabam realizando uma análise sintática do texto. Além disso, colunas definidas com esse tipo não suportam a criação de índices. Por outro lado, esse tipo garante que o texto original seja preservado, isto é, até mesmo espaços desnecessários serão preservados.</p>
+<p>O tipo <code class="docutils literal notranslate"><span class="pre">jsonb</span></code> é representado internamente numa estrutura de dados binária, decompondo o dado textual de entrada em valores de tipos primitivos do PostgreSQL, que são também representados de forma binária. Desta forma, as operações sobre valores desse tipo não necessitam de novas análises sintáticas. Outra vantagem desse tipo é a possibilidade de criação de índices associados a colunas definidas com base nele.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Nesta seção iremos focar no tipo <code class="docutils literal notranslate"><span class="pre">jsonb</span></code>. Para mais detalhes sobre o suporte JSON no PostgreSQL consulte as seções <a class="reference external" href="https://www.postgresql.org/docs/14/datatype-json.html">8.14. JSON Types</a> e <a class="reference external" href="https://www.postgresql.org/docs/14/functions-json.html">9.16. JSON Functions and Operators</a>.</p>
+</div>
+<p>Abaixo ilustramos alguns exemplos de como expressar valores desses dois tipos de dados:</p>
+<ul>
+<li><p>Números:</p>
+<blockquote>
+<div><div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;1234&#39;</span><span class="o">::</span><span class="nb">jsonb</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;8.9&#39;</span><span class="o">::</span><span class="nb">jsonb</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Strings:</p>
+<blockquote>
+<div><div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;&quot;Uma string deve\n aparecer entre aspas duplas&quot;&#39;</span><span class="o">::</span><span class="nb">jsonb</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Valores lógicos:</p>
+<blockquote>
+<div><div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="o">::</span><span class="nb">jsonb</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;false&#39;</span><span class="o">::</span><span class="nb">jsonb</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Arrays:</p>
+<blockquote>
+<div><div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;[&quot;CAP-419&quot;, &quot;SER-347&quot;, 2021, true ]&#39;</span><span class="o">::</span><span class="nb">jsonb</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Objetos:</p>
+<blockquote>
+<div><div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;{&#39;</span><span class="w"></span>
+<span class="w">          </span><span class="s1">&#39;&quot;nome&quot;: &quot;Gilberto&quot;,&#39;</span><span class="w"></span>
+<span class="w">          </span><span class="s1">&#39;&quot;sobrenome&quot;: &quot;Queiroz&quot;,&#39;</span><span class="w"></span>
+<span class="w">          </span><span class="s1">&#39;&quot;idade&quot;: null,&#39;</span><span class="w"></span>
+<span class="w">          </span><span class="s1">&#39;&quot;pesquisador&quot;: true,&#39;</span><span class="w"></span>
+<span class="w">          </span><span class="s1">&#39;&quot;pais&quot;: [ &quot;Gilberto Queiroz&quot;, &quot;Telma Queiroz&quot; ],&#39;</span><span class="w"></span>
+<span class="w">          </span><span class="s1">&#39;&quot;endereco&quot;: {&#39;</span><span class="w"></span>
+<span class="w">             </span><span class="s1">&#39;&quot;rua&quot;: &quot;Av. dos Astronautas&quot;,&#39;</span><span class="w"></span>
+<span class="w">             </span><span class="s1">&#39;&quot;numero&quot;: 1758,&#39;</span><span class="w"></span>
+<span class="w">             </span><span class="s1">&#39;&quot;bairro&quot;: &quot;Jardim da Granja&quot;,&#39;</span><span class="w"></span>
+<span class="w">             </span><span class="s1">&#39;&quot;cidade&quot;: &quot;São José dos Campos&quot;,&#39;</span><span class="w"></span>
+<span class="w">             </span><span class="s1">&#39;&quot;uf&quot;: &quot;SP&quot;,&#39;</span><span class="w"></span>
+<span class="w">             </span><span class="s1">&#39;&quot;cep&quot;: &quot;12227-010&quot;&#39;</span><span class="w"></span>
+<span class="w">          </span><span class="s1">&#39;}&#39;</span><span class="w"></span>
+<span class="w">       </span><span class="s1">&#39;}&#39;</span><span class="o">::</span><span class="nb">jsonb</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>ou, escrevendo a string toda do valor JSON em uma única linha:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;{&quot;nome&quot;: &quot;Gilberto&quot;, &quot;sobrenome&quot;: &quot;Queiroz&quot;, &quot;idade&quot;: null, &quot;pesquisador&quot;: true, &quot;pais&quot;: [ &quot;Gilberto Queiroz&quot;, &quot;Telma Queiroz&quot; ], &quot;endereco&quot;: { &quot;rua&quot;: &quot;Av. dos Astronautas&quot;, &quot;numero&quot;: 1758, &quot;bairro&quot;: &quot;Jardim da Granja&quot;, &quot;cidade&quot;: &quot;São José dos Campos&quot;, &quot;uf&quot;: &quot;SP&quot;, &quot;cep&quot;: &quot;12227-010&quot; } }&#39;</span><span class="o">::</span><span class="nb">jsonb</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<section id="operadores-basicos">
+<h2><span class="section-number">6.6.1. </span>Operadores Básicos<a class="headerlink" href="#operadores-basicos" title="Link permanente para este cabeçalho"></a></h2>
+<p>O tipo <code class="docutils literal notranslate"><span class="pre">jsonb</span></code> possui os seguintes operadores:</p>
+<ul class="open">
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;&gt;</span></code>: Trata-se de um operador binário infixo que verifica se o valor à esquerda contém o valor à direita. Exemplo:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;[&quot;CAP-419&quot;, &quot;SER-347&quot;, 2021, true ]&#39;</span><span class="p">::</span><span class="n">jsonb</span><span class="w"> </span><span class="o">@&gt;</span><span class="w"> </span><span class="s1">&#39;[&quot;SER-347&quot;, 2021]&#39;</span><span class="p">::</span><span class="n">jsonb</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;{&quot;nome&quot;: &quot;Gilberto&quot;, &quot;sobrenome&quot;: &quot;Queiroz&quot;, &quot;idade&quot;: null, &quot;pesquisador&quot;: true, &quot;pais&quot;: [ &quot;Gilberto Queiroz&quot;, &quot;Telma Queiroz&quot; ], &quot;endereco&quot;: { &quot;rua&quot;: &quot;Av. dos Astronautas&quot;, &quot;numero&quot;: 1758, &quot;bairro&quot;: &quot;Jardim da Granja&quot;, &quot;cidade&quot;: &quot;São José dos Campos&quot;, &quot;uf&quot;: &quot;SP&quot;, &quot;cep&quot;: &quot;12227-010&quot; } }&#39;</span><span class="p">::</span><span class="n">jsonb</span><span class="w"> </span><span class="o">@&gt;</span><span class="w"> </span><span class="s1">&#39;{&quot;nome&quot;: &quot;Gilberto&quot;}&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;{&quot;nome&quot;: &quot;Gilberto&quot;, &quot;sobrenome&quot;: &quot;Queiroz&quot;, &quot;idade&quot;: null, &quot;pesquisador&quot;: true, &quot;pais&quot;: [ &quot;Gilberto Queiroz&quot;, &quot;Telma Queiroz&quot; ], &quot;endereco&quot;: { &quot;rua&quot;: &quot;Av. dos Astronautas&quot;, &quot;numero&quot;: 1758, &quot;bairro&quot;: &quot;Jardim da Granja&quot;, &quot;cidade&quot;: &quot;São José dos Campos&quot;, &quot;uf&quot;: &quot;SP&quot;, &quot;cep&quot;: &quot;12227-010&quot; } }&#39;</span><span class="p">::</span><span class="n">jsonb</span><span class="w"> </span><span class="o">@&gt;</span><span class="w"> </span><span class="s1">&#39;{&quot;endereco&quot;: {}}&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">?</span></code>: Trata-se de um operador binário infixo que verifica se a string à direita do operador aparece como uma chave ou elemento de um array no valor <code class="docutils literal notranslate"><span class="pre">jsonb</span></code> à esquerda. Exemplo:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;[&quot;CAP-419&quot;, &quot;SER-347&quot;, 2021, true ]&#39;</span><span class="p">::</span><span class="n">jsonb</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;SER-347&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;[&quot;CAP-419&quot;, &quot;SER-347&quot;, 2021, true ]&#39;</span><span class="p">::</span><span class="n">jsonb</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;SER-347&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;{&quot;nome&quot;: &quot;Gilberto&quot;, &quot;sobrenome&quot;: &quot;Queiroz&quot;, &quot;idade&quot;: null, &quot;pesquisador&quot;: true, &quot;pais&quot;: [ &quot;Gilberto Queiroz&quot;, &quot;Telma Queiroz&quot; ], &quot;endereco&quot;: { &quot;rua&quot;: &quot;Av. dos Astronautas&quot;, &quot;numero&quot;: 1758, &quot;bairro&quot;: &quot;Jardim da Granja&quot;, &quot;cidade&quot;: &quot;São José dos Campos&quot;, &quot;uf&quot;: &quot;SP&quot;, &quot;cep&quot;: &quot;12227-010&quot; } }&#39;</span><span class="p">::</span><span class="n">jsonb</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;endereco&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="criando-uma-tabela-com-uma-coluna-jsonb">
+<h2><span class="section-number">6.6.2. </span>Criando uma Tabela com uma Coluna <code class="docutils literal notranslate"><span class="pre">jsonb</span></code><a class="headerlink" href="#criando-uma-tabela-com-uma-coluna-jsonb" title="Link permanente para este cabeçalho"></a></h2>
+<p>Criando uma tabela chamada <code class="docutils literal notranslate"><span class="pre">focos_json</span></code> com uma coluna do tipo <code class="docutils literal notranslate"><span class="pre">jsonb</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos_json</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">dados</span><span class="w"> </span><span class="n">JSONB</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inserindo dados:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">focos_json</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;{&quot;frp&quot;: 46.2, &quot;gid&quot;: 247, &quot;pais&quot;: &quot;Brasil&quot;, &quot;bioma&quot;: &quot;Mata Atlantica&quot;, &quot;estado&quot;: &quot;MATO GROSSO DO SUL&quot;, &quot;datahora&quot;: &quot;2020-01-01 16:45:00&quot;, &quot;latitude&quot;: -23.17, &quot;satelite&quot;: &quot;AQUA_M-T&quot;, &quot;longitude&quot;: -54.732, &quot;municipio&quot;: &quot;AMAMBAI&quot;, &quot;riscofogo&quot;: 0, &quot;diasemchuv&quot;: 0, &quot;precipitac&quot;: 0}&#39;</span><span class="p">),</span><span class="w"></span>
+<span class="w">                              </span><span class="p">(</span><span class="s1">&#39;{&quot;frp&quot;: 22.2, &quot;gid&quot;: 702, &quot;pais&quot;: &quot;Brasil&quot;, &quot;bioma&quot;: &quot;Mata Atlantica&quot;, &quot;estado&quot;: &quot;PARAIBA&quot;, &quot;datahora&quot;: &quot;2020-01-02 15:55:00&quot;, &quot;latitude&quot;: -7.456, &quot;satelite&quot;: &quot;AQUA_M-T&quot;, &quot;longitude&quot;: -34.867, &quot;municipio&quot;: &quot;ALHANDRA&quot;, &quot;riscofogo&quot;: 0.21, &quot;diasemchuv&quot;: null, &quot;precipitac&quot;: 2.19}&#39;</span><span class="p">),</span><span class="w"></span>
+<span class="w">                              </span><span class="p">(</span><span class="s1">&#39;{&quot;frp&quot;: 5.9, &quot;gid&quot;: 268, &quot;geom&quot;: {&quot;type&quot;: &quot;Point&quot;, &quot;coordinates&quot;: [-42.912, -22.95]}, &quot;pais&quot;: &quot;Brasil&quot;, &quot;bioma&quot;: &quot;Mata Atlantica&quot;, &quot;estado&quot;: &quot;RIO DE JANEIRO&quot;, &quot;datahora&quot;: &quot;2020-01-01 16:45:00&quot;, &quot;latitude&quot;: -22.95, &quot;satelite&quot;: &quot;AQUA_M-T&quot;, &quot;longitude&quot;: -42.912, &quot;municipio&quot;: &quot;MARICA&quot;, &quot;riscofogo&quot;: 0, &quot;diasemchuv&quot;: 0, &quot;precipitac&quot;: 0}&#39;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="acessando-componentes-de-um-dados-json">
+<h2><span class="section-number">6.6.3. </span>Acessando Componentes de um dados JSON<a class="headerlink" href="#acessando-componentes-de-um-dados-json" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para recuperar o campo <code class="docutils literal notranslate"><span class="pre">municipio</span></code> dos documentos JSON armazenados na tabela <code class="docutils literal notranslate"><span class="pre">focos_json</span></code> podemos utilizar o operador <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">dados</span><span class="o">-&gt;</span><span class="s1">&#39;municipio&#39;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos_json</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Para recuperar as linhas que contém a chave <code class="docutils literal notranslate"><span class="pre">municipio</span></code> igual a <code class="docutils literal notranslate"><span class="pre">AMAMBAI</span></code>, podemos fazer:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos_json</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">dados</span><span class="w"> </span><span class="o">@&gt;</span><span class="w"> </span><span class="s1">&#39;{&quot;municipio&quot;: &quot;ALHANDRA&quot;}&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Para recuperar as linhas que contém a chave <code class="docutils literal notranslate"><span class="pre">geom</span></code>, podemos fazer:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos_json</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">dados</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;geom&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="indexando-colunas-jsonb">
+<h2><span class="section-number">6.6.4. </span>Indexando Colunas <code class="docutils literal notranslate"><span class="pre">jsonb</span></code><a class="headerlink" href="#indexando-colunas-jsonb" title="Link permanente para este cabeçalho"></a></h2>
+<p>Colunas do tipo <code class="docutils literal notranslate"><span class="pre">jsonb</span></code> podem ser indexadas com o tipo de índice <strong>GIN</strong> (<strong>Generalized Inverted Indexes</strong>), que é um índice de lista invertida.</p>
+<p>A sintaxe de uso desse índice é a seguinte:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">indice</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIN</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="o">&lt;</span><span class="n">coluna</span><span class="o">-</span><span class="nb">jsonb</span><span class="o">&gt;</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="geojson.html" class="btn btn-neutral float-left" title="6.5. Documentos GeoJSON" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="carga-dados.html" class="btn btn-neutral float-right" title="6.7. Carregando Dados no Formato JSON" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f27da54c1c0>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
