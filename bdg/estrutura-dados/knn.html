@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.6. Busca dos Vizinhos Mais Próximos &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/estrutura-dados/knn.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="4.7. Considerações Finais" href="consideracoes.html" />
+    <link rel="prev" title="4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS" href="postgis-spgist.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aprox-geom.html">4.1. Aproximações Geométricas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rtree.html">4.2. Árvores-R</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postgis-gist.html">4.3. Árvores-R no PostgreSQL com PostGIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="space-partitioning.html">4.4. Árvores de Partição do Espaço</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postgis-spgist.html">4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. Busca dos Vizinhos Mais Próximos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">4.7. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais</a> &raquo;</li>
+      <li><span class="section-number">4.6. </span>Busca dos Vizinhos Mais Próximos</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="postgis-spgist.html" class="btn btn-neutral float-left" title="4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="4.7. Considerações Finais" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="busca-dos-vizinhos-mais-proximos">
+<span id="cap-estrutura-dados-knn"></span><h1><span class="section-number">4.6. </span>Busca dos Vizinhos Mais Próximos<a class="headerlink" href="#busca-dos-vizinhos-mais-proximos" title="Link permanente para este cabeçalho"></a></h1>
+<p>Um tipo de busca que é suportada tanto pelas Árvores-R quanto pelas Árvores de Partição Espaço é a busca dos <span class="math notranslate nohighlight">\(k\)</span>-<strong>vizinhos mais próximos</strong> (ou <span class="math notranslate nohighlight">\(k\)</span>-<strong>Nearest-Neighbour Searching</strong> ou <span class="math notranslate nohighlight">\(k\mbox{-}NN\)</span>). Nos métodos suportados pelo PostGIS, apenas a Árvore-R sobre o GiST fornece a capacidade de usar o operador <code class="docutils literal notranslate"><span class="pre">&lt;-&gt;</span></code> em conjunto com o índice para realizar este tipo de consulta.</p>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Apesar do SP-GiST possibilitar a realização de buscas de vizinhança, a implementação do índice para o tipo geométrico do PostGIS não possui suporte a esse operador.</p>
+</div>
+<p>Vamos considerar a tabela <code class="docutils literal notranslate"><span class="pre">pts_pgis</span></code> novamente. Nessa tabela as linhas são identificadas por um UUID. Suponha que exista uma linha com <code class="docutils literal notranslate"><span class="pre">id</span></code> igual a <code class="docutils literal notranslate"><span class="pre">b3d0a686-5a7d-4567-a797-5450439a3d73</span></code>. Poderíamos calcular os 10 vizinhos mais próximos desse ponto através da seguinte consulta:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">WITH</span><span class="w"> </span><span class="n">localizacao</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<span class="w">    </span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="k">SELECT</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">          </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
+<span class="w">         </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Distance</span><span class="p">(</span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">distancia</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
+
+<span class="hll"><span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span><span class="w"></span>
+</span>
+<span class="hll"><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="w"> </span><span class="o">&lt;-&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">)</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span><span class="w"></span>
+</span></pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  id                  |      distancia
+--------------------------------------+----------------------
+ 4e6b0365-5293-4b4f-997a-d40dd72ab3a4 | 0.031117523437401665
+ 8025603d-e62c-4155-ab6c-6b501f9faf0d | 0.034871444570818420
+ 07bb9234-7350-48aa-88e7-b59fcba60cec | 0.050798841561601810
+ 3be30a44-7054-40e2-8adf-2fa47c7332b8 | 0.068591153097749340
+ e68bcfca-d529-418a-bd56-18b2fb819e78 | 0.072761050878539620
+ e46a49b2-624f-4b71-8f75-53c9fabea576 | 0.078398085839549020
+ 27a04a65-9fed-4238-a586-c86be78232e6 | 0.079608351976738710
+ b1184858-43fe-48af-81f1-0ac2d88710ef | 0.097260478999388620
+ 19cd1f7f-d6ca-4b7a-aea8-203bdb643d31 | 0.120181430368836400
+ c7f66cc4-7417-4e2e-a8e3-b9909d26001a | 0.126860202843743140
+(10 rows)
+</pre></div>
+</div>
+<p>Vamos ver como essa consulta é realizada:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">localizacao</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<span class="w">        </span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="k">SELECT</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">              </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
+<span class="w">             </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Distance</span><span class="p">(</span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">distancia</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
+
+<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="w"> </span><span class="o">&lt;-&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">)</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                                    QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=8.91..272.25 rows=10 width=32) (actual time=0.534..0.663 rows=10 loops=1)
+   CTE localizacao
+     -&gt;  Index Scan using pts_pgis_id_idx on pts_pgis pts_pgis_1  (cost=0.43..8.45 rows=1 width=32) (actual time=0.031..0.034 rows=1 loops=1)
+           Index Cond: (id = &#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;::uuid)
+   InitPlan 2 (returns $1)
+     -&gt;  CTE Scan on localizacao  (cost=0.00..0.02 rows=1 width=32) (actual time=0.001..0.002 rows=1 loops=1)
+   InitPlan 3 (returns $2)
+     -&gt;  CTE Scan on localizacao localizacao_1  (cost=0.00..0.02 rows=1 width=32) (actual time=0.035..0.038 rows=1 loops=1)
+<span class="hll">   -&gt;  Index Scan using pts_pgis_geom_idx on pts_pgis  (cost=0.42..263340877.84 rows=10000020 width=32) (actual time=0.532..0.656 rows=10 loops=1)
+</span><span class="hll">         Order By: (geom &lt;-&gt; $2)
+</span>         Filter: (id &lt;&gt; &#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;::uuid)
+         Rows Removed by Filter: 1
+ Planning Time: 0.334 ms
+ Execution Time: 0.740 ms
+(14 rows)
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Lembre-se que se você tiver removido o índice GIST e usado o SPGIST, a saída acima será diferente.</p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="postgis-spgist.html" class="btn btn-neutral float-left" title="4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="4.7. Considerações Finais" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f7114d12cd0>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.6. Considerações Finais &mdash; BDGeo</title>
+  <title>4.7. Considerações Finais &mdash; BDGeo</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -30,7 +30,7 @@
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
     <link rel="next" title="5. Algoritmos Geométricos" href="../algo-geom/index.html" />
-    <link rel="prev" title="4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS" href="postgis-spgist.html" /> 
+    <link rel="prev" title="4.6. Busca dos Vizinhos Mais Próximos" href="knn.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -63,7 +63,8 @@
 <li class="toctree-l2"><a class="reference internal" href="postgis-gist.html">4.3. Árvores-R no PostgreSQL com PostGIS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="space-partitioning.html">4.4. Árvores de Partição do Espaço</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postgis-spgist.html">4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. Considerações Finais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knn.html">4.6. Busca dos Vizinhos Mais Próximos</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.7. Considerações Finais</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
@@ -103,11 +104,11 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html"><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais</a> &raquo;</li>
-      <li><span class="section-number">4.6. </span>Considerações Finais</li>
+      <li><span class="section-number">4.7. </span>Considerações Finais</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
-        <a href="postgis-spgist.html" class="btn btn-neutral float-left" title="4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="knn.html" class="btn btn-neutral float-left" title="4.6. Busca dos Vizinhos Mais Próximos" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
         <a href="../algo-geom/index.html" class="btn btn-neutral float-right" title="5. Algoritmos Geométricos" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
@@ -116,7 +117,7 @@
            <div itemprop="articleBody">
              
   <section id="consideracoes-finais">
-<span id="cap-estrutura-dados-consideracoes"></span><h1><span class="section-number">4.6. </span>Considerações Finais<a class="headerlink" href="#consideracoes-finais" title="Link permanente para este cabeçalho"></a></h1>
+<span id="cap-estrutura-dados-consideracoes"></span><h1><span class="section-number">4.7. </span>Considerações Finais<a class="headerlink" href="#consideracoes-finais" title="Link permanente para este cabeçalho"></a></h1>
 <p>Neste capítulo discutimos a criação e uso de índices espaciais para processamento das consultas espaciais.</p>
 <p>Vários SGBD’s optaram por utilizar métodos de idexação espacial baseados em Árvores-R, mais especificamente, com a variante conhecida por Árvore-R<sup>*</sup> <span id="id1">[<a class="reference internal" href="../referencias.html#id5" title="Norbert Beckmann, Hans-Peter Kriegel, Ralf Schneider, and Bernhard Seeger. The r*-tree: an efficient and robust access method for points and rectangles. In Proceedings of the 1990 ACM SIGMOD International Conference on Management of Data, SIGMOD '90, 322–331. New York, NY, USA, 1990. Association for Computing Machinery. doi:10.1145/93597.98741.">4</a>]</span>. Os SGBDs Oracle, PostgreSQL + PostGIS, SQLite + SpatiaLite e MySQL utilizam este tipo de índice. Uma grande vantagem das Árvores-R é que tratam-se de um índice dinâmico, isto é, auto-ajustável à medida que as operações de atualização são realizadas. Em geral, os algoritmos de inserção e remoção de entradas em uma Árvore-R procuram minimizar a sobreposição entre os retângulos nos <em>nós internos</em>. Para saber mais detalhes sobre as variantes de Árvores-R e suas estratégias, consulte <span id="id2">[<a class="reference internal" href="../referencias.html#id18" title="Antonin Guttman. R-trees: a dynamic index structure for spatial searching. In Proceedings of the 1984 ACM SIGMOD International Conference on Management of Data, SIGMOD '84, 47–57. New York, NY, USA, 1984. Association for Computing Machinery. doi:10.1145/602259.602266.">16</a>]</span> e <span id="id3">[<a class="reference internal" href="../referencias.html#id5" title="Norbert Beckmann, Hans-Peter Kriegel, Ralf Schneider, and Bernhard Seeger. The r*-tree: an efficient and robust access method for points and rectangles. In Proceedings of the 1990 ACM SIGMOD International Conference on Management of Data, SIGMOD '90, 322–331. New York, NY, USA, 1990. Association for Computing Machinery. doi:10.1145/93597.98741.">4</a>]</span>.</p>
 <p>Existem métodos para construção <em>bottom-up</em> de uma Árvore-R, que partem do princípio de tentar maximizar o <em>fator de preenchimento</em> (<em>fill factor</em>) dos <em>nós</em>. As variações mais bem conhecidas são: <em>Lower-x packed R-tree</em>, <em>Distance Sorted R-tree</em> e <em>Hilbert R-tree</em>. Para mais detalhes, consulte <span id="id4">[<a class="reference internal" href="../referencias.html#id33" title="Nick Roussopoulos and Daniel Leifker. Direct spatial search on pictorial databases using packed r-trees. SIGMOD Rec., 14(4):17–31, may 1985. doi:10.1145/971699.318900.">29</a>]</span>, <span id="id5">[<a class="reference internal" href="../referencias.html#id24" title="Ibrahim Kamel and Christos Faloutsos. On packing r-trees. In Proceedings of the Second International Conference on Information and Knowledge Management, CIKM '93, 490–499. New York, NY, USA, 1993. Association for Computing Machinery. doi:10.1145/170088.170403.">23</a>]</span> e <span id="id6">[<a class="reference internal" href="../referencias.html#id25" title="Ibrahim Kamel and Christos Faloutsos. Hilbert r-tree: an improved r-tree using fractals. In Proceedings of the 20th International Conference on Very Large Data Bases, VLDB '94, 500–509. San Francisco, CA, USA, 1994. Morgan Kaufmann Publishers Inc.">24</a>]</span>.</p>
@@ -129,7 +130,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="postgis-spgist.html" class="btn btn-neutral float-left" title="4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="knn.html" class="btn btn-neutral float-left" title="4.6. Busca dos Vizinhos Mais Próximos" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
         <a href="../algo-geom/index.html" class="btn btn-neutral float-right" title="5. Algoritmos Geométricos" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
@@ -140,7 +141,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f27da6ce220>
+<jinja2.runtime.BlockReference object at 0x7f7114f82a60>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

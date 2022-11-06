@@ -27,4 +27,4 @@ Para mais detalhes sobre o GiST e SP-GiST, consulte :cite:`hellerstein:1995`, :c
 Para saber mais sobre o processamento de consultas espaciais, consulte :cite:`kriegel:1993` e :cite:`brinkhoff:1993`.
 
 
-Um bom artigo de revisão sobre os diversos métodos de indexação muldimensionais pode ser encontrado em :cite:`gaede:1998`. 
+Um bom artigo de revisão sobre os diversos métodos de indexação muldimensionais pode ser encontrado em :cite:`gaede:1998`.

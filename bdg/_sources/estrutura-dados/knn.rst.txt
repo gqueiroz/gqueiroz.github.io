@@ -1,0 +1,115 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_estrutura_dados_knn:
+
+Busca dos Vizinhos Mais Próximos
+================================
+
+
+Um tipo de busca que é suportada tanto pelas Árvores-R quanto pelas Árvores de Partição Espaço é a busca dos :math:`k`\ -\ **vizinhos mais próximos** (ou :math:`k`\ -\ **Nearest-Neighbour Searching** ou :math:`k\mbox{-}NN`). Nos métodos suportados pelo PostGIS, apenas a Árvore-R sobre o GiST fornece a capacidade de usar o operador ``<->`` em conjunto com o índice para realizar este tipo de consulta.
+
+
+.. warning::
+
+    Apesar do SP-GiST possibilitar a realização de buscas de vizinhança, a implementação do índice para o tipo geométrico do PostGIS não possui suporte a esse operador.
+
+
+Vamos considerar a tabela ``pts_pgis`` novamente. Nessa tabela as linhas são identificadas por um UUID. Suponha que exista uma linha com ``id`` igual a ``b3d0a686-5a7d-4567-a797-5450439a3d73``. Poderíamos calcular os 10 vizinhos mais próximos desse ponto através da seguinte consulta:
+
+
+.. code-block:: postgresql
+    :emphasize-lines: 12, 14
+
+    WITH localizacao AS
+        (
+            SELECT geom
+              FROM pts_pgis
+             WHERE id = 'b3d0a686-5a7d-4567-a797-5450439a3d73'
+        )
+
+      SELECT id, ST_Distance(pts_pgis.geom, (SELECT * FROM localizacao)) AS distancia
+
+        FROM pts_pgis        
+
+       WHERE id <> 'b3d0a686-5a7d-4567-a797-5450439a3d73'
+
+    ORDER BY pts_pgis.geom <-> (SELECT * FROM localizacao) LIMIT 10;
+
+
+Saída:
+
+
+.. code-block:: text
+
+                      id                  |      distancia       
+    --------------------------------------+----------------------
+     4e6b0365-5293-4b4f-997a-d40dd72ab3a4 | 0.031117523437401665
+     8025603d-e62c-4155-ab6c-6b501f9faf0d | 0.034871444570818420
+     07bb9234-7350-48aa-88e7-b59fcba60cec | 0.050798841561601810
+     3be30a44-7054-40e2-8adf-2fa47c7332b8 | 0.068591153097749340
+     e68bcfca-d529-418a-bd56-18b2fb819e78 | 0.072761050878539620
+     e46a49b2-624f-4b71-8f75-53c9fabea576 | 0.078398085839549020
+     27a04a65-9fed-4238-a586-c86be78232e6 | 0.079608351976738710
+     b1184858-43fe-48af-81f1-0ac2d88710ef | 0.097260478999388620
+     19cd1f7f-d6ca-4b7a-aea8-203bdb643d31 | 0.120181430368836400
+     c7f66cc4-7417-4e2e-a8e3-b9909d26001a | 0.126860202843743140
+    (10 rows)
+
+
+Vamos ver como essa consulta é realizada:
+
+
+.. code-block:: postgresql
+
+    EXPLAIN ANALYZE
+
+        WITH localizacao AS
+            (
+                SELECT geom
+                  FROM pts_pgis
+                 WHERE id = 'b3d0a686-5a7d-4567-a797-5450439a3d73'
+            )
+
+          SELECT id, ST_Distance(pts_pgis.geom, (SELECT * FROM localizacao)) AS distancia
+
+            FROM pts_pgis        
+
+           WHERE id <> 'b3d0a686-5a7d-4567-a797-5450439a3d73'
+
+        ORDER BY pts_pgis.geom <-> (SELECT * FROM localizacao) LIMIT 10;
+
+
+Saída:
+
+
+.. code-block:: text
+    :emphasize-lines: 11, 12
+
+                                                                        QUERY PLAN                                                                     
+    ---------------------------------------------------------------------------------------------------------------------------------------------------
+     Limit  (cost=8.91..272.25 rows=10 width=32) (actual time=0.534..0.663 rows=10 loops=1)
+       CTE localizacao
+         ->  Index Scan using pts_pgis_id_idx on pts_pgis pts_pgis_1  (cost=0.43..8.45 rows=1 width=32) (actual time=0.031..0.034 rows=1 loops=1)
+               Index Cond: (id = 'b3d0a686-5a7d-4567-a797-5450439a3d73'::uuid)
+       InitPlan 2 (returns $1)
+         ->  CTE Scan on localizacao  (cost=0.00..0.02 rows=1 width=32) (actual time=0.001..0.002 rows=1 loops=1)
+       InitPlan 3 (returns $2)
+         ->  CTE Scan on localizacao localizacao_1  (cost=0.00..0.02 rows=1 width=32) (actual time=0.035..0.038 rows=1 loops=1)
+       ->  Index Scan using pts_pgis_geom_idx on pts_pgis  (cost=0.42..263340877.84 rows=10000020 width=32) (actual time=0.532..0.656 rows=10 loops=1)
+             Order By: (geom <-> $2)
+             Filter: (id <> 'b3d0a686-5a7d-4567-a797-5450439a3d73'::uuid)
+             Rows Removed by Filter: 1
+     Planning Time: 0.334 ms
+     Execution Time: 0.740 ms
+    (14 rows)
+
+
+.. note::
+
+    Lembre-se que se você tiver removido o índice GIST e usado o SPGIST, a saída acima será diferente.

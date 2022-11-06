@@ -27,5 +27,6 @@ Quando tratamos de dados multidimensionais, como no caso das geometrias associad
     ./postgis-gist
     ./space-partitioning
     ./postgis-spgist
+    ./knn
     ./consideracoes
     
