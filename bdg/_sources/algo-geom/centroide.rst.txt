@@ -1,0 +1,145 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_algo_geom_centroide:
+
+Centróides e Pontos dentro Superfície
+=====================================
+
+
+Centróide
+---------
+
+
+O operador ``ST_Centroid`` computa o **centróide** de uma geometria, isto é, o seu centro de massa. No caso de conjuntos de pontos (``MultiPoint``), o centróide é calculado como sendo a média aritmética das coordenadas desses pontos. No caso de conjuntos de linhas (``MultiLineString``), o centróide é calculado como a média ponderada pelo comprimento dos segmentos das linhas. No caso de polígonos (``Polygon`` ou ``MultiPolygon``), a computação do centróide é feita através de uma fórmula que considera a área do polígono:
+
+
+.. math::
+
+    C_x = \frac{1}{6A} \sum_{i=0}^{n-1}(x_i+x_{i+1})(x_iy_{i+1} - y_ix_{i+1})
+
+
+.. math::
+
+    C_y = \frac{1}{6A} \sum_{i=0}^{n-1}(y_i+y_{i+1})(x_iy_{i+1} - y_ix_{i+1})
+
+
+onde, :math:`A` corresponde a área com sinal do polígono (:numref:`Seção %s <cap_algo_geom_area>`), isto é:
+
+
+.. math::
+
+    A = \frac{1}{2} \sum_{i=0}^{n-1}(x_iy_{i+1} - y_ix_{i+1})
+
+
+Pelas fórmulas apresentadas, podemos concluir que o algoritmo para cálculo do centróide de um polígono é :math:`O(n)`, onde :math:`n` corresponde ao número de vértices dos anéis do polígono.
+
+
+Vamos ilustrar o uso da função ``ST_Centroid`` para criação do centróide de três municípios da tabela ``municipios`` (:numref:`Seção %s <cap_tipos_geometricos_consultas_espaciais_proximity_query>`):
+
+
+.. code-block:: sql
+
+    CREATE TABLE municipio_centroide AS
+    
+        SELECT gid, geocodigo, nome, ST_Centroid(geom)::geometry(point, 4674) AS geom
+
+          FROM municipios
+        
+         WHERE geocodigo IN ( '1600303', '3107307', '3146107' );
+
+
+As Figuras :numref:`%s <fig:alg-geom:centroide-macapa>`, :numref:`%s <fig:alg-geom:centroide-bocaiuva>` e :numref:`%s <fig:alg-geom:centroide-ouropreto>` apresentam os centróides dos municípios de  Macapá no Amapá (``geocodigo = 1600303``), Bocaiúva (``geocodigo = 3107307``) e Ouro Preto (``geocodigo = 3146107``) em Minas Gerais. Repare que o centróide não necessariamente será um ponto localizado no interior do polígono, como mostrado nas Figuras :numref:`%s <fig:alg-geom:centroide-macapa>` e :numref:`%s <fig:alg-geom:centroide-bocaiuva>`.
+
+
+.. figure:: ../img/alg-geom/centroide-macapa.png
+    :alt: Centróide do município de Macapá no Amapá
+    :width: 60%
+    :figclass: align-center
+    :name: fig:alg-geom:centroide-macapa
+
+    Centróide do município de Macapá no Amapá
+
+
+|br|
+
+
+.. figure:: ../img/alg-geom/centroide-bocaiuva.png
+    :alt: Centróide do município de Bocaiúva em Minas Gerais
+    :width: 60%
+    :figclass: align-center
+    :name: fig:alg-geom:centroide-bocaiuva
+
+    Centróide do município de Bocaiúva em Minas Gerais
+
+
+|br|
+
+
+.. figure:: ../img/alg-geom/centroide-ouropreto.png
+    :alt: Centróide do município de Ouro Preto em Minas Gerais
+    :width: 60%
+    :figclass: align-center
+    :name: fig:alg-geom:centroide-ouropreto
+
+    Centróide do município de Ouro Preto em Minas Gerais
+    
+
+Ponto sobre a Superfície
+------------------------
+
+
+Enquanto a função ``ST_Centroid`` pode computar um ponto que não seja localizado no interior do polígono de entrada, existe uma função chamada ``ST_PointOnSurface`` que garante a geração de um ponto no interior do polígono de entrada. Vamos ilustrar o uso dessa função com os mesmos polígonos de municípios da seção anterior:
+
+
+.. code-block:: sql
+
+
+    CREATE TABLE municipio_ponto_interior AS
+    
+        SELECT gid, geocodigo, nome, ST_PointOnSurface(geom)::geometry(point, 4674) AS geom
+
+          FROM municipios
+        
+         WHERE geocodigo IN ( '1600303', '3107307', '3146107' );
+
+
+As Figuras :numref:`%s <fig:alg-geom:point-on-surface-macapa>`, :numref:`%s <fig:alg-geom:point-on-surface-bocaiuva>` e :numref:`%s <fig:alg-geom:point-on-surface-ouropreto>` apresentam em vermelho os centróides e em amarelo os pontos calculados pela função ``ST_PointOnSurface`` para os municípios de Macapá no Amapá (``geocodigo = 1600303``), Bocaiúva (``geocodigo = 3107307``) e Ouro Preto (``geocodigo = 3146107``) em Minas Gerais.
+
+
+.. figure:: ../img/alg-geom/point-on-surface-macapa.png
+    :alt: ST_PointOnSurface x ST_Centroid para o polígono do município de Macapá
+    :width: 60%
+    :figclass: align-center
+    :name: fig:alg-geom:point-on-surface-macapa
+
+    ``ST_PointOnSurface`` x ``ST_Centroid`` para o polígono do município de Macapá
+
+
+|br|
+
+
+.. figure:: ../img/alg-geom/point-on-surface-bocaiuva.png
+    :alt: ST_PointOnSurface x ST_Centroid para o polígono do município de Bocaiúva
+    :width: 60%
+    :figclass: align-center
+    :name: fig:alg-geom:point-on-surface-bocaiuva
+
+    ``ST_PointOnSurface`` x ``ST_Centroid`` para o polígono do município de Bocaiúva
+
+
+|br|
+
+
+.. figure:: ../img/alg-geom/point-on-surface-ouropreto.png
+    :alt: ST_PointOnSurface x ST_Centroid para o polígono do município de Ouro Preto
+    :width: 60%
+    :figclass: align-center
+    :name: fig:alg-geom:point-on-surface-ouropreto
+
+    ``ST_PointOnSurface`` x ``ST_Centroid`` para o polígono do município de Ouro Preto

@@ -1,0 +1,85 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_algo_geom_pip:
+
+Ponto em Polígono (PIP)
+=======================
+
+
+Uma das operações mais comuns em aplicações geoespaciais é determinar se um ponto encontra-se no interior de um polígono. Nesta seção vamos apresentar dois algoritmos para essa finalidade, que são comumente empregados nos sistemas geoespaciais.
+
+
+Teste de Cruzamentos (Crossing Test)
+------------------------------------
+
+
+No caso de polígonos simples (convexos ou não-convexos) podemos saber se um ponto encontra-se ou não no seu interior, traçando uma semi-reta horizontal (ou vertical) partindo desse ponto. Se esse raio cruzar um número ímpar de segmentos da fronteira do polígono, então este ponto encontra-se em seu interior, caso contrário, com um número par de cruzamentos, o ponto encontra-se fora do polígono. Podemos observar essa propriedade na :numref:`Figura %s <fig:alg-geom:pip-cross-test-1>`. Repare que as semi-retas horizontais partindo dos pontos :math:`P_3` e :math:`P_4`, ambos no interior do polígono, cruzam os segmentos desse polígono um número ímpar de vezes. Já as semi-retas horizontais partindo dos pontos :math:`P_1`, :math:`P_2`, :math:`P_5`, :math:`P_6` e :math:`P_7`, todos externos, cruzam os segmentos desse polígono um número par de vezes.
+
+
+.. figure:: ../img/alg-geom/pip-cross-test-1.png
+    :alt: Teste de cruzamento do raio horizontal
+    :width: 80%
+    :figclass: align-center
+    :name: fig:alg-geom:pip-cross-test-1
+
+    Teste de cruzamento do raio horizontal
+
+
+Esse algoritmo precisa tratar alguns casos especiais, mostrados nas Figuras :numref:`%s <fig:alg-geom:pip-cross-test-2>`, :numref:`%s <fig:alg-geom:pip-cross-test-3>` e :numref:`%s <fig:alg-geom:pip-cross-test-4>`. Para saber detalhes de como esses casos são tratados, consulte o artigo online de `Eric Haines <https://erich.realtimerendering.com/ptinpoly/>`__.
+
+
+.. figure:: ../img/alg-geom/pip-cross-test-2.png
+    :alt: Teste de cruzamento do raio horizontal
+    :width: 80%
+    :figclass: align-center
+    :name: fig:alg-geom:pip-cross-test-2
+
+    Teste de cruzamento do raio horizontal
+
+
+|br|
+
+
+.. figure:: ../img/alg-geom/pip-cross-test-3.png
+    :alt: Teste de cruzamento do raio horizontal
+    :width: 80%
+    :figclass: align-center
+    :name: fig:alg-geom:pip-cross-test-3
+
+    Teste de cruzamento do raio horizontal
+
+
+|br|
+
+
+.. figure:: ../img/alg-geom/pip-cross-test-4.png
+    :alt: Teste de cruzamento do raio horizontal
+    :width: 80%
+    :figclass: align-center
+    :name: fig:alg-geom:pip-cross-test-4
+
+    Teste de cruzamento do raio horizontal
+
+
+Usando Partições
+----------------
+
+
+Uma forma de acelerar a consulta de vários pontos ao mesmo polígono, consiste em utilizar uma estrutura de dados auxiliar construída como uma etapa de pré-processamento. A :numref:`Figura %s <fig:alg-geom:pip-bins-test>` mostra como isso poderia ser feito com um vetor unidimensional onde cada entrada estaria associada aos segmentos de uma determinada faixa horizontal (*bin*). Dessa forma, ao testar um ponto, basta determinar a partição em que ele se encontra e então testar os segmentos associados a essa partição contando os cruzamentos. Como cada partição terá um número menor de segmentos do que o polígono como um todo, a tendência é diminuir a quantidade de testes de cruzamento realizados para cada ponto. 
+
+
+
+.. figure:: ../img/alg-geom/pip-bins-test.png
+    :alt: Teste de cruzamento usando partições
+    :width: 100%
+    :figclass: align-center
+    :name: fig:alg-geom:pip-bins-test
+
+    Teste de cruzamento usando partições
+

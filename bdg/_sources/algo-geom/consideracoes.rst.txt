@@ -1,0 +1,36 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_algo_geom_consideracoes:
+
+Considerações Finais
+======================
+
+
+Para saber a versão da biblioteca GEOS usada pela sua instalação do PostGIS, use a função auxiliar ``postgis_full_version``:
+
+
+.. code-block:: sql
+
+    SELECT postgis_full_version();
+
+
+Saída:
+
+
+.. code-block:: text
+
+                                                                           postgis_full_version                                                                        
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ---
+     POSTGIS="3.3.1 3786b21" [EXTENSION] PGSQL="140" GEOS="3.9.0-CAPI-1.16.2" PROJ="7.2.1" LIBXML="2.9.10" LIBJSON="0.15" LIBPROTOBUF="1.3.3" WAGYU="0.5.0 (Internal
+    )"
+    (1 row)
+
+
+Na saída acima, podemos identificar que a instalação utiliza a versão 3.9.0.

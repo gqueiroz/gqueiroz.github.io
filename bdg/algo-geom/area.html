@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.2. Área de Polígonos &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/algo-geom/area.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="5.3. Centróides e Pontos dentro Superfície" href="centroide.html" />
+    <link rel="prev" title="5.1. Polígonos Simples" href="simple-pol.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. Algoritmos Geométricos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="simple-pol.html">5.1. Polígonos Simples</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. Área de Polígonos</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#calculando-area-de-poligonos-no-postgis">5.2.1. Calculando Área de Polígonos no PostGIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orientacao-do-anel-de-um-poligono">5.2.2. Orientação do Anel de um Polígono</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="centroide.html">5.3. Centróides e Pontos dentro Superfície</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pip.html">5.4. Ponto em Polígono (PIP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">5.5. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">5. </span>Algoritmos Geométricos</a> &raquo;</li>
+      <li><span class="section-number">5.2. </span>Área de Polígonos</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="simple-pol.html" class="btn btn-neutral float-left" title="5.1. Polígonos Simples" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="centroide.html" class="btn btn-neutral float-right" title="5.3. Centróides e Pontos dentro Superfície" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="area-de-poligonos">
+<span id="cap-algo-geom-area"></span><h1><span class="section-number">5.2. </span>Área de Polígonos<a class="headerlink" href="#area-de-poligonos" title="Link permanente para este cabeçalho"></a></h1>
+<p>A área de um polígono de <span class="math notranslate nohighlight">\(n\)</span> vértices pode ser computada a partir da seguinte equação <span id="id1">[<a class="reference internal" href="../referencias.html#id37" title="Wikipedia. Polygon. 2022. Online; acessado 23 de Outubro de 2022. URL: https://en.wikipedia.org/wiki/Polygon.">31</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[A = \left| \frac{(x_1y_2 - y_1x_2) + (x_2y_3 - y_2x_3) + ... + (x_ny_1 - y_nx_1)}{2} \right|\]</div>
+<div class="math notranslate nohighlight">
+\[A = \frac{1}{2} \left| \sum_{i=0}^{n-1}(x_iy_{i+1} - y_ix_{i+1}) \right|, x_n=x_0 \text{  e  } y_n=y_0\]</div>
+<p>Na equação acima, o sinal do numerador fornece a orientação dos vértices do polígono:</p>
+<ul class="open">
+<li><p>anti-horário (<em>counterclockwise</em>): se <span class="math notranslate nohighlight">\(\sum_{i=0}^{n-1}(x_iy_{i+1} - y_ix_{i+1}) &gt; 0\)</span>.</p></li>
+<li><p>horário (<em>clockwise</em>): se <span class="math notranslate nohighlight">\(\sum_{i=0}^{n-1}(x_iy_{i+1} - y_ix_{i+1}) &lt; 0\)</span>.</p></li>
+</ul>
+<p>Como todos os vértices do polígono precisam ser processados, a computação da área de um polígono é um algoritmo <span class="math notranslate nohighlight">\(O(n)\)</span>, onde <span class="math notranslate nohighlight">\(n\)</span> representa o número de vértices.</p>
+<section id="calculando-area-de-poligonos-no-postgis">
+<h2><span class="section-number">5.2.1. </span>Calculando Área de Polígonos no PostGIS<a class="headerlink" href="#calculando-area-de-poligonos-no-postgis" title="Link permanente para este cabeçalho"></a></h2>
+<p>No PostGIS a operação de cálculo de área é materializada na função <code class="docutils literal notranslate"><span class="pre">ST_Area</span></code>. No caso do tipo <code class="docutils literal notranslate"><span class="pre">geometry</span></code>, essa área é calculada na unidade do dado. Por exemplo, na tabela <code class="docutils literal notranslate"><span class="pre">uf</span></code> teríamos os seguintes valores de área para os limites de cada estado:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> gid |      nome      |        area
+-----+----------------+--------------------
+   1 | SERGIPE        | 1.8114398618016752
+   2 | MARANHÃO       |   26.8975470041238
+   3 | ESPÍRITO SANTO | 3.9672558333953507
+(3 rows)
+</pre></div>
+</div>
+<p>Como os dados da coluna geométrica encontram-se no sistema de referência espacial <code class="docutils literal notranslate"><span class="pre">Lat/Long</span> <span class="pre">SIRGAS</span> <span class="pre">2000</span></code> (SRID 4674), os valores são computados em graus. Para computar a área em <span class="math notranslate nohighlight">\(km^2\)</span>, podemos transformar as geometrias do SRID 4674 (<code class="docutils literal notranslate"><span class="pre">Lat/Long</span> <span class="pre">SIRGAS</span> <span class="pre">2000</span></code>) para 6687 (<code class="docutils literal notranslate"><span class="pre">Polyconic/SIRGAS</span> <span class="pre">2000</span></code>), cuja unidade é <em>metros</em>. Dessa forma, computando a área e dividindo por <code class="docutils literal notranslate"><span class="pre">1.000.000</span></code>, teremos a área em <span class="math notranslate nohighlight">\(km^2\)</span>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">6687</span><span class="p">))</span><span class="o">/</span><span class="mi">1000000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area_km2</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
+
+<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> gid |      nome      |      area_km2
+-----+----------------+--------------------
+   1 | SERGIPE        | 22796.138351792095
+   2 | MARANHÃO       | 370087.91462862893
+   3 | ESPÍRITO SANTO |  48864.87960548856
+(3 rows)
+</pre></div>
+</div>
+<p>Se usarmos uma projeção que respeita a área, isto é, uma projeção equivalente ou eqüiárea, como a de SRID 102033 (<code class="docutils literal notranslate"><span class="pre">Albers</span> <span class="pre">South</span> <span class="pre">America/</span> <span class="pre">SAD</span> <span class="pre">1969</span></code>), teremos um resultado diferente do mostrado anteriormente:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">102033</span><span class="p">))</span><span class="o">/</span><span class="mi">1000000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area_km2</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
+
+<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> gid |      nome      |      area_km2
+-----+----------------+--------------------
+   1 | SERGIPE        |  21926.74180847111
+   2 | MARANHÃO       | 329639.66019858315
+   3 | ESPÍRITO SANTO |  46074.23638185314
+(3 rows)
+</pre></div>
+</div>
+<p>A seleção do sistema de referência espacial para computação de áreas e distâncias é fundamental. Em geral, recomenda-se que, para os cálculos de áreas seja utilizada a <em>Projeção Equivalente de Albers</em>, enquanto para os cálculos de extensões, a <em>Projeção Policônica</em>. No entanto, os parâmetros adequados a essas projeções podem não estar presentes como um SRID da distribuição do PostGIS. Por isso, consulte esses parâmetros no documento de recomendações do IBGE para a <a class="reference external" href="https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2021/informacoes_tecnicas/bc250_documentacao_tecnica.pdf">base cartográfica contínua do Brasil</a> e, se necessário, crie um sistema de referência apropriado, registrando na tabela <code class="docutils literal notranslate"><span class="pre">spatial_ref_sys</span></code>.</p>
+<p>Outra opção para calcular áreas sem realizar transformações direta, consiste em trabalhar com o tipo <code class="docutils literal notranslate"><span class="pre">geography</span></code>, cujo cálculo de área já retorna um valor em <span class="math notranslate nohighlight">\(m^2\)</span>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">::</span><span class="n">geography</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area_km2</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
+
+<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> gid |      nome      |      area_km2
+-----+----------------+--------------------
+   1 | SERGIPE        | 21926.910002579396
+   2 | MARANHÃO       | 329642.21929018694
+   3 | ESPÍRITO SANTO | 46074.448407253425
+(3 rows)
+</pre></div>
+</div>
+</section>
+<section id="orientacao-do-anel-de-um-poligono">
+<h2><span class="section-number">5.2.2. </span>Orientação do Anel de um Polígono<a class="headerlink" href="#orientacao-do-anel-de-um-poligono" title="Link permanente para este cabeçalho"></a></h2>
+<p>Os operadores <code class="docutils literal notranslate"><span class="pre">ST_IsPolygonCCW</span></code> e <code class="docutils literal notranslate"><span class="pre">ST_IsPolygonCW</span></code> testam a orientação do anel externo do polígono.</p>
+<p>Esses operadores são implementadas com base na equação mostrada no início dessa seção.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="simple-pol.html" class="btn btn-neutral float-left" title="5.1. Polígonos Simples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="centroide.html" class="btn btn-neutral float-right" title="5.3. Centróides e Pontos dentro Superfície" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7fdc2778f670>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

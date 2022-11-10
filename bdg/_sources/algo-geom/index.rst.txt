@@ -3,10 +3,30 @@
     Copyright 2020-2022, Gilberto Queiroz.
 
 
+.. include:: ../def.rst
+
+
 .. _cap_algo_geom:
 
 Algoritmos Geométricos
 ======================
 
+
+A biblioteca C++ denominada `GEOS <https://libgeos.org/>`__ (**Geometry Engine Open Source**) implementa o modelo geométrico proposto na especificação OGC Simple Feature :cite:`herring:2011:a` e diversos algoritmos geométricos que dão suporte aos operadores topológicos, métricos, de geração de novas geometrias (*buffer*, intersecção, união, diferença, diferença simétrica), entre outros. Os projetos de software livre, como QGIS, GDAL e PostGIS, se apoiam nessa biblioteca. Nesta seção vamos apresentar alguns detalhes sobre o funcionamento de alguns algoritmos geométricos usados na implementação das operações espaciais. Também veremos mais alguns operadores do PostGIS.
+
+
+**!! Este capítulo encontra-se em desenvolvimento !!**
+
+
+
+.. toctree::
+    :maxdepth: 1
+    :titlesonly:
+
+    ./simple-pol
+    ./area
+    ./centroide
+    ./pip
+    ./consideracoes
 
 

@@ -1,0 +1,153 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_algo_geom_area:
+
+Área de Polígonos
+=================
+
+
+A área de um polígono de :math:`n` vértices pode ser computada a partir da seguinte equação :cite:`wikipedia:2022:a`:
+
+
+.. math::
+
+    A = \left| \frac{(x_1y_2 - y_1x_2) + (x_2y_3 - y_2x_3) + ... + (x_ny_1 - y_nx_1)}{2} \right|
+
+
+.. math::
+
+    A = \frac{1}{2} \left| \sum_{i=0}^{n-1}(x_iy_{i+1} - y_ix_{i+1}) \right|, x_n=x_0 \text{  e  } y_n=y_0
+
+
+Na equação acima, o sinal do numerador fornece a orientação dos vértices do polígono:
+
+.. rst-class:: open
+
+- anti-horário (*counterclockwise*): se :math:`\sum_{i=0}^{n-1}(x_iy_{i+1} - y_ix_{i+1}) > 0`.
+
+
+- horário (*clockwise*): se :math:`\sum_{i=0}^{n-1}(x_iy_{i+1} - y_ix_{i+1}) < 0`.
+
+
+Como todos os vértices do polígono precisam ser processados, a computação da área de um polígono é um algoritmo :math:`O(n)`, onde :math:`n` representa o número de vértices.
+
+
+Calculando Área de Polígonos no PostGIS
+---------------------------------------
+
+
+No PostGIS a operação de cálculo de área é materializada na função ``ST_Area``. No caso do tipo ``geometry``, essa área é calculada na unidade do dado. Por exemplo, na tabela ``uf`` teríamos os seguintes valores de área para os limites de cada estado:
+
+
+.. code-block:: sql
+
+    SELECT gid, nome, ST_Area(geom) AS area FROM uf LIMIT 3;
+
+
+Saída:
+
+
+.. code-block:: text
+
+     gid |      nome      |        area        
+    -----+----------------+--------------------
+       1 | SERGIPE        | 1.8114398618016752
+       2 | MARANHÃO       |   26.8975470041238
+       3 | ESPÍRITO SANTO | 3.9672558333953507
+    (3 rows)
+
+
+Como os dados da coluna geométrica encontram-se no sistema de referência espacial ``Lat/Long SIRGAS 2000`` (SRID 4674), os valores são computados em graus. Para computar a área em :math:`km^2`, podemos transformar as geometrias do SRID 4674 (``Lat/Long SIRGAS 2000``) para 6687 (``Polyconic/SIRGAS 2000``), cuja unidade é *metros*. Dessa forma, computando a área e dividindo por ``1.000.000``, teremos a área em :math:`km^2`:
+
+
+.. code-block:: sql
+
+    SELECT gid, nome, ST_Area(ST_Transform(geom, 6687))/1000000.0 AS area_km2 
+
+      FROM uf
+
+     LIMIT 3;
+
+
+Saída:
+
+
+.. code-block:: text
+
+     gid |      nome      |      area_km2      
+    -----+----------------+--------------------
+       1 | SERGIPE        | 22796.138351792095
+       2 | MARANHÃO       | 370087.91462862893
+       3 | ESPÍRITO SANTO |  48864.87960548856
+    (3 rows)
+
+
+Se usarmos uma projeção que respeita a área, isto é, uma projeção equivalente ou eqüiárea, como a de SRID 102033 (``Albers South America/ SAD 1969``), teremos um resultado diferente do mostrado anteriormente:
+
+
+.. code-block:: sql
+
+    SELECT gid, nome, ST_Area(ST_Transform(geom, 102033))/1000000.0 AS area_km2 
+
+      FROM uf
+
+     LIMIT 3;
+
+
+Saída:
+
+
+.. code-block:: text
+
+     gid |      nome      |      area_km2      
+    -----+----------------+--------------------
+       1 | SERGIPE        |  21926.74180847111
+       2 | MARANHÃO       | 329639.66019858315
+       3 | ESPÍRITO SANTO |  46074.23638185314
+    (3 rows)
+
+
+A seleção do sistema de referência espacial para computação de áreas e distâncias é fundamental. Em geral, recomenda-se que, para os cálculos de áreas seja utilizada a *Projeção Equivalente de Albers*, enquanto para os cálculos de extensões, a *Projeção Policônica*. No entanto, os parâmetros adequados a essas projeções podem não estar presentes como um SRID da distribuição do PostGIS. Por isso, consulte esses parâmetros no documento de recomendações do IBGE para a `base cartográfica contínua do Brasil <https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2021/informacoes_tecnicas/bc250_documentacao_tecnica.pdf>`__ e, se necessário, crie um sistema de referência apropriado, registrando na tabela ``spatial_ref_sys``.
+
+
+Outra opção para calcular áreas sem realizar transformações direta, consiste em trabalhar com o tipo ``geography``, cujo cálculo de área já retorna um valor em :math:`m^2`:
+
+
+.. code-block:: sql
+
+    SELECT gid, nome, ST_Area(geom::geography)/1000000.0 AS area_km2 
+
+      FROM uf
+
+     LIMIT 3;
+
+
+Saída:
+
+
+.. code-block:: text
+
+     gid |      nome      |      area_km2      
+    -----+----------------+--------------------
+       1 | SERGIPE        | 21926.910002579396
+       2 | MARANHÃO       | 329642.21929018694
+       3 | ESPÍRITO SANTO | 46074.448407253425
+    (3 rows)
+
+
+
+Orientação do Anel de um Polígono
+---------------------------------
+
+
+Os operadores ``ST_IsPolygonCCW`` e ``ST_IsPolygonCW`` testam a orientação do anel externo do polígono.
+
+
+Esses operadores são implementadas com base na equação mostrada no início dessa seção.
+

@@ -29,7 +29,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="6. JSON (Java Script Object Notation)" href="../json/index.html" />
+    <link rel="next" title="5.1. Polígonos Simples" href="simple-pol.html" />
     <link rel="prev" title="4.7. Considerações Finais" href="../estrutura-dados/consideracoes.html" /> 
 </head>
 
@@ -58,7 +58,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Algoritmos Geométricos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simple-pol.html">5.1. Polígonos Simples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="area.html">5.2. Área de Polígonos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="centroide.html">5.3. Centróides e Pontos dentro Superfície</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pip.html">5.4. Ponto em Polígono (PIP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">5.5. Considerações Finais</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
@@ -99,7 +106,7 @@
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
         <a href="../estrutura-dados/consideracoes.html" class="btn btn-neutral float-left" title="4.7. Considerações Finais" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="../json/index.html" class="btn btn-neutral float-right" title="6. JSON (Java Script Object Notation)" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="simple-pol.html" class="btn btn-neutral float-right" title="5.1. Polígonos Simples" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -108,6 +115,17 @@
              
   <section id="algoritmos-geometricos">
 <span id="cap-algo-geom"></span><h1><span class="section-number">5. </span>Algoritmos Geométricos<a class="headerlink" href="#algoritmos-geometricos" title="Link permanente para este cabeçalho"></a></h1>
+<p>A biblioteca C++ denominada <a class="reference external" href="https://libgeos.org/">GEOS</a> (<strong>Geometry Engine Open Source</strong>) implementa o modelo geométrico proposto na especificação OGC Simple Feature <span id="id1">[<a class="reference internal" href="../referencias.html#id21" title="John R. Herring. Opengis implementation standard for geographic information - simple feature access - part 1: common architecture. Technical Report 06-103r4, Open Geospatial Consortium Inc., May 2011. URL: http://www.opengeospatial.org/standards/sfa.">19</a>]</span> e diversos algoritmos geométricos que dão suporte aos operadores topológicos, métricos, de geração de novas geometrias (<em>buffer</em>, intersecção, união, diferença, diferença simétrica), entre outros. Os projetos de software livre, como QGIS, GDAL e PostGIS, se apoiam nessa biblioteca. Nesta seção vamos apresentar alguns detalhes sobre o funcionamento de alguns algoritmos geométricos usados na implementação das operações espaciais. Também veremos mais alguns operadores do PostGIS.</p>
+<p><strong>!! Este capítulo encontra-se em desenvolvimento !!</strong></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="simple-pol.html">5.1. Polígonos Simples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="area.html">5.2. Área de Polígonos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="centroide.html">5.3. Centróides e Pontos dentro Superfície</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pip.html">5.4. Ponto em Polígono (PIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consideracoes.html">5.5. Considerações Finais</a></li>
+</ul>
+</div>
 </section>
 
 
@@ -115,7 +133,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
         <a href="../estrutura-dados/consideracoes.html" class="btn btn-neutral float-left" title="4.7. Considerações Finais" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="../json/index.html" class="btn btn-neutral float-right" title="6. JSON (Java Script Object Notation)" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="simple-pol.html" class="btn btn-neutral float-right" title="5.1. Polígonos Simples" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -125,7 +143,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f7114ca9b80>
+<jinja2.runtime.BlockReference object at 0x7fdc27635850>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

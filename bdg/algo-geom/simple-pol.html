@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.1. Polígonos Simples &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/algo-geom/simple-pol.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="5.2. Área de Polígonos" href="area.html" />
+    <link rel="prev" title="5. Algoritmos Geométricos" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. Algoritmos Geométricos</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.1. Polígonos Simples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#verificacao-de-geometrias-com-o-postgis">5.1.1. Verificação de Geometrias com o PostGIS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="area.html">5.2. Área de Polígonos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="centroide.html">5.3. Centróides e Pontos dentro Superfície</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pip.html">5.4. Ponto em Polígono (PIP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">5.5. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">5. </span>Algoritmos Geométricos</a> &raquo;</li>
+      <li><span class="section-number">5.1. </span>Polígonos Simples</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="index.html" class="btn btn-neutral float-left" title="5. Algoritmos Geométricos" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="area.html" class="btn btn-neutral float-right" title="5.2. Área de Polígonos" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="poligonos-simples">
+<span id="cap-algo-geom-simple-pol"></span><h1><span class="section-number">5.1. </span>Polígonos Simples<a class="headerlink" href="#poligonos-simples" title="Link permanente para este cabeçalho"></a></h1>
+<p>Seja <span class="math notranslate nohighlight">\(v = \{ v_1, v_2, ..., v_n \}\)</span> um conjunto de <span class="math notranslate nohighlight">\(n\)</span> pontos no plano, com <span class="math notranslate nohighlight">\(n &gt; 3\)</span>. Seja <span class="math notranslate nohighlight">\(s = ( s_1, s_2, ..., s_n )\)</span>, uma sequência de <span class="math notranslate nohighlight">\(n-1\)</span> segmentos conectando os <span class="math notranslate nohighlight">\(n\)</span> pontos de <span class="math notranslate nohighlight">\(v\)</span>, tal que <span class="math notranslate nohighlight">\(s_i = \overline{v_iv_{i+1}}\)</span>, com <span class="math notranslate nohighlight">\(1 &lt; i &lt; (n - 1)\)</span>. Os segmentos formam um <strong>polígono simples</strong>, <span class="math notranslate nohighlight">\(P\)</span>, se:</p>
+<ul class="open">
+<li><p>As intersecções entre segmentos adjacentes em <span class="math notranslate nohighlight">\(P\)</span> ocorrerem apenas nos pontos extremos ligando esses segmentos, isto é, se <span class="math notranslate nohighlight">\(s_i \cap s_{i+1} = v_{i+1}\)</span>.</p></li>
+<li><p>Não ocorrer intersecção entre segmentos não-adjacentes, isto é, <span class="math notranslate nohighlight">\(s_i \cap s_j = \varnothing, \forall i, j | j \neq i+1\)</span>.</p></li>
+</ul>
+<p>A Figura (a) na <a class="reference internal" href="#tbl-alg-geom-poligono-simples"><span class="std std-numref">Tabela 5.1</span></a> mostra um <strong>polígono simples</strong>, enquanto a Figura (b), um <strong>polígono que não é simples</strong>. Repare que na fronteira do polígono classificado como não sendo simples, as arestas <span class="math notranslate nohighlight">\(\overline{P_2P_3}\)</span> e <span class="math notranslate nohighlight">\(\overline{P_4P_5}\)</span> possuem uma intersecção, que é denominada de <strong>auto-intersecção</strong> (<strong>self-intersction</strong>).</p>
+<table class="colwidths-given styled-table docutils align-center" id="tbl-alg-geom-poligono-simples" style="width: 640">
+<caption><span class="caption-number">Tabela 5.1 - </span><span class="caption-text">Exemplo de polígonos simples e não-simples.</span><a class="headerlink" href="#tbl-alg-geom-poligono-simples" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="center-align head"><p>( a ) Polígono simples</p></th>
+<th class="center-align head"><p>( b ) Polígono não-simples</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="center-align" rowspan="2"><p><img alt="poligono-simples" src="../_images/poligono-simples.png" /></p></td>
+<td class="center-align" rowspan="2"><p><img alt="poligono-nao-simples" src="../_images/poligono-nao-simples.png" /></p></td>
+</tr>
+<tr class="row-odd"></tr>
+</tbody>
+</table>
+<p>Vários algoritmos geométricos são implementados supondo que o dado de entrada se trata de uma linha ou polígono simples, isto é, onde não há auto-intersecções. Por isso, é importante validar os dados carregados em um banco de dados geográfico, para evitar comportamentos anômalos durante a execução de consultas envolvendo os operadores espaciais.</p>
+<section id="verificacao-de-geometrias-com-o-postgis">
+<h2><span class="section-number">5.1.1. </span>Verificação de Geometrias com o PostGIS<a class="headerlink" href="#verificacao-de-geometrias-com-o-postgis" title="Link permanente para este cabeçalho"></a></h2>
+<p>A extensão PostGIS inclui algumas funções relacionadas à verificação de geometrias:</p>
+<ul class="open">
+<li><p><code class="docutils literal notranslate"><span class="pre">ST_IsSimple</span></code>: Esta função verifica se os anéis de um polígono ou se um conjunto de linhas não possui auto-intersecção. No caso de polígonos com buracos (ou anéis internos), verifica se há pontos de tangência entre esses anéis.</p>
+<blockquote>
+<div><p>Vamos verificar na tabela <code class="docutils literal notranslate"><span class="pre">uf</span></code> (carregada na <a class="reference internal" href="../tipos-geometricos/consultas-espaciais/carga-dados.html#cap-tipos-geometricos-consultas-espaciais-carga-dados"><span class="std std-numref">Seção 3.5.1</span></a>) se há alguma geometria que não seja simples:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_IsSimple</span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> gid | nome
+-----+------
+  26 | PARÁ
+(1 row)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ST_IsValid</span></code>: Esta função se aplica principalmente a geometrias do tipo <code class="docutils literal notranslate"><span class="pre">Polygon</span></code> e <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code>. Além de garantir que os anéis da fronteira desses elementos geométricos sejam simples, ela realiza as seguintes verificações:</p>
+<blockquote>
+<div><ul class="open">
+<li><p>No caso de elementos geométricos do tipo <code class="docutils literal notranslate"><span class="pre">Polygon</span></code>, verifica se seus anéis não possuem cruzamentos, se os anéis internos estão de fato todos contidos no anel externo, se não interseções entre o anel externo e algum anel interno que forme um objeto <em>1-dimensional</em> (linha), que os anéis se toquem apenas em pontos tangentes.</p></li>
+<li><p>No caso de elementos geométricos do tipo <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code>, verifica se os elementos são polígonos válidos, se não sobreposição entre os polígonos da coleção, que os polígonos se toquem no máximo em pontos (e não em ao longo de uma linha).</p></li>
+</ul>
+<p>Essa função pode emitir uma mensagem sobre o que está invalidando uma geometria. Vamos usar o exemplo anterior, da tabela <code class="docutils literal notranslate"><span class="pre">uf</span></code> para ver o que tornava a geometria do Estado do Pará uma geometria que não é simples:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_IsValid</span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span class="hll">NOTICE:  Ring Self-intersection at or near point -46.63302648399997 -0.92200645999997732
+</span> gid | nome
+-----+------
+  26 | PARÁ
+(1 row)
+</pre></div>
+</div>
+<p>Essa função permite ser chamada com um segundo argumento que faz com que a mensagem não seja emitida:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_IsValid</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> gid | nome
+-----+------
+  26 | PARÁ
+(1 row)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ST_IsValidReason</span></code>: Esta função retorna uma string com o motivo da geometria não ser válida:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_IsValidReason</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_IsValid</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> gid | nome |                     st_isvalidreason
+-----+------+----------------------------------------------------------
+  26 | PARÁ | Ring Self-intersection[-46.633026484 -0.922006459999977]
+(1 row)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ST_IsValidDetail</span></code>: Esta função retorna um objeto composto por três campos:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">valid</span></code>: Valor lógico que indica se a geometria é ou não válida.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reason</span></code>: Texto explicativo do motivo da geometria não ser considerada válida.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">location</span></code>: Que indica onde a geometria é inválida.</p></li>
+</ul>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">nome</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="k">valid</span><span class="p">(</span><span class="w"> </span><span class="n">ST_IsValidDetail</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">       </span><span class="n">reason</span><span class="p">(</span><span class="w"> </span><span class="n">ST_IsValidDetail</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
+<span class="w">       </span><span class="n">ST_AsText</span><span class="p">(</span><span class="w"> </span><span class="k">location</span><span class="p">(</span><span class="w"> </span><span class="n">ST_IsValidDetail</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">location</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
+
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_IsValid</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> gid | nome | valid |         reason         |                   location
+-----+------+-------+------------------------+----------------------------------------------
+  26 | PARÁ | f     | Ring Self-intersection | POINT(-46.63302648399997 -0.922006459999977)
+(1 row)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ST_MakeValid</span></code>: Esta função tenta criar uma nova geometria válida a partir da geometria de entrada, sem perder os vértices da geometria original.</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">nome</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">ST_IsValid</span><span class="p">(</span><span class="n">ST_MakeValid</span><span class="p">(</span><span class="n">geom</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">valida</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">ST_NPoints</span><span class="p">(</span><span class="n">ST_MakeValid</span><span class="p">(</span><span class="n">geom</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pts_geometria_valida</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">ST_NPoints</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pts_geom_invalida</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
+
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_IsValid</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> gid | nome | valida | pts_geometria_valida | pts_geom_invalida
+-----+------+--------+----------------------+-------------------
+  26 | PARÁ | t      |                21928 |             21927
+(1 row)
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>A função <code class="docutils literal notranslate"><span class="pre">ST_MakeValid</span></code> possui diversos parâmetros para controlar seu comportamento. Para mais detalhes, confira a documentação dessa função no manual do <a class="reference external" href="https://postgis.net/docs/manual-3.3/ST_MakeValid.html">PostGIS</a>.</p>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="index.html" class="btn btn-neutral float-left" title="5. Algoritmos Geométricos" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="area.html" class="btn btn-neutral float-right" title="5.2. Área de Polígonos" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7fdc27418b20>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

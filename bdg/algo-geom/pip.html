@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.4. Ponto em Polígono (PIP) &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/algo-geom/pip.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="5.5. Considerações Finais" href="consideracoes.html" />
+    <link rel="prev" title="5.3. Centróides e Pontos dentro Superfície" href="centroide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. Algoritmos Geométricos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="simple-pol.html">5.1. Polígonos Simples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="area.html">5.2. Área de Polígonos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="centroide.html">5.3. Centróides e Pontos dentro Superfície</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.4. Ponto em Polígono (PIP)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#teste-de-cruzamentos-crossing-test">5.4.1. Teste de Cruzamentos (Crossing Test)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usando-particoes">5.4.2. Usando Partições</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">5.5. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">5. </span>Algoritmos Geométricos</a> &raquo;</li>
+      <li><span class="section-number">5.4. </span>Ponto em Polígono (PIP)</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="centroide.html" class="btn btn-neutral float-left" title="5.3. Centróides e Pontos dentro Superfície" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="5.5. Considerações Finais" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ponto-em-poligono-pip">
+<span id="cap-algo-geom-pip"></span><h1><span class="section-number">5.4. </span>Ponto em Polígono (PIP)<a class="headerlink" href="#ponto-em-poligono-pip" title="Link permanente para este cabeçalho"></a></h1>
+<p>Uma das operações mais comuns em aplicações geoespaciais é determinar se um ponto encontra-se no interior de um polígono. Nesta seção vamos apresentar dois algoritmos para essa finalidade, que são comumente empregados nos sistemas geoespaciais.</p>
+<section id="teste-de-cruzamentos-crossing-test">
+<h2><span class="section-number">5.4.1. </span>Teste de Cruzamentos (Crossing Test)<a class="headerlink" href="#teste-de-cruzamentos-crossing-test" title="Link permanente para este cabeçalho"></a></h2>
+<p>No caso de polígonos simples (convexos ou não-convexos) podemos saber se um ponto encontra-se ou não no seu interior, traçando uma semi-reta horizontal (ou vertical) partindo desse ponto. Se esse raio cruzar um número ímpar de segmentos da fronteira do polígono, então este ponto encontra-se em seu interior, caso contrário, com um número par de cruzamentos, o ponto encontra-se fora do polígono. Podemos observar essa propriedade na <a class="reference internal" href="#fig-alg-geom-pip-cross-test-1"><span class="std std-numref">Figura 5.7</span></a>. Repare que as semi-retas horizontais partindo dos pontos <span class="math notranslate nohighlight">\(P_3\)</span> e <span class="math notranslate nohighlight">\(P_4\)</span>, ambos no interior do polígono, cruzam os segmentos desse polígono um número ímpar de vezes. Já as semi-retas horizontais partindo dos pontos <span class="math notranslate nohighlight">\(P_1\)</span>, <span class="math notranslate nohighlight">\(P_2\)</span>, <span class="math notranslate nohighlight">\(P_5\)</span>, <span class="math notranslate nohighlight">\(P_6\)</span> e <span class="math notranslate nohighlight">\(P_7\)</span>, todos externos, cruzam os segmentos desse polígono um número par de vezes.</p>
+<figure class="align-center align-default" id="fig-alg-geom-pip-cross-test-1">
+<a class="reference internal image-reference" href="../_images/pip-cross-test-1.png"><img alt="Teste de cruzamento do raio horizontal" src="../_images/pip-cross-test-1.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 5.7 - </span><span class="caption-text">Teste de cruzamento do raio horizontal</span><a class="headerlink" href="#fig-alg-geom-pip-cross-test-1" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Esse algoritmo precisa tratar alguns casos especiais, mostrados nas Figuras <a class="reference internal" href="#fig-alg-geom-pip-cross-test-2"><span class="std std-numref">5.8</span></a>, <a class="reference internal" href="#fig-alg-geom-pip-cross-test-3"><span class="std std-numref">5.9</span></a> e <a class="reference internal" href="#fig-alg-geom-pip-cross-test-4"><span class="std std-numref">5.10</span></a>. Para saber detalhes de como esses casos são tratados, consulte o artigo online de <a class="reference external" href="https://erich.realtimerendering.com/ptinpoly/">Eric Haines</a>.</p>
+<figure class="align-center align-default" id="fig-alg-geom-pip-cross-test-2">
+<a class="reference internal image-reference" href="../_images/pip-cross-test-2.png"><img alt="Teste de cruzamento do raio horizontal" src="../_images/pip-cross-test-2.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 5.8 - </span><span class="caption-text">Teste de cruzamento do raio horizontal</span><a class="headerlink" href="#fig-alg-geom-pip-cross-test-2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<figure class="align-center align-default" id="fig-alg-geom-pip-cross-test-3">
+<a class="reference internal image-reference" href="../_images/pip-cross-test-3.png"><img alt="Teste de cruzamento do raio horizontal" src="../_images/pip-cross-test-3.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 5.9 - </span><span class="caption-text">Teste de cruzamento do raio horizontal</span><a class="headerlink" href="#fig-alg-geom-pip-cross-test-3" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<figure class="align-center align-default" id="fig-alg-geom-pip-cross-test-4">
+<a class="reference internal image-reference" href="../_images/pip-cross-test-4.png"><img alt="Teste de cruzamento do raio horizontal" src="../_images/pip-cross-test-4.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 5.10 - </span><span class="caption-text">Teste de cruzamento do raio horizontal</span><a class="headerlink" href="#fig-alg-geom-pip-cross-test-4" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="usando-particoes">
+<h2><span class="section-number">5.4.2. </span>Usando Partições<a class="headerlink" href="#usando-particoes" title="Link permanente para este cabeçalho"></a></h2>
+<p>Uma forma de acelerar a consulta de vários pontos ao mesmo polígono, consiste em utilizar uma estrutura de dados auxiliar construída como uma etapa de pré-processamento. A <a class="reference internal" href="#fig-alg-geom-pip-bins-test"><span class="std std-numref">Figura 5.11</span></a> mostra como isso poderia ser feito com um vetor unidimensional onde cada entrada estaria associada aos segmentos de uma determinada faixa horizontal (<em>bin</em>). Dessa forma, ao testar um ponto, basta determinar a partição em que ele se encontra e então testar os segmentos associados a essa partição contando os cruzamentos. Como cada partição terá um número menor de segmentos do que o polígono como um todo, a tendência é diminuir a quantidade de testes de cruzamento realizados para cada ponto.</p>
+<figure class="align-center align-default" id="fig-alg-geom-pip-bins-test">
+<a class="reference internal image-reference" href="../_images/pip-bins-test.png"><img alt="Teste de cruzamento usando partições" src="../_images/pip-bins-test.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 5.11 - </span><span class="caption-text">Teste de cruzamento usando partições</span><a class="headerlink" href="#fig-alg-geom-pip-bins-test" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="centroide.html" class="btn btn-neutral float-left" title="5.3. Centróides e Pontos dentro Superfície" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="5.5. Considerações Finais" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7fdc274b5b50>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
