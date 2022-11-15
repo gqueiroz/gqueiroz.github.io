@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.3. PL/Python &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/prog-servidor/plpython/index.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../search.html" />
+    <link rel="next" title="7.4. Extensões" href="../extensoes.html" />
+    <link rel="prev" title="7.2. Triggers e Relacionamentos de Integridade Espacial" href="../triggers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. Programação do Lado Servidor no PostgreSQL</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../plpgsql/index.html">7.1. PL/pgSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../triggers.html">7.2. Triggers e Relacionamentos de Integridade Espacial</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.3. PL/Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#instalacao-no-linux-ubuntu">7.3.1. Instalação no Linux Ubuntu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#habilitando-o-uso-do-pl-python-em-um-banco-de-dados">7.3.2. Habilitando o uso do PL/Python em um Banco de Dados</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sintaxe-de-funcoes-pl-python">7.3.3. Sintaxe de Funções PL/Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#criando-funcoes">7.3.4. Criando Funções</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../extensoes.html">7.4. Extensões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../consideracoes.html">7.5. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
+      <li><span class="section-number">7.3. </span>PL/Python</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="../triggers.html" class="btn btn-neutral float-left" title="7.2. Triggers e Relacionamentos de Integridade Espacial" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="../extensoes.html" class="btn btn-neutral float-right" title="7.4. Extensões" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pl-python">
+<span id="cap-prog-servidor-plpython"></span><h1><span class="section-number">7.3. </span>PL/Python<a class="headerlink" href="#pl-python" title="Link permanente para este cabeçalho"></a></h1>
+<p>Outra linguagem que podemos utilizar para escrever procedimentos armazendados no PostgreSQL é o Python através da extensão <code class="docutils literal notranslate"><span class="pre">PL/Python</span></code>. No caso dessa linguagem precisamos habilitar a extensão <code class="docutils literal notranslate"><span class="pre">plpythonu</span></code>. No caso de usarmos a versão 3 do Python, devemos habilitar a extensão denominada <code class="docutils literal notranslate"><span class="pre">plpython3u</span></code>. Para isso, precisamos instalar essa extensão.</p>
+<section id="instalacao-no-linux-ubuntu">
+<h2><span class="section-number">7.3.1. </span>Instalação no Linux Ubuntu<a class="headerlink" href="#instalacao-no-linux-ubuntu" title="Link permanente para este cabeçalho"></a></h2>
+<p>No Linux Ubuntu a extensão <code class="docutils literal notranslate"><span class="pre">PL/Python</span></code> pode ser instalada através do próprio gerenciador de pacotes. Se você quiser saber as versões disponíveis faça:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt-cache search plpython
+</pre></div>
+</div>
+<p>Para cada versão do servidor PostgreSQL suportada teremos um pacote associado, que deverá instalar o ambiente apropriado:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>postgresql-plpython3-13 - PL/Python 3 procedural language for PostgreSQL 13
+postgresql-plpython3-10 - PL/Python 3 procedural language for PostgreSQL 10
+postgresql-plpython3-10-dbgsym - debug symbols for postgresql-plpython3-10
+postgresql-plpython3-11 - PL/Python 3 procedural language for PostgreSQL 11
+postgresql-plpython3-11-dbgsym - debug symbols for postgresql-plpython3-11
+postgresql-plpython3-12 - PL/Python 3 procedural language for PostgreSQL 12
+postgresql-plpython3-12-dbgsym - debug symbols for postgresql-plpython3-12
+postgresql-plpython3-13-dbgsym - debug symbols for postgresql-plpython3-13
+<span class="hll">postgresql-plpython3-14 - PL/Python 3 procedural language for PostgreSQL 14
+</span>postgresql-plpython3-14-dbgsym - debug symbols for postgresql-plpython3-14
+postgresql-plpython3-15 - PL/Python 3 procedural language for PostgreSQL 15
+...
+</pre></div>
+</div>
+<p>Se a opção de instalação for o pacote para o PostgreSQL 14, devemos instalar o pacote <code class="docutils literal notranslate"><span class="pre">postgresql-plpython3-14</span></code>:</p>
+<blockquote>
+<div><p>sudo apt install postgresql-plpython3-14</p>
+</div></blockquote>
+</section>
+<section id="habilitando-o-uso-do-pl-python-em-um-banco-de-dados">
+<h2><span class="section-number">7.3.2. </span>Habilitando o uso do PL/Python em um Banco de Dados<a class="headerlink" href="#habilitando-o-uso-do-pl-python-em-um-banco-de-dados" title="Link permanente para este cabeçalho"></a></h2>
+<p>Se a extensão PL/Python estiver instalada em seu sistema, ela será listada na visão <code class="docutils literal notranslate"><span class="pre">pg_available_extensions</span></code>, como mostrado abaixo:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_available_extensions</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;plpython%&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    name    | default_version | installed_version |                  comment
+------------+-----------------+-------------------+-------------------------------------------
+ plpython3u | 1.0             |                   | PL/Python3U untrusted procedural language
+(1 row)
+</pre></div>
+</div>
+<p>No banco de dados ativo, registre o uso dessa extensão da seguinte forma:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">EXTENSION</span><span class="w"> </span><span class="n">plpython3u</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Após esse comando, a extensão <code class="docutils literal notranslate"><span class="pre">plpython3u</span></code> deverá aparecer na lista de extensões habilitadas para seu banco de dados:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">extname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_extension</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">extname</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  extname
+------------
+ plpgsql
+<span class="hll"> plpython3u
+</span> postgis
+(3 rows)
+</pre></div>
+</div>
+</section>
+<section id="sintaxe-de-funcoes-pl-python">
+<h2><span class="section-number">7.3.3. </span>Sintaxe de Funções PL/Python<a class="headerlink" href="#sintaxe-de-funcoes-pl-python" title="Link permanente para este cabeçalho"></a></h2>
+<p>A sintaxe de criação de uma função em Python é muito semelhante a realizada com PL/pgSQL, com a diferença de usar <code class="docutils literal notranslate"><span class="pre">plpython3u</span></code> após a palavra-chave <code class="docutils literal notranslate"><span class="pre">LANGUAGE</span></code>:</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">funcname</span><span class="w"> </span><span class="p">(</span><span class="n">argument</span><span class="o">-</span><span class="n">list</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="k">return</span><span class="o">-</span><span class="k">type</span><span class="w"></span>
+<span class="w">    </span><span class="k">AS</span><span class="w"></span>
+<span class="w">    </span><span class="s">$$</span>
+        <span class="c1"># PL/Python function body</span>
+    <span class="s">$$</span><span class="w"></span>
+<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpython3u</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="criando-funcoes">
+<h2><span class="section-number">7.3.4. </span>Criando Funções<a class="headerlink" href="#criando-funcoes" title="Link permanente para este cabeçalho"></a></h2>
+<p>Nessa seção, vamos reescrever algumas das funções PL/pgSQL criadas na <a class="reference internal" href="../plpgsql/index.html#cap-prog-servidor-plpgsql"><span class="std std-numref">Seção 7.1</span></a>.</p>
+<hr class="docutils" />
+<p>Geração de um conjunto de pontos aleatórios:</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">py_random_pt_generator</span><span class="p">(</span><span class="n">npts</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="k">SETOF</span><span class="w"> </span><span class="nb">RECORD</span><span class="w"></span>
+<span class="w">    </span><span class="k">AS</span><span class="w"></span>
+<span class="w">    </span><span class="s">$$</span>
+        <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
+        <span class="kn">from</span> <span class="nn">shapely</span> <span class="kn">import</span> <span class="n">wkb</span>
+        <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+
+        <span class="n">plpy</span><span class="o">.</span><span class="n">notice</span><span class="p">(</span><span class="s1">&#39;Computando </span><span class="si">{}</span><span class="s1"> pontos aleatórios...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">npts</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">npts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">longitude</span> <span class="o">=</span> <span class="mf">360.0</span> <span class="o">*</span> <span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mf">180.0</span>
+            <span class="n">latitude</span> <span class="o">=</span> <span class="mf">180.0</span> <span class="o">*</span> <span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mf">90.0</span>
+
+            <span class="n">pt</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span>
+
+            <span class="n">tupla</span> <span class="o">=</span> <span class="p">(</span> <span class="n">i</span><span class="p">,</span> <span class="n">wkb</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">pt</span><span class="p">,</span> <span class="s1">&#39;hex&#39;</span><span class="p">)</span> <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">plpy</span><span class="o">.</span><span class="n">notice</span><span class="p">(</span><span class="s1">&#39;py_random_pt_generator: iteração </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+            <span class="k">yield</span><span class="p">(</span><span class="n">tupla</span><span class="p">)</span>
+
+        <span class="n">plpy</span><span class="o">.</span><span class="n">notice</span><span class="p">(</span><span class="s1">&#39;Finalizado!&#39;</span><span class="p">)</span>
+    <span class="s">$$</span><span class="w"></span>
+<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpython3u</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Para chamar a função acima teremos que realizar um CAST da geometria para definir o SRID:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">ST_AsEWKT</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">py_random_pt_generator</span><span class="p">(</span><span class="mf">5</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tabela</span><span class="p">(</span><span class="n">gid</span><span class="w"> </span><span class="nb">integer</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="n">geometry</span><span class="p">(</span><span class="nb">point</span><span class="p">,</span><span class="w"> </span><span class="mf">4326</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>Criando uma função que cria uma tabela com um certo número de linhas:</p>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">py_build_pt_table</span><span class="p">(</span><span class="n">table_name</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="n">npts</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="nb">VOID</span><span class="w"></span>
+<span class="w">    </span><span class="k">AS</span><span class="w"></span>
+<span class="w">    </span><span class="s">$$</span>
+        <span class="n">plpy</span><span class="o">.</span><span class="n">notice</span><span class="p">(</span><span class="s1">&#39;Criando tabela </span><span class="si">{}</span><span class="s1">...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="p">))</span>
+        <span class="n">cmd_create</span> <span class="o">=</span> <span class="s1">&#39;CREATE TABLE </span><span class="si">{}</span><span class="s1"> (gid INTEGER, geom GEOMETRY(POINT,4326))&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="p">)</span>
+        <span class="n">plpy</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">cmd_create</span><span class="p">)</span>
+
+        <span class="n">query_pts</span> <span class="o">=</span> <span class="s1">&#39;SELECT * FROM py_random_pt_generator(</span><span class="si">{}</span><span class="s1">) AS tabela(gid INTEGER, geom GEOMETRY(POINT, 4326))&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">npts</span><span class="p">)</span>
+
+        <span class="n">cmd_insert</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO </span><span class="si">{}</span><span class="s1"> (gid, geom) VALUES($1, $2)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="p">)</span>
+        <span class="n">prepared_insert</span> <span class="o">=</span> <span class="n">plpy</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">cmd_insert</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="s1">&#39;GEOMETRY&#39;</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">tupla</span> <span class="ow">in</span> <span class="n">plpy</span><span class="o">.</span><span class="n">cursor</span><span class="p">(</span><span class="n">query_pts</span><span class="p">):</span>
+            <span class="n">plpy</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">prepared_insert</span><span class="p">,</span> <span class="p">[</span><span class="n">tupla</span><span class="p">[</span><span class="s1">&#39;gid&#39;</span><span class="p">],</span> <span class="n">tupla</span><span class="p">[</span><span class="s1">&#39;geom&#39;</span><span class="p">]])</span>
+
+        <span class="n">plpy</span><span class="o">.</span><span class="n">notice</span><span class="p">(</span><span class="s1">&#39;Criando chave primária...&#39;</span><span class="p">)</span>
+        <span class="n">plpy</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;ALTER TABLE </span><span class="si">{}</span><span class="s1"> ADD PRIMARY KEY(gid)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="p">))</span>
+
+        <span class="n">plpy</span><span class="o">.</span><span class="n">notice</span><span class="p">(</span><span class="s1">&#39;Criando índice espacial...&#39;</span><span class="p">)</span>
+        <span class="n">plpy</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;CREATE INDEX </span><span class="si">{0}</span><span class="s1">_geom_idx ON </span><span class="si">{0}</span><span class="s1"> USING GIST (geom)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="p">))</span>
+    <span class="s">$$</span><span class="w"></span>
+<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpython3u</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Para chamar a função acima, faça:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">py_build_pt_table</span><span class="p">(</span><span class="s1">&#39;pt10k_v2&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">10000</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="../triggers.html" class="btn btn-neutral float-left" title="7.2. Triggers e Relacionamentos de Integridade Espacial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="../extensoes.html" class="btn btn-neutral float-right" title="7.4. Extensões" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7fbea64c3400>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

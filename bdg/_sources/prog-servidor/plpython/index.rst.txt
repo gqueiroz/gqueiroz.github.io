@@ -1,0 +1,213 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. _cap_prog_servidor_plpython:
+
+PL/Python
+=========
+
+
+Outra linguagem que podemos utilizar para escrever procedimentos armazendados no PostgreSQL é o Python através da extensão ``PL/Python``. No caso dessa linguagem precisamos habilitar a extensão ``plpythonu``. No caso de usarmos a versão 3 do Python, devemos habilitar a extensão denominada ``plpython3u``. Para isso, precisamos instalar essa extensão.
+
+
+Instalação no Linux Ubuntu
+--------------------------
+
+
+No Linux Ubuntu a extensão ``PL/Python`` pode ser instalada através do próprio gerenciador de pacotes. Se você quiser saber as versões disponíveis faça:
+
+
+.. code-block:: bash
+
+    apt-cache search plpython
+
+
+Para cada versão do servidor PostgreSQL suportada teremos um pacote associado, que deverá instalar o ambiente apropriado:
+
+
+.. code-block:: text
+    :emphasize-lines: 9
+
+    postgresql-plpython3-13 - PL/Python 3 procedural language for PostgreSQL 13
+    postgresql-plpython3-10 - PL/Python 3 procedural language for PostgreSQL 10
+    postgresql-plpython3-10-dbgsym - debug symbols for postgresql-plpython3-10
+    postgresql-plpython3-11 - PL/Python 3 procedural language for PostgreSQL 11
+    postgresql-plpython3-11-dbgsym - debug symbols for postgresql-plpython3-11
+    postgresql-plpython3-12 - PL/Python 3 procedural language for PostgreSQL 12
+    postgresql-plpython3-12-dbgsym - debug symbols for postgresql-plpython3-12
+    postgresql-plpython3-13-dbgsym - debug symbols for postgresql-plpython3-13
+    postgresql-plpython3-14 - PL/Python 3 procedural language for PostgreSQL 14
+    postgresql-plpython3-14-dbgsym - debug symbols for postgresql-plpython3-14
+    postgresql-plpython3-15 - PL/Python 3 procedural language for PostgreSQL 15
+    ...
+
+
+Se a opção de instalação for o pacote para o PostgreSQL 14, devemos instalar o pacote ``postgresql-plpython3-14``:
+
+    sudo apt install postgresql-plpython3-14
+
+
+Habilitando o uso do PL/Python em um Banco de Dados
+---------------------------------------------------
+
+
+Se a extensão PL/Python estiver instalada em seu sistema, ela será listada na visão ``pg_available_extensions``, como mostrado abaixo:
+
+
+.. code-block:: postgresql
+
+    SELECT * FROM pg_available_extensions WHERE name LIKE 'plpython%';
+
+
+Saída:
+
+
+.. code-block:: text
+
+        name    | default_version | installed_version |                  comment                  
+    ------------+-----------------+-------------------+-------------------------------------------
+     plpython3u | 1.0             |                   | PL/Python3U untrusted procedural language
+    (1 row)
+
+
+No banco de dados ativo, registre o uso dessa extensão da seguinte forma:
+
+
+.. code-block:: postgresql
+
+    CREATE EXTENSION plpython3u;
+
+
+Após esse comando, a extensão ``plpython3u`` deverá aparecer na lista de extensões habilitadas para seu banco de dados:
+
+
+.. code-block:: postgresql
+
+    SELECT extname FROM pg_extension ORDER BY extname;
+
+
+Saída:
+
+
+.. code-block:: text
+    :emphasize-lines: 4
+
+      extname   
+    ------------
+     plpgsql
+     plpython3u
+     postgis
+    (3 rows)
+
+
+Sintaxe de Funções PL/Python
+----------------------------
+
+
+A sintaxe de criação de uma função em Python é muito semelhante a realizada com PL/pgSQL, com a diferença de usar ``plpython3u`` após a palavra-chave ``LANGUAGE``:
+
+
+.. code-block:: plpgsql
+
+    CREATE FUNCTION funcname (argument-list)
+        RETURNS return-type
+        AS
+        $$
+            # PL/Python function body
+        $$
+        LANGUAGE plpython3u;
+
+
+Criando Funções
+---------------
+
+
+Nessa seção, vamos reescrever algumas das funções PL/pgSQL criadas na :numref:`Seção %s <cap_prog_servidor_plpgsql>`.
+
+
+-----
+
+
+Geração de um conjunto de pontos aleatórios:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION py_random_pt_generator(npts INTEGER)
+        RETURNS SETOF RECORD
+        AS
+        $$
+            from random import random
+            from shapely import wkb
+            from shapely.geometry import Point
+
+            plpy.notice('Computando {} pontos aleatórios...'.format(npts))
+
+            for i in range(1, npts + 1):
+                longitude = 360.0 * random() - 180.0
+                latitude = 180.0 * random() - 90.0
+
+                pt = Point(longitude, latitude)
+
+                tupla = ( i, wkb.dumps(pt, 'hex') )
+
+                if i % 1000 == 0:
+                    plpy.notice('py_random_pt_generator: iteração {}'.format(i))
+
+                yield(tupla)
+                
+            plpy.notice('Finalizado!')
+        $$
+        LANGUAGE plpython3u;
+
+
+Para chamar a função acima teremos que realizar um CAST da geometria para definir o SRID:
+
+
+.. code-block:: postgresql
+
+    SELECT gid, ST_AsEWKT(geom)
+      FROM py_random_pt_generator(5) AS tabela(gid integer, geom geometry(point, 4326));
+
+
+-----
+
+
+Criando uma função que cria uma tabela com um certo número de linhas:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION py_build_pt_table(table_name TEXT, npts INTEGER)
+        RETURNS VOID
+        AS
+        $$
+            plpy.notice('Criando tabela {}...'.format(table_name))            
+            cmd_create = 'CREATE TABLE {} (gid INTEGER, geom GEOMETRY(POINT,4326))'.format(table_name)            
+            plpy.execute(cmd_create)
+
+            query_pts = 'SELECT * FROM py_random_pt_generator({}) AS tabela(gid INTEGER, geom GEOMETRY(POINT, 4326))'.format(npts)
+
+            cmd_insert = 'INSERT INTO {} (gid, geom) VALUES($1, $2)'.format(table_name)
+            prepared_insert = plpy.prepare(cmd_insert, ['INTEGER', 'GEOMETRY'])
+
+            for tupla in plpy.cursor(query_pts):
+                plpy.execute(prepared_insert, [tupla['gid'], tupla['geom']])
+
+            plpy.notice('Criando chave primária...')
+            plpy.execute('ALTER TABLE {} ADD PRIMARY KEY(gid)'.format(table_name))
+
+            plpy.notice('Criando índice espacial...')
+            plpy.execute('CREATE INDEX {0}_geom_idx ON {0} USING GIST (geom)'.format(table_name))
+        $$
+        LANGUAGE plpython3u;
+
+
+Para chamar a função acima, faça:
+
+
+.. code-block:: postgresql
+
+    SELECT py_build_pt_table('pt10k_v2', 10000);
