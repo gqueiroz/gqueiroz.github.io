@@ -35,6 +35,11 @@ A ferramenta *jq* permite que realizemos vários processamentos interessantes so
     jq < focos.json
 
 
+.. note::
+
+    No Microsoft Windows o aplicativo *jq* terá o nome **jq-win64.exe**. Como sugestão, baixe este aplicativo e o arquivo JSON do exemplo para uma pasta, como ``C:\temp``.
+
+
 Esse comando fará com que o arquivo ``focos.json`` seja lido e então escrito na saída padrão, isto é, na tela do terminal de comandos. Esse comando produzirá um saída formatada, como mostrado na saída parcial abaixo:
 
 
@@ -174,6 +179,45 @@ Se todas as 2.283 linhas forem importadas sem problemas, o comando produzirá um
 .. code-block:: text
 
     COPY 2283
+
+
+.. note::
+
+    No Microsoft Windows você pode utilizar o comando ``\copy`` de dentro do *psql*. Acesse o atalho desse aplicativo no grupo do PostgreSQL. Você terá que confirmar as informações de conexão ao seu banco de dados:
+
+
+    .. code-block:: text
+
+        Server [localhost]:
+        Database [postgres]: bdgeo
+        Port [5432]:
+        Username [postgres]:
+        Password for user postgres:
+
+
+    Assim que a conexão estiver estabelecida, você deverá ter uma tela como:
+
+
+    .. code-block:: text
+
+        psql (14.5)
+        WARNING: Console code page (850) differs from Windows code page (1252)
+                 8-bit characters might not work correctly. See psql reference
+                 page "Notes for Windows users" for details.
+        Type "help" for help.
+
+        bdgeo=#
+
+
+    No *prompt* de comandos acima, entre com um comando como:
+
+
+    .. code-block:: psql
+
+        \copy focos_2020_json FROM PROGRAM 'c:\temp\jq-win64.exe -c -r ".features[]" < c:\temp\focos.json';
+
+
+    Repare que no comando acima incluímos o caminho onde se encontram o aplictaivo *jq* e o arquivo JSON. Além disso, usamos aspas duplas (``"``) para indicar a expressão de filtro (``".features[]"``).
 
 
 Para ver o resultado da importação, consulte a tabela ``focos_2020_json``:

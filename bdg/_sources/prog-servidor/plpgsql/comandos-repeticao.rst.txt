@@ -3,6 +3,8 @@
     Copyright 2020-2021, Gilberto Queiroz.
 
 
+.. _cap_prog_servidor_plpgsql_comandos_repeticao:
+
 Comandos de Repetição
 =====================
 

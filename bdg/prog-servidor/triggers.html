@@ -29,7 +29,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="7.3. Extensões" href="extensoes.html" />
+    <link rel="next" title="7.3. PL/Python" href="plpython/index.html" />
     <link rel="prev" title="7.1.9. Blocos" href="plpgsql/blocos.html" /> 
 </head>
 
@@ -63,8 +63,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">7. Programação do Lado Servidor no PostgreSQL</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plpgsql/index.html">7.1. PL/pgSQL</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">7.2. Triggers e Relacionamentos de Integridade Espacial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="extensoes.html">7.3. Extensões</a></li>
-<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">7.4. Considerações Finais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plpython/index.html">7.3. PL/Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensoes.html">7.4. Extensões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">7.5. Considerações Finais</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
@@ -106,7 +107,7 @@
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
         <a href="plpgsql/blocos.html" class="btn btn-neutral float-left" title="7.1.9. Blocos" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="extensoes.html" class="btn btn-neutral float-right" title="7.3. Extensões" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plpython/index.html" class="btn btn-neutral float-right" title="7.3. PL/Python" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -151,15 +152,15 @@
 <p>No PostgreSQL, um <em>trigger</em> nada mais é do que uma função com uma notação especial e algumas facilidades para gerenciar o tipo de evento responsável por disparar esta função.</p>
 <p>A função <code class="docutils literal notranslate"><span class="pre">PL/pgSQL</span></code> usada para definir o <em>trigger</em> não possui parâmetros e o tipo de retorno é do tipo <em>trigger</em>, como mostrado abaixo:</p>
 <div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">função</span><span class="o">-</span><span class="k">trigger</span><span class="p">()</span><span class="w"></span>
-<span class="k">RETURNS</span><span class="w"> </span><span class="k">trigger</span><span class="w"></span>
-<span class="k">AS</span><span class="w"></span>
-<span class="s">$$</span><span class="w"></span>
-<span class="k">DECLARE</span><span class="w"></span>
-<span class="w">    </span><span class="n">lista</span><span class="o">-</span><span class="n">variáveis</span><span class="p">;</span><span class="w"></span>
-<span class="k">BEGIN</span><span class="w"></span>
-<span class="w">    </span><span class="n">comandos</span><span class="p">;</span><span class="w"></span>
-<span class="k">END</span><span class="p">;</span><span class="w"></span>
-<span class="s">$$</span><span class="w"> </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="k">trigger</span><span class="w"></span>
+<span class="w">    </span><span class="k">AS</span><span class="w"></span>
+<span class="w">    </span><span class="s">$$</span><span class="w"></span>
+<span class="w">        </span><span class="k">DECLARE</span><span class="w"></span>
+<span class="w">            </span><span class="n">lista</span><span class="o">-</span><span class="n">variáveis</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">BEGIN</span><span class="w"></span>
+<span class="w">            </span><span class="n">comandos</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="s">$$</span><span class="w"> </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>A definição do <em>trigger</em> é realizada através do comando <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TRIGGER</span></code>, que possui a seguinte sintaxe:</p>
@@ -194,7 +195,7 @@
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TG_OP</span></code>: uma constante string (<code class="docutils literal notranslate"><span class="pre">TEXT</span></code>) que diz o tipo de operação que disparou o <em>trigger</em>: <code class="docutils literal notranslate"><span class="pre">'INSERT'</span></code>, <code class="docutils literal notranslate"><span class="pre">'UPDATE'</span></code>, <code class="docutils literal notranslate"><span class="pre">'DELETE'</span></code> ou <code class="docutils literal notranslate"><span class="pre">'TRUNCATE'</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TG_WHEN</span></code>: uma constante string (<code class="docutils literal notranslate"><span class="pre">TEXT</span></code>) que diz quando o <em>trigger</em> foi disparado: <code class="docutils literal notranslate"><span class="pre">'BEFORE'</span></code>, <code class="docutils literal notranslate"><span class="pre">'AFTER'</span></code> ou <code class="docutils literal notranslate"><span class="pre">'INSTEAD</span> <span class="pre">OF'</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NEW</span></code>: variável do tipo registro (<code class="docutils literal notranslate"><span class="pre">RECORD</span></code>}) contendo a nova tupla em operações de inserção (<code class="docutils literal notranslate"><span class="pre">INSERT</span></code>) e atualização (<code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>) em <em>triggers</em>, para <em>triggers</em> definidos em nível de linha<a class="footnote-reference brackets" href="#f2" id="id2">2</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NEW</span></code>: variável do tipo registro (<code class="docutils literal notranslate"><span class="pre">RECORD</span></code>) contendo a nova tupla em operações de inserção (<code class="docutils literal notranslate"><span class="pre">INSERT</span></code>) e atualização (<code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>) em <em>triggers</em>, para <em>triggers</em> definidos em nível de linha<a class="footnote-reference brackets" href="#f2" id="id2">2</a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">OLD</span></code>: variável do tipo registro (<code class="docutils literal notranslate"><span class="pre">RECORD</span></code>) contendo o valor da antiga tupla em operações de atualização (<code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>) e remoção (<code class="docutils literal notranslate"><span class="pre">DELETE</span></code>), para <em>triggers</em> definidos em nível de linha<a class="footnote-reference brackets" href="#f3" id="id3">3</a>.</p></li>
 </ul>
 <p>A função que implementa a ação do <em>trigger</em> deve retornar <code class="docutils literal notranslate"><span class="pre">NULL</span></code> ou um valor do tipo registro (ou tupla) com a mesma estrutura da tabela para a qual o <em>trigger</em> foi disparado.</p>
@@ -297,7 +298,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
         <a href="plpgsql/blocos.html" class="btn btn-neutral float-left" title="7.1.9. Blocos" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="extensoes.html" class="btn btn-neutral float-right" title="7.3. Extensões" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plpython/index.html" class="btn btn-neutral float-right" title="7.3. PL/Python" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -307,7 +308,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fdc2742cfa0>
+<jinja2.runtime.BlockReference object at 0x7fbea69eca30>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

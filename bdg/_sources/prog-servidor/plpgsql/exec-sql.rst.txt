@@ -3,11 +3,13 @@
     Copyright 2020-2022, Gilberto Queiroz.
 
 
+.. _cap_prog_servidor_plpgsql_exec_sql:
+
 Execução de Comandos SQL
 ========================
 
 
-Podemos utilizar comandos SQL com instruções válidas dentro de funções ``PL/pgSQL``. Esses comandos podem utilizar nomes de variáveis definidas na própria função para compor o comando.
+Os comandos SQL podem ser utilizados como instruções válidas dentro de funções ``PL/pgSQL``. Esses comandos podem utilizar nomes de variáveis definidas na própria função para compor o comando.
 
 
 Para ilustrar a execução de comandos, vamos criar uma tabela chamada ``pluviometros``:
@@ -31,26 +33,22 @@ Vamos criar uma função em ``PL/pgSQL`` que faça a inserção na tabela ``pluv
 
 .. code-block:: plpgsql
 
-    CREATE OR REPLACE FUNCTION my_insert(longitude NUMERIC,
-                                         latitude  NUMERIC)
-    RETURNS VOID
-    AS
-    $$
-    BEGIN
+    CREATE OR REPLACE FUNCTION my_insert(longitude NUMERIC, latitude  NUMERIC)
+        RETURNS VOID
+        AS
+        $$
+            BEGIN
 
-        INSERT INTO pluviometros(location)
-            VALUES(
-                ST_SetSRID(
-                    ST_MakePoint(longitude, latitude),
-                    4326));
+                INSERT INTO pluviometros(location)
+                    VALUES( ST_Point(longitude, latitude, 4326) );
 
-        RETURN;
-    END;
-    $$
-    LANGUAGE plpgsql;
+                RETURN;
+            END;
+        $$
+        LANGUAGE plpgsql;
 
 
-Agora, podemos chamar a função ``my_insert`` que irá montar a tupla a ser inserida na tabela ``pluviometros``:
+Agora, é possível chamar a função ``my_insert`` que irá montar a tupla a ser inserida na tabela ``pluviometros``:
 
 
 .. code-block:: sql
@@ -61,7 +59,7 @@ Agora, podemos chamar a função ``my_insert`` que irá montar a tupla a ser ins
 Repare que o comando ``INSERT`` sem a cláusula ``RETURNING`` não retorna nenhum resultado. Para realizar a avaliação de expressões ou consultas do tipo ``SELECT`` descartando o resultado, pode-se utilizar o comando ``PERFORM``. Este comando é necessário, principalmente, quando se tem uma consulta do tipo ``SELECT`` cuja finalidade é apenas produzir um efeito colateral (*side-effect*).
 
 
-.. code-block:: sql
+.. code-block:: postgresql
 
     PERFORM SELECT * FROM pluviometros ORDER BY gid;
 
@@ -94,26 +92,22 @@ Como exemplo desse tipo de comando, vamos alterar a função ``my_insert`` para 
 
 .. code-block:: plpgsql
 
-    CREATE OR REPLACE FUNCTION my_insert(longitude NUMERIC,
-                                         latitude NUMERIC)
-    RETURNS pluviometros.gid%TYPE
-    AS
-    $$
-    DECLARE
-        id pluviometros.gid%TYPE;
-    BEGIN
+    CREATE OR REPLACE FUNCTION my_insert(longitude NUMERIC, latitude NUMERIC)
+        RETURNS pluviometros.gid%TYPE
+        AS
+        $$
+            DECLARE
+                id pluviometros.gid%TYPE;
+            BEGIN
 
-        INSERT INTO pluviometros(location)
-            VALUES(
-                ST_SetSRID(
-                    ST_MakePoint(longitude, latitude),
-                    4326))
-            RETURNING gid INTO id;
+                INSERT INTO pluviometros(location)
+                    VALUES( ST_Point(longitude, latitude, 4326) )
+                    RETURNING gid INTO id;
 
-        RETURN id;
-    END;
-    $$
-    LANGUAGE plpgsql;
+                RETURN id;
+            END;
+        $$
+        LANGUAGE plpgsql;
 
 
 Com essa modificação, ao invocarmos a função ``my_insert`` obtemos o novo identificador da linha criada:
@@ -124,12 +118,15 @@ Com essa modificação, ao invocarmos a função ``my_insert`` obtemos o novo id
     SELECT my_insert(-43.6419, -20.393);
 
 
-Saída::
+Saída:
 
-     my_insert
+
+.. code-block:: text
+
+     my_insert 
     -----------
-        2
-     (1 row)
+             2
+    (1 row)
 
 
 Repare na declaração do tipo de retorno da função e no tipo da variável ``id``. Utilizamos ``%TYPE`` para deduzir o tipo através de uma referência ao nome da coluna ``gid`` da tabela ``pluviometros``.

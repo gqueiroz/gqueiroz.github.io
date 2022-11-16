@@ -143,6 +143,10 @@
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>jq &lt; focos.json
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>No Microsoft Windows o aplicativo <em>jq</em> terá o nome <strong>jq-win64.exe</strong>. Como sugestão, baixe este aplicativo e o arquivo JSON do exemplo para uma pasta, como <code class="docutils literal notranslate"><span class="pre">C:\temp</span></code>.</p>
+</div>
 <p>Esse comando fará com que o arquivo <code class="docutils literal notranslate"><span class="pre">focos.json</span></code> seja lido e então escrito na saída padrão, isto é, na tela do terminal de comandos. Esse comando produzirá um saída formatada, como mostrado na saída parcial abaixo:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
   &quot;type&quot;: &quot;FeatureCollection&quot;,
@@ -251,6 +255,32 @@
 <p>Se todas as 2.283 linhas forem importadas sem problemas, o comando produzirá uma saída como:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>COPY 2283
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>No Microsoft Windows você pode utilizar o comando <code class="docutils literal notranslate"><span class="pre">\copy</span></code> de dentro do <em>psql</em>. Acesse o atalho desse aplicativo no grupo do PostgreSQL. Você terá que confirmar as informações de conexão ao seu banco de dados:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Server [localhost]:
+Database [postgres]: bdgeo
+Port [5432]:
+Username [postgres]:
+Password for user postgres:
+</pre></div>
+</div>
+<p>Assim que a conexão estiver estabelecida, você deverá ter uma tela como:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>psql (14.5)
+WARNING: Console code page (850) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page &quot;Notes for Windows users&quot; for details.
+Type &quot;help&quot; for help.
+
+bdgeo=#
+</pre></div>
+</div>
+<p>No <em>prompt</em> de comandos acima, entre com um comando como:</p>
+<div class="highlight-psql notranslate"><div class="highlight"><pre><span></span><span class="kp">\copy</span><span class="w"> </span><span class="ss">focos_2020_json</span><span class="w"> </span><span class="ss">FROM</span><span class="w"> </span><span class="ss">PROGRAM</span><span class="w"> </span><span class="s1">&#39;c:\temp\jq-win64.exe -c -r &quot;.features[]&quot; &lt; c:\temp\focos.json&#39;</span><span class="ss">;</span>
+</pre></div>
+</div>
+<p>Repare que no comando acima incluímos o caminho onde se encontram o aplictaivo <em>jq</em> e o arquivo JSON. Além disso, usamos aspas duplas (<code class="docutils literal notranslate"><span class="pre">&quot;</span></code>) para indicar a expressão de filtro (<code class="docutils literal notranslate"><span class="pre">&quot;.features[]&quot;</span></code>).</p>
 </div>
 <p>Para ver o resultado da importação, consulte a tabela <code class="docutils literal notranslate"><span class="pre">focos_2020_json</span></code>:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos_2020_json</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
@@ -375,7 +405,7 @@ Time: 2.109 ms
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fdc27632250>
+<jinja2.runtime.BlockReference object at 0x7fbea716f850>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

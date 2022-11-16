@@ -3,10 +3,10 @@
     Copyright 2020-2022, Gilberto Queiroz.
 
 
-.. _prog_servidor_plpgsql:
+.. _cap_prog_servidor_plpgsql:
 
 PL/pgSQL
---------
+========
 
 
 .. toctree::

@@ -69,15 +69,15 @@ A função ``PL/pgSQL`` usada para definir o *trigger* não possui parâmetros e
 .. code-block:: plpgsql
 
     CREATE OR REPLACE FUNCTION nome-da-função-trigger()
-    RETURNS trigger
-    AS
-    $$
-    DECLARE
-        lista-variáveis;
-    BEGIN
-        comandos;
-    END;
-    $$ LANGUAGE plpgsql;
+        RETURNS trigger
+        AS
+        $$
+            DECLARE
+                lista-variáveis;
+            BEGIN
+                comandos;
+            END;
+        $$ LANGUAGE plpgsql;
 
 
 A definição do *trigger* é realizada através do comando ``CREATE TRIGGER``, que possui a seguinte sintaxe:
@@ -132,7 +132,7 @@ Uma função ``PL/pgSQL`` invocada como um *trigger* possui diversas variáveis 
 
 - ``TG_WHEN``: uma constante string (``TEXT``) que diz quando o *trigger* foi disparado: ``'BEFORE'``, ``'AFTER'`` ou ``'INSTEAD OF'``.
 
-- ``NEW``: variável do tipo registro (``RECORD``}) contendo a nova tupla em operações de inserção (``INSERT``) e atualização (``UPDATE``) em *triggers*, para *triggers* definidos em nível de linha\ [#f2]_.
+- ``NEW``: variável do tipo registro (``RECORD``) contendo a nova tupla em operações de inserção (``INSERT``) e atualização (``UPDATE``) em *triggers*, para *triggers* definidos em nível de linha\ [#f2]_.
 
 - ``OLD``: variável do tipo registro (``RECORD``) contendo o valor da antiga tupla em operações de atualização (``UPDATE``) e remoção (``DELETE``), para *triggers* definidos em nível de linha\ [#f3]_.
 

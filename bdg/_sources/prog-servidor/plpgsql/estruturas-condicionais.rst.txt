@@ -3,6 +3,8 @@
     Copyright 2020-2022, Gilberto Queiroz.
 
 
+.. _cap_prog_servidor_plpgsql_estrutura_condicionais:
+
 Estruturas Condicionais
 =======================
 
@@ -29,14 +31,13 @@ Comandos ``case-when`` possuem a seguinte sintaxe:
 
 .. code-block:: plpgsql
 
-    CASE expressão
+    CASE search-expression
         WHEN expressão [, expressão [ ... ]] THEN
-            comandos;
+          comandos
        [WHEN expressão [, expressão [ ... ]] THEN
-            comandos;
-        ... ]
+          comandos]
        [ELSE
-            comandos;]
+          comandos]
     END CASE;
 
 
@@ -45,29 +46,28 @@ No exemplo da função ``my_distance``, se considerarmos que a distância entre 
 
 .. code-block:: plpgsql
 
-    CREATE OR REPLACE FUNCTION my_distance(first GEOMETRY,
-                                           second GEOMETRY)
-    RETURNS NUMERIC
-    AS
-    $$
-    DECLARE
-        dx NUMERIC DEFAULT 0.0;
-        dy NUMERIC DEFAULT 0.0;
-        d  NUMERIC DEFAULT 0.0;
-    BEGIN
-        IF(ST_SRID(first) <> ST_SRID(second)) THEN
-            return NULL;
-        END IF;
+    CREATE OR REPLACE FUNCTION my_distance(first GEOMETRY, second GEOMETRY)
+        RETURNS NUMERIC
+        AS
+        $$
+            DECLARE
+                dx NUMERIC DEFAULT 0.0;
+                dy NUMERIC DEFAULT 0.0;
+                d  NUMERIC DEFAULT 0.0;
+            BEGIN
+                IF(ST_SRID(first) <> ST_SRID(second)) THEN
+                    return NULL;
+                END IF;
 
-        dx := ST_X(first) - ST_X(second);
-        dy := ST_Y(first) - ST_Y(second);
+                dx := ST_X(first) - ST_X(second);
+                dy := ST_Y(first) - ST_Y(second);
 
-        d := sqrt(power(dx, 2) + power(dy, 2));
+                d := sqrt(power(dx, 2) + power(dy, 2));
 
-        RETURN d;
-    END;
-    $$
-    LANGUAGE plpgsql;
+                RETURN d;
+            END;
+        $$
+        LANGUAGE plpgsql;
 
 
 Repare que agora, se chamarmos a função para um par de pontos em diferentes sistemas de coordenadas, receberemos um valor nulo (``NULL``) como retorno:

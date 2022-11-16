@@ -3,6 +3,8 @@
     Copyright 2020-2022, Gilberto Queiroz.
 
 
+.. _cap_prog_servidor_plpgsql_msg_excecoes:
+
 Mensagens e Exceções
 ====================
 
@@ -18,36 +20,37 @@ Vamos utilizar o comando ``RAISE`` junto com testes condicionais para verificar 
 
 .. code-block:: plpgsql
 
-    CREATE OR REPLACE FUNCTION my_distance(first GEOMETRY,
-                                           second GEOMETRY)
-    RETURNS NUMERIC
-    AS $$
-    DECLARE
-        dx NUMERIC DEFAULT 0.0;
-        dy NUMERIC DEFAULT 0.0;
-        d  NUMERIC DEFAULT 0.0;
-    BEGIN
-        IF((ST_GeometryType(first) <> 'ST_Point') OR
-           (ST_GeometryType(second) <> 'ST_Point')) THEN
-            RAISE EXCEPTION 'Tipos geométricos inválidos!';
-        END IF;
+        CREATE OR REPLACE FUNCTION my_distance(first GEOMETRY, second GEOMETRY)
+        RETURNS NUMERIC
+        AS
+        $$
+            DECLARE
+                dx NUMERIC DEFAULT 0.0;
+                dy NUMERIC DEFAULT 0.0;
+                d  NUMERIC DEFAULT 0.0;
+            BEGIN
+                IF( (ST_GeometryType(first) <> 'ST_Point') OR
+                    (ST_GeometryType(second) <> 'ST_Point') ) THEN
+                    RAISE EXCEPTION 'Tipos geométricos inválidos!';
+                END IF;
 
-        IF(ST_SRID(first) <> ST_SRID(second)) THEN
-            RAISE EXCEPTION 'Pontos com SRIDs diferentes!';
-        END IF;
+                IF(ST_SRID(first) <> ST_SRID(second)) THEN
+                    RAISE EXCEPTION 'Pontos com SRIDs diferentes!';
+                END IF;
+        
+                dx := ST_X(first) - ST_X(second);
+                dy := ST_Y(first) - ST_Y(second);
 
-        dx := ST_X(first) - ST_X(second);
-        dy := ST_Y(first) - ST_Y(second);
 
-        RAISE NOTICE 'dx: %', dx;
-        RAISE NOTICE 'dy: %', dy;
+                RAISE NOTICE 'dx: %', dx;
+                RAISE NOTICE 'dy: %', dy;
 
-        d := sqrt(power(dx, 2) + power(dy, 2));
+                d := sqrt(power(dx, 2) + power(dy, 2));
 
-        RETURN d;
-    END;
-    $$
-    LANGUAGE plpgsql;
+                RETURN d;
+            END;
+        $$
+        LANGUAGE plpgsql;
 
 
 Desta vez, se não respeitarmos os tipos geométricos, a função irá produzir uma mensagem de erro e a função será interrompida:
@@ -106,7 +109,7 @@ Outro detalhe a ser notado no exemplo é o uso do caractere ``%`` dentro das men
     RAISE NOTICE 'dy: %', dy;
 
 
-No comando ``RAISE``, o texto das mensagens podem conter o caractere especial ``%``, que é substituído pelo valor de um literal ou variável informados após o texto da mensagem (neste caso as variáveis *dx* e *dy*).
+No comando ``RAISE``, o texto de uma mensagem pode conter o caractere especial ``%``, que é substituído pelo valor de um literal ou variável informado após o texto da mensagem. No exemplo acima, os valores das variáveis *dx* e *dy* foram substituídos pelo símbolo ``%`` nas respectivas linhas.
 
 
 Os níveis de severidade também estão associados a alguns comportamentos importantes. Por exemplo, ``RAISE NOTICE`` envia mensagem imediatamente, assim que a linha é executada. Já o comando ``RAISE NOTIFY`` aguarda a transação que contém a execução da função terminar, de forma que a mensagem pode não ser mostrada se a transação falhar e for desfeita (*rollback*).

@@ -9,13 +9,13 @@ Programação do Lado Servidor no PostgreSQL
 ==========================================
 
 
-Atualmente, os SGBD-R são muito mais do que apenas sistemas de armazenamento e gerenciamento de dados, correspondendo a verdadeiras plataformas de desenvolvimento de sistemas com funcionalidades que vão muito além da simples execução de comandos SQL (DDL ou DML). Sistemas como :ref:`Oracle <Greenwal_2013>`, :ref:`IBM DB2 <Allen_2008>` e :ref:`PostgreSQL <Drake_2002>` são verdadeiros *frameworks* de desenvolvimento de aplicações.
+Atualmente, os SGBD-R são muito mais do que apenas sistemas de armazenamento e gerenciamento de dados, correspondendo a verdadeiras plataformas de desenvolvimento de sistemas com funcionalidades que vão muito além da simples execução de comandos SQL (DDL ou DML). Sistemas como Oracle, IBM DB2 e PostgreSQL são verdadeiros *frameworks* de desenvolvimento de aplicações.
 
 
 Em comum, esses SGBDs permitem construir *funções* ou *procedimentos* que são armazenados dentro do próprio SGBD\ [#f1]_  e que são capazes de executar tarefas com alto grau de complexidade. Essas funções podem ser expressas em linguagens de programação tradicionais, como C, Java, Python ou até mesmo em R. No entanto, a maneira mais usual de expressarmos essas funções é através de linguagens procedurais baseadas em dialetos SQL, como as linguagens ``PL/pgSQL`` do PostgreSQL e a ``PL/SQL`` da Oracle.
 
 
-Outra funcionalidade disponível nesses SGBDs é a definição de *ações* que sejam invocadas automaticamente sempre que modificarmos o conteúdo de uma tabela. Essas *ações* ou *triggers* são expressas, em geral, da mesma forma que os procedimentos armazenados, em um dialeto SQL. Embora em PostgreSQL seja possível criar *triggers* na Linguagem C.
+Outra funcionalidade disponível nesses SGBDs é a definição de *ações* que sejam invocadas automaticamente sempre que modificarmos o conteúdo de uma tabela. Essas *ações* ou *triggers* são expressas, em geral, da mesma forma que os procedimentos armazenados, em um dialeto SQL\ [#f2]_.
 
 
 Porém, uma das capacidades menos exploradas nos cursos de bancos de dados, mas fundamental para o desenvolvimento de certos tipos de aplicações, como as geográficas, é a de criação de *extensões* do SGBD. As *extensões* funcionam como uma espécie de *plugin*, possibilitando a inclusão de novos tipos de dados, novas funções e operadores sobre esses novos tipos, extensão dos mecanismos de indexação existentes para os novos tipos e, integração de bibliotecas de software construídas em outras linguagens. No caso do PostgreSQL este mecanismo é responsável por possibilitar a criação da extensão geográfica PostGIS.
@@ -30,6 +30,7 @@ Este capítulo irá mostrar como criar novas funcionalidades para um servidor de
 
     ./plpgsql/index
     ./triggers
+    ./plpython/index
     ./extensoes
     ./consideracoes
 
@@ -39,4 +40,9 @@ Este capítulo irá mostrar como criar novas funcionalidades para um servidor de
 
 .. [#f1]
 
-    Essas funções são chamadas de *Procedimentos Armazenados* ou *Funções Definidas pelo Usuário* (*User Defined Functions* ou UDF).
+    Essas funções são chamadas de **Procedimentos Armazenados** ou **Funções Definidas pelo Usuário** (**User Defined Functions** ou **UDF**).
+
+
+.. [#f2]
+
+    No PostgreSQL é possível criar *triggers* usando a Linguagem C.

@@ -3,14 +3,16 @@
     Copyright 2020-2022, Gilberto Queiroz.
 
 
+.. _cap_prog_servidor_plpgsql_introducao:
+
 Introdução
 ==========
 
 
-A Linguagem ``PL/pgSQL``\ [#f1]_ permite que comandos SQL sejam executados dentro de uma linguagem procedural, isto é, de uma linguagem com comandos de decisão (*if-then-else*) e repetição (laços *do-while*), e que facilita o trabalho de manipulação do resultado da execução de consultas.
+A linguagem ``PL/pgSQL``\ [#f1]_ permite que comandos SQL sejam executados dentro de uma linguagem procedural, isto é, de uma linguagem com comandos de decisão (*if-then-else*) e repetição (laços *do-while*), e que facilita o trabalho de manipulação do resultado da execução de consultas.
 
 
-A sintaxe geral de funções em ``PL/pgSQL`` é a seguinte\ [#f2]_\ :sup:`,`\ [#f3]_:
+O comando ``CREATE FUNCTION`` permite definir funções escritas em ``PL/pgSQL``, cuja sintaxe geral é a seguinte\ [#f2]_\ :sup:`,`\ [#f3]_:
 
 
 .. code-block:: plpgsql
@@ -21,7 +23,7 @@ A sintaxe geral de funções em ``PL/pgSQL`` é a seguinte\ [#f2]_\ :sup:`,`\ [#
     $$
     [<<rótulo>>]
     [DECLARE
-        lista-variáveis;]
+        declaração-variáveis;]
     BEGIN
         comandos;
         [EXCEPTION
@@ -33,30 +35,29 @@ A sintaxe geral de funções em ``PL/pgSQL`` é a seguinte\ [#f2]_\ :sup:`,`\ [#
     LANGUAGE plpgsql;
 
 
-Vamos começar criando uma função chamada ``my_distance`` capaz de computar a distância euclideana entre dois pontos. O código desta função é mostrado a seguir:
+Vamos começar criando uma função chamada ``my_distance`` capaz de computar a distância euclidiana entre dois pontos. O código desta função é mostrado a seguir:
 
 
 .. code-block:: plpgsql
 
-    CREATE OR REPLACE FUNCTION my_distance(first GEOMETRY,
-                                           second GEOMETRY)
-    RETURNS NUMERIC
-    AS
-    $$
-    DECLARE
-        dx NUMERIC DEFAULT 0.0;
-        dy NUMERIC DEFAULT 0.0;
-        d  NUMERIC DEFAULT 0.0;
-    BEGIN
-        dx := ST_X(first) - ST_X(second);
-        dy := ST_Y(first) - ST_Y(second);
+    CREATE OR REPLACE FUNCTION my_distance(first GEOMETRY, second GEOMETRY)
+        RETURNS NUMERIC
+        AS
+        $$
+            DECLARE
+                dx NUMERIC DEFAULT 0.0;
+                dy NUMERIC DEFAULT 0.0;
+                d  NUMERIC DEFAULT 0.0;
+            BEGIN
+                dx := ST_X(first) - ST_X(second);
+                dy := ST_Y(first) - ST_Y(second);
 
-        d := sqrt(power(dx, 2) + power(dy, 2));
+                d := sqrt(power(dx, 2) + power(dy, 2));
 
-        RETURN d;
-    END;
-    $$
-    LANGUAGE plpgsql;
+                RETURN d;
+            END;
+        $$
+        LANGUAGE plpgsql;
 
 
 As funções ``PL/pgSQL`` podem ser usadas em qualquer parte das consultas SQL onde uma função comum possa ser incluída. Uma vez criada, uma função pode ser chamada de dentro de uma consulta submetida tanto do lado cliente quanto do lado servidor. No entanto, a execução da função ocorrerá sempre do lado servidor.
@@ -84,7 +85,27 @@ ou:
                ST_GeometryFromText('POINT(1 1)', 4326));
 
 
+.. note::
 
+    A partir das versões 9.0 do PostgreSQL, o suporte ``PL/pgSQL`` é registrado no banco ``template1`` criado durante a instalação do servidor. Dessa maneira, os bancos de dados criados a partir desse *template* já possuem a extensão habilitada e pronta para uso. Para saber se a extensão ``plpgsql`` encontra-se habilitada para seu banco de dados, consulte a tabela ``pg_extension``, como mostrado abaixo:
+
+
+    .. code-block:: postgresql
+
+        SELECT extname FROM pg_extension ORDER BY extname;
+
+
+    Saída:
+
+
+    .. code-block:: text
+        :emphasize-lines: 3
+
+          extname   
+        ------------
+         plpgsql
+         postgis
+        (2 rows)
 
 
 .. rubric:: Notas
@@ -97,7 +118,7 @@ ou:
 
 .. [#f2]
 
-    Para maiores detalhes da sintaxe da linguagem ``PL/pgSQL``, consulte :ref:`Postgresql 9.5.3 documentation - chapter 40. pl/pgsql - sql procedural language <PGGlobalPLPGSQL>`.
+    Para maiores detalhes da sintaxe da linguagem ``PL/pgSQL``, consulte `Chapter 43. PL/pgSQL — SQL Procedural Language <https://www.postgresql.org/docs/14/plpgsql.html>`__.
 
 
 .. [#f3]

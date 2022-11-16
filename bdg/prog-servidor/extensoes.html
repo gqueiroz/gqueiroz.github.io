@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>7.3. Extensões &mdash; BDGeo</title>
+  <title>7.4. Extensões &mdash; BDGeo</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -29,8 +29,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="7.4. Considerações Finais" href="consideracoes.html" />
-    <link rel="prev" title="7.2. Triggers e Relacionamentos de Integridade Espacial" href="triggers.html" /> 
+    <link rel="next" title="7.5. Considerações Finais" href="consideracoes.html" />
+    <link rel="prev" title="7.3. PL/Python" href="plpython/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -63,8 +63,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">7. Programação do Lado Servidor no PostgreSQL</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plpgsql/index.html">7.1. PL/pgSQL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="triggers.html">7.2. Triggers e Relacionamentos de Integridade Espacial</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">7.3. Extensões</a></li>
-<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">7.4. Considerações Finais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plpython/index.html">7.3. PL/Python</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.4. Extensões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">7.5. Considerações Finais</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
@@ -101,12 +102,12 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
-      <li><span class="section-number">7.3. </span>Extensões</li>
+      <li><span class="section-number">7.4. </span>Extensões</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
-        <a href="triggers.html" class="btn btn-neutral float-left" title="7.2. Triggers e Relacionamentos de Integridade Espacial" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="consideracoes.html" class="btn btn-neutral float-right" title="7.4. Considerações Finais" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plpython/index.html" class="btn btn-neutral float-left" title="7.3. PL/Python" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="7.5. Considerações Finais" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -114,15 +115,15 @@
            <div itemprop="articleBody">
              
   <section id="extensoes">
-<span id="prog-servidor-extensoes"></span><h1><span class="section-number">7.3. </span>Extensões<a class="headerlink" href="#extensoes" title="Link permanente para este cabeçalho"></a></h1>
+<span id="prog-servidor-extensoes"></span><h1><span class="section-number">7.4. </span>Extensões<a class="headerlink" href="#extensoes" title="Link permanente para este cabeçalho"></a></h1>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="triggers.html" class="btn btn-neutral float-left" title="7.2. Triggers e Relacionamentos de Integridade Espacial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="consideracoes.html" class="btn btn-neutral float-right" title="7.4. Considerações Finais" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plpython/index.html" class="btn btn-neutral float-left" title="7.3. PL/Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="7.5. Considerações Finais" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -132,7 +133,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fdc2757b370>
+<jinja2.runtime.BlockReference object at 0x7fbea6d6cac0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

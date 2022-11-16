@@ -3,6 +3,8 @@
     Copyright 2020-2021, Gilberto Queiroz.
 
 
+.. _cap_prog_servidor_plpgsql_parametros:
+
 Tipos dos Parâmetros e Tipo de Retorno
 ======================================
 
@@ -16,32 +18,32 @@ Os parâmetros das funções são nomeados com os identificadores ``$1``, ``$2``
 .. code-block:: plpgsql
 
     CREATE OR REPLACE FUNCTION my_distance(GEOMETRY, GEOMETRY)
-    RETURNS NUMERIC
-    AS
-    $$
-    DECLARE
-        dx NUMERIC DEFAULT 0.0;
-        dy NUMERIC DEFAULT 0.0;
-        d  NUMERIC DEFAULT 0.0;
-    BEGIN
-        IF((ST_GeometryType($1) <> 'ST_Point') OR
-           (ST_GeometryType($2) <> 'ST_Point')) THEN
-            RAISE EXCEPTION 'Tipos geométricos inválidos!';
-        END IF;
+        RETURNS NUMERIC
+        AS
+        $$
+            DECLARE
+                dx NUMERIC DEFAULT 0.0;
+                dy NUMERIC DEFAULT 0.0;
+                d  NUMERIC DEFAULT 0.0;
+            BEGIN
+                IF( (ST_GeometryType($1) <> 'ST_Point') OR
+                    (ST_GeometryType($2) <> 'ST_Point') ) THEN
+                    RAISE EXCEPTION 'Tipos geométricos inválidos!';
+                END IF;
 
-        IF(ST_SRID($1) <> ST_SRID($2)) THEN
-            RAISE EXCEPTION 'Pontos com SRIDs diferentes!';
-        END IF;
+                IF(ST_SRID($1) <> ST_SRID($2)) THEN
+                    RAISE EXCEPTION 'Pontos com SRIDs diferentes!';
+                END IF;
+        
+                dx := ST_X($1) - ST_X($2);
+                dy := ST_Y($1) - ST_Y($2);
 
-        dx := ST_X($1) - ST_X($2);
-        dy := ST_Y($1) - ST_Y($2);
+                d := sqrt(power(dx, 2) + power(dy, 2));
 
-        d := sqrt(power(dx, 2) + power(dy, 2));
-
-        RETURN d;
-    END;
-    $$
-    LANGUAGE plpgsql;
+                RETURN d;
+            END;
+        $$
+        LANGUAGE plpgsql;
 
 
 .. note::
@@ -56,10 +58,10 @@ Os parâmetros das funções são nomeados com os identificadores ``$1``, ``$2``
 
 .. note::
 
-    Podemos declarar funções com o mesmo nome, porém essas funções deverão ter diferentes parâmetros. Essa capacidade é conhecida por *sobrecarga de funções* (*function overloading*).
+    Podemos declarar funções com o mesmo nome, porém essas funções deverão ter diferentes parâmetros. Essa capacidade é conhecida por **sobrecarga de funções** (**function overloading**).
 
 
-.. note::
+.. tip::
 
-    A saída de uma função pode ser realizada tanto na forma de valores de retorno quanto como parâmetros de saída (``OUT``). Consulte :ref:`Postgresql 9.5.3 documentation - chapter 40. pl/pgsql - sql procedural language <PGGlobalPLPGSQL>` para maiores informações sobre como trabalhar com parâmetros de saída.
+    A saída de uma função pode ser realizada tanto na forma de valores de retorno quanto como parâmetros de saída (``OUT``). Consulte `43.3.1. Declaring Function Parameters <https://www.postgresql.org/docs/14/plpgsql-declarations.html>`__ para maiores informações sobre como trabalhar com parâmetros de saída.
 

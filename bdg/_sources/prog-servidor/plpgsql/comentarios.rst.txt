@@ -3,6 +3,8 @@
     Copyright 2020-2022, Gilberto Queiroz.
 
 
+.. _cap_prog_servidor_plpgsql_comentarios:
+
 Comentários
 ===========
 
@@ -16,7 +18,7 @@ O trecho de código abaixo mostra como incluir alguns comentários na definiçã
 .. code-block:: plpgsql
 
     /*
-      Descrição: Função que computa a distância euclideana
+      Descrição: Função que computa a distância euclidiana
                  entre dois pontos.
 
       Parâmetros:
@@ -24,25 +26,25 @@ O trecho de código abaixo mostra como incluir alguns comentários na definiçã
         - second: Ponto no espaço bidimensional.
 
       Retorno: um valor numérico que representa a distância
-               euclideana entre os pontos informados.
+               euclidiana entre os pontos informados.
      */
-    CREATE OR REPLACE FUNCTION my_distance(first GEOMETRY,
-                                           second GEOMETRY)
-    RETURNS NUMERIC
-    AS
-    $$
-    DECLARE
-        dx NUMERIC DEFAULT 0.0;
-        dy NUMERIC DEFAULT 0.0;
-        d  NUMERIC DEFAULT 0.0;
-    BEGIN
-        dx := ST_X(first) - ST_X(second);
-        dy := ST_Y(first) - ST_Y(second);
+    CREATE OR REPLACE FUNCTION my_distance(first GEOMETRY, second GEOMETRY)
+        RETURNS NUMERIC
+        AS
+        $$
+            DECLARE
+                dx NUMERIC DEFAULT 0.0;
+                dy NUMERIC DEFAULT 0.0;
+                d  NUMERIC DEFAULT 0.0;
+            BEGIN
+                dx := ST_X(first) - ST_X(second);
+                dy := ST_Y(first) - ST_Y(second);
 
-        -- sqrt: operação raiz quadrada
-        d := sqrt(power(dx, 2) + power(dy, 2));
+                -- sqrt: operação raiz quadrada
+                d := sqrt(power(dx, 2) + power(dy, 2));
 
-        RETURN d;
-    END;
-    $$
-    LANGUAGE plpgsql;
+                RETURN d;
+            END;
+        $$
+        LANGUAGE plpgsql;
+

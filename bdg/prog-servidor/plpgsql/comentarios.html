@@ -74,8 +74,9 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../triggers.html">7.2. Triggers e Relacionamentos de Integridade Espacial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../extensoes.html">7.3. Extensões</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../consideracoes.html">7.4. Considerações Finais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plpython/index.html">7.3. PL/Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extensoes.html">7.4. Extensões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../consideracoes.html">7.5. Considerações Finais</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">8. Dicas</a></li>
@@ -126,11 +127,11 @@
            <div itemprop="articleBody">
              
   <section id="comentarios">
-<h1><span class="section-number">7.1.2. </span>Comentários<a class="headerlink" href="#comentarios" title="Link permanente para este cabeçalho"></a></h1>
+<span id="cap-prog-servidor-plpgsql-comentarios"></span><h1><span class="section-number">7.1.2. </span>Comentários<a class="headerlink" href="#comentarios" title="Link permanente para este cabeçalho"></a></h1>
 <p>Uma boa prática de programação, consiste em documentar as funções. Em <code class="docutils literal notranslate"><span class="pre">PL/pgSQL</span></code>, os comentários de linha começam com um duplo hífen (<code class="docutils literal notranslate"><span class="pre">--</span></code>), enquanto comentários de bloco utilizam as marcações <code class="docutils literal notranslate"><span class="pre">/*</span></code> e <code class="docutils literal notranslate"><span class="pre">*/</span></code>.</p>
 <p>O trecho de código abaixo mostra como incluir alguns comentários na definição da função <code class="docutils literal notranslate"><span class="pre">my_distance</span></code>.</p>
 <div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">  Descrição: Função que computa a distância euclideana</span>
+<span class="cm">  Descrição: Função que computa a distância euclidiana</span>
 <span class="cm">             entre dois pontos.</span>
 
 <span class="cm">  Parâmetros:</span>
@@ -138,28 +139,27 @@
 <span class="cm">    - second: Ponto no espaço bidimensional.</span>
 
 <span class="cm">  Retorno: um valor numérico que representa a distância</span>
-<span class="cm">           euclideana entre os pontos informados.</span>
+<span class="cm">           euclidiana entre os pontos informados.</span>
 <span class="cm"> */</span><span class="w"></span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">my_distance</span><span class="p">(</span><span class="k">first</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                       </span><span class="k">second</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">)</span><span class="w"></span>
-<span class="k">RETURNS</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="w"></span>
-<span class="k">AS</span><span class="w"></span>
-<span class="s">$$</span><span class="w"></span>
-<span class="k">DECLARE</span><span class="w"></span>
-<span class="w">    </span><span class="n">dx</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">dy</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">d</span><span class="w">  </span><span class="nb">NUMERIC</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
-<span class="k">BEGIN</span><span class="w"></span>
-<span class="w">    </span><span class="n">dx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_X</span><span class="p">(</span><span class="k">first</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ST_X</span><span class="p">(</span><span class="k">second</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">dy</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_Y</span><span class="p">(</span><span class="k">first</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ST_Y</span><span class="p">(</span><span class="k">second</span><span class="p">);</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">my_distance</span><span class="p">(</span><span class="k">first</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">,</span><span class="w"> </span><span class="k">second</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="w"></span>
+<span class="w">    </span><span class="k">AS</span><span class="w"></span>
+<span class="w">    </span><span class="s">$$</span><span class="w"></span>
+<span class="w">        </span><span class="k">DECLARE</span><span class="w"></span>
+<span class="w">            </span><span class="n">dx</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">dy</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">d</span><span class="w">  </span><span class="nb">NUMERIC</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">BEGIN</span><span class="w"></span>
+<span class="w">            </span><span class="n">dx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_X</span><span class="p">(</span><span class="k">first</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ST_X</span><span class="p">(</span><span class="k">second</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="n">dy</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_Y</span><span class="p">(</span><span class="k">first</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ST_Y</span><span class="p">(</span><span class="k">second</span><span class="p">);</span><span class="w"></span>
 
-<span class="w">    </span><span class="c1">-- sqrt: operação raiz quadrada</span>
-<span class="w">    </span><span class="n">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">power</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">power</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">));</span><span class="w"></span>
+<span class="w">            </span><span class="c1">-- sqrt: operação raiz quadrada</span>
+<span class="w">            </span><span class="n">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">power</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">power</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">));</span><span class="w"></span>
 
-<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="n">d</span><span class="p">;</span><span class="w"></span>
-<span class="k">END</span><span class="p">;</span><span class="w"></span>
-<span class="s">$$</span><span class="w"></span>
-<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">RETURN</span><span class="w"> </span><span class="n">d</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="s">$$</span><span class="w"></span>
+<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -179,7 +179,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fdc27382700>
+<jinja2.runtime.BlockReference object at 0x7fbea64f5970>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 
