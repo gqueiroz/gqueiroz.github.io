@@ -65,9 +65,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../triggers.html">7.2. Triggers e Relacionamentos de Integridade Espacial</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">7.3. PL/Python</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#instalacao-no-linux-ubuntu">7.3.1. Instalação no Linux Ubuntu</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#habilitando-o-uso-do-pl-python-em-um-banco-de-dados">7.3.2. Habilitando o uso do PL/Python em um Banco de Dados</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sintaxe-de-funcoes-pl-python">7.3.3. Sintaxe de Funções PL/Python</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#criando-funcoes">7.3.4. Criando Funções</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#instalacao-no-microsoft-windows">7.3.2. Instalação no Microsoft Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#habilitando-o-uso-do-pl-python-em-um-banco-de-dados">7.3.3. Habilitando o uso do PL/Python em um Banco de Dados</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sintaxe-de-funcoes-pl-python">7.3.4. Sintaxe de Funções PL/Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#criando-funcoes">7.3.5. Criando Funções</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../extensoes.html">7.4. Extensões</a></li>
@@ -149,8 +150,100 @@ postgresql-plpython3-15 - PL/Python 3 procedural language for PostgreSQL 15
 <div><p>sudo apt install postgresql-plpython3-14</p>
 </div></blockquote>
 </section>
+<section id="instalacao-no-microsoft-windows">
+<h2><span class="section-number">7.3.2. </span>Instalação no Microsoft Windows<a class="headerlink" href="#instalacao-no-microsoft-windows" title="Link permanente para este cabeçalho"></a></h2>
+<p>No Microsoft Windows, a instalação do ambiente Python necessário à extensão <code class="docutils literal notranslate"><span class="pre">plpython2u</span></code> ou <code class="docutils literal notranslate"><span class="pre">plpython3u</span></code> pode ser realizada com suporte da aplicação <strong>Stack Builder</strong>, usada na instalação do PostgreSQL e do PostGIS. Localize o atalho dessa aplicação no grupo PostgreSQL, a partir do <em>menu iniciar do Windows</em>. Na janela apresentada, abra a categoria <strong>Add-ons, tools, and utilities</strong>, e selecione o pacote <strong>EDB Language Pack v2.0-1</strong>, como mostrado na <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-01"><span class="std std-numref">Figura 7.1</span></a>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-01">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-01.png"><img alt="Selecionando o pacote EDB Language Pack v2.0-1 para instalação no Stack Builder" src="../../_images/plpython-win-install-01.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.1 - </span><span class="caption-text">Selecionando o pacote <em>EDB Language Pack v2.0-1</em> para instalação no <em>Stack Builder</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-01" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Na janela seguinte (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-02"><span class="std std-numref">Figura 7.2</span></a>), indique o diretório no qual o <em>Stack Builder</em> irá realizar o download do instalador do <em>EDB Language Pack</em>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-02">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-02.png"><img alt="Local de gravação do pacote EDB Language Pack" src="../../_images/plpython-win-install-02.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.2 - </span><span class="caption-text">Local de gravação do pacote <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-02" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Assim que o <em>download</em> encerrar, uma janela como a da <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-03"><span class="std std-numref">Figura 7.3</span></a> será apresentada. Selecione o botão <code class="docutils literal notranslate"><span class="pre">Next</span> <span class="pre">&gt;</span></code> para iniciar a instalação do pacote baixado do <em>EDB Language Pack</em>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-03">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-03.png"><img alt="Finalização do download do pacote EDB Language Pack" src="../../_images/plpython-win-install-03.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.3 - </span><span class="caption-text">Finalização do download do pacote <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-03" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>A primeira janela aberta pelo instalador do <em>EDB Language Pack</em> irá perguntar qual idioma deverá ser usado durante a instalação do pacote (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-04"><span class="std std-numref">Figura 7.4</span></a>).</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-04">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-04.png"><img alt="Idioma a ser usado durante a instalação do EDB Language Pack" src="../../_images/plpython-win-install-04.png" style="width: 40%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.4 - </span><span class="caption-text">Idioma a ser usado durante a instalação do <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-04" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Pressione o botão <code class="docutils literal notranslate"><span class="pre">Next</span> <span class="pre">&gt;</span></code> na janela apresentada (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-05"><span class="std std-numref">Figura 7.5</span></a>) para iniciar a instalação.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-05">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-05.png"><img alt="Instalação do EDB Language Pack" src="../../_images/plpython-win-install-05.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.5 - </span><span class="caption-text">Instalação do <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-05" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Indique o diretório onde o <em>EDB Language Pack</em> deverá ser instalado. No exemplo mostrado na <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-06"><span class="std std-numref">Figura 7.6</span></a>, esse pacote será instalado no diretório <code class="docutils literal notranslate"><span class="pre">C:\edb\languagepack\v2</span></code>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-06">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-06.png"><img alt="Diretório de instalação do EDB Language Pack" src="../../_images/plpython-win-install-06.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.6 - </span><span class="caption-text">Diretório de instalação do <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-06" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-07">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-07.png"><img alt="Instalação do EDB Language Pack" src="../../_images/plpython-win-install-07.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.7 - </span><span class="caption-text">Instalação do <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-07" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-08">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-08.png"><img alt="Instalação do EDB Language Pack" src="../../_images/plpython-win-install-08.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.8 - </span><span class="caption-text">Instalação do <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-08" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Após instalar o <em>EDB Language Pack</em>, será necessário ajustar as <strong>variáveis de ambiente</strong> <code class="docutils literal notranslate"><span class="pre">PATH</span></code>, <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> e <code class="docutils literal notranslate"><span class="pre">PYTHONHOME</span></code>. Para isso, localize no Windows a janela mostrada na <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-09"><span class="std std-numref">Figura 7.9</span></a> e pressione o botão <code class="docutils literal notranslate"><span class="pre">Variáveis</span> <span class="pre">de</span> <span class="pre">Ambiente...</span></code>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-09">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-09.png"><img alt="Painel de acesso ao controle de variáveis de ambiente" src="../../_images/plpython-win-install-09.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.9 - </span><span class="caption-text">Painel de acesso ao controle de variáveis de ambiente.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-09" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Na janela apresentada, na seão <strong>Variáveis do sistema</strong>, inclua as variáveis <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> e <code class="docutils literal notranslate"><span class="pre">PYTHONHOME</span></code> associadas à localização do ambiente Python instalado junto com o <em>EDB Language Pack</em> (ex: <code class="docutils literal notranslate"><span class="pre">C:\edb\languagepack\v2\Python-3.9</span></code>) (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-10"><span class="std std-numref">Figura 7.10</span></a>).</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-10">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-10.png"><img alt="Ajustando as variáveis de ambiente PYTHONPATH e PYTHONHOME" src="../../_images/plpython-win-install-10.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.10 - </span><span class="caption-text">Ajustando as variáveis de ambiente <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> e <code class="docutils literal notranslate"><span class="pre">PYTHONHOME</span></code>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-10" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Nessa mesma janela, inclua o caminho da DLL da extensão <code class="docutils literal notranslate"><span class="pre">plpython3u</span></code> e do ambiente Python doo <em>EDB Language Pack</em>. No meu caso, a DLL da extensão <code class="docutils literal notranslate"><span class="pre">plpython3u</span></code> enconra-se em <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\PostgreSQL\14\lib</span></code> e o ambiente Python em <code class="docutils literal notranslate"><span class="pre">C:\edb\languagepack\v2\Python-3.9</span></code> e <code class="docutils literal notranslate"><span class="pre">C:\edb\languagepack\v2\Python-3.9\Scripts</span></code> (Figuras <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-11"><span class="std std-numref">7.11</span></a> e <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-12"><span class="std std-numref">7.12</span></a>).</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-11">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-11.png"><img alt="Ajustando a variável de ambiente PATH" src="../../_images/plpython-win-install-11.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.11 - </span><span class="caption-text">Ajustando a variável de ambiente <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-11" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-12">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-12.png"><img alt="Ajustando a variável de ambiente PATH" src="../../_images/plpython-win-install-12.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.12 - </span><span class="caption-text">Ajustando a variável de ambiente <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-12" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Para que as variáveis de ambiente tenham efeito, será necessário reicializar o servidor PostgreSQL (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-13"><span class="std std-numref">Figura 7.13</span></a>).</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-13">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-13.png"><img alt="Reinicializando o servidor PostgreSQL" src="../../_images/plpython-win-install-13.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.13 - </span><span class="caption-text">Reinicializando o servidor PostgreSQL.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-13" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
 <section id="habilitando-o-uso-do-pl-python-em-um-banco-de-dados">
-<h2><span class="section-number">7.3.2. </span>Habilitando o uso do PL/Python em um Banco de Dados<a class="headerlink" href="#habilitando-o-uso-do-pl-python-em-um-banco-de-dados" title="Link permanente para este cabeçalho"></a></h2>
+<h2><span class="section-number">7.3.3. </span>Habilitando o uso do PL/Python em um Banco de Dados<a class="headerlink" href="#habilitando-o-uso-do-pl-python-em-um-banco-de-dados" title="Link permanente para este cabeçalho"></a></h2>
 <p>Se a extensão PL/Python estiver instalada em seu sistema, ela será listada na visão <code class="docutils literal notranslate"><span class="pre">pg_available_extensions</span></code>, como mostrado abaixo:</p>
 <div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_available_extensions</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;plpython%&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
@@ -181,7 +274,7 @@ postgresql-plpython3-15 - PL/Python 3 procedural language for PostgreSQL 15
 </div>
 </section>
 <section id="sintaxe-de-funcoes-pl-python">
-<h2><span class="section-number">7.3.3. </span>Sintaxe de Funções PL/Python<a class="headerlink" href="#sintaxe-de-funcoes-pl-python" title="Link permanente para este cabeçalho"></a></h2>
+<h2><span class="section-number">7.3.4. </span>Sintaxe de Funções PL/Python<a class="headerlink" href="#sintaxe-de-funcoes-pl-python" title="Link permanente para este cabeçalho"></a></h2>
 <p>A sintaxe de criação de uma função em Python é muito semelhante a realizada com PL/pgSQL, com a diferença de usar <code class="docutils literal notranslate"><span class="pre">plpython3u</span></code> após a palavra-chave <code class="docutils literal notranslate"><span class="pre">LANGUAGE</span></code>:</p>
 <div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">funcname</span><span class="w"> </span><span class="p">(</span><span class="n">argument</span><span class="o">-</span><span class="n">list</span><span class="p">)</span><span class="w"></span>
 <span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="k">return</span><span class="o">-</span><span class="k">type</span><span class="w"></span>
@@ -194,7 +287,7 @@ postgresql-plpython3-15 - PL/Python 3 procedural language for PostgreSQL 15
 </div>
 </section>
 <section id="criando-funcoes">
-<h2><span class="section-number">7.3.4. </span>Criando Funções<a class="headerlink" href="#criando-funcoes" title="Link permanente para este cabeçalho"></a></h2>
+<h2><span class="section-number">7.3.5. </span>Criando Funções<a class="headerlink" href="#criando-funcoes" title="Link permanente para este cabeçalho"></a></h2>
 <p>Nessa seção, vamos reescrever algumas das funções PL/pgSQL criadas na <a class="reference internal" href="../plpgsql/index.html#cap-prog-servidor-plpgsql"><span class="std std-numref">Seção 7.1</span></a>.</p>
 <hr class="docutils" />
 <p>Geração de um conjunto de pontos aleatórios:</p>
@@ -280,7 +373,7 @@ postgresql-plpython3-15 - PL/Python 3 procedural language for PostgreSQL 15
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fbea64c3400>
+<jinja2.runtime.BlockReference object at 0x7f41d2b676a0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

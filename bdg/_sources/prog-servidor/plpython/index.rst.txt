@@ -3,6 +3,8 @@
     Copyright 2020-2022, Gilberto Queiroz.
 
 
+.. include:: ../../def.rst
+
 .. _cap_prog_servidor_plpython:
 
 PL/Python
@@ -47,6 +49,156 @@ Para cada versão do servidor PostgreSQL suportada teremos um pacote associado, 
 Se a opção de instalação for o pacote para o PostgreSQL 14, devemos instalar o pacote ``postgresql-plpython3-14``:
 
     sudo apt install postgresql-plpython3-14
+
+
+Instalação no Microsoft Windows
+-------------------------------
+
+
+No Microsoft Windows, a instalação do ambiente Python necessário à extensão ``plpython2u`` ou ``plpython3u`` pode ser realizada com suporte da aplicação **Stack Builder**, usada na instalação do PostgreSQL e do PostGIS. Localize o atalho dessa aplicação no grupo PostgreSQL, a partir do *menu iniciar do Windows*. Na janela apresentada, abra a categoria **Add-ons, tools, and utilities**, e selecione o pacote **EDB Language Pack v2.0-1**, como mostrado na :numref:`Figura %s <fig:prog-servidor:plpython:win-install-01>`.
+
+
+.. figure:: ../../img/plpython/plpython-win-install-01.png
+    :alt: Selecionando o pacote EDB Language Pack v2.0-1 para instalação no Stack Builder
+    :width: 80%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-01
+
+    Selecionando o pacote *EDB Language Pack v2.0-1* para instalação no *Stack Builder*.
+
+
+Na janela seguinte (:numref:`Figura %s <fig:prog-servidor:plpython:win-install-02>`), indique o diretório no qual o *Stack Builder* irá realizar o download do instalador do *EDB Language Pack*.
+
+
+.. figure:: ../../img/plpython/plpython-win-install-02.png
+    :alt: Local de gravação do pacote EDB Language Pack
+    :width: 80%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-02
+
+    Local de gravação do pacote *EDB Language Pack*.
+
+
+Assim que o *download* encerrar, uma janela como a da :numref:`Figura %s <fig:prog-servidor:plpython:win-install-03>` será apresentada. Selecione o botão ``Next >`` para iniciar a instalação do pacote baixado do *EDB Language Pack*.
+
+
+.. figure:: ../../img/plpython/plpython-win-install-03.png
+    :alt: Finalização do download do pacote EDB Language Pack
+    :width: 80%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-03
+
+    Finalização do download do pacote *EDB Language Pack*.
+
+
+A primeira janela aberta pelo instalador do *EDB Language Pack* irá perguntar qual idioma deverá ser usado durante a instalação do pacote (:numref:`Figura %s <fig:prog-servidor:plpython:win-install-04>`). 
+
+
+.. figure:: ../../img/plpython/plpython-win-install-04.png
+    :alt: Idioma a ser usado durante a instalação do EDB Language Pack
+    :width: 40%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-04
+
+    Idioma a ser usado durante a instalação do *EDB Language Pack*.
+
+
+Pressione o botão ``Next >`` na janela apresentada (:numref:`Figura %s <fig:prog-servidor:plpython:win-install-05>`) para iniciar a instalação.
+
+
+.. figure:: ../../img/plpython/plpython-win-install-05.png
+    :alt: Instalação do EDB Language Pack
+    :width: 75%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-05
+
+    Instalação do *EDB Language Pack*.
+
+
+Indique o diretório onde o *EDB Language Pack* deverá ser instalado. No exemplo mostrado na :numref:`Figura %s <fig:prog-servidor:plpython:win-install-06>`, esse pacote será instalado no diretório ``C:\edb\languagepack\v2``.
+
+
+.. figure:: ../../img/plpython/plpython-win-install-06.png
+    :alt: Diretório de instalação do EDB Language Pack
+    :width: 75%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-06
+
+    Diretório de instalação do *EDB Language Pack*.
+
+
+.. figure:: ../../img/plpython/plpython-win-install-07.png
+    :alt: Instalação do EDB Language Pack
+    :width: 75%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-07
+
+    Instalação do *EDB Language Pack*.
+
+
+.. figure:: ../../img/plpython/plpython-win-install-08.png
+    :alt: Instalação do EDB Language Pack
+    :width: 75%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-08
+
+    Instalação do *EDB Language Pack*.
+
+
+Após instalar o *EDB Language Pack*, será necessário ajustar as **variáveis de ambiente** ``PATH``, ``PYTHONPATH`` e ``PYTHONHOME``. Para isso, localize no Windows a janela mostrada na :numref:`Figura %s <fig:prog-servidor:plpython:win-install-09>` e pressione o botão ``Variáveis de Ambiente...``.
+
+.. figure:: ../../img/plpython/plpython-win-install-09.png
+    :alt: Painel de acesso ao controle de variáveis de ambiente
+    :width: 100%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-09
+
+    Painel de acesso ao controle de variáveis de ambiente.
+
+
+Na janela apresentada, na seão **Variáveis do sistema**, inclua as variáveis ``PYTHONPATH`` e ``PYTHONHOME`` associadas à localização do ambiente Python instalado junto com o *EDB Language Pack* (ex: ``C:\edb\languagepack\v2\Python-3.9``) (:numref:`Figura %s <fig:prog-servidor:plpython:win-install-10>`).
+
+.. figure:: ../../img/plpython/plpython-win-install-10.png
+    :alt: Ajustando as variáveis de ambiente PYTHONPATH e PYTHONHOME
+    :width: 100%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-10
+
+    Ajustando as variáveis de ambiente ``PYTHONPATH`` e ``PYTHONHOME``.
+
+
+Nessa mesma janela, inclua o caminho da DLL da extensão ``plpython3u`` e do ambiente Python doo *EDB Language Pack*. No meu caso, a DLL da extensão ``plpython3u`` enconra-se em ``C:\Program Files\PostgreSQL\14\lib`` e o ambiente Python em ``C:\edb\languagepack\v2\Python-3.9`` e ``C:\edb\languagepack\v2\Python-3.9\Scripts`` (Figuras :numref:`%s <fig:prog-servidor:plpython:win-install-11>` e :numref:`%s <fig:prog-servidor:plpython:win-install-12>`).
+
+.. figure:: ../../img/plpython/plpython-win-install-11.png
+    :alt: Ajustando a variável de ambiente PATH
+    :width: 100%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-11
+
+    Ajustando a variável de ambiente ``PATH``.
+
+
+|br|
+
+
+.. figure:: ../../img/plpython/plpython-win-install-12.png
+    :alt: Ajustando a variável de ambiente PATH
+    :width: 100%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-12
+
+    Ajustando a variável de ambiente ``PATH``.
+
+
+Para que as variáveis de ambiente tenham efeito, será necessário reicializar o servidor PostgreSQL (:numref:`Figura %s <fig:prog-servidor:plpython:win-install-13>`).
+
+.. figure:: ../../img/plpython/plpython-win-install-13.png
+    :alt: Reinicializando o servidor PostgreSQL
+    :width: 100%
+    :figclass: align-center
+    :name: fig:prog-servidor:plpython:win-install-13
+
+    Reinicializando o servidor PostgreSQL.
 
 
 Habilitando o uso do PL/Python em um Banco de Dados
