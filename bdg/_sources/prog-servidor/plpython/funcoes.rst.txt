@@ -1,0 +1,100 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../../def.rst
+
+.. _cap_prog_servidor_plpython_funcoes:
+
+Criando Funções
+===============
+
+
+Nessa seção, vamos reescrever algumas das funções PL/pgSQL criadas na :numref:`Seção %s <cap_prog_servidor_plpgsql>`.
+
+
+-----
+
+
+Geração de um conjunto de pontos aleatórios:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION py_random_pt_generator(npts INTEGER)
+        RETURNS SETOF RECORD
+        AS
+        $$
+            from random import random
+            from shapely import wkb
+            from shapely.geometry import Point
+
+            plpy.notice('Computando {} pontos aleatórios...'.format(npts))
+
+            for i in range(1, npts + 1):
+                longitude = 360.0 * random() - 180.0
+                latitude = 180.0 * random() - 90.0
+
+                pt = Point(longitude, latitude)
+
+                tupla = ( i, wkb.dumps(pt, 'hex') )
+
+                if i % 1000 == 0:
+                    plpy.notice('py_random_pt_generator: iteração {}'.format(i))
+
+                yield(tupla)
+                
+            plpy.notice('Finalizado!')
+        $$
+        LANGUAGE plpython3u;
+
+
+Para chamar a função acima teremos que realizar um CAST da geometria para definir o SRID:
+
+
+.. code-block:: postgresql
+
+    SELECT gid, ST_AsEWKT(geom)
+      FROM py_random_pt_generator(5) AS tabela(gid integer, geom geometry(point, 4326));
+
+
+-----
+
+
+Criando uma função que cria uma tabela com um certo número de linhas:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION py_build_pt_table(table_name TEXT, npts INTEGER)
+        RETURNS VOID
+        AS
+        $$
+            plpy.notice('Criando tabela {}...'.format(table_name))            
+            cmd_create = 'CREATE TABLE {} (gid INTEGER, geom GEOMETRY(POINT,4326))'.format(table_name)            
+            plpy.execute(cmd_create)
+
+            query_pts = 'SELECT * FROM py_random_pt_generator({}) AS tabela(gid INTEGER, geom GEOMETRY(POINT, 4326))'.format(npts)
+
+            cmd_insert = 'INSERT INTO {} (gid, geom) VALUES($1, $2)'.format(table_name)
+            prepared_insert = plpy.prepare(cmd_insert, ['INTEGER', 'GEOMETRY'])
+
+            for tupla in plpy.cursor(query_pts):
+                plpy.execute(prepared_insert, [tupla['gid'], tupla['geom']])
+
+            plpy.notice('Criando chave primária...')
+            plpy.execute('ALTER TABLE {} ADD PRIMARY KEY(gid)'.format(table_name))
+
+            plpy.notice('Criando índice espacial...')
+            plpy.execute('CREATE INDEX {0}_geom_idx ON {0} USING GIST (geom)'.format(table_name))
+        $$
+        LANGUAGE plpython3u;
+
+
+Para chamar a função acima, faça:
+
+
+.. code-block:: postgresql
+
+    SELECT py_build_pt_table('pt10k_v2', 10000);

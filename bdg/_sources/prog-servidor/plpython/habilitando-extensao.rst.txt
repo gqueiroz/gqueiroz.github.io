@@ -1,0 +1,60 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../../def.rst
+
+.. _cap_prog_servidor_plpython_habilitando:
+
+Habilitando o uso do PL/Python em um Banco de Dados
+===================================================
+
+
+Se a extensão ``PL/Python`` estiver instalada corretamente em seu sistema, ela será listada na visão ``pg_available_extensions``, como mostrado abaixo:
+
+
+.. code-block:: postgresql
+
+    SELECT * FROM pg_available_extensions WHERE name LIKE 'plpython%';
+
+
+Saída:
+
+
+.. code-block:: text
+
+        name    | default_version | installed_version |                  comment                  
+    ------------+-----------------+-------------------+-------------------------------------------
+     plpython3u | 1.0             |                   | PL/Python3U untrusted procedural language
+    (1 row)
+
+
+No banco de dados ativo, registre o uso dessa extensão da seguinte forma:
+
+
+.. code-block:: postgresql
+
+    CREATE EXTENSION plpython3u;
+
+
+Após esse comando, a extensão ``plpython3u`` deverá aparecer na lista de extensões habilitadas para seu banco de dados:
+
+
+.. code-block:: postgresql
+
+    SELECT extname FROM pg_extension ORDER BY extname;
+
+
+Saída:
+
+
+.. code-block:: text
+    :emphasize-lines: 4
+
+      extname   
+    ------------
+     plpgsql
+     plpython3u
+     postgis
+    (3 rows)

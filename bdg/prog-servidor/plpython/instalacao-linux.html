@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.3.1. Instalação no Linux Ubuntu &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/prog-servidor/plpython/instalacao-linux.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../search.html" />
+    <link rel="next" title="7.3.2. Instalação no Microsoft Windows" href="instalacao-win.html" />
+    <link rel="prev" title="7.3. PL/Python" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. Programação do Lado Servidor no PostgreSQL</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../plpgsql/index.html">7.1. PL/pgSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../triggers.html">7.2. Triggers e Relacionamentos de Integridade Espacial</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.3. PL/Python</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.3.1. Instalação no Linux Ubuntu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="instalacao-win.html">7.3.2. Instalação no Microsoft Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="habilitando-extensao.html">7.3.3. Habilitando o uso do PL/Python em um Banco de Dados</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sintaxe.html">7.3.4. Sintaxe de Funções PL/Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="funcoes.html">7.3.5. Criando Funções</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../extensoes.html">7.4. Extensões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../consideracoes.html">7.5. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">7.3. </span>PL/Python</a> &raquo;</li>
+      <li><span class="section-number">7.3.1. </span>Instalação no Linux Ubuntu</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="index.html" class="btn btn-neutral float-left" title="7.3. PL/Python" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="instalacao-win.html" class="btn btn-neutral float-right" title="7.3.2. Instalação no Microsoft Windows" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="instalacao-no-linux-ubuntu">
+<span id="cap-prog-servidor-plpython-instalacao-linux"></span><h1><span class="section-number">7.3.1. </span>Instalação no Linux Ubuntu<a class="headerlink" href="#instalacao-no-linux-ubuntu" title="Link permanente para este cabeçalho"></a></h1>
+<p>Na distribuição Linux Ubuntu a extensão <code class="docutils literal notranslate"><span class="pre">PL/Python</span></code> pode ser instalada através do próprio gerenciador de pacotes. Se você quiser saber as versões disponíveis desse pacote, utilize o comando <code class="docutils literal notranslate"><span class="pre">apt-cache</span> <span class="pre">search</span></code> como mostrado abaixo:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt-cache search plpython
+</pre></div>
+</div>
+<p>O comando acima produzirá uma listagem semelhante à mostrada abaixo, onde para cada versão do servidor PostgreSQL suportada haverá um pacote <code class="docutils literal notranslate"><span class="pre">plpython3</span></code> associado.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>postgresql-plpython3-13 - PL/Python 3 procedural language for PostgreSQL 13
+postgresql-plpython3-10 - PL/Python 3 procedural language for PostgreSQL 10
+postgresql-plpython3-10-dbgsym - debug symbols for postgresql-plpython3-10
+postgresql-plpython3-11 - PL/Python 3 procedural language for PostgreSQL 11
+postgresql-plpython3-11-dbgsym - debug symbols for postgresql-plpython3-11
+postgresql-plpython3-12 - PL/Python 3 procedural language for PostgreSQL 12
+postgresql-plpython3-12-dbgsym - debug symbols for postgresql-plpython3-12
+postgresql-plpython3-13-dbgsym - debug symbols for postgresql-plpython3-13
+<span class="hll">postgresql-plpython3-14 - PL/Python 3 procedural language for PostgreSQL 14
+</span>postgresql-plpython3-14-dbgsym - debug symbols for postgresql-plpython3-14
+postgresql-plpython3-15 - PL/Python 3 procedural language for PostgreSQL 15
+...
+</pre></div>
+</div>
+<p>Se sua versão do servidor PostgreSQL for a 14, você deverá instalar o pacote <code class="docutils literal notranslate"><span class="pre">postgresql-plpython3-14</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">postgresql</span><span class="o">-</span><span class="n">plpython3</span><span class="o">-</span><span class="mi">14</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Se você fez a instalação do PostgreSQL usando o Docker, como apresentado na <a class="reference internal" href="../../instalacao/pg-pgis-docker.html#sec-instalacao-pg-pgis-docker"><span class="std std-numref">Seção 1.2.2</span></a>, você poderá seguir os passos acima. Para isso, use o comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span></code> para entrar na linha de comandos do seu contêiner:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span> <span class="n">bash</span>
+</pre></div>
+</div>
+<p>Dentro do terminal de comandos do contêiner faça:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">update</span>
+
+<span class="n">apt</span> <span class="n">install</span> <span class="n">postgresql</span><span class="o">-</span><span class="n">plpython3</span><span class="o">-</span><span class="mi">14</span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="index.html" class="btn btn-neutral float-left" title="7.3. PL/Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="instalacao-win.html" class="btn btn-neutral float-right" title="7.3.2. Instalação no Microsoft Windows" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f46dce91af0>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

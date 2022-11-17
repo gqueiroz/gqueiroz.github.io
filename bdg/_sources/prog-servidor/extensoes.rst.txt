@@ -6,7 +6,147 @@
 .. _prog_servidor_extensoes:
 
 Extensões
----------
+=========
+
+
+Esta seção apresenta um exemplo simples de como criar um novo tipo de dados para representação de coordenadas geográficas.
+
+
+**1.** Criando um tipo denominado ``geo_point``:
+
+
+.. code-block:: sql
+
+    CREATE TYPE geo_point AS
+    (
+      x    REAL,
+      y    REAL,
+      srid INTEGER
+    );
 
 
 
+**2.** Criando uma tabela para armazenar a localização de escolas de primeiro e segundo grau:
+
+
+.. code-block:: sql
+
+    CREATE TABLE escolas
+    (
+        gid         SERIAL PRIMARY KEY,
+        nome        VARCHAR(100),
+        localizacao GEO_POINT
+    );
+
+
+**3.** Inserindo tuplas (linhas ou registros) na tabela ``escolas``:
+
+
+.. code-block:: sql
+
+    INSERT INTO escolas (gid, nome, localizacao)
+         VALUES (1, 'Escola Estadual Arlindo Bittencourt', '(-47.88497, -22.02557, 4326)'::GEO_POINT),
+                (2, 'Colégio Arquidiocesano de Ouro Preto', '(-43.51592, -20.38144, 4326)'::GEO_POINT),
+                (3, 'Instituto São José', '(-45.90245, -23.20000, 4326)'::GEO_POINT);
+
+
+**4.** Recuperando as tuplas da tabela ``escolas``:
+
+
+.. code-block:: sql
+
+    SELECT * FROM escolas;
+
+
+**5.** Criando uma função para computar a distância entre dois pontos no plano cartesiano:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION distance(first GEO_POINT, second GEO_POINT)
+        RETURNS REAL AS $$
+        DECLARE
+            dx REAL;
+            dy REAL;
+        BEGIN
+            dx = (first.x - second.x);
+
+            dy = (first.y - second.y);
+
+            RETURN sqrt(dx * dx + dy * dy);
+        END;
+        $$
+        LANGUAGE plpgsql;
+
+
+**6.** Utilizando a função ``distance`` para computar a distância entre dois pontos:
+
+
+.. code-block:: sql
+
+    SELECT distance('(1, 1, 4326)'::GEO_POINT, '(2, 2, 4326)'::GEO_POINT);
+
+
+**7.** Criando um operador para comparação entre dois pontos:
+
+
+(a) Criação da função de comparação:
+
+
+.. code-block:: plpgsql
+
+    CREATE OR REPLACE FUNCTION less_than(first GEO_POINT, second GEO_POINT)
+        RETURNS BOOL AS $$
+        BEGIN
+            IF(first.x < second.x) THEN
+                RETURN TRUE;
+            END IF;
+
+            IF(first.x > second.x) THEN
+                RETURN FALSE;
+            END IF;
+
+            IF(first.y < second.y) THEN
+                RETURN TRUE;
+            END IF;
+
+            RETURN FALSE;
+        END;
+        $$
+        LANGUAGE plpgsql;
+
+
+(b) A função acima poderia ser utilizada da seguinte forma:
+
+
+.. code-block:: sql
+
+    SELECT less_than('(1, 2, 4326)'::GEO_POINT, '(10, 20, 4326)'::GEO_POINT);
+
+
+.. code-block:: sql
+
+    SELECT less_than('(1, 2, 4326)'::GEO_POINT, '(-1, 2, 4326)'::GEO_POINT);
+
+
+(c) Criando o operador associado à função de comparação:
+
+
+.. code-block:: sql
+
+    CREATE OPERATOR <
+    (
+      leftarg = GEO_POINT,
+      rightarg = GEO_POINT,
+      procedure = less_than,
+      commutator = >,
+      negator = >=
+    );
+
+
+(d) Utilizando a função ``less_than`` através do operador ``<``:
+
+
+.. code-block:: sql
+
+    SELECT '(1, 2, 4326)'::GEO_POINT < '(10, 2, 4326)'::GEO_POINT;

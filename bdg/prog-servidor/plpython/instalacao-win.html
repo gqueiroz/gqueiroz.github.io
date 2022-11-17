@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.3.2. Instalação no Microsoft Windows &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/prog-servidor/plpython/instalacao-win.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../search.html" />
+    <link rel="next" title="7.3.3. Habilitando o uso do PL/Python em um Banco de Dados" href="habilitando-extensao.html" />
+    <link rel="prev" title="7.3.1. Instalação no Linux Ubuntu" href="instalacao-linux.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. Programação do Lado Servidor no PostgreSQL</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../plpgsql/index.html">7.1. PL/pgSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../triggers.html">7.2. Triggers e Relacionamentos de Integridade Espacial</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.3. PL/Python</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="instalacao-linux.html">7.3.1. Instalação no Linux Ubuntu</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.3.2. Instalação no Microsoft Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="habilitando-extensao.html">7.3.3. Habilitando o uso do PL/Python em um Banco de Dados</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sintaxe.html">7.3.4. Sintaxe de Funções PL/Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="funcoes.html">7.3.5. Criando Funções</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../extensoes.html">7.4. Extensões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../consideracoes.html">7.5. Considerações Finais</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">8. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">7.3. </span>PL/Python</a> &raquo;</li>
+      <li><span class="section-number">7.3.2. </span>Instalação no Microsoft Windows</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="instalacao-linux.html" class="btn btn-neutral float-left" title="7.3.1. Instalação no Linux Ubuntu" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="habilitando-extensao.html" class="btn btn-neutral float-right" title="7.3.3. Habilitando o uso do PL/Python em um Banco de Dados" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="instalacao-no-microsoft-windows">
+<span id="cap-prog-servidor-plpython-instalacao-win"></span><h1><span class="section-number">7.3.2. </span>Instalação no Microsoft Windows<a class="headerlink" href="#instalacao-no-microsoft-windows" title="Link permanente para este cabeçalho"></a></h1>
+<p>No Microsoft Windows, a instalação do ambiente Python necessário à extensão <code class="docutils literal notranslate"><span class="pre">PL/Python</span></code> pode ser feita com o pacote <a class="reference external" href="https://www.enterprisedb.com/docs/epas/latest/language_pack/">EDB Language Pack</a>. Para instalar esse pacote, utilize o <em>Stack Builder</em>, usado na instalação do PostgreSQL e do PostGIS. Localize o atalho do <em>Stack Builder</em> no grupo PostgreSQL, a partir do <em>menu iniciar do Windows</em>. Na janela apresentada, abra a categoria <em>Add-ons, tools, and utilities</em>, e selecione o pacote <em>EDB Language Pack v2.0-1</em>, como mostrado na <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-01"><span class="std std-numref">Figura 7.1</span></a>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-01">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-01.png"><img alt="Selecionando o pacote EDB Language Pack v2.0-1 para instalação no Stack Builder" src="../../_images/plpython-win-install-01.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.1 - </span><span class="caption-text">Selecionando o pacote <em>EDB Language Pack v2.0-1</em> para instalação no <em>Stack Builder</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-01" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Na janela seguinte (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-02"><span class="std std-numref">Figura 7.2</span></a>), indique o diretório no qual o <em>Stack Builder</em> irá realizar o download do instalador do <em>EDB Language Pack</em>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-02">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-02.png"><img alt="Local de gravação do pacote EDB Language Pack" src="../../_images/plpython-win-install-02.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.2 - </span><span class="caption-text">Local de gravação do pacote <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-02" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Assim que o <em>download</em> encerrar, uma janela como a da <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-03"><span class="std std-numref">Figura 7.3</span></a> será apresentada. Selecione o botão <code class="docutils literal notranslate"><span class="pre">Next</span> <span class="pre">&gt;</span></code> para iniciar a instalação do pacote baixado.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-03">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-03.png"><img alt="Finalização do download do pacote EDB Language Pack" src="../../_images/plpython-win-install-03.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.3 - </span><span class="caption-text">Finalização do download do pacote <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-03" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>A primeira janela aberta pelo instalador do <em>EDB Language Pack</em> irá solicitar o idioma que deverá ser usado durante a instalação do pacote (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-04"><span class="std std-numref">Figura 7.4</span></a>).</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-04">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-04.png"><img alt="Idioma a ser usado durante a instalação do EDB Language Pack" src="../../_images/plpython-win-install-04.png" style="width: 40%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.4 - </span><span class="caption-text">Idioma a ser usado durante a instalação do <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-04" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Pressione o botão <code class="docutils literal notranslate"><span class="pre">Next</span> <span class="pre">&gt;</span></code> na janela apresentada (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-05"><span class="std std-numref">Figura 7.5</span></a>) para iniciar a instalação.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-05">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-05.png"><img alt="Instalação do EDB Language Pack" src="../../_images/plpython-win-install-05.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.5 - </span><span class="caption-text">Instalação do <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-05" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Indique o diretório onde o <em>EDB Language Pack</em> deverá ser instalado. No exemplo mostrado na <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-06"><span class="std std-numref">Figura 7.6</span></a>, esse pacote será instalado no diretório <code class="docutils literal notranslate"><span class="pre">C:\edb\languagepack\v2</span></code>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-06">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-06.png"><img alt="Diretório de instalação do EDB Language Pack" src="../../_images/plpython-win-install-06.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.6 - </span><span class="caption-text">Diretório de instalação do <em>EDB Language Pack</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-06" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Se a instalação ocorrer com sucesso, uma janela como a mostrada na <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-07"><span class="std std-numref">Figura 7.7</span></a> será apresentada. Selecione o botão <code class="docutils literal notranslate"><span class="pre">Finish</span></code> para concluir a instalação.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-07">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-07.png"><img alt="Instalação do EDB Language Pack finalizada" src="../../_images/plpython-win-install-07.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.7 - </span><span class="caption-text">Instalação do <em>EDB Language Pack</em> finalizada.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-07" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Ao encerrar a instalação do <em>EDB Language Pack</em>, a janela do <em>Stack Builder</em> será novamente exibida (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-08"><span class="std std-numref">Figura 7.8</span></a>).</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-08">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-08.png"><img alt="Finalização da instalação do EDB Language Pack através do Stack Builder" src="../../_images/plpython-win-install-08.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.8 - </span><span class="caption-text">Finalização da instalação do <em>EDB Language Pack</em> através do <em>Stack Builder</em>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-08" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Após instalar o <em>EDB Language Pack</em>, será necessário ajustar as <strong>variáveis de ambiente</strong> <code class="docutils literal notranslate"><span class="pre">PATH</span></code>, <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> e <code class="docutils literal notranslate"><span class="pre">PYTHONHOME</span></code>. Para isso, localize no Windows a janela mostrada na <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-09"><span class="std std-numref">Figura 7.9</span></a> e pressione o botão <code class="docutils literal notranslate"><span class="pre">Variáveis</span> <span class="pre">de</span> <span class="pre">Ambiente...</span></code>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-09">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-09.png"><img alt="Painel de acesso ao controle de variáveis de ambiente" src="../../_images/plpython-win-install-09.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.9 - </span><span class="caption-text">Painel de acesso ao controle de variáveis de ambiente.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-09" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Na janela apresentada, na seção <strong>Variáveis do sistema</strong>, inclua as variáveis <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> e <code class="docutils literal notranslate"><span class="pre">PYTHONHOME</span></code> associadas à localização do ambiente Python instalado junto com o <em>EDB Language Pack</em> (ex: <code class="docutils literal notranslate"><span class="pre">C:\edb\languagepack\v2\Python-3.9</span></code>) (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-10"><span class="std std-numref">Figura 7.10</span></a>).</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-10">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-10.png"><img alt="Ajustando as variáveis de ambiente PYTHONPATH e PYTHONHOME" src="../../_images/plpython-win-install-10.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.10 - </span><span class="caption-text">Ajustando as variáveis de ambiente <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> e <code class="docutils literal notranslate"><span class="pre">PYTHONHOME</span></code>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-10" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Nessa mesma janela, inclua o caminho da DLL da extensão <code class="docutils literal notranslate"><span class="pre">plpython3u</span></code> e do ambiente Python do <em>EDB Language Pack</em> na variável de ambiente <code class="docutils literal notranslate"><span class="pre">PATH</span></code>. No exemplo da figura, a DLL da extensão <code class="docutils literal notranslate"><span class="pre">plpython3u</span></code> encontra-se em <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\PostgreSQL\14\lib</span></code> e o ambiente Python em <code class="docutils literal notranslate"><span class="pre">C:\edb\languagepack\v2\Python-3.9</span></code> e <code class="docutils literal notranslate"><span class="pre">C:\edb\languagepack\v2\Python-3.9\Scripts</span></code> (Figuras <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-11"><span class="std std-numref">7.11</span></a> e <a class="reference internal" href="#fig-prog-servidor-plpython-win-install-12"><span class="std std-numref">7.12</span></a>).</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-11">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-11.png"><img alt="Ajustando a variável de ambiente PATH" src="../../_images/plpython-win-install-11.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.11 - </span><span class="caption-text">Ajustando a variável de ambiente <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-11" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-12">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-12.png"><img alt="Ajustando a variável de ambiente PATH" src="../../_images/plpython-win-install-12.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.12 - </span><span class="caption-text">Ajustando a variável de ambiente <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-12" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Para que as variáveis de ambiente tenham efeito, será necessário reicializar o servidor PostgreSQL. O Microsoft Windows possui uma janela que permite interromper e inicializar um serviço registrado no sistema (<a class="reference internal" href="#fig-prog-servidor-plpython-win-install-13"><span class="std std-numref">Figura 7.13</span></a>). Utilize essa interface gráfica para parar o servidor PostgreSQL e em seguida inicializá-lo novamente. Dessa forma, as modificações realizadas com as variáveis de ambiente passarão a valer para a instância em execução.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-plpython-win-install-13">
+<a class="reference internal image-reference" href="../../_images/plpython-win-install-13.png"><img alt="Reinicializando o servidor PostgreSQL" src="../../_images/plpython-win-install-13.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.13 - </span><span class="caption-text">Reinicializando o servidor PostgreSQL.</span><a class="headerlink" href="#fig-prog-servidor-plpython-win-install-13" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="instalacao-linux.html" class="btn btn-neutral float-left" title="7.3.1. Instalação no Linux Ubuntu" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="habilitando-extensao.html" class="btn btn-neutral float-right" title="7.3.3. Habilitando o uso do PL/Python em um Banco de Dados" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f46dcde3910>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

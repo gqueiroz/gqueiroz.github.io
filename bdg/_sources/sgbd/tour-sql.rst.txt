@@ -89,15 +89,15 @@ A tabela ``cidades`` possui o seguinte esquema:
     +-------------+---------------------------+-------------------------------------------------------------------------------------+
     | colunas     | tipo de dados             | modificadores                                                                       +
     +=============+===========================+=====================================================================================+
-    + cid         + número inteiro            | faixa de valores na casa dos milhares                                               +
-    +             +                           |                                                                                     +
-    +             +                           | chave primária                                                                      +
+    + cid         | número inteiro            | faixa de valores na casa dos milhares                                               +
+    +             |                           |                                                                                     +
+    +             |                           | chave primária                                                                      +
     +-------------+---------------------------+-------------------------------------------------------------------------------------+
-    + nome_cidade + texto de tamanho variável | limitado a 50 caracterers                                                           +
+    + nome_cidade | texto de tamanho variável | limitado a 50 caracterers                                                           +
     +-------------+---------------------------+-------------------------------------------------------------------------------------+
-    + populacao   +  número inteiro           + faixa de valores na casa dos bilhões                                                +
+    + populacao   |  número inteiro           | faixa de valores na casa dos bilhões                                                +
     +-------------+---------------------------+-------------------------------------------------------------------------------------+
-    + pais_id     + número inteiro            + valores devem respeitar o conjunto existente na coluna ``pid`` da tabela ``paises`` +
+    + pais_id     | número inteiro            | valores devem respeitar o conjunto existente na coluna ``pid`` da tabela ``paises`` +
     +-------------+---------------------------+-------------------------------------------------------------------------------------+
 
 
