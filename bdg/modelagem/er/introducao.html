@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.1.1. Introducao &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/modelagem/er/introducao.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../search.html" />
+    <link rel="next" title="8.1.2. Tipos de Entidades e Atributos" href="entidades.html" />
+    <link rel="prev" title="8.1. Modelo Entidade Relacionamento" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. Modelagem</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.1. Modelo Entidade Relacionamento</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.1.1. Introducao</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entidades.html">8.1.2. Tipos de Entidades e Atributos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="relacionamentos.html">8.1.3. Relacionamentos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mapeamento-relacional.html">8.1.4. Mapeamento para o Modelo Relacional</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consideracoes.html">8.1.5. Considerações sobre ER e Modelo Relacional</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">9. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">8. </span>Modelagem</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">8.1. </span>Modelo Entidade Relacionamento</a> &raquo;</li>
+      <li><span class="section-number">8.1.1. </span>Introducao</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="index.html" class="btn btn-neutral float-left" title="8.1. Modelo Entidade Relacionamento" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="entidades.html" class="btn btn-neutral float-right" title="8.1.2. Tipos de Entidades e Atributos" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introducao">
+<span id="cap-modelagem-er-introducao"></span><h1><span class="section-number">8.1.1. </span>Introducao<a class="headerlink" href="#introducao" title="Link permanente para este cabeçalho"></a></h1>
+<p>Neste capítulo apresentaremos o conceito de modelagem de dados através de diagramas <strong>Entidade-Relacionamento</strong>. Iremos mostrar como criar esse tipo de diagrama e depois transformá-lo em um esquema no modelo lógico dos bancos de dados relacionais. Para isso, usaremos um exemplo adaptado de <span id="id1">[<a class="reference internal" href="../../referencias.html#id16" title="Ramez Elmasri and Shamkant B. Navathe. Fundamental of Database Systems. Addison Wesley, 5 edition, 2007. ISBN 0-321-36957-2.">13</a>]</span>, que consiste essencialmente no modelo de um banco de dados de uma empresa hipotética que lida com informações de funcionários, departamentos e projetos.</p>
+<p>O exemplo pressupõe as seguintes informações sobre a empresa:</p>
+<ul class="open">
+<li><p>Ela é organizada em departamentos, onde cada um possui um nome exclusivo e um código único.</p></li>
+<li><p>Cada departamento é gerenciado por um único funcionário e a data de início da sua gestão deve ser registrada.</p></li>
+<li><p>O departamento pode ter várias localizações (exemplo: salas em andares diferentes de um mesmo prédio).</p></li>
+<li><p>Um departamento controla uma série de projetos, cada um deles com um nome exclusivo, um número único, e sendo realizado em um determinado local.</p></li>
+<li><p>Para cada funcionário, devemos registrar seu CPF, nome, data de nascimento, gênero, endereço, telefones de contato (por exemplo: ramal da empresa, celular e telefone residencial), data de admissão na empresa, o salário corrente e lista de seus dependentes para fim dos planos de seguridade e detalhes de benefícios.</p></li>
+<li><p>Cada funcionário <em>pode</em> ter um supervisor e um mesmo supervisor pode supervisionar um grupo de funcionários.</p></li>
+<li><p>Devemos registrar quais funcionários participam de quais projetos e a dedicação (carga horária) dos mesmos nesses projetos.</p></li>
+<li><p>Para cada projeto, teremos peças compradas de um fornecedor.</p></li>
+<li><p>De cada fornecedor registraremos seu CNPJ, nome e os endereços das lojas.</p></li>
+<li><p>As peças serão descritas por um número, nome e uma breve descrição de especificação técnica.</p></li>
+</ul>
+<p>O modelo <strong>Entidade Relacionamento</strong> ou <strong>ER</strong>, introduzido por Peter Chen <span id="id2">[<a class="reference internal" href="../../referencias.html#id10" title="Peter Pin-Shan Chen. The entity-relationship model—toward a unified view of data. ACM Trans. Database Syst., 1(1):9–36, mar 1976. doi:10.1145/320434.320440.">9</a>]</span> na década de 70, utiliza três conceitos básicos para descrever os dados de um projeto de bancos de dados: <strong>entidades</strong>, <strong>relacionamentos</strong> e <strong>atributos</strong>. A <a class="reference internal" href="#fig-modelagem-er-empresa"><span class="std std-numref">Figura 8.1</span></a> mostra o <strong>esquema conceitual</strong> do projeto do banco de dados para esse empresa, utilizando a notação ER. Na sequência, iremos explicar os detalhes de como chegamos a esse modelo e o significado de seus elementos.</p>
+<figure class="align-center align-default" id="fig-modelagem-er-empresa">
+<a class="reference internal image-reference" href="../../_images/er-empresa.png"><img alt="Modelo Entidade Relacionamento (ER) - Empresa" src="../../_images/er-empresa.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.1 - </span><span class="caption-text">Modelo Entidade Relacionamento (ER) - Empresa. <br/> Adaptado de <span id="id3">[<a class="reference internal" href="../../referencias.html#id16" title="Ramez Elmasri and Shamkant B. Navathe. Fundamental of Database Systems. Addison Wesley, 5 edition, 2007. ISBN 0-321-36957-2.">13</a>]</span>.</span><a class="headerlink" href="#fig-modelagem-er-empresa" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="index.html" class="btn btn-neutral float-left" title="8.1. Modelo Entidade Relacionamento" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="entidades.html" class="btn btn-neutral float-right" title="8.1.2. Tipos de Entidades e Atributos" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f4414af5a90>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

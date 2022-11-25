@@ -29,7 +29,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="8. Dicas" href="../tips/index.html" />
+    <link rel="next" title="8. Modelagem" href="../modelagem/index.html" />
     <link rel="prev" title="7.4. Extensões" href="extensoes.html" /> 
 </head>
 
@@ -68,7 +68,8 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">7.5. Considerações Finais</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">8. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -107,7 +108,7 @@
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
         <a href="extensoes.html" class="btn btn-neutral float-left" title="7.4. Extensões" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="../tips/index.html" class="btn btn-neutral float-right" title="8. Dicas" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../modelagem/index.html" class="btn btn-neutral float-right" title="8. Modelagem" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -116,7 +117,7 @@
              
   <section id="consideracoes-finais">
 <span id="prog-servidor-consideracoes"></span><h1><span class="section-number">7.5. </span>Considerações Finais<a class="headerlink" href="#consideracoes-finais" title="Link permanente para este cabeçalho"></a></h1>
-<p>Uma boa leitura sobre o assunto de <strong>Sistemas de Bancos de Dados Objeto-Relacionais</strong> e <strong>extensibilidade</strong> pode ser encontrada no livro de Stonebraker <span id="id1">[<a class="reference internal" href="../referencias.html#id36" title="Michael Stonebraker and Dorothy Moore. Object-Relational DBMSs: The Next Great Wave. Morgan Kaufmann, 1996. ISBN 1-55860-397-2.">31</a>]</span>.</p>
+<p>Uma boa leitura sobre o assunto de <strong>Sistemas de Bancos de Dados Objeto-Relacionais</strong> e <strong>extensibilidade</strong> pode ser encontrada no livro de Stonebraker <span id="id1">[<a class="reference internal" href="../referencias.html#id38" title="Michael Stonebraker and Dorothy Moore. Object-Relational DBMSs: The Next Great Wave. Morgan Kaufmann, 1996. ISBN 1-55860-397-2.">33</a>]</span>.</p>
 <p>Existem vários motivos para se usar <strong>procedimentos armazenados</strong>. Um deles tem haver com a diminuição da quantidade de comunicação exigida entre os processos das aplicações clientes e o processo do servidor de bancos de dados. Cada consulta SQL submetida por uma aplicação envolve uma comunicação entre processos, o que possui um custo. Além disso, as aplicações cliente e servidor podem estar em diferentes máquinas, exigindo uma comunicação pela rede. Os procedimentos armazenados permitem que agrupemos vários comandos SQL, o que pode ser útil para evitar o tráfego de informações intermediárias que não sejam úteis à aplicação cliente.</p>
 <p>Outro uso importante de procedimentos armazenados é para tornar as aplicações clientes o mais imune possível à mudanças da parte lógica do negócio (ou das regras de negócio). Também podemos criar funções que verifiquem a integridade dos dados manipulados por uma aplicação.</p>
 <p>Uma boa discussão, diz respeito a quanto de computação (ou lógica) deva ser realizada do lado cliente, e quanto deva ser movida para o lado servidor. As aplicações modernas são construídas em várias camadas, podendo delegar as regras de negócio nos chamados servidores de aplicação. No entanto, muitas vezes é mais interessante mover a computação para onde o dado se encontra, a fim de diminuir a quantidade de dado trafegado para o lado cliente. Outro fato a ser considerado é quando temos várias aplicações, cada uma possivelmente escrita em uma linguagem diferente, que realizam um mesmo tipo de computação. Muitas vezes criar um procedimento armazenado no SGBD simplifica a manutenção dessa computação uma vez que em todas as aplicações apenas a chamada a esta função será utilizada.</p>
@@ -137,7 +138,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
         <a href="extensoes.html" class="btn btn-neutral float-left" title="7.4. Extensões" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="../tips/index.html" class="btn btn-neutral float-right" title="8. Dicas" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../modelagem/index.html" class="btn btn-neutral float-right" title="8. Modelagem" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -147,7 +148,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f46dc92b490>
+<jinja2.runtime.BlockReference object at 0x7f44141d99a0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

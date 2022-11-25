@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.1.4. Mapeamento para o Modelo Relacional &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/modelagem/er/mapeamento-relacional.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Buscar" href="../../search.html" />
+    <link rel="next" title="8.1.5. Considerações sobre ER e Modelo Relacional" href="consideracoes.html" />
+    <link rel="prev" title="8.1.3. Relacionamentos" href="relacionamentos.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. Modelagem</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.1. Modelo Entidade Relacionamento</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="introducao.html">8.1.1. Introducao</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entidades.html">8.1.2. Tipos de Entidades e Atributos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="relacionamentos.html">8.1.3. Relacionamentos</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.1.4. Mapeamento para o Modelo Relacional</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consideracoes.html">8.1.5. Considerações sobre ER e Modelo Relacional</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">9. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">8. </span>Modelagem</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">8.1. </span>Modelo Entidade Relacionamento</a> &raquo;</li>
+      <li><span class="section-number">8.1.4. </span>Mapeamento para o Modelo Relacional</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="relacionamentos.html" class="btn btn-neutral float-left" title="8.1.3. Relacionamentos" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="8.1.5. Considerações sobre ER e Modelo Relacional" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mapeamento-para-o-modelo-relacional">
+<span id="cap-modelagem-er-mapeamento-relacional"></span><h1><span class="section-number">8.1.4. </span>Mapeamento para o Modelo Relacional<a class="headerlink" href="#mapeamento-para-o-modelo-relacional" title="Link permanente para este cabeçalho"></a></h1>
+<p>Esta seção discute como transformar o esquema conceitual expresso por um diagrama entidade relacionamento em um esquema lógico de um banco de dados relacional.</p>
+<p>Esse processo segue algumas regras bem conhecidas que serão apresentadas com base no diagrama da <a class="reference internal" href="#fig-modelagem-er-empresa-v2"><span class="std std-numref">Figura 8.13</span></a>.</p>
+<figure class="align-center align-default" id="fig-modelagem-er-empresa-v2">
+<a class="reference internal image-reference" href="../../_images/er-empresa.png"><img alt="Modelo Entidade Relacionamento (ER) - Empresa" src="../../_images/er-empresa.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.13 - </span><span class="caption-text">Modelo Entidade Relacionamento (ER) - Empresa. <br/> Adaptado de <span id="id1">[<a class="reference internal" href="../../referencias.html#id16" title="Ramez Elmasri and Shamkant B. Navathe. Fundamental of Database Systems. Addison Wesley, 5 edition, 2007. ISBN 0-321-36957-2.">13</a>]</span>.</span><a class="headerlink" href="#fig-modelagem-er-empresa-v2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<section id="mapeamento-de-tipos-de-entidade-forte">
+<h2><span class="section-number">8.1.4.1. </span>Mapeamento de tipos de entidade forte<a class="headerlink" href="#mapeamento-de-tipos-de-entidade-forte" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para cada <strong>tipo de entidade forte</strong> <span class="math notranslate nohighlight">\(E\)</span> do modelo ER, devemos criar uma <strong>relação</strong> (tabela) <span class="math notranslate nohighlight">\(R\)</span> que inclua todos os <strong>atributos simples</strong> de <span class="math notranslate nohighlight">\(E\)</span>. Além disso, devemos escolher como <strong>chave primária</strong> um dos <strong>atributos identificadores</strong> de <span class="math notranslate nohighlight">\(E\)</span>. Se mais de um atributo for necessário para identificada uma entidade, então criaremos uma <em>chave primária composta</em>.</p>
+<p>No diagrama da <a class="reference internal" href="#fig-modelagem-er-empresa-v2"><span class="std std-numref">Figura 8.13</span></a> temos os seguintes <em>tipos de entidade forte</em>: <code class="docutils literal notranslate"><span class="pre">Funcionario</span></code>, <code class="docutils literal notranslate"><span class="pre">Departamento</span></code>, <code class="docutils literal notranslate"><span class="pre">Projeto</span></code>, <code class="docutils literal notranslate"><span class="pre">Peca</span></code> e <code class="docutils literal notranslate"><span class="pre">Fornecedor</span></code>. Portanto, criaremos as relações mostradas na <a class="reference internal" href="#fig-modelagem-er-relacional-entidade-forte"><span class="std std-numref">Figura 8.14</span></a>.</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-entidade-forte">
+<a class="reference internal image-reference" href="../../_images/er-relacional-entidade-forte.png"><img alt="Mapeamento de Tipos de Entidades Fortes em tabelas no modelo relacional" src="../../_images/er-relacional-entidade-forte.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.14 - </span><span class="caption-text">Mapeamento de tipos de entidade forte em tabelas no modelo relacional.</span><a class="headerlink" href="#fig-modelagem-er-relacional-entidade-forte" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="mapeamento-de-tipos-de-entidade-fraca">
+<h2><span class="section-number">8.1.4.2. </span>Mapeamento de tipos de entidade fraca<a class="headerlink" href="#mapeamento-de-tipos-de-entidade-fraca" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para cada <strong>tipo de entidade fraca</strong> <span class="math notranslate nohighlight">\(F\)</span> do modelo ER, associado a um ou mais <strong>tipos de entidades proprietárias</strong>, devemos criar uma <strong>relação</strong> (tabela) <span class="math notranslate nohighlight">\(R\)</span> que inclua todos os <strong>atributos simples</strong> de <span class="math notranslate nohighlight">\(F\)</span>. Também devemos incluir como <strong>chave estrangeira</strong> em <span class="math notranslate nohighlight">\(R\)</span>, os atributos identificadores dos tipos de entidades proprietárias associadas, mas apenas aqueles usados como chave primária no mapeamento desses tipos para as respectivas tabelas do modelo relacional. A <strong>chave primária</strong> de <span class="math notranslate nohighlight">\(R\)</span> é a <strong>combinação das chaves primárias</strong> das tabelas derivadas dos tipos de entidade proprietárias e a <strong>chave parcial</strong> do tipo de entidade fraca <span class="math notranslate nohighlight">\(F\)</span>.</p>
+<p>No diagrama da <a class="reference internal" href="#fig-modelagem-er-empresa-v2"><span class="std std-numref">Figura 8.13</span></a> temos apenas o <em>tipos de entidade fraca</em> <code class="docutils literal notranslate"><span class="pre">Dependente</span></code>, relacionada ao tipo de entidade forte <code class="docutils literal notranslate"><span class="pre">Funcionario</span></code>. Portanto, criaremos a relação mostrada na <a class="reference internal" href="#fig-modelagem-er-relacional-entidade-fraca"><span class="std std-numref">Figura 8.15</span></a>.</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-entidade-fraca">
+<a class="reference internal image-reference" href="../../_images/er-relacional-entidade-fraca.png"><img alt="Mapeamento de tipos de entidade fraca em tabelas no modelo relacional" src="../../_images/er-relacional-entidade-fraca.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.15 - </span><span class="caption-text">Mapeamento de tipos de entidade fraca em tabelas no modelo relacional.</span><a class="headerlink" href="#fig-modelagem-er-relacional-entidade-fraca" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>No modelo relacional, podemos definir a opção de propagação (<code class="docutils literal notranslate"><span class="pre">CASCADE</span></code>) tanto de valores da chave primária para a chave estrangeira no caso de atualização, quanto a remoção automática de linhas da tabela contendo a chave estrangeira quando uma linha da outra tabela contendo a respectiva chave primária for removida.</p>
+</section>
+<section id="mapeamento-dos-tipos-de-relacionamento-binario-1-1">
+<h2><span class="section-number">8.1.4.3. </span>Mapeamento dos tipos de relacionamento binário 1:1<a class="headerlink" href="#mapeamento-dos-tipos-de-relacionamento-binario-1-1" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para cada tipo de relacionamento binário <span class="math notranslate nohighlight">\(R\)</span> 1:1 do diagrama ER, devemos identificar as relações (tabelas) <code class="docutils literal notranslate"><span class="pre">S</span></code> e <code class="docutils literal notranslate"><span class="pre">T</span></code> que correspondem aos tipos de entidades participantes no relacionamento. Temos três opções:</p>
+<ul class="open">
+<li><p><strong>Chave estrangeira:</strong> Escolhemos uma das relações e incluímos como chave estrangeira a chave primária da outra relação. A escolha pode dependender da interpretação do relacionamento. No entanto, quando um dos tipos de entidade não tiver participação total, escolhemos colocar a chave primária da relação associada a esssa entidade na tabela associada ao tipo de entidade forte.</p></li>
+<li><p><strong>Relação mesclada:</strong> Quando a participação dos dois tipos de entidade no relacionamento é total, podemos criar uma única tabela com campos derivados das duas. Obviamente que existem vantagens e desvantagens nessa escolha.</p></li>
+<li><p><strong>Referência cruzada:</strong>  Podemos também optar por criar uma terceira relação (tabela) <code class="docutils literal notranslate"><span class="pre">P</span></code> materializando o relacionamento, incluindo as chaves dos dois tipos de entidades. A chave primária dessa nova relação pode ser tanto a chave primária de <code class="docutils literal notranslate"><span class="pre">S</span></code> quanto a de <code class="docutils literal notranslate"><span class="pre">T</span></code>. Além disso, podemos incluir nessa relação (tabela) os atributos presentes no tipo de relacionamento que deu origem a ela.</p></li>
+</ul>
+<p>No diagrama da <a class="reference internal" href="#fig-modelagem-er-empresa-v2"><span class="std std-numref">Figura 8.13</span></a>, o relacionamento <code class="docutils literal notranslate"><span class="pre">Gerencia</span></code> possui um caso em que o tipo de entidade <code class="docutils literal notranslate"><span class="pre">Funcionario</span></code> não possui participação total no relacionamento (<a class="reference internal" href="relacionamentos.html#fig-modelagem-er-rel-gerencia"><span class="std std-numref">Figura 8.5</span></a>). Dessa forma, podemos incluir a chave primária da relação <code class="docutils literal notranslate"><span class="pre">funcionario</span></code> como chave estrangeira na tabela <code class="docutils literal notranslate"><span class="pre">departamento</span></code>, nomeando essa chave como <code class="docutils literal notranslate"><span class="pre">cpf_gerente</span></code>. Além disso, o atributo <code class="docutils literal notranslate"><span class="pre">inicio</span></code> do relacionamento também é incluído na tabela <code class="docutils literal notranslate"><span class="pre">departamento</span></code>. Assim ficamos com a tabela mostrada na <a class="reference internal" href="#fig-modelagem-er-relacional-rel-gerencia"><span class="std std-numref">Figura 8.16</span></a>.</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-rel-gerencia">
+<a class="reference internal image-reference" href="../../_images/er-relacional-rel-gerencia.png"><img alt="Mapeamento de tipos de relacionamento binário 1:1" src="../../_images/er-relacional-rel-gerencia.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.16 - </span><span class="caption-text">Mapeamento de tipos de relacionamento binário 1:1.</span><a class="headerlink" href="#fig-modelagem-er-relacional-rel-gerencia" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="mapeamento-dos-tipos-de-relacionamento-binario-1-n">
+<h2><span class="section-number">8.1.4.4. </span>Mapeamento dos tipos de relacionamento binário 1:N<a class="headerlink" href="#mapeamento-dos-tipos-de-relacionamento-binario-1-n" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para cada tipo de relacionamento <span class="math notranslate nohighlight">\(R\)</span> binário 1:N, devemos identificar a relação (tabela) <span class="math notranslate nohighlight">\(S\)</span> que representa o tipo de entidade participante do lado N. Iremos incluir como chave estrangeira em <span class="math notranslate nohighlight">\(S\)</span> a chave primária da relação (tabela) <span class="math notranslate nohighlight">\(T\)</span> que representa o outro tipo de entidade do relacionamento (lado 1).</p>
+<p>Esse mapeamento é necessário pois uma instância do lado N estará associada a no máximo uma entidade do lado 1. Os atributos simples do relacionamento também são colocados como colunas na relação (tabela) <span class="math notranslate nohighlight">\(S\)</span>.</p>
+<p>No diagrama da <a class="reference internal" href="#fig-modelagem-er-empresa-v2"><span class="std std-numref">Figura 8.13</span></a>, vamos usar essa estratégia para os seguintes tipos de relacionamento:</p>
+<ul class="open">
+<li><p>No tipo de relacionamento <code class="docutils literal notranslate"><span class="pre">Trabalha</span></code>, envolvendo <code class="docutils literal notranslate"><span class="pre">Funcionario</span></code> e <code class="docutils literal notranslate"><span class="pre">Departamento</span></code> (<a class="reference internal" href="#fig-modelagem-er-rel-trabalha1-v2"><span class="std std-numref">Figura 8.17</span></a>),</p>
+<blockquote>
+<div><figure class="align-center align-default" id="fig-modelagem-er-rel-trabalha1-v2">
+<a class="reference internal image-reference" href="../../_images/er-rel-trabalha1.png"><img alt="Trabalha - Tipo de relacionamento binário 1:N" src="../../_images/er-rel-trabalha1.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.17 - </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">Trabalha</span></code> - Tipo de relacionamento binário 1:N.</span><a class="headerlink" href="#fig-modelagem-er-rel-trabalha1-v2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<p>a chave primária da relação <code class="docutils literal notranslate"><span class="pre">departamento</span></code> (<code class="docutils literal notranslate"><span class="pre">codigo</span></code>) será incluída como chave estrangeira da relação <code class="docutils literal notranslate"><span class="pre">funcionario</span></code>, sendo nomeada <code class="docutils literal notranslate"><span class="pre">codigo_departamento</span></code> (<a class="reference internal" href="#fig-modelagem-er-relacional-rel-trabalha1"><span class="std std-numref">Figura 8.18</span></a>).</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-rel-trabalha1">
+<a class="reference internal image-reference" href="../../_images/er-relacional-rel-trabalha1.png"><img alt="Mapeamento de tipos de relacionamento binário 1:N" src="../../_images/er-relacional-rel-trabalha1.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.18 - </span><span class="caption-text">Mapeamento de tipos de relacionamento binário 1:N.</span><a class="headerlink" href="#fig-modelagem-er-relacional-rel-trabalha1" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</li>
+<li><p>No tipo de relacionamento <code class="docutils literal notranslate"><span class="pre">Controla</span></code>, envolvendo <code class="docutils literal notranslate"><span class="pre">Departamento</span></code> e <code class="docutils literal notranslate"><span class="pre">Projeto</span></code> (<a class="reference internal" href="#fig-modelagem-er-rel-controla-v2"><span class="std std-numref">Figura 8.19</span></a>),</p>
+<blockquote>
+<div><figure class="align-center align-default" id="fig-modelagem-er-rel-controla-v2">
+<a class="reference internal image-reference" href="../../_images/er-rel-controla.png"><img alt="Controla - Tipo de relacionamento binário 1:N" src="../../_images/er-rel-controla.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.19 - </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">Controla</span></code> - Tipo de relacionamento binário 1:N.</span><a class="headerlink" href="#fig-modelagem-er-rel-controla-v2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<p>a chave primária da relação <code class="docutils literal notranslate"><span class="pre">departamento</span></code> (<code class="docutils literal notranslate"><span class="pre">codigo</span></code>) será incluída como chave estrangeira da relação <code class="docutils literal notranslate"><span class="pre">projeto</span></code>, sendo nomeada <code class="docutils literal notranslate"><span class="pre">codigo_departamento</span></code> (<a class="reference internal" href="#fig-modelagem-er-relacional-rel-controla"><span class="std std-numref">Figura 8.20</span></a>).</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-rel-controla">
+<a class="reference internal image-reference" href="../../_images/er-relacional-rel-controla.png"><img alt="Mapeamento de tipos de relacionamento binário 1:N" src="../../_images/er-relacional-rel-controla.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.20 - </span><span class="caption-text">Mapeamento de tipos de relacionamento binário 1:N.</span><a class="headerlink" href="#fig-modelagem-er-relacional-rel-controla" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</li>
+<li><p>No tipo de relacionamento <code class="docutils literal notranslate"><span class="pre">Supervisiona</span></code>, envolvendo o próprio tipo de entidade <code class="docutils literal notranslate"><span class="pre">Funcionario</span></code> (<a class="reference internal" href="#fig-modelagem-er-rel-supervisiona-v2"><span class="std std-numref">Figura 8.21</span></a>),</p>
+<blockquote>
+<div><figure class="align-center align-default" id="fig-modelagem-er-rel-supervisiona-v2">
+<a class="reference internal image-reference" href="../../_images/er-rel-supervisiona.png"><img alt="Supervisiona - Tipo de relacionamento binário 1:N" src="../../_images/er-rel-supervisiona.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.21 - </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">Supervisiona</span></code> - Tipo de relacionamento binário 1:N.</span><a class="headerlink" href="#fig-modelagem-er-rel-supervisiona-v2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<p>a chave primária da relação <code class="docutils literal notranslate"><span class="pre">funcionario</span></code> (<code class="docutils literal notranslate"><span class="pre">cpf</span></code>) será incluída como chave estrangeira nela mesmo, com o nome <code class="docutils literal notranslate"><span class="pre">cpf_supervisor</span></code> (<a class="reference internal" href="#fig-modelagem-er-relacional-rel-supervisiona"><span class="std std-numref">Figura 8.22</span></a>).</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-rel-supervisiona">
+<a class="reference internal image-reference" href="../../_images/er-relacional-rel-supervisiona.png"><img alt="Mapeamento de tipos de relacionamento binário 1:N" src="../../_images/er-relacional-rel-supervisiona.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.22 - </span><span class="caption-text">Mapeamento de tipos de relacionamento binário 1:N.</span><a class="headerlink" href="#fig-modelagem-er-relacional-rel-supervisiona" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Este tipo de relacionamento também é conhecido como auto-relacionamento.</p>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="mapeamento-dos-tipos-de-relacionamento-binario-m-n">
+<h2><span class="section-number">8.1.4.5. </span>Mapeamento dos tipos de relacionamento binário M:N<a class="headerlink" href="#mapeamento-dos-tipos-de-relacionamento-binario-m-n" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para cada tipo de relacionamento binário <span class="math notranslate nohighlight">\(R\)</span> M:N, devemos criar uma relação <span class="math notranslate nohighlight">\(S\)</span> para representar <span class="math notranslate nohighlight">\(R\)</span>. As chaves primárias das relações (tabelas) que representam os tipos de entidades envolvidas no relacionamento devem ser incluídas em <span class="math notranslate nohighlight">\(S\)</span> como chaves estrangeiras. A combinação das chaves estrangeiras formam a chave primária de <span class="math notranslate nohighlight">\(S\)</span>. Também devemos incluir os atributos simples de <span class="math notranslate nohighlight">\(R\)</span> como colunas de <span class="math notranslate nohighlight">\(S\)</span>. Esse tipo de relacionamento (M:N) necessariamente precisa de uma tabela auxiliar devido à cardinalidade do relacionamento envolvido.</p>
+<p>No diagrama da <a class="reference internal" href="#fig-modelagem-er-empresa-v2"><span class="std std-numref">Figura 8.13</span></a>, vamos usar essa estratégia para o tipo de relacionamento <code class="docutils literal notranslate"><span class="pre">Trabalha</span></code>, envolvendo <code class="docutils literal notranslate"><span class="pre">Funcionario</span></code> e <code class="docutils literal notranslate"><span class="pre">Projeto</span></code> (<a class="reference internal" href="#fig-modelagem-er-rel-trabalha2-v2"><span class="std std-numref">Figura 8.23</span></a>).</p>
+<figure class="align-center align-default" id="fig-modelagem-er-rel-trabalha2-v2">
+<a class="reference internal image-reference" href="../../_images/er-rel-trabalha2.png"><img alt="Trabalha - Tipo de relacionamento binário M:N" src="../../_images/er-rel-trabalha2.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.23 - </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">Trabalha</span></code> - Tipo de relacionamento binário M:N.</span><a class="headerlink" href="#fig-modelagem-er-rel-trabalha2-v2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Assim, teremos a nova relação <code class="docutils literal notranslate"><span class="pre">funcionario_projeto</span></code> mostrada na <a class="reference internal" href="#fig-modelagem-er-relacional-rel-trabalha2"><span class="std std-numref">Figura 8.24</span></a>. Repare que as chaves primárias das relações representando os dois tipos de entidade participantes do relacionamento foram incluídas como chaves estrangeiras para as respectivas tabelas e, juntas, formam a chave primária composta. Além disso, o atributo <code class="docutils literal notranslate"><span class="pre">horas</span></code> foi incluído como coluna nessa tabela.</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-rel-trabalha2">
+<a class="reference internal image-reference" href="../../_images/er-relacional-rel-trabalha2.png"><img alt="Mapeamento de tipos de relacionamento binário M:N" src="../../_images/er-relacional-rel-trabalha2.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.24 - </span><span class="caption-text">Mapeamento de tipos de relacionamento binário M:N.</span><a class="headerlink" href="#fig-modelagem-er-relacional-rel-trabalha2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="mapeamento-dos-atributos-compostos">
+<h2><span class="section-number">8.1.4.6. </span>Mapeamento dos atributos compostos<a class="headerlink" href="#mapeamento-dos-atributos-compostos" title="Link permanente para este cabeçalho"></a></h2>
+<p>Geralmente, nos bancos de dados relacionais, definimos tabelas com tipos simples, como números inteiros, reais, strings, data e hora, entre outros. No PostgreSQL podemos criar um tipo composto através do comando <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TYPE</span></code>, para materializar atributos compostos. No entanto, a maior parte das aplicações acaba utilizando uma outra estratégia para implementação dos atributos compostos, que é a decomposição em colunas de tipos elementares. Portanto, no mapeamento ER-Relacional, para cada atributo composto devemos decompô-lo em colunas com tipos simples.</p>
+<p>No diagrama da <a class="reference internal" href="#fig-modelagem-er-empresa-v2"><span class="std std-numref">Figura 8.13</span></a>, o atributo <code class="docutils literal notranslate"><span class="pre">endereco</span></code> do tipo de entidade <code class="docutils literal notranslate"><span class="pre">Funcionario</span></code> dará origem às colunas <code class="docutils literal notranslate"><span class="pre">logradouro</span></code>, <code class="docutils literal notranslate"><span class="pre">num_logradouro</span></code>, <code class="docutils literal notranslate"><span class="pre">bairro</span></code>, <code class="docutils literal notranslate"><span class="pre">cidade</span></code> e <code class="docutils literal notranslate"><span class="pre">cep</span></code> (<a class="reference internal" href="#fig-modelagem-er-relacional-atributo-composto-endereco1"><span class="std std-numref">Figura 8.25</span></a>).</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-atributo-composto-endereco1">
+<a class="reference internal image-reference" href="../../_images/er-relacional-atributo-composto-endereco1.png"><img alt="Mapeamento do atributo composto endereco do tipo de entidade Funcionario" src="../../_images/er-relacional-atributo-composto-endereco1.png" style="width: 35%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.25 - </span><span class="caption-text">Mapeamento do atributo composto <code class="docutils literal notranslate"><span class="pre">endereco</span></code> do tipo de entidade <code class="docutils literal notranslate"><span class="pre">Funcionario</span></code>.</span><a class="headerlink" href="#fig-modelagem-er-relacional-atributo-composto-endereco1" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="mapeamento-dos-atributos-multivalorados">
+<h2><span class="section-number">8.1.4.7. </span>Mapeamento dos atributos multivalorados<a class="headerlink" href="#mapeamento-dos-atributos-multivalorados" title="Link permanente para este cabeçalho"></a></h2>
+<p>No PostgreSQL temos um tipo que permite materializar atributos multivalorados diretamente, que é o tipo <code class="docutils literal notranslate"><span class="pre">array</span></code>. No entanto, a maior parte das aplicações acaba utilizando uma outra estratégia para implementação dos tipos multivalorados, que é a criação de uma <strong>relação auxiliar</strong> (tabela auxiliar). Portanto, no mapeamento ER-Relacional, para cada atributo multivalorado devemos criar uma relação <span class="math notranslate nohighlight">\(R\)</span>, que conterá uma coluna para representar o atributo e uma coluna que será uma chave estrangeira associada à chave primária da relação de origem do atributo multivalorado. A chave primária de <span class="math notranslate nohighlight">\(R\)</span> é a combinação da chave estrangeira com a coluna representando o atributo. Se o atributo for composto, usamos as colunas necessárias para formar a chave primária.</p>
+<p>No diagrama da <a class="reference internal" href="#fig-modelagem-er-empresa-v2"><span class="std std-numref">Figura 8.13</span></a>, o atributo <code class="docutils literal notranslate"><span class="pre">telefone</span></code> do tipo de entidade <code class="docutils literal notranslate"><span class="pre">Funcionario</span></code> dará origem a uma relação chamada <code class="docutils literal notranslate"><span class="pre">funcionario_telefone</span></code>, com a chave primária formada pelo número do telefone e a chave estrangeira <code class="docutils literal notranslate"><span class="pre">cpf</span></code> (<a class="reference internal" href="#fig-modelagem-er-relacional-atributo-multi1"><span class="std std-numref">Figura 8.26</span></a>).</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-atributo-multi1">
+<a class="reference internal image-reference" href="../../_images/er-relacional-atributo-multi1.png"><img alt="Mapeamento do atributo multivalorado telefone do tipo de entidade Funcionario" src="../../_images/er-relacional-atributo-multi1.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.26 - </span><span class="caption-text">Mapeamento do atributo multivalorado <code class="docutils literal notranslate"><span class="pre">telefone</span></code> do tipo de entidade <code class="docutils literal notranslate"><span class="pre">Funcionario</span></code>.</span><a class="headerlink" href="#fig-modelagem-er-relacional-atributo-multi1" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>O atributo multivalorado <code class="docutils literal notranslate"><span class="pre">enderecos</span></code> do tipo de entidade <code class="docutils literal notranslate"><span class="pre">Fornecedor</span></code> (<a class="reference internal" href="#fig-modelagem-er-empresa-v2"><span class="std std-numref">Figura 8.13</span></a>), dará origem a uma relação chamada <code class="docutils literal notranslate"><span class="pre">fornecedor_endereco</span></code> com as colunas <code class="docutils literal notranslate"><span class="pre">cnpj</span></code>, <code class="docutils literal notranslate"><span class="pre">logradouro</span></code>, <code class="docutils literal notranslate"><span class="pre">num_logradouro</span></code>, <code class="docutils literal notranslate"><span class="pre">bairro</span></code>, <code class="docutils literal notranslate"><span class="pre">cidade</span></code> e <code class="docutils literal notranslate"><span class="pre">cep</span></code> (<a class="reference internal" href="#fig-modelagem-er-relacional-atributo-multi2"><span class="std std-numref">Figura 8.27</span></a>). A chave primária nesse caso poderia ser formada pelo <code class="docutils literal notranslate"><span class="pre">cnpj</span></code> e os campos <code class="docutils literal notranslate"><span class="pre">logradouro</span></code> e <code class="docutils literal notranslate"><span class="pre">num_logradouro</span></code>. Além disso, a coluna <code class="docutils literal notranslate"><span class="pre">cnpj</span></code> é uma chave estrangeira.</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-atributo-multi2">
+<a class="reference internal image-reference" href="../../_images/er-relacional-atributo-multi2.png"><img alt="Mapeamento do atributo multivalorado enderecos do tipo de entidade Fornecedor" src="../../_images/er-relacional-atributo-multi2.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.27 - </span><span class="caption-text">Mapeamento do atributo multivalorado <code class="docutils literal notranslate"><span class="pre">enderecos</span></code> do tipo de entidade <code class="docutils literal notranslate"><span class="pre">Fornecedor</span></code>.</span><a class="headerlink" href="#fig-modelagem-er-relacional-atributo-multi2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="mapeamento-dos-tipos-de-relacionamento-n-ario">
+<h2><span class="section-number">8.1.4.8. </span>Mapeamento dos tipos de relacionamento n-ário<a class="headerlink" href="#mapeamento-dos-tipos-de-relacionamento-n-ario" title="Link permanente para este cabeçalho"></a></h2>
+<p>No caso de um relacionamento <span class="math notranslate nohighlight">\(n\text{-ário}\)</span> <span class="math notranslate nohighlight">\(R\)</span>, com <span class="math notranslate nohighlight">\(n &gt; 2\)</span>, devemos criar uma relação <span class="math notranslate nohighlight">\(S\)</span> para representar <span class="math notranslate nohighlight">\(R\)</span>. Essa relação deverá incluir como chaves estrangeiras todas as chaves primárias das tabelas representando os tipos de entidades participantes do relacionamento. Também devemos incluir os atributos simples que façam parte do tipo de relacionamento. A chave primária de <span class="math notranslate nohighlight">\(S\)</span> será formada pela combinação de todas as chaves estrangeiras que referenciam as relações representando os tipos de entidades participantes que possuem cardinalidade maior que 1.</p>
+<p>No tipo de relacionamento <code class="docutils literal notranslate"><span class="pre">Fornece</span></code> (<a class="reference internal" href="#fig-modelagem-er-rel-fornece-v2"><span class="std std-numref">Figura 8.28</span></a>),</p>
+<figure class="align-center align-default" id="fig-modelagem-er-rel-fornece-v2">
+<a class="reference internal image-reference" href="../../_images/er-rel-fornece.png"><img alt="Fornece - Tipo de relacionamento ternário" src="../../_images/er-rel-fornece.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.28 - </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">Fornece</span></code> - Tipo de relacionamento ternário.</span><a class="headerlink" href="#fig-modelagem-er-rel-fornece-v2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>criaremos uma relação chamada ``  projeto_peca_fornecedor`` (<a class="reference internal" href="#fig-modelagem-er-relacional-rel-fornece"><span class="std std-numref">Figura 8.29</span></a>), com as chaves estrangeiras <code class="docutils literal notranslate"><span class="pre">numero_projeto</span></code>, <code class="docutils literal notranslate"><span class="pre">numero_peca</span></code> e <code class="docutils literal notranslate"><span class="pre">cnpj_fornecedor</span></code>. Mas como a cardinalidade do tipo de entidade <code class="docutils literal notranslate"><span class="pre">Fornecedor</span></code> é 1, a chave primária será formada apenas pelas colunas <code class="docutils literal notranslate"><span class="pre">numero_projeto</span></code> e <code class="docutils literal notranslate"><span class="pre">numero_peca</span></code>. Além disso, acrescentaremos colunas para os atributos <code class="docutils literal notranslate"><span class="pre">quantidade</span></code> e <code class="docutils literal notranslate"><span class="pre">valor</span></code> das peças fornecidas para o projeto.</p>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-rel-fornece">
+<a class="reference internal image-reference" href="../../_images/er-relacional-rel-fornece.png"><img alt="Mapeamento de tipos de relacionamento ternário" src="../../_images/er-relacional-rel-fornece.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.29 - </span><span class="caption-text">Mapeamento de tipos de relacionamento ternário.</span><a class="headerlink" href="#fig-modelagem-er-relacional-rel-fornece" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="modelo-logico-relacional">
+<h2><span class="section-number">8.1.4.9. </span>Modelo Lógico Relacional<a class="headerlink" href="#modelo-logico-relacional" title="Link permanente para este cabeçalho"></a></h2>
+<figure class="align-center align-default" id="fig-modelagem-er-relacional-logico">
+<a class="reference internal image-reference" href="../../_images/er-relacional-logico.png"><img alt="Modelo Lógico Relacional" src="../../_images/er-relacional-logico.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.30 - </span><span class="caption-text">Modelo Lógico Relacional.</span><a class="headerlink" href="#fig-modelagem-er-relacional-logico" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="relacionamentos.html" class="btn btn-neutral float-left" title="8.1.3. Relacionamentos" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="8.1.5. Considerações sobre ER e Modelo Relacional" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f441459bb50>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

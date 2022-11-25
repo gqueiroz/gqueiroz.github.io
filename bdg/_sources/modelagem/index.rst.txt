@@ -1,0 +1,19 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+.. _cap_modelagem:
+
+Modelagem
+=========
+
+
+.. toctree::
+    :maxdepth: 1
+    :titlesonly:
+
+    ./er/index
+

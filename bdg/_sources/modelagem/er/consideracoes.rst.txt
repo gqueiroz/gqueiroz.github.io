@@ -1,0 +1,20 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../../def.rst
+
+.. _cap_modelagem_er_consideracoes:
+
+Considerações sobre ER e Modelo Relacional
+==========================================
+
+
+Podemos sempre modelar tipos de relacionamentos binários 1:1 ou 1:N de maneira semelhante aos relacionamentos M:N, criando uma tabela associativa. Essa técnica é útil quando existem poucas instâncias dos relacionamentos, evitando um número grande de valores ``NULL`` nas colunas de chave estrangeira.
+
+
+Existem muitas ferramentas de engenharia de software, também chamadas de ferramentas CASE, que auxiliam na criação dos diagramas ER e nas transformações para o modelo relacional. Algumas delas são capazes de realizar as transformações automaticamente.
+
+
+

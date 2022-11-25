@@ -1,0 +1,128 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../../def.rst
+
+.. _cap_modelagem_er_relacionamentos:
+
+Relacionamentos
+===============
+
+
+À medida que vamos trabalhando no projeto do banco de dados, devemos identificar os relacionamentos ou associações existentes entre os tipos de entidade.
+
+
+Nas Figuras :numref:`%s <fig:modelagem:er:tipo-entidade-funcionario>`, :numref:`%s <fig:modelagem:er:tipo-entidade-departamento>` e :numref:`%s <fig:modelagem:er:tipo-entidade-projeto>`, existem vários relacionamentos implícitos entre os diversos tipos de entidades. Atributos como ``departamento`` e ``projetos_atua`` da entidade ``Funcionario`` referem-se, respectivamente, ao departamento em que uma entidade funcionário trabalha e as entidades projetos em que ele atua. Portanto, essas referências não devem ser representadas como atributos, mas como **relacionamentos**.
+
+
+Relacionamentos binários 1:1
+----------------------------
+
+
+Os atributos ``gerente`` e ``data_inicio_gerencia`` podem ser melhor tratados com a introdução de um tipo de relacionamento entre os tipos de entidade ``Funcionario`` e ``Departamento``, denominada ``Gerencia`` (:numref:`Figura %s <fig:modelagem:er:rel-gerencia>`).
+
+
+.. figure:: ../../img/modelagem/er-rel-gerencia.png
+    :alt: Exemplo de relacionamento binário 1:1
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:rel-gerencia
+
+    Exemplo de relacionamento binário 1:1.
+
+
+Outro detalhe importante, é que o atributo inicialmente chamado de ``data_inicio_gerencia`` fica melhor representado como um atributo do tipo de relacionamento ``Gerencia``.
+
+
+Esse relacionamento é binário pois envolve apenas dois tipos de entidades (``Funcionario`` e ``Departamento``) e possui cardinalidade 1:1, uma vez que cada entidade de ``Departamento`` ou ``Funcionario`` participa de no máximo uma instância de relacionamento. A :numref:`Figura %s <fig:modelagem:er:tipo-rel-gerencia>` mostra como funciona esse tipo de relacionamento.
+
+
+.. figure:: ../../img/modelagem/er-tipo-rel-gerencia.png
+    :alt: Tipo de relacionamento Gerencia
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:tipo-rel-gerencia
+
+    Tipo de relacionamento ``Gerencia``.
+
+
+Repare ainda nas duas figuras acima, que há entidades de ``Funcionario`` que não participam do relacionamento, enquanto toda entidade de ``Departamento`` participa pois um gerente é mandatório de acordo com os requisitos. Quando um tipo de entidade possui **participação total**, usamos uma linha sólida para indicar que o relacionamento é mandatório (há uma **dependência de existência**).  A participação do tipo de entidades ``Funcionario`` no tipo de relacionamento ``Gerencia`` é dito **parcial**, sendo representada por uma linha pontilhada.
+
+
+
+Relacionamentos binários 1:N
+----------------------------
+
+
+.. figure:: ../../img/modelagem/er-rel-trabalha1.png
+    :alt: Exemplo de relacionamento binário 1:N
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:rel-trabalha1
+
+    Exemplo de relacionamento binário 1:N.
+
+
+|br|
+
+
+.. figure:: ../../img/modelagem/er-rel-controla.png
+    :alt: Exemplo de relacionamento binário 1:N
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:rel-controla
+
+    Exemplo de relacionamento binário 1:N.
+
+
+|br|
+
+
+.. figure:: ../../img/modelagem/er-rel-supervisiona.png
+    :alt: Exemplo de relacionamento binário 1:N (auto-relacionamento 1:N)
+    :width: 70%
+    :figclass: align-center
+    :name: fig:modelagem:er:rel-supervisiona
+
+    Exemplo de relacionamento binário 1:N (auto-relacionamento 1:N).
+
+
+Relacionamentos binários 1:N (Entidade Fraca)
+---------------------------------------------
+
+
+.. figure:: ../../img/modelagem/er-rel-responsavel.png
+    :alt: Entidade fraca
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:rel-responsavel
+
+    Entidade fraca.
+
+
+Relacionamentos binários M:N
+----------------------------
+
+
+.. figure:: ../../img/modelagem/er-rel-trabalha2.png
+    :alt: Exemplo de relacionamento binário M:N
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:rel-trabalha2
+
+    Exemplo de relacionamento binário M:N.
+
+
+Relacionamentos ternários
+-------------------------
+
+
+.. figure:: ../../img/modelagem/er-rel-fornece.png
+    :alt: Exemplo de relacionamento ternário
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:rel-fornece
+
+    Exemplo de relacionamento ternário.

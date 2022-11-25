@@ -1,0 +1,320 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../../def.rst
+
+.. _cap_modelagem_er_mapeamento_relacional:
+
+Mapeamento para o Modelo Relacional
+===================================
+
+
+Esta seção discute como transformar o esquema conceitual expresso por um diagrama entidade relacionamento em um esquema lógico de um banco de dados relacional.
+
+
+Esse processo segue algumas regras bem conhecidas que serão apresentadas com base no diagrama da :numref:`Figura %s <fig:modelagem:er:empresa:v2>`.
+
+
+.. figure:: ../../img/modelagem/er-empresa.png
+    :alt: Modelo Entidade Relacionamento (ER) - Empresa
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:empresa:v2
+
+    Modelo Entidade Relacionamento (ER) - Empresa. |br| Adaptado de :cite:`elmasri:2007`.
+
+
+Mapeamento de tipos de entidade forte
+-------------------------------------
+
+
+Para cada **tipo de entidade forte** :math:`E` do modelo ER, devemos criar uma **relação** (tabela) :math:`R` que inclua todos os **atributos simples** de :math:`E`. Além disso, devemos escolher como **chave primária** um dos **atributos identificadores** de :math:`E`. Se mais de um atributo for necessário para identificada uma entidade, então criaremos uma *chave primária composta*. 
+
+
+No diagrama da :numref:`Figura %s <fig:modelagem:er:empresa:v2>` temos os seguintes *tipos de entidade forte*: ``Funcionario``, ``Departamento``, ``Projeto``, ``Peca`` e ``Fornecedor``. Portanto, criaremos as relações mostradas na :numref:`Figura %s <fig:modelagem:er-relacional:entidade-forte>`.
+
+
+.. figure:: ../../img/modelagem/er-relacional-entidade-forte.png
+    :alt: Mapeamento de Tipos de Entidades Fortes em tabelas no modelo relacional
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er-relacional:entidade-forte
+
+    Mapeamento de tipos de entidade forte em tabelas no modelo relacional.
+
+
+
+Mapeamento de tipos de entidade fraca
+-------------------------------------
+
+
+Para cada **tipo de entidade fraca** :math:`F` do modelo ER, associado a um ou mais **tipos de entidades proprietárias**, devemos criar uma **relação** (tabela) :math:`R` que inclua todos os **atributos simples** de :math:`F`. Também devemos incluir como **chave estrangeira** em :math:`R`, os atributos identificadores dos tipos de entidades proprietárias associadas, mas apenas aqueles usados como chave primária no mapeamento desses tipos para as respectivas tabelas do modelo relacional. A **chave primária** de :math:`R` é a **combinação das chaves primárias** das tabelas derivadas dos tipos de entidade proprietárias e a **chave parcial** do tipo de entidade fraca :math:`F`.
+
+
+No diagrama da :numref:`Figura %s <fig:modelagem:er:empresa:v2>` temos apenas o *tipos de entidade fraca* ``Dependente``, relacionada ao tipo de entidade forte ``Funcionario``. Portanto, criaremos a relação mostrada na :numref:`Figura %s <fig:modelagem:er-relacional:entidade-fraca>`.
+
+
+.. figure:: ../../img/modelagem/er-relacional-entidade-fraca.png
+    :alt: Mapeamento de tipos de entidade fraca em tabelas no modelo relacional
+    :width: 30%
+    :figclass: align-center
+    :name: fig:modelagem:er-relacional:entidade-fraca
+
+    Mapeamento de tipos de entidade fraca em tabelas no modelo relacional.
+
+
+No modelo relacional, podemos definir a opção de propagação (``CASCADE``) tanto de valores da chave primária para a chave estrangeira no caso de atualização, quanto a remoção automática de linhas da tabela contendo a chave estrangeira quando uma linha da outra tabela contendo a respectiva chave primária for removida.
+
+
+Mapeamento dos tipos de relacionamento binário 1:1
+--------------------------------------------------
+
+
+Para cada tipo de relacionamento binário :math:`R` 1:1 do diagrama ER, devemos identificar as relações (tabelas) ``S`` e ``T`` que correspondem aos tipos de entidades participantes no relacionamento. Temos três opções:
+
+.. rst-class:: open
+
+- **Chave estrangeira:** Escolhemos uma das relações e incluímos como chave estrangeira a chave primária da outra relação. A escolha pode dependender da interpretação do relacionamento. No entanto, quando um dos tipos de entidade não tiver participação total, escolhemos colocar a chave primária da relação associada a esssa entidade na tabela associada ao tipo de entidade forte. 
+
+- **Relação mesclada:** Quando a participação dos dois tipos de entidade no relacionamento é total, podemos criar uma única tabela com campos derivados das duas. Obviamente que existem vantagens e desvantagens nessa escolha.
+
+- **Referência cruzada:**  Podemos também optar por criar uma terceira relação (tabela) ``P`` materializando o relacionamento, incluindo as chaves dos dois tipos de entidades. A chave primária dessa nova relação pode ser tanto a chave primária de ``S`` quanto a de ``T``. Além disso, podemos incluir nessa relação (tabela) os atributos presentes no tipo de relacionamento que deu origem a ela.
+
+
+No diagrama da :numref:`Figura %s <fig:modelagem:er:empresa:v2>`, o relacionamento ``Gerencia`` possui um caso em que o tipo de entidade ``Funcionario`` não possui participação total no relacionamento (:numref:`Figura %s <fig:modelagem:er:rel-gerencia>`). Dessa forma, podemos incluir a chave primária da relação ``funcionario`` como chave estrangeira na tabela ``departamento``, nomeando essa chave como ``cpf_gerente``. Além disso, o atributo ``inicio`` do relacionamento também é incluído na tabela ``departamento``. Assim ficamos com a tabela mostrada na :numref:`Figura %s <fig:modelagem:er-relacional:rel-gerencia>`.
+
+
+.. figure:: ../../img/modelagem/er-relacional-rel-gerencia.png
+    :alt: Mapeamento de tipos de relacionamento binário 1:1
+    :width: 30%
+    :figclass: align-center
+    :name: fig:modelagem:er-relacional:rel-gerencia
+
+    Mapeamento de tipos de relacionamento binário 1:1.
+
+
+Mapeamento dos tipos de relacionamento binário 1:N
+--------------------------------------------------
+
+
+Para cada tipo de relacionamento :math:`R` binário 1:N, devemos identificar a relação (tabela) :math:`S` que representa o tipo de entidade participante do lado N. Iremos incluir como chave estrangeira em :math:`S` a chave primária da relação (tabela) :math:`T` que representa o outro tipo de entidade do relacionamento (lado 1).
+
+
+Esse mapeamento é necessário pois uma instância do lado N estará associada a no máximo uma entidade do lado 1. Os atributos simples do relacionamento também são colocados como colunas na relação (tabela) :math:`S`.
+
+
+No diagrama da :numref:`Figura %s <fig:modelagem:er:empresa:v2>`, vamos usar essa estratégia para os seguintes tipos de relacionamento:
+
+.. rst-class:: open
+
+-  No tipo de relacionamento ``Trabalha``, envolvendo ``Funcionario`` e ``Departamento`` (:numref:`Figura %s <fig:modelagem:er:rel-trabalha1:v2>`),
+
+
+    .. figure:: ../../img/modelagem/er-rel-trabalha1.png
+        :alt: Trabalha - Tipo de relacionamento binário 1:N
+        :width: 100%
+        :figclass: align-center
+        :name: fig:modelagem:er:rel-trabalha1:v2
+
+        ``Trabalha`` - Tipo de relacionamento binário 1:N.
+
+
+    |br|
+
+    a chave primária da relação ``departamento`` (``codigo``) será incluída como chave estrangeira da relação ``funcionario``, sendo nomeada ``codigo_departamento`` (:numref:`Figura %s <fig:modelagem:er-relacional:rel-trabalha1>`).
+
+
+    .. figure:: ../../img/modelagem/er-relacional-rel-trabalha1.png
+        :alt: Mapeamento de tipos de relacionamento binário 1:N
+        :width: 30%
+        :figclass: align-center
+        :name: fig:modelagem:er-relacional:rel-trabalha1
+
+        Mapeamento de tipos de relacionamento binário 1:N.
+
+
+
+- No tipo de relacionamento ``Controla``, envolvendo ``Departamento`` e ``Projeto`` (:numref:`Figura %s <fig:modelagem:er:rel-controla:v2>`),
+
+
+    .. figure:: ../../img/modelagem/er-rel-controla.png
+        :alt: Controla - Tipo de relacionamento binário 1:N
+        :width: 100%
+        :figclass: align-center
+        :name: fig:modelagem:er:rel-controla:v2
+
+        ``Controla`` - Tipo de relacionamento binário 1:N.
+        
+        
+    |br|
+
+    a chave primária da relação ``departamento`` (``codigo``) será incluída como chave estrangeira da relação ``projeto``, sendo nomeada ``codigo_departamento`` (:numref:`Figura %s <fig:modelagem:er-relacional:rel-controla>`).
+
+
+    .. figure:: ../../img/modelagem/er-relacional-rel-controla.png
+        :alt: Mapeamento de tipos de relacionamento binário 1:N
+        :width: 30%
+        :figclass: align-center
+        :name: fig:modelagem:er-relacional:rel-controla
+
+        Mapeamento de tipos de relacionamento binário 1:N.
+
+
+- No tipo de relacionamento ``Supervisiona``, envolvendo o próprio tipo de entidade ``Funcionario`` (:numref:`Figura %s <fig:modelagem:er:rel-supervisiona:v2>`),
+
+
+    .. figure:: ../../img/modelagem/er-rel-supervisiona.png
+        :alt: Supervisiona - Tipo de relacionamento binário 1:N
+        :width: 60%
+        :figclass: align-center
+        :name: fig:modelagem:er:rel-supervisiona:v2
+
+        ``Supervisiona`` - Tipo de relacionamento binário 1:N.
+
+
+    |br|
+
+    a chave primária da relação ``funcionario`` (``cpf``) será incluída como chave estrangeira nela mesmo, com o nome ``cpf_supervisor`` (:numref:`Figura %s <fig:modelagem:er-relacional:rel-supervisiona>`).
+
+
+    .. figure:: ../../img/modelagem/er-relacional-rel-supervisiona.png
+        :alt: Mapeamento de tipos de relacionamento binário 1:N
+        :width: 30%
+        :figclass: align-center
+        :name: fig:modelagem:er-relacional:rel-supervisiona
+
+        Mapeamento de tipos de relacionamento binário 1:N.
+    
+
+    |br|
+
+
+    .. note::
+    
+        Este tipo de relacionamento também é conhecido como auto-relacionamento.
+
+
+Mapeamento dos tipos de relacionamento binário M:N
+--------------------------------------------------
+
+
+Para cada tipo de relacionamento binário :math:`R` M:N, devemos criar uma relação :math:`S` para representar :math:`R`. As chaves primárias das relações (tabelas) que representam os tipos de entidades envolvidas no relacionamento devem ser incluídas em :math:`S` como chaves estrangeiras. A combinação das chaves estrangeiras formam a chave primária de :math:`S`. Também devemos incluir os atributos simples de :math:`R` como colunas de :math:`S`. Esse tipo de relacionamento (M:N) necessariamente precisa de uma tabela auxiliar devido à cardinalidade do relacionamento envolvido.
+
+
+No diagrama da :numref:`Figura %s <fig:modelagem:er:empresa:v2>`, vamos usar essa estratégia para o tipo de relacionamento ``Trabalha``, envolvendo ``Funcionario`` e ``Projeto`` (:numref:`Figura %s <fig:modelagem:er:rel-trabalha2:v2>`).
+
+
+.. figure:: ../../img/modelagem/er-rel-trabalha2.png
+    :alt: Trabalha - Tipo de relacionamento binário M:N
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:rel-trabalha2:v2
+
+    ``Trabalha`` - Tipo de relacionamento binário M:N.
+
+
+Assim, teremos a nova relação ``funcionario_projeto`` mostrada na :numref:`Figura %s <fig:modelagem:er-relacional:rel-trabalha2>`. Repare que as chaves primárias das relações representando os dois tipos de entidade participantes do relacionamento foram incluídas como chaves estrangeiras para as respectivas tabelas e, juntas, formam a chave primária composta. Além disso, o atributo ``horas`` foi incluído como coluna nessa tabela.
+
+
+.. figure:: ../../img/modelagem/er-relacional-rel-trabalha2.png
+    :alt: Mapeamento de tipos de relacionamento binário M:N
+    :width: 30%
+    :figclass: align-center
+    :name: fig:modelagem:er-relacional:rel-trabalha2
+
+    Mapeamento de tipos de relacionamento binário M:N.
+
+
+Mapeamento dos atributos compostos
+----------------------------------
+
+
+Geralmente, nos bancos de dados relacionais, definimos tabelas com tipos simples, como números inteiros, reais, strings, data e hora, entre outros. No PostgreSQL podemos criar um tipo composto através do comando ``CREATE TYPE``, para materializar atributos compostos. No entanto, a maior parte das aplicações acaba utilizando uma outra estratégia para implementação dos atributos compostos, que é a decomposição em colunas de tipos elementares. Portanto, no mapeamento ER-Relacional, para cada atributo composto devemos decompô-lo em colunas com tipos simples.
+
+
+No diagrama da :numref:`Figura %s <fig:modelagem:er:empresa:v2>`, o atributo ``endereco`` do tipo de entidade ``Funcionario`` dará origem às colunas ``logradouro``, ``num_logradouro``, ``bairro``, ``cidade`` e ``cep`` (:numref:`Figura %s <fig:modelagem:er-relacional:atributo-composto-endereco1>`).
+
+
+.. figure:: ../../img/modelagem/er-relacional-atributo-composto-endereco1.png
+    :alt: Mapeamento do atributo composto endereco do tipo de entidade Funcionario
+    :width: 35%
+    :figclass: align-center
+    :name: fig:modelagem:er-relacional:atributo-composto-endereco1
+
+    Mapeamento do atributo composto ``endereco`` do tipo de entidade ``Funcionario``.
+
+
+Mapeamento dos atributos multivalorados
+---------------------------------------
+
+
+No PostgreSQL temos um tipo que permite materializar atributos multivalorados diretamente, que é o tipo ``array``. No entanto, a maior parte das aplicações acaba utilizando uma outra estratégia para implementação dos tipos multivalorados, que é a criação de uma **relação auxiliar** (tabela auxiliar). Portanto, no mapeamento ER-Relacional, para cada atributo multivalorado devemos criar uma relação :math:`R`, que conterá uma coluna para representar o atributo e uma coluna que será uma chave estrangeira associada à chave primária da relação de origem do atributo multivalorado. A chave primária de :math:`R` é a combinação da chave estrangeira com a coluna representando o atributo. Se o atributo for composto, usamos as colunas necessárias para formar a chave primária.
+
+
+No diagrama da :numref:`Figura %s <fig:modelagem:er:empresa:v2>`, o atributo ``telefone`` do tipo de entidade ``Funcionario`` dará origem a uma relação chamada ``funcionario_telefone``, com a chave primária formada pelo número do telefone e a chave estrangeira ``cpf`` (:numref:`Figura %s <fig:modelagem:er-relacional:atributo-multi1>`).
+
+
+.. figure:: ../../img/modelagem/er-relacional-atributo-multi1.png
+    :alt: Mapeamento do atributo multivalorado telefone do tipo de entidade Funcionario
+    :width: 30%
+    :figclass: align-center
+    :name: fig:modelagem:er-relacional:atributo-multi1
+
+    Mapeamento do atributo multivalorado ``telefone`` do tipo de entidade ``Funcionario``.
+
+
+O atributo multivalorado ``enderecos`` do tipo de entidade ``Fornecedor`` (:numref:`Figura %s <fig:modelagem:er:empresa:v2>`), dará origem a uma relação chamada ``fornecedor_endereco`` com as colunas ``cnpj``, ``logradouro``, ``num_logradouro``, ``bairro``, ``cidade`` e ``cep`` (:numref:`Figura %s <fig:modelagem:er-relacional:atributo-multi2>`). A chave primária nesse caso poderia ser formada pelo ``cnpj`` e os campos ``logradouro`` e ``num_logradouro``. Além disso, a coluna ``cnpj`` é uma chave estrangeira.
+
+
+.. figure:: ../../img/modelagem/er-relacional-atributo-multi2.png
+    :alt: Mapeamento do atributo multivalorado enderecos do tipo de entidade Fornecedor
+    :width: 30%
+    :figclass: align-center
+    :name: fig:modelagem:er-relacional:atributo-multi2
+
+    Mapeamento do atributo multivalorado ``enderecos`` do tipo de entidade ``Fornecedor``.
+
+
+Mapeamento dos tipos de relacionamento n-ário
+---------------------------------------------
+
+
+No caso de um relacionamento :math:`n\text{-ário}` :math:`R`, com :math:`n > 2`, devemos criar uma relação :math:`S` para representar :math:`R`. Essa relação deverá incluir como chaves estrangeiras todas as chaves primárias das tabelas representando os tipos de entidades participantes do relacionamento. Também devemos incluir os atributos simples que façam parte do tipo de relacionamento. A chave primária de :math:`S` será formada pela combinação de todas as chaves estrangeiras que referenciam as relações representando os tipos de entidades participantes que possuem cardinalidade maior que 1. 
+
+
+No tipo de relacionamento ``Fornece`` (:numref:`Figura %s <fig:modelagem:er:rel-fornece:v2>`),
+
+.. figure:: ../../img/modelagem/er-rel-fornece.png
+    :alt: Fornece - Tipo de relacionamento ternário
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:rel-fornece:v2
+
+    ``Fornece`` - Tipo de relacionamento ternário.
+
+
+criaremos uma relação chamada ``  projeto_peca_fornecedor`` (:numref:`Figura %s <fig:modelagem:er-relacional:rel-fornece>`), com as chaves estrangeiras ``numero_projeto``, ``numero_peca`` e ``cnpj_fornecedor``. Mas como a cardinalidade do tipo de entidade ``Fornecedor`` é 1, a chave primária será formada apenas pelas colunas ``numero_projeto`` e ``numero_peca``. Além disso, acrescentaremos colunas para os atributos ``quantidade`` e ``valor`` das peças fornecidas para o projeto.
+
+
+.. figure:: ../../img/modelagem/er-relacional-rel-fornece.png
+    :alt: Mapeamento de tipos de relacionamento ternário
+    :width: 30%
+    :figclass: align-center
+    :name: fig:modelagem:er-relacional:rel-fornece
+
+    Mapeamento de tipos de relacionamento ternário.     
+
+
+Modelo Lógico Relacional
+------------------------
+
+
+.. figure:: ../../img/modelagem/er-relacional-logico.png
+    :alt: Modelo Lógico Relacional
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er-relacional:logico
+
+    Modelo Lógico Relacional.

@@ -1,0 +1,51 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../../def.rst
+
+.. _cap_modelagem_er_introducao:
+
+Introducao
+==========
+
+
+Neste capítulo apresentaremos o conceito de modelagem de dados através de diagramas **Entidade-Relacionamento**. Iremos mostrar como criar esse tipo de diagrama e depois transformá-lo em um esquema no modelo lógico dos bancos de dados relacionais. Para isso, usaremos um exemplo adaptado de :cite:`elmasri:2007`, que consiste essencialmente no modelo de um banco de dados de uma empresa hipotética que lida com informações de funcionários, departamentos e projetos.
+
+
+O exemplo pressupõe as seguintes informações sobre a empresa:
+
+.. rst-class:: open
+
+- Ela é organizada em departamentos, onde cada um possui um nome exclusivo e um código único.
+
+- Cada departamento é gerenciado por um único funcionário e a data de início da sua gestão deve ser registrada.
+
+- O departamento pode ter várias localizações (exemplo: salas em andares diferentes de um mesmo prédio).
+
+- Um departamento controla uma série de projetos, cada um deles com um nome exclusivo, um número único, e sendo realizado em um determinado local.
+
+- Para cada funcionário, devemos registrar seu CPF, nome, data de nascimento, gênero, endereço, telefones de contato (por exemplo: ramal da empresa, celular e telefone residencial), data de admissão na empresa, o salário corrente e lista de seus dependentes para fim dos planos de seguridade e detalhes de benefícios.
+
+- Cada funcionário *pode* ter um supervisor e um mesmo supervisor pode supervisionar um grupo de funcionários.
+
+- Devemos registrar quais funcionários participam de quais projetos e a dedicação (carga horária) dos mesmos nesses projetos.
+
+- Para cada projeto, teremos peças compradas de um fornecedor.
+
+- De cada fornecedor registraremos seu CNPJ, nome e os endereços das lojas.
+
+- As peças serão descritas por um número, nome e uma breve descrição de especificação técnica.
+
+
+O modelo **Entidade Relacionamento** ou **ER**, introduzido por Peter Chen :cite:`chen:1976` na década de 70, utiliza três conceitos básicos para descrever os dados de um projeto de bancos de dados: **entidades**, **relacionamentos** e **atributos**. A :numref:`Figura %s <fig:modelagem:er:empresa>` mostra o **esquema conceitual** do projeto do banco de dados para esse empresa, utilizando a notação ER. Na sequência, iremos explicar os detalhes de como chegamos a esse modelo e o significado de seus elementos.
+
+
+.. figure:: ../../img/modelagem/er-empresa.png
+    :alt: Modelo Entidade Relacionamento (ER) - Empresa
+    :width: 100%
+    :figclass: align-center
+    :name: fig:modelagem:er:empresa
+
+    Modelo Entidade Relacionamento (ER) - Empresa. |br| Adaptado de :cite:`elmasri:2007`.

@@ -1,0 +1,69 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../../def.rst
+
+.. _cap_modelagem_er_entidades:
+
+Tipos de Entidades e Atributos
+==============================
+
+
+No modelo ER a abstração básica usada é da **entidade**, que representa algo do mundo real ou do universo de interesse. Cada entidade possui **atributos**, que são propriedades específicas que a descreve. O conjunto de entidades de um mesmo tipo, isto é, que são semelhantes e compartilham a mesma estrutura e os mesmos atributos (mas com valores diferentes), é denominado **tipo de entidade**. 
+
+
+Pela descrição dos dados que queremos registrar sobre a empresa (:numref:`Seção %s <cap_modelagem_er_introducao>`) teremos um tipo de entidade para representar o conjunto de funcionários da empresa. Se denominarmos esse tipo de entidade de ``Funcionario``, ele pode ser descrito pelos atributos denominados ``cpf``, ``nome``, ``data_nascimento``, ``sexo``, ``endereco``, ``telefones``, ``admissao``, ``salario``, ``departamento``, ``supervisor``, ``projetos``, ``dependentes``.
+
+
+Na notação ER, um **tipo de entidade** é denotado por um **retângulo**, enquanto os **atributos** podem ser representados por **elementos ovais** com o nome do atributo em seu interior. A :numref:`Figura %s <fig:modelagem:er:tipo-entidade-funcionario>` apresenta o tipo de entidade ``Funcionario``, com seus atributos iniciais.
+
+
+.. figure:: ../../img/modelagem/er-tipo-entidade-funcionario.png
+    :alt: Representação inicial do tipo de entidade Funcionario
+    :width: 75%
+    :figclass: align-center
+    :name: fig:modelagem:er:tipo-entidade-funcionario
+
+    Representação inicial do tipo de entidade ``Funcionario``.
+
+
+Alguns desses atributos são **simples** (ou atômicos), isto é, não podem ser subdivididos em partes menores, como é o caso de ``cpf``, ``data_nascimentos``, ``sexo``, ``admissao`` e ``salario``.
+
+
+Outros atributos podem ser **compostos**, isto é, podemos registrar informações para as quais desejamos pesquisar por sub-componentes, como o atributo ``endereco``. Este em particular, pode ser dividido em ``logradouro``, ``numero``, ``bairro``, ``cep``, ``cidade``, ``uf``, entre outros. Obviamente, que se o atributo composto for sempre referenciado como um todo, possivelmente, não é necessário subdividi-lo e podemos representá-lo como um atributo simples.
+
+
+Ainda temos que considerar que alguns atributos podem ser **multivalorados**, como o caso de ``telefones``, onde um funcionário específico pode ter um número de celular, um número residencial e um ramal na empresa, por exemplo. Esse tipo de atributo é representado por um símbolo **oval duplo**.
+
+
+Uma forma de identificar uma entidade dentro de seu conjunto, é ter um um tipo atributo denominado **identificador** (ou **atributo chave**), cujo valor irá distinguir uma entidade das outras. Por exemplo, o ``cpf`` no tipo de entidade ``Funcionario`` pode servir como atributo identificador. Os atributos identificadores são representados com um **sublinhado**.
+
+
+Em geral, no projeto de um banco de dados, após o levantamento de requisitos e uma breve descrição dos dados que devem ser registrados, identificamos os tipos de entidade e seus atrubutos.
+
+
+A :numref:`Figura %s <fig:modelagem:er:tipo-entidade-departamento>` mostra os atributos escolhidos para o tipo de entidade ``Departamento``.
+
+
+.. figure:: ../../img/modelagem/er-tipo-entidade-departamento.png
+    :alt: Representação inicial do tipo de entidade Departamento
+    :width: 75%
+    :figclass: align-center
+    :name: fig:modelagem:er:tipo-entidade-departamento
+
+    Representação inicial do tipo de entidade ``Departamento``.
+
+
+A :numref:`Figura %s <fig:modelagem:er:tipo-entidade-projeto>` mostra os atributos escolhidos para o tipo de entidade ``Projeto``.
+
+
+.. figure:: ../../img/modelagem/er-tipo-entidade-projeto.png
+    :alt: Representação inicial do tipo de entidade Projeto
+    :width: 75%
+    :figclass: align-center
+    :name: fig:modelagem:er:tipo-entidade-projeto
+
+    Representação inicial do tipo de entidade ``Projeto``.
+ 
