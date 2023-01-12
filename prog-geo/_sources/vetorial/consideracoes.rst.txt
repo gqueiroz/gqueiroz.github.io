@@ -1,0 +1,16 @@
+..
+    This file is part of "Notas de Aula do Curso Introdução à Programação com Dados Geoespaciais".
+    Copyright 2020-2021, Gilberto Queiroz and Thales Körting.
+
+
+.. _sec_vetorial_consideracoes:
+
+Considerações Finais
+====================
+
+
+A biblioteca `GDAL <http://www.gdal.org>`_ é um dos pilares básicos de praticamente todos os sistemas geoespaciais de software livre da atualidade. Em Python, podemos utilizar essa biblioteca diretamente através de um *binding* (ou *wrapper*) que pode ser instalado com o gerenciador de pacotes da Anaconda ou pelo ``pip``. Apesar da GDAL ser uma biblioteca robusta e completa, sua API Python expõe os tipos e operações com um estilo de programação muito próximo da linguagem C/C++, que é usada para seu desenvolvimento. Por isso, existem outras bibliotecas em Python que tentam fornecer um estilo de programação mais próximo dos idiomas usados em Python.
+
+
+Nesse sentido, a `Fiona <https://fiona.readthedocs.io/en/lates>`_ é uma biblioteca que procura facilitar a leitura e escrita de dados geoespaciais adotando um estilo de programação mais próxima do universo Python. A Fiona é construída sobre a `OGR <http://www.gdal.org/ogr_apitut.html>`_, que é a parte da biblioteca GDAL voltada para tratamento de dados vetoriais. A Fiona não expõe nenhum dos tipos da GDAL/OGR, oferecendo supore a leitura e escrita de dados geoespaciais nos mesmos moldes dos protocolos de Entrada e Saída (E/S) da API de arquivos de Python (Python IO). Ou seja, ela utiliza dicionários (*mappings*) e iteradores para acesso aos elementos do conjunto de dados, sendo os registros mantidos em dicionários que seguem o formato `GeoJSON <http://geojson.org>`_. Os tipos geométricos retornados pela Fiona podem ser facilmente convertidos em geometrias da biblioteca `Shapely <https://github.com/Toblerity/Shapely>`_. Também é possível usar a `pyproj <https://github.com/jswhit/pyproj>`_ e a `Rtree <http://toblerity.org/rtree>`_ em conjunto com a ``Fiona``.
+

@@ -1,0 +1,25 @@
+..
+    This file is part of "Notas de Aula do Curso Introdução à Programação com Dados Geoespaciais".
+    Copyright 2020-2021, Gilberto Queiroz and Thales Körting.
+
+
+.. _cap_listas:
+
+Listas de Exercícios
+====================
+
+
+.. toctree::
+    :maxdepth: 1
+    :titlesonly:
+
+    ./listas/l01
+    ./listas/l02
+    ./listas/l03
+    ./listas/l04
+    ./listas/l05
+    ./listas/l06
+
+
+
+

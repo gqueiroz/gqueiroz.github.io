@@ -1,0 +1,51 @@
+..
+    This file is part of "Notas de Aula do Curso Introdução à Programação com Dados Geoespaciais".
+    Copyright 2020-2021, Gilberto Queiroz and Thales Körting.
+
+
+.. _sec_jupyter_nbextensions:
+
+Extensões para Notebooks
+========================
+
+
+Existem diversas extensões que podemos instalar no ambiente Jupyter para acrescentar funcionalidades ao ambiente de Notebooks. No JupyterLab, as extensões pode ser instaladas a partir da aba ``Extension Manager``, como mostrado na Figura X.
+
+
+Se você estiver usando o ambiente Jupyter Notebooks, poderá instalar o pacote ``nbextension``. Na distribuição Anaconda, este pacote pode ser instalado através do comando ``conda install``::
+
+    conda install -c conda-forge jupyter_contrib_nbextensions
+
+
+Se preferir usar o comando ``pip``, faça::
+
+    pip install jupyter_contrib_nbextensions
+
+
+Para instalar os arquivos JavaScript e CSS nas pastas apropriadas, onde o servidor Jupyter possa acessá-los, faça::
+
+    jupyter contrib nbextension install
+
+
+Explorar:
+
+- Hinterland: menu de auto-completar ao estilo do PyCharm.
+- Table of Contents: Todas as seções marcadas como cabeçalhos (Markdown ``#``) são usadas para criação de um sumário
+- Execute Time
+- Spellchecker:
+- Variable Selector:
+- Slideshow
+- Embedding PDF documents
+- YouTube videos
+
+
+.. code-block:: ipython
+
+    from IPython.display import IFrame
+    IFrame('https://arxiv.org/pdf/1811.02141.pdf', width=700, height=400)
+
+
+.. code-block:: ipython
+
+    from IPython.display import YouTubeVideo
+    YouTubeVideo('ukzFI9rgwfU', width=800, height=300)

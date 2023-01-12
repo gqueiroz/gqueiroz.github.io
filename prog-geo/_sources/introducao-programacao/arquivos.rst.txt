@@ -1,0 +1,84 @@
+..
+    This file is part of "Notas de Aula do Curso Introdução à Programação com Dados Geoespaciais".
+    Copyright 2020-2023, Gilberto Queiroz and Thales Körting.
+
+
+.. _sec_introducao_arquivos:
+
+Leitura e Escrita de Arquivos
+=============================
+
+
+**1.** Abrindo o arquivo ``termos.json`` e lendo todo o seu conteúdo para a memória:
+
+
+.. code-block:: python
+
+    arq = open('termos.json', 'r')
+
+    try:
+        conteudo = arq.read()
+
+        print(conteudo)
+
+    finally:
+        arq.close()
+
+
+**2.** Abrindo o arquivo ``termos.json`` usando o comando ``with``:
+
+
+.. code-block:: python
+
+    with open('termos.json', 'r') as arq:
+        conteudo = arq.read()
+
+        print(conteudo)
+
+
+**3.** Abrindo o arquivo ``termos.json`` e lendo as duas primeiras linhas:
+
+
+.. code-block:: python
+
+    with open('termos.json', 'r') as arq:
+        linha1 = arq.readline()
+        print(linha1, end='')
+        
+        linha2 = arq.readline()
+        print(linha2, end='')
+
+
+**4.** Abrindo o arquivo ``termos.json`` e iterando pelas linhas do arquivo:
+
+
+.. code-block:: python
+
+    with open('termos.json', 'r') as arq:
+        for linha in arq:
+            print(linha, end='')
+
+
+**5.** Abrindo o arquivo ``termos.json`` e criando uma lista com todas as linhas do arquivo:
+
+
+.. code-block:: python
+
+    with open('termos.json', 'r') as arq:
+        linhas = arq.readlines()
+        print(linhas)
+
+
+**6.** Adicionando uma nova linha ao final do arquivo ``termos.json``:
+
+
+.. code-block:: python
+
+    with open('termos.json', 'a') as arq:
+        arq.write('Nova linha...\n')
+        
+
+
+.. tip::
+
+    Para mais detalhes sobre as operações com arquivos texto, consulte a seção `7.2. Reading and Writing Files <https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files>`__ do manual do Python.
