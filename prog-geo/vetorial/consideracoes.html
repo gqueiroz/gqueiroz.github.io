@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5.8. Considerações Finais &mdash; SER-347/CAP-419</title>
+  <title>5.9. Considerações Finais &mdash; SER-347/CAP-419</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -31,7 +31,7 @@
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
     <link rel="next" title="6. Programando com o QGIS" href="../qgis.html" />
-    <link rel="prev" title="5.7. Pandas" href="pandas.html" /> 
+    <link rel="prev" title="5.8. GeoPandas" href="geopandas.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -71,7 +71,8 @@
 <li class="toctree-l2"><a class="reference internal" href="geojson.html">5.5. Documentos GeoJSON</a></li>
 <li class="toctree-l2"><a class="reference internal" href="geo-io.html">5.6. Leitura/Escrita de Dados Vetoriais</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pandas.html">5.7. Pandas</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.8. Considerações Finais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geopandas.html">5.8. GeoPandas</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.9. Considerações Finais</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../qgis.html">6. Programando com o QGIS</a></li>
@@ -118,11 +119,11 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../vetorial.html"><span class="section-number">5. </span>Manipulação de Dados Vetoriais</a> &raquo;</li>
-      <li><span class="section-number">5.8. </span>Considerações Finais</li>
+      <li><span class="section-number">5.9. </span>Considerações Finais</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
-        <a href="pandas.html" class="btn btn-neutral float-left" title="5.7. Pandas" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="geopandas.html" class="btn btn-neutral float-left" title="5.8. GeoPandas" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
         <a href="../qgis.html" class="btn btn-neutral float-right" title="6. Programando com o QGIS" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
@@ -131,7 +132,7 @@
            <div itemprop="articleBody">
              
   <div class="section" id="consideracoes-finais">
-<span id="sec-vetorial-consideracoes"></span><h1><span class="section-number">5.8. </span>Considerações Finais<a class="headerlink" href="#consideracoes-finais" title="Link permanente para este título"></a></h1>
+<span id="sec-vetorial-consideracoes"></span><h1><span class="section-number">5.9. </span>Considerações Finais<a class="headerlink" href="#consideracoes-finais" title="Link permanente para este título"></a></h1>
 <p>A biblioteca <a class="reference external" href="http://www.gdal.org">GDAL</a> é um dos pilares básicos de praticamente todos os sistemas geoespaciais de software livre da atualidade. Em Python, podemos utilizar essa biblioteca diretamente através de um <em>binding</em> (ou <em>wrapper</em>) que pode ser instalado com o gerenciador de pacotes da Anaconda ou pelo <code class="docutils literal notranslate"><span class="pre">pip</span></code>. Apesar da GDAL ser uma biblioteca robusta e completa, sua API Python expõe os tipos e operações com um estilo de programação muito próximo da linguagem C/C++, que é usada para seu desenvolvimento. Por isso, existem outras bibliotecas em Python que tentam fornecer um estilo de programação mais próximo dos idiomas usados em Python.</p>
 <p>Nesse sentido, a <a class="reference external" href="https://fiona.readthedocs.io/en/lates">Fiona</a> é uma biblioteca que procura facilitar a leitura e escrita de dados geoespaciais adotando um estilo de programação mais próxima do universo Python. A Fiona é construída sobre a <a class="reference external" href="http://www.gdal.org/ogr_apitut.html">OGR</a>, que é a parte da biblioteca GDAL voltada para tratamento de dados vetoriais. A Fiona não expõe nenhum dos tipos da GDAL/OGR, oferecendo supore a leitura e escrita de dados geoespaciais nos mesmos moldes dos protocolos de Entrada e Saída (E/S) da API de arquivos de Python (Python IO). Ou seja, ela utiliza dicionários (<em>mappings</em>) e iteradores para acesso aos elementos do conjunto de dados, sendo os registros mantidos em dicionários que seguem o formato <a class="reference external" href="http://geojson.org">GeoJSON</a>. Os tipos geométricos retornados pela Fiona podem ser facilmente convertidos em geometrias da biblioteca <a class="reference external" href="https://github.com/Toblerity/Shapely">Shapely</a>. Também é possível usar a <a class="reference external" href="https://github.com/jswhit/pyproj">pyproj</a> e a <a class="reference external" href="http://toblerity.org/rtree">Rtree</a> em conjunto com a <code class="docutils literal notranslate"><span class="pre">Fiona</span></code>.</p>
 </div>
@@ -140,7 +141,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="pandas.html" class="btn btn-neutral float-left" title="5.7. Pandas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="geopandas.html" class="btn btn-neutral float-left" title="5.8. GeoPandas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
         <a href="../qgis.html" class="btn btn-neutral float-right" title="6. Programando com o QGIS" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

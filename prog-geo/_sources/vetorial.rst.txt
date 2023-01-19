@@ -21,4 +21,5 @@ Manipulação de Dados Vetoriais
     ./vetorial/geojson
     ./vetorial/geo-io
     ./vetorial/pandas
+    ./vetorial/geopandas
     ./vetorial/consideracoes
