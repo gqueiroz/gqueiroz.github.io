@@ -12,6 +12,28 @@ Exercícios
 ==========
 
 
+**Atenção:**
+
+.. rst-class:: open
+
+- Os exercícios práticos devem ser desenvolvidos em PL/pgSQL ou PL/Python. 
+
+- Escreva a documentação que achar pertinente dentro do próprio código fonte, que deverá utilizar a codificação de caracteres ``UTF-8``.
+
+- A solução de cada exercício deverá ser entregue em arquivos de código fonte com a extensão ``.sql``. 
+
+- Envie por e-mail **um único** arquivo no **formato zip**, chamado ``lista-01.zip``, contendo todos os arquivos de código fonte dos exercícios.
+
+- O título (assunto) do e-mail deve seguir o seguinte padrão: ``[geoinformatica-2023][lista-01] nome-aluno``. Exemplo: ``[geoinformatica-2023][lista-01] gilberto``.
+
+- Não use acentos ou caracteres especiais nos nomes dos arquivos ou no título do e-mail.
+
+- **Prazo para entrega:** 22/06/2023 - 18:00
+
+
+-----
+
+
 **Exercício 01.** A `fórmula de Haversine <https://en.wikipedia.org/wiki/Haversine\_formula>`__ possbilita o cálculo de distâncias entre dois pontos em uma esfera a partir de suas latitudes e longitudes. Dada a seguinte fórmula:
 
 
@@ -33,6 +55,11 @@ onde:
 
 
 Construa uma função chamada ``DistanciaHaversine`` que receba como argumentos duas geometrias do tipo ``Point``, representando duas localizações quaisquer em grau-decimal, e que retorne um único valor com a distância em ``km``. Para maiores detalhes sobre essa fórmula, consulte a `Wikipedia <https://en.wikipedia.org/wiki/Haversine_formula>`__.
+
+
+.. warning::
+
+    O código fonte desse exercício deverá estar em dois arquivos: um contendo a definição da função, com o nome ``ex-01-haversine-ddl.sql``, e outro com um exemplo de uso da função, chamado ``ex-01-haversine-dml.sql``.
 
 
 -----
@@ -82,6 +109,11 @@ Construa uma função chamada ``DistanciaHaversine`` que receba como argumentos 
     Compare seus resultados com os da calculadora online: `Distance from a point to a line - 2-Dimensional <https://onlinemschool.com/math/assistance/cartesian_coordinate/p_line1/>`__.
 
 
+.. warning::
+
+    O código fonte desse exercício deverá ser entregue em dois arquivos: um contendo a definição da função, com o nome ``ex-02-distancia-ddl.sql``, e outro com um exemplo de uso da função, chamado ``ex-02-distancia-dml.sql``.
+
+
 -----
 
 
@@ -123,6 +155,11 @@ Construa uma função chamada ``DistanciaHaversine`` que receba como argumentos 
     Além disso, deve ser considerado que os segmento :math:`S` e :math:`T` possuem interseção se eles tiverem qualquer ponto em comum, incluindo as extremidades :math:`P_1`, :math:`P_2`, :math:`P_3`, ou :math:`P_4`. 
 
 
+.. warning::
+
+    O código fonte desse exercício deverá ser entregue em dois arquivos: um contendo a definição da função, com o nome ``ex-03-intersecta-ddl.sql``, e outro com um exemplo de uso da função, chamado ``ex-03-intersecta-dml.sql``.
+
+
 -----
 
 **Exercício 04.** A área de um polígono simples pode ser calculada através da seguinte expressão:
@@ -141,6 +178,11 @@ Construa uma função que receba como parâmetro formal um polígono simples e q
     Para mais detalhes, consulte as Seções :numref:`%s <cap_algo_geom_simple_pol>` e :numref:`%s <cap_algo_geom_area>`.
 
 
+.. warning::
+
+    O código fonte desse exercício deverá ser entregue em dois arquivos: um contendo a definição da função, com o nome ``ex-04-area-ddl.sql``, e outro com um exemplo de uso da função, chamado ``ex-04-area-dml.sql``.
+
+
 -----
 
 
@@ -148,12 +190,12 @@ Construa uma função que receba como parâmetro formal um polígono simples e q
 
 .. rst-class:: open
 
-- Crie um arquivo denominado ``ddl.sql`` contendo os comandos de definição das tabelas apresentadas no diagrama.
+- Crie um arquivo denominado ``ex-05-modelo-ddl.sql`` contendo os comandos de definição das tabelas apresentadas no diagrama.
 
 
-- Crie um *trigger* que atualize automaticamente o ``periodo`` de uma determinada ``colecao`` quando uma cena é inserida, removida ou atualizada na tabela ``cena``. O arquivo contendo o código desse *trigger* deve-se chamar ``trigger-colecao.sql``.
+- Crie um *trigger* que atualize automaticamente o ``periodo`` e a região de ``cobertura`` de uma determinada ``colecao`` quando uma nova cena é inserida na tabela ``cena``. O arquivo contendo o código desse *trigger* deve se chamar ``ex-05-trigger-cena-colecao.sql``.
 
-- Crie um *trigger* que adicione automaticamente um novo instante de tempo de uma coleção na tabela ``timeline`` quando uma nova cena for inserida na tabela ``cena``. O arquivo contendo o código desse *trigger* deve-se chamar ``trigger-timeline.sql``.
+- Crie um *trigger* que adicione automaticamente um novo instante de tempo de uma coleção na tabela ``timeline`` quando uma nova cena for inserida na tabela ``cena``. O arquivo contendo o código desse *trigger* deve se chamar ``ex-05-trigger-cena-timeline.sql``.
 
 
 .. figure:: ../img/prog-servidor/modelo-cenas.png
@@ -163,4 +205,5 @@ Construa uma função que receba como parâmetro formal um polígono simples e q
     :name: fig:prog-servidor:exercicios:modelo-cenas
 
     Diagrama simplificado de uma coleção de imagens
+
 

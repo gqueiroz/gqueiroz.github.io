@@ -119,6 +119,17 @@
              
   <section id="exercicios">
 <span id="cap-prog-servidor-exercicios"></span><h1><span class="section-number">7.6. </span>Exercícios<a class="headerlink" href="#exercicios" title="Link permanente para este cabeçalho"></a></h1>
+<p><strong>Atenção:</strong></p>
+<ul class="open">
+<li><p>Os exercícios práticos devem ser desenvolvidos em PL/pgSQL ou PL/Python.</p></li>
+<li><p>Escreva a documentação que achar pertinente dentro do próprio código fonte, que deverá utilizar a codificação de caracteres <code class="docutils literal notranslate"><span class="pre">UTF-8</span></code>.</p></li>
+<li><p>A solução de cada exercício deverá ser entregue em arquivos de código fonte com a extensão <code class="docutils literal notranslate"><span class="pre">.sql</span></code>.</p></li>
+<li><p>Envie por e-mail <strong>um único</strong> arquivo no <strong>formato zip</strong>, chamado <code class="docutils literal notranslate"><span class="pre">lista-01.zip</span></code>, contendo todos os arquivos de código fonte dos exercícios.</p></li>
+<li><p>O título (assunto) do e-mail deve seguir o seguinte padrão: <code class="docutils literal notranslate"><span class="pre">[geoinformatica-2023][lista-01]</span> <span class="pre">nome-aluno</span></code>. Exemplo: <code class="docutils literal notranslate"><span class="pre">[geoinformatica-2023][lista-01]</span> <span class="pre">gilberto</span></code>.</p></li>
+<li><p>Não use acentos ou caracteres especiais nos nomes dos arquivos ou no título do e-mail.</p></li>
+<li><p><strong>Prazo para entrega:</strong> 22/06/2023 - 18:00</p></li>
+</ul>
+<hr class="docutils" />
 <p><strong>Exercício 01.</strong> A <a class="reference external" href="https://en.wikipedia.org/wiki/Haversine_formula">fórmula de Haversine</a> possbilita o cálculo de distâncias entre dois pontos em uma esfera a partir de suas latitudes e longitudes. Dada a seguinte fórmula:</p>
 <div class="math notranslate nohighlight" id="equation-eq-prog-servidor-exercicios-haversine">
 <span class="eqno">(7.1)<a class="headerlink" href="#equation-eq-prog-servidor-exercicios-haversine" title="Link permanente para essa equação"></a></span>\[d(p, q) = 2r \arcsin{\sqrt{\sin^2({\frac{\phi_2 - \phi_1}{2}}) + \cos{\phi_1} \cos{\phi_2} \sin^2({\frac{\lambda_2 - \lambda_1}{2}})}}\]</div>
@@ -129,6 +140,10 @@
 <li><p><span class="math notranslate nohighlight">\(\lambda_1\)</span> e <span class="math notranslate nohighlight">\(\lambda_2\)</span>: longitude dos pontos em radianos.</p></li>
 </ul>
 <p>Construa uma função chamada <code class="docutils literal notranslate"><span class="pre">DistanciaHaversine</span></code> que receba como argumentos duas geometrias do tipo <code class="docutils literal notranslate"><span class="pre">Point</span></code>, representando duas localizações quaisquer em grau-decimal, e que retorne um único valor com a distância em <code class="docutils literal notranslate"><span class="pre">km</span></code>. Para maiores detalhes sobre essa fórmula, consulte a <a class="reference external" href="https://en.wikipedia.org/wiki/Haversine_formula">Wikipedia</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>O código fonte desse exercício deverá estar em dois arquivos: um contendo a definição da função, com o nome <code class="docutils literal notranslate"><span class="pre">ex-01-haversine-ddl.sql</span></code>, e outro com um exemplo de uso da função, chamado <code class="docutils literal notranslate"><span class="pre">ex-01-haversine-dml.sql</span></code>.</p>
+</div>
 <hr class="docutils" />
 <p id="cap-prog-servidor-exercicios-ex-02"><strong>Exercício 02.</strong> Escreva uma função que calcule a menor distância entre um ponto <span class="math notranslate nohighlight">\(P\)</span> qualquer e uma reta <span class="math notranslate nohighlight">\(r\)</span> qualquer (<a class="reference internal" href="#fig-prog-servidor-exercicios-point-to-line"><span class="std std-numref">Figura 7.14</span></a>). Os parâmetros desta função deverão utilizar o tipo <em>PostGIS Geometry</em>, com o ponto representado por um elemento geométrico do tipo <code class="docutils literal notranslate"><span class="pre">Point</span></code> e a reta, por um <code class="docutils literal notranslate"><span class="pre">LineString</span></code> contendo dois pontos da reta.</p>
 <div class="admonition note">
@@ -151,6 +166,10 @@
 <div class="admonition tip">
 <p class="admonition-title">Dica</p>
 <p>Compare seus resultados com os da calculadora online: <a class="reference external" href="https://onlinemschool.com/math/assistance/cartesian_coordinate/p_line1/">Distance from a point to a line - 2-Dimensional</a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>O código fonte desse exercício deverá ser entregue em dois arquivos: um contendo a definição da função, com o nome <code class="docutils literal notranslate"><span class="pre">ex-02-distancia-ddl.sql</span></code>, e outro com um exemplo de uso da função, chamado <code class="docutils literal notranslate"><span class="pre">ex-02-distancia-dml.sql</span></code>.</p>
 </div>
 <hr class="docutils" />
 <p><strong>Exercício 03.</strong> Escreva uma função que avalie se dois segmentos de reta quaisquer se interceptam ou não. Utilize como tipo do parâmetro formal dessa função dois elementos geométricos do tipo <code class="docutils literal notranslate"><span class="pre">LineString</span></code> (<em>PostGIS Geometry</em>).</p>
@@ -176,6 +195,10 @@
 <p>Veja que não é pedido no exercício para que seja computado o ponto de interseção <span class="math notranslate nohighlight">\(I\)</span> mostrado na <a class="reference internal" href="#fig-prog-servidor-exercicios-seg-seg-intersection"><span class="std std-numref">Figura 7.15</span></a>.</p>
 <p>Além disso, deve ser considerado que os segmento <span class="math notranslate nohighlight">\(S\)</span> e <span class="math notranslate nohighlight">\(T\)</span> possuem interseção se eles tiverem qualquer ponto em comum, incluindo as extremidades <span class="math notranslate nohighlight">\(P_1\)</span>, <span class="math notranslate nohighlight">\(P_2\)</span>, <span class="math notranslate nohighlight">\(P_3\)</span>, ou <span class="math notranslate nohighlight">\(P_4\)</span>.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>O código fonte desse exercício deverá ser entregue em dois arquivos: um contendo a definição da função, com o nome <code class="docutils literal notranslate"><span class="pre">ex-03-intersecta-ddl.sql</span></code>, e outro com um exemplo de uso da função, chamado <code class="docutils literal notranslate"><span class="pre">ex-03-intersecta-dml.sql</span></code>.</p>
+</div>
 <hr class="docutils" />
 <p><strong>Exercício 04.</strong> A área de um polígono simples pode ser calculada através da seguinte expressão:</p>
 <div class="math notranslate nohighlight">
@@ -185,12 +208,16 @@
 <p class="admonition-title">Dica</p>
 <p>Para mais detalhes, consulte as Seções <a class="reference internal" href="../algo-geom/simple-pol.html#cap-algo-geom-simple-pol"><span class="std std-numref">5.1</span></a> e <a class="reference internal" href="../algo-geom/area.html#cap-algo-geom-area"><span class="std std-numref">5.2</span></a>.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>O código fonte desse exercício deverá ser entregue em dois arquivos: um contendo a definição da função, com o nome <code class="docutils literal notranslate"><span class="pre">ex-04-area-ddl.sql</span></code>, e outro com um exemplo de uso da função, chamado <code class="docutils literal notranslate"><span class="pre">ex-04-area-dml.sql</span></code>.</p>
+</div>
 <hr class="docutils" />
 <p><strong>Exercício 05.</strong> Considere o diagrama apresentado na <a class="reference internal" href="#fig-prog-servidor-exercicios-modelo-cenas"><span class="std std-numref">Figura 7.16</span></a>:</p>
 <ul class="open">
-<li><p>Crie um arquivo denominado <code class="docutils literal notranslate"><span class="pre">ddl.sql</span></code> contendo os comandos de definição das tabelas apresentadas no diagrama.</p></li>
-<li><p>Crie um <em>trigger</em> que atualize automaticamente o <code class="docutils literal notranslate"><span class="pre">periodo</span></code> de uma determinada <code class="docutils literal notranslate"><span class="pre">colecao</span></code> quando uma cena é inserida, removida ou atualizada na tabela <code class="docutils literal notranslate"><span class="pre">cena</span></code>. O arquivo contendo o código desse <em>trigger</em> deve-se chamar <code class="docutils literal notranslate"><span class="pre">trigger-colecao.sql</span></code>.</p></li>
-<li><p>Crie um <em>trigger</em> que adicione automaticamente um novo instante de tempo de uma coleção na tabela <code class="docutils literal notranslate"><span class="pre">timeline</span></code> quando uma nova cena for inserida na tabela <code class="docutils literal notranslate"><span class="pre">cena</span></code>. O arquivo contendo o código desse <em>trigger</em> deve-se chamar <code class="docutils literal notranslate"><span class="pre">trigger-timeline.sql</span></code>.</p></li>
+<li><p>Crie um arquivo denominado <code class="docutils literal notranslate"><span class="pre">ex-05-modelo-ddl.sql</span></code> contendo os comandos de definição das tabelas apresentadas no diagrama.</p></li>
+<li><p>Crie um <em>trigger</em> que atualize automaticamente o <code class="docutils literal notranslate"><span class="pre">periodo</span></code> e a região de <code class="docutils literal notranslate"><span class="pre">cobertura</span></code> de uma determinada <code class="docutils literal notranslate"><span class="pre">colecao</span></code> quando uma nova cena é inserida na tabela <code class="docutils literal notranslate"><span class="pre">cena</span></code>. O arquivo contendo o código desse <em>trigger</em> deve se chamar <code class="docutils literal notranslate"><span class="pre">ex-05-trigger-cena-colecao.sql</span></code>.</p></li>
+<li><p>Crie um <em>trigger</em> que adicione automaticamente um novo instante de tempo de uma coleção na tabela <code class="docutils literal notranslate"><span class="pre">timeline</span></code> quando uma nova cena for inserida na tabela <code class="docutils literal notranslate"><span class="pre">cena</span></code>. O arquivo contendo o código desse <em>trigger</em> deve se chamar <code class="docutils literal notranslate"><span class="pre">ex-05-trigger-cena-timeline.sql</span></code>.</p></li>
 </ul>
 <figure class="align-center align-default" id="fig-prog-servidor-exercicios-modelo-cenas">
 <a class="reference internal image-reference" href="../_images/modelo-cenas.png"><img alt="Diagrama simplificado de uma coleção de imagens" src="../_images/modelo-cenas.png" style="width: 80%;" /></a>
@@ -215,7 +242,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f501fdad070>
+<jinja2.runtime.BlockReference object at 0x7f9a7c2c96d0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 
