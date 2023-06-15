@@ -17,7 +17,6 @@ A função ``generate_4pts`` irá gerar um conjunto com quatro pontos sorteados 
 
 .. code-block:: plpgsql
 
-
     CREATE OR REPLACE FUNCTION generate_4pts()
     RETURNS SETOF GEOMETRY
     AS

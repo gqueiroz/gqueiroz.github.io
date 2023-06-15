@@ -1,0 +1,166 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2022, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_prog_servidor_exercicios:
+
+Exercícios
+==========
+
+
+**Exercício 01.** A `fórmula de Haversine <https://en.wikipedia.org/wiki/Haversine\_formula>`__ possbilita o cálculo de distâncias entre dois pontos em uma esfera a partir de suas latitudes e longitudes. Dada a seguinte fórmula:
+
+
+.. math::
+    :label: eq:prog-servidor:exercicios:haversine
+
+    d(p, q) = 2r \arcsin{\sqrt{\sin^2({\frac{\phi_2 - \phi_1}{2}}) + \cos{\phi_1} \cos{\phi_2} \sin^2({\frac{\lambda_2 - \lambda_1}{2}})}}
+
+
+onde:
+
+.. rst-class:: open
+
+- :math:`r`: é o raio da esfera (:math:`\sim6371 km`).
+
+- :math:`\phi_1` e :math:`\phi_2`: latitude dos pontos em radianos.
+
+- :math:`\lambda_1` e :math:`\lambda_2`: longitude dos pontos em radianos.
+
+
+Construa uma função chamada ``DistanciaHaversine`` que receba como argumentos duas geometrias do tipo ``Point``, representando duas localizações quaisquer em grau-decimal, e que retorne um único valor com a distância em ``km``. Para maiores detalhes sobre essa fórmula, consulte a `Wikipedia <https://en.wikipedia.org/wiki/Haversine_formula>`__.
+
+
+-----
+
+.. _cap_prog_servidor_exercicios_ex_02:
+
+**Exercício 02.** Escreva uma função que calcule a menor distância entre um ponto :math:`P` qualquer e uma reta :math:`r` qualquer (:numref:`Figura %s <fig:prog-servidor:exercicios:point_to_line>`). Os parâmetros desta função deverão utilizar o tipo *PostGIS Geometry*, com o ponto representado por um elemento geométrico do tipo ``Point`` e a reta, por um ``LineString`` contendo dois pontos da reta.
+
+
+.. note::
+
+    A menor distância entre um ponto :math:`P` e uma reta :math:`r` corresponde ao segmento de reta perpendicular a :math:`r` que parte de :math:`P` e chega a :math:`r`, como ilustrado na :numref:`Figura %s <fig:prog-servidor:exercicios:point_to_line>`.
+
+
+    .. figure:: ../img/prog-servidor/point_to_line.png
+        :alt: Distância mínima entre um ponto e uma reta
+        :width: 70%
+        :figclass: align-center
+        :name: fig:prog-servidor:exercicios:point_to_line
+
+        Distância mínima entre um ponto e uma reta.    
+    
+    
+    |br|
+    
+    Uma forma de computar essa distância consiste na utilização da forma normal de *Hessean* para retas. Para uma reta :math:`r` que passa pelos pontos :math:`P_1=(x_1, y_1)` e :math:`P_2=(x_2, y_2)`, temos a seguinte fórmula:
+    
+    .. math::
+        :label: eq:prog-servidor:exercicios:hessean
+
+        h(x, y) = \frac{(y_2 - y_1) \times (x - x_1) - (x_2 - x_1) \times (y - y_1)}{\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}} = 0
+
+
+    com: :math:`\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} > 0`.
+    
+    
+    A distância de :math:`P=(x, y)` a :math:`r` é dada por :math:`|h(x, y)|`.
+    
+    
+    .. rst-class:: centered-paragraph    
+    
+    **Fonte:** Nievergelt and Hinrichs (1993) :cite:`nievergelt:1993`.
+
+
+.. tip::
+
+    Compare seus resultados com os da calculadora online: `Distance from a point to a line - 2-Dimensional <https://onlinemschool.com/math/assistance/cartesian_coordinate/p_line1/>`__.
+
+
+-----
+
+
+**Exercício 03.** Escreva uma função que avalie se dois segmentos de reta quaisquer se interceptam ou não. Utilize como tipo do parâmetro formal dessa função dois elementos geométricos do tipo ``LineString`` (*PostGIS Geometry*).
+
+
+.. note::
+
+    Seja os segmentos de reta, :math:`S=\overline{P_1P_2}` e :math:`T=\overline{P_3P_4}` (:numref:`Figura %s <fig:prog-servidor:exercicios:seg_seg_intersection>`). Para saber se esses dois segmentos se interceptam, basta avaliar se os pontos :math:`P_1` e :math:`P_2` de :math`S` encontram-se em lados opostos da reta que contém o segmento :math:`T`, e se os pontos :math:`P_3` e :math:`P_4` de :math:`T` estão em lados opostos da reta que contém o segmento :math:`S`.
+
+
+    .. figure:: ../img/prog-servidor/seg_seg_intersection.png
+        :alt: Interseção entre segmentos de reta
+        :width: 70%
+        :figclass: align-center
+        :name: fig:prog-servidor:exercicios:seg_seg_intersection
+
+        Interseção entre segmentos de reta. 
+
+
+    |br|
+    
+    A equação de Hessean (:eq:`eq:prog-servidor:exercicios:hessean`), mostrada no :ref:`Exercício 02 <cap_prog_servidor_exercicios_ex_02>`, pode ser usada para solução desse problema. Os pontos :math:`P_1` e :math:`P_2` encontram-se em lados opostos da reta que contém o segmento :math:`T`, se :math:`h(P_1) \times h(P_2) < 0`. Nesta inequação, a avaliação do denominador da equação de Hessean se torna desnecessária.
+    
+    
+    Se :math:`h(P_1) = 0` ou :math:`h(P_2) = 0`, significa que um desses pontos encontra-se sobre a reta que contém :math:`T`. No caso de :math:`h(P_1) = 0 \land h(P_2) = 0`, os segmentos :math:`S` e :math:`T` são colineares e um simples teste de intervalo com os pontos extremos dos segmentos é o suficiente para dizer se há ou não interseção.
+
+
+.. tip::
+
+    Neste exercício, a avaliação do denominador da :eq:`eq:prog-servidor:exercicios:hessean` é desnecessária.
+
+
+.. warning::
+
+    Veja que não é pedido no exercício para que seja computado o ponto de interseção :math:`I` mostrado na :numref:`Figura %s <fig:prog-servidor:exercicios:seg_seg_intersection>`.
+
+
+    Além disso, deve ser considerado que os segmento :math:`S` e :math:`T` possuem interseção se eles tiverem qualquer ponto em comum, incluindo as extremidades :math:`P_1`, :math:`P_2`, :math:`P_3`, ou :math:`P_4`. 
+
+
+-----
+
+**Exercício 04.** A área de um polígono simples pode ser calculada através da seguinte expressão:
+
+
+.. math::
+
+    A = \frac{1}{2} \left| \sum_{i=0}^{n-1}(x_iy_{i+1} - y_ix_{i+1}) \right|, x_n=x_0 \text{  e  } y_n=y_0
+
+
+Construa uma função que receba como parâmetro formal um polígono simples e que compute a área desse polígono.
+
+
+.. tip::
+
+    Para mais detalhes, consulte as Seções :numref:`%s <cap_algo_geom_simple_pol>` e :numref:`%s <cap_algo_geom_area>`.
+
+
+-----
+
+
+**Exercício 05.** Considere o diagrama apresentado na :numref:`Figura %s <fig:prog-servidor:exercicios:modelo-cenas>`:
+
+.. rst-class:: open
+
+- Crie um arquivo denominado ``ddl.sql`` contendo os comandos de definição das tabelas apresentadas no diagrama.
+
+
+- Crie um *trigger* que atualize automaticamente o ``periodo`` de uma determinada ``colecao`` quando uma cena é inserida, removida ou atualizada na tabela ``cena``. O arquivo contendo o código desse *trigger* deve-se chamar ``trigger-colecao.sql``.
+
+- Crie um *trigger* que adicione automaticamente um novo instante de tempo de uma coleção na tabela ``timeline`` quando uma nova cena for inserida na tabela ``cena``. O arquivo contendo o código desse *trigger* deve-se chamar ``trigger-timeline.sql``.
+
+
+.. figure:: ../img/prog-servidor/modelo-cenas.png
+    :alt: Diagrama simplificado de uma coleção de imagens
+    :width: 80%
+    :figclass: align-center
+    :name: fig:prog-servidor:exercicios:modelo-cenas
+
+    Diagrama simplificado de uma coleção de imagens
+

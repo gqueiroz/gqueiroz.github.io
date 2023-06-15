@@ -60,7 +60,7 @@ div.li-left-align > ul > li {
     margin-bottom: 0;
 }
 
-/* Fix sphinx_rtd_theme setting equation to thr right. */
+/* Fix sphinx_rtd_theme setting equation to the right. */
 span.eqno {
     float: right;
 }
@@ -123,4 +123,19 @@ details.summary-carga-dados {
     padding: 1rem;
 }
 
+
+.color-burntorange {
+    color: #CC5500;
+    font-weight: bold;
+}
+
+.color-navyblue {
+    color: #000080;
+    font-weight: bold;
+}
+
+.color-sepia {
+    color: #704214;
+    font-weight: bold;
+}
 

@@ -6,7 +6,7 @@
 .. _prog_servidor_consideracoes:
 
 Considerações Finais
---------------------
+====================
 
 
 Uma boa leitura sobre o assunto de **Sistemas de Bancos de Dados Objeto-Relacionais** e **extensibilidade** pode ser encontrada no livro de Stonebraker :cite:`stonebraker:1996`.

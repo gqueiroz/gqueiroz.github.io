@@ -33,6 +33,7 @@ Este capítulo irá mostrar como criar novas funcionalidades para um servidor de
     ./plpython/index
     ./extensoes
     ./consideracoes
+    ./exercicios
 
 
 .. rubric:: Notas

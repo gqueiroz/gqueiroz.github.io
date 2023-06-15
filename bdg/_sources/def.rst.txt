@@ -14,3 +14,10 @@
 
 .. role:: sql(code)
    :language: sql
+
+
+.. role:: color_burntorange
+
+.. role:: color_navyblue
+
+.. role:: color_sepia

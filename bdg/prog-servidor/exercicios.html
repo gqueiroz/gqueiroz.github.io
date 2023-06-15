@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.6. Exercícios &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/prog-servidor/exercicios.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="8. Modelagem" href="../modelagem/index.html" />
+    <link rel="prev" title="7.5. Considerações Finais" href="consideracoes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. Programação do Lado Servidor no PostgreSQL</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plpgsql/index.html">7.1. PL/pgSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html">7.2. Triggers e Relacionamentos de Integridade Espacial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plpython/index.html">7.3. PL/Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensoes.html">7.4. Extensões</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">7.5. Considerações Finais</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.6. Exercícios</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
+      <li><span class="section-number">7.6. </span>Exercícios</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="consideracoes.html" class="btn btn-neutral float-left" title="7.5. Considerações Finais" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="../modelagem/index.html" class="btn btn-neutral float-right" title="8. Modelagem" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="exercicios">
+<span id="cap-prog-servidor-exercicios"></span><h1><span class="section-number">7.6. </span>Exercícios<a class="headerlink" href="#exercicios" title="Link permanente para este cabeçalho"></a></h1>
+<p><strong>Exercício 01.</strong> A <a class="reference external" href="https://en.wikipedia.org/wiki/Haversine_formula">fórmula de Haversine</a> possbilita o cálculo de distâncias entre dois pontos em uma esfera a partir de suas latitudes e longitudes. Dada a seguinte fórmula:</p>
+<div class="math notranslate nohighlight" id="equation-eq-prog-servidor-exercicios-haversine">
+<span class="eqno">(7.1)<a class="headerlink" href="#equation-eq-prog-servidor-exercicios-haversine" title="Link permanente para essa equação"></a></span>\[d(p, q) = 2r \arcsin{\sqrt{\sin^2({\frac{\phi_2 - \phi_1}{2}}) + \cos{\phi_1} \cos{\phi_2} \sin^2({\frac{\lambda_2 - \lambda_1}{2}})}}\]</div>
+<p>onde:</p>
+<ul class="open">
+<li><p><span class="math notranslate nohighlight">\(r\)</span>: é o raio da esfera (<span class="math notranslate nohighlight">\(\sim6371 km\)</span>).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\phi_1\)</span> e <span class="math notranslate nohighlight">\(\phi_2\)</span>: latitude dos pontos em radianos.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda_1\)</span> e <span class="math notranslate nohighlight">\(\lambda_2\)</span>: longitude dos pontos em radianos.</p></li>
+</ul>
+<p>Construa uma função chamada <code class="docutils literal notranslate"><span class="pre">DistanciaHaversine</span></code> que receba como argumentos duas geometrias do tipo <code class="docutils literal notranslate"><span class="pre">Point</span></code>, representando duas localizações quaisquer em grau-decimal, e que retorne um único valor com a distância em <code class="docutils literal notranslate"><span class="pre">km</span></code>. Para maiores detalhes sobre essa fórmula, consulte a <a class="reference external" href="https://en.wikipedia.org/wiki/Haversine_formula">Wikipedia</a>.</p>
+<hr class="docutils" />
+<p id="cap-prog-servidor-exercicios-ex-02"><strong>Exercício 02.</strong> Escreva uma função que calcule a menor distância entre um ponto <span class="math notranslate nohighlight">\(P\)</span> qualquer e uma reta <span class="math notranslate nohighlight">\(r\)</span> qualquer (<a class="reference internal" href="#fig-prog-servidor-exercicios-point-to-line"><span class="std std-numref">Figura 7.14</span></a>). Os parâmetros desta função deverão utilizar o tipo <em>PostGIS Geometry</em>, com o ponto representado por um elemento geométrico do tipo <code class="docutils literal notranslate"><span class="pre">Point</span></code> e a reta, por um <code class="docutils literal notranslate"><span class="pre">LineString</span></code> contendo dois pontos da reta.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>A menor distância entre um ponto <span class="math notranslate nohighlight">\(P\)</span> e uma reta <span class="math notranslate nohighlight">\(r\)</span> corresponde ao segmento de reta perpendicular a <span class="math notranslate nohighlight">\(r\)</span> que parte de <span class="math notranslate nohighlight">\(P\)</span> e chega a <span class="math notranslate nohighlight">\(r\)</span>, como ilustrado na <a class="reference internal" href="#fig-prog-servidor-exercicios-point-to-line"><span class="std std-numref">Figura 7.14</span></a>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-exercicios-point-to-line">
+<a class="reference internal image-reference" href="../_images/point_to_line.png"><img alt="Distância mínima entre um ponto e uma reta" src="../_images/point_to_line.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.14 - </span><span class="caption-text">Distância mínima entre um ponto e uma reta.</span><a class="headerlink" href="#fig-prog-servidor-exercicios-point-to-line" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<p>Uma forma de computar essa distância consiste na utilização da forma normal de <em>Hessean</em> para retas. Para uma reta <span class="math notranslate nohighlight">\(r\)</span> que passa pelos pontos <span class="math notranslate nohighlight">\(P_1=(x_1, y_1)\)</span> e <span class="math notranslate nohighlight">\(P_2=(x_2, y_2)\)</span>, temos a seguinte fórmula:</p>
+<div class="math notranslate nohighlight" id="equation-eq-prog-servidor-exercicios-hessean">
+<span class="eqno">(7.2)<a class="headerlink" href="#equation-eq-prog-servidor-exercicios-hessean" title="Link permanente para essa equação"></a></span>\[h(x, y) = \frac{(y_2 - y_1) \times (x - x_1) - (x_2 - x_1) \times (y - y_1)}{\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}} = 0\]</div>
+<p>com: <span class="math notranslate nohighlight">\(\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} &gt; 0\)</span>.</p>
+<p>A distância de <span class="math notranslate nohighlight">\(P=(x, y)\)</span> a <span class="math notranslate nohighlight">\(r\)</span> é dada por <span class="math notranslate nohighlight">\(|h(x, y)|\)</span>.</p>
+<p class="centered-paragraph"><strong>Fonte:</strong> Nievergelt and Hinrichs (1993) <span id="id1">[<a class="reference internal" href="../referencias.html#id38" title="Jurg Nievergelt and Klaus H. Hinrichs. Algorithms &amp; Data Structures with Applications to Graphics and Geometry. Prentice Hall, 1993.">30</a>]</span>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Compare seus resultados com os da calculadora online: <a class="reference external" href="https://onlinemschool.com/math/assistance/cartesian_coordinate/p_line1/">Distance from a point to a line - 2-Dimensional</a>.</p>
+</div>
+<hr class="docutils" />
+<p><strong>Exercício 03.</strong> Escreva uma função que avalie se dois segmentos de reta quaisquer se interceptam ou não. Utilize como tipo do parâmetro formal dessa função dois elementos geométricos do tipo <code class="docutils literal notranslate"><span class="pre">LineString</span></code> (<em>PostGIS Geometry</em>).</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Seja os segmentos de reta, <span class="math notranslate nohighlight">\(S=\overline{P_1P_2}\)</span> e <span class="math notranslate nohighlight">\(T=\overline{P_3P_4}\)</span> (<a class="reference internal" href="#fig-prog-servidor-exercicios-seg-seg-intersection"><span class="std std-numref">Figura 7.15</span></a>). Para saber se esses dois segmentos se interceptam, basta avaliar se os pontos <span class="math notranslate nohighlight">\(P_1\)</span> e <span class="math notranslate nohighlight">\(P_2\)</span> de :math`S` encontram-se em lados opostos da reta que contém o segmento <span class="math notranslate nohighlight">\(T\)</span>, e se os pontos <span class="math notranslate nohighlight">\(P_3\)</span> e <span class="math notranslate nohighlight">\(P_4\)</span> de <span class="math notranslate nohighlight">\(T\)</span> estão em lados opostos da reta que contém o segmento <span class="math notranslate nohighlight">\(S\)</span>.</p>
+<figure class="align-center align-default" id="fig-prog-servidor-exercicios-seg-seg-intersection">
+<a class="reference internal image-reference" href="../_images/seg_seg_intersection.png"><img alt="Interseção entre segmentos de reta" src="../_images/seg_seg_intersection.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.15 - </span><span class="caption-text">Interseção entre segmentos de reta.</span><a class="headerlink" href="#fig-prog-servidor-exercicios-seg-seg-intersection" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<p>A equação de Hessean (<a class="reference internal" href="#equation-eq-prog-servidor-exercicios-hessean">Equação 7.2</a>), mostrada no <a class="reference internal" href="#cap-prog-servidor-exercicios-ex-02"><span class="std std-ref">Exercício 02</span></a>, pode ser usada para solução desse problema. Os pontos <span class="math notranslate nohighlight">\(P_1\)</span> e <span class="math notranslate nohighlight">\(P_2\)</span> encontram-se em lados opostos da reta que contém o segmento <span class="math notranslate nohighlight">\(T\)</span>, se <span class="math notranslate nohighlight">\(h(P_1) \times h(P_2) &lt; 0\)</span>. Nesta inequação, a avaliação do denominador da equação de Hessean se torna desnecessária.</p>
+<p>Se <span class="math notranslate nohighlight">\(h(P_1) = 0\)</span> ou <span class="math notranslate nohighlight">\(h(P_2) = 0\)</span>, significa que um desses pontos encontra-se sobre a reta que contém <span class="math notranslate nohighlight">\(T\)</span>. No caso de <span class="math notranslate nohighlight">\(h(P_1) = 0 \land h(P_2) = 0\)</span>, os segmentos <span class="math notranslate nohighlight">\(S\)</span> e <span class="math notranslate nohighlight">\(T\)</span> são colineares e um simples teste de intervalo com os pontos extremos dos segmentos é o suficiente para dizer se há ou não interseção.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Neste exercício, a avaliação do denominador da <a class="reference internal" href="#equation-eq-prog-servidor-exercicios-hessean">Equação 7.2</a> é desnecessária.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Veja que não é pedido no exercício para que seja computado o ponto de interseção <span class="math notranslate nohighlight">\(I\)</span> mostrado na <a class="reference internal" href="#fig-prog-servidor-exercicios-seg-seg-intersection"><span class="std std-numref">Figura 7.15</span></a>.</p>
+<p>Além disso, deve ser considerado que os segmento <span class="math notranslate nohighlight">\(S\)</span> e <span class="math notranslate nohighlight">\(T\)</span> possuem interseção se eles tiverem qualquer ponto em comum, incluindo as extremidades <span class="math notranslate nohighlight">\(P_1\)</span>, <span class="math notranslate nohighlight">\(P_2\)</span>, <span class="math notranslate nohighlight">\(P_3\)</span>, ou <span class="math notranslate nohighlight">\(P_4\)</span>.</p>
+</div>
+<hr class="docutils" />
+<p><strong>Exercício 04.</strong> A área de um polígono simples pode ser calculada através da seguinte expressão:</p>
+<div class="math notranslate nohighlight">
+\[A = \frac{1}{2} \left| \sum_{i=0}^{n-1}(x_iy_{i+1} - y_ix_{i+1}) \right|, x_n=x_0 \text{  e  } y_n=y_0\]</div>
+<p>Construa uma função que receba como parâmetro formal um polígono simples e que compute a área desse polígono.</p>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Para mais detalhes, consulte as Seções <a class="reference internal" href="../algo-geom/simple-pol.html#cap-algo-geom-simple-pol"><span class="std std-numref">5.1</span></a> e <a class="reference internal" href="../algo-geom/area.html#cap-algo-geom-area"><span class="std std-numref">5.2</span></a>.</p>
+</div>
+<hr class="docutils" />
+<p><strong>Exercício 05.</strong> Considere o diagrama apresentado na <a class="reference internal" href="#fig-prog-servidor-exercicios-modelo-cenas"><span class="std std-numref">Figura 7.16</span></a>:</p>
+<ul class="open">
+<li><p>Crie um arquivo denominado <code class="docutils literal notranslate"><span class="pre">ddl.sql</span></code> contendo os comandos de definição das tabelas apresentadas no diagrama.</p></li>
+<li><p>Crie um <em>trigger</em> que atualize automaticamente o <code class="docutils literal notranslate"><span class="pre">periodo</span></code> de uma determinada <code class="docutils literal notranslate"><span class="pre">colecao</span></code> quando uma cena é inserida, removida ou atualizada na tabela <code class="docutils literal notranslate"><span class="pre">cena</span></code>. O arquivo contendo o código desse <em>trigger</em> deve-se chamar <code class="docutils literal notranslate"><span class="pre">trigger-colecao.sql</span></code>.</p></li>
+<li><p>Crie um <em>trigger</em> que adicione automaticamente um novo instante de tempo de uma coleção na tabela <code class="docutils literal notranslate"><span class="pre">timeline</span></code> quando uma nova cena for inserida na tabela <code class="docutils literal notranslate"><span class="pre">cena</span></code>. O arquivo contendo o código desse <em>trigger</em> deve-se chamar <code class="docutils literal notranslate"><span class="pre">trigger-timeline.sql</span></code>.</p></li>
+</ul>
+<figure class="align-center align-default" id="fig-prog-servidor-exercicios-modelo-cenas">
+<a class="reference internal image-reference" href="../_images/modelo-cenas.png"><img alt="Diagrama simplificado de uma coleção de imagens" src="../_images/modelo-cenas.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 7.16 - </span><span class="caption-text">Diagrama simplificado de uma coleção de imagens</span><a class="headerlink" href="#fig-prog-servidor-exercicios-modelo-cenas" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="consideracoes.html" class="btn btn-neutral float-left" title="7.5. Considerações Finais" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="../modelagem/index.html" class="btn btn-neutral float-right" title="8. Modelagem" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f501fdad070>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

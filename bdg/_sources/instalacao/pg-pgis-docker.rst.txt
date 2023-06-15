@@ -95,8 +95,8 @@ Para remover o contêiner (parado)::
 
 Para criar um contêiner com um diretório do *host* compartilhado, use a opção ``--volume`` como mostrado abaixo::
 
-    mkdir -p /home/gribeiro/Aulas/CAP-349/PG-Data
-    mkdir -p /home/gribeiro/Data
+    mkdir -p /home/gribeiro/aulas/bd/pg-data
+    mkdir -p /home/gribeiro/aulas/dados
 
     docker run --detach \
                --name my-pg \
