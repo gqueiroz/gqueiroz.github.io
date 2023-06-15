@@ -12,23 +12,23 @@ Exercícios
 ==========
 
 
-**Atenção:**
+.. warning::
 
-.. rst-class:: open
+    .. rst-class:: open
 
-- Os exercícios práticos devem ser desenvolvidos em PL/pgSQL ou PL/Python. 
+    - Os exercícios práticos devem ser desenvolvidos em PL/pgSQL ou PL/Python. 
 
-- Escreva a documentação que achar pertinente dentro do próprio código fonte, que deverá utilizar a codificação de caracteres ``UTF-8``.
+    - Escreva a documentação que achar pertinente dentro do próprio código fonte, que deverá utilizar a codificação de caracteres ``UTF-8``.
 
-- A solução de cada exercício deverá ser entregue em arquivos de código fonte com a extensão ``.sql``. 
+    - A solução de cada exercício deverá ser entregue em arquivos de código fonte com a extensão ``.sql``. 
 
-- Envie por e-mail **um único** arquivo no **formato zip**, chamado ``lista-01.zip``, contendo todos os arquivos de código fonte dos exercícios.
+    - Envie por e-mail **um único** arquivo no **formato zip**, chamado ``lista-01.zip``, contendo todos os arquivos de código fonte dos exercícios.
 
-- O título (assunto) do e-mail deve seguir o seguinte padrão: ``[geoinformatica-2023][lista-01] nome-aluno``. Exemplo: ``[geoinformatica-2023][lista-01] gilberto``.
+    - O título (assunto) do e-mail deve seguir o seguinte padrão: ``[geoinformatica-2023][lista-01] nome-aluno``. Exemplo: ``[geoinformatica-2023][lista-01] gilberto``.
 
-- Não use acentos ou caracteres especiais nos nomes dos arquivos ou no título do e-mail.
+    - Não use acentos ou caracteres especiais nos nomes dos arquivos ou no título do e-mail.
 
-- **Prazo para entrega:** 22/06/2023 - 18:00
+    - **Prazo para entrega:** 22/06/2023 - 18:00
 
 
 -----
