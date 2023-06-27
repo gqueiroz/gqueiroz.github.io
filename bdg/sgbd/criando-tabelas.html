@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2.13. Criando Tabelas &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -38,12 +36,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../index.html" class="icon icon-home"> BDGeo
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -91,8 +93,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -124,9 +127,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
-      <li><span class="section-number">2.13. </span>Criando Tabelas</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2.13. </span>Criando Tabelas</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -229,14 +232,14 @@
 <p>Agora que temos o modelo das tabelas que queremos criar e sabemos a sintaxe básica do comando <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TABLE</span></code>, vamos definir as tabelas <code class="docutils literal notranslate"><span class="pre">estudante</span></code>, <code class="docutils literal notranslate"><span class="pre">professor</span></code>, <code class="docutils literal notranslate"><span class="pre">disciplina</span></code> e <code class="docutils literal notranslate"><span class="pre">estudante_disciplina</span></code> usando SQL.</p>
 <hr class="docutils" />
 <p><strong>Tabela:</strong> <code class="docutils literal notranslate"><span class="pre">estudante:</span></code></p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">matricula</span><span class="w">        </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">ALWAYS</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">nome</span><span class="w">             </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mf">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">data_nascimento</span><span class="w">  </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">genero</span><span class="w">           </span><span class="nb">CHAR</span><span class="p">(</span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
-<span class="w">    </span><span class="n">data_matricula</span><span class="w">   </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_DATE</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">estudante</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">matricula</span><span class="w">        </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">ALWAYS</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nome</span><span class="w">             </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mf">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">data_nascimento</span><span class="w">  </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">genero</span><span class="w">           </span><span class="nb">CHAR</span><span class="p">(</span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="w"> </span><span class="p">),</span>
+<span class="w">    </span><span class="n">data_matricula</span><span class="w">   </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_DATE</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 <p>Na definição da tabela <code class="docutils literal notranslate"><span class="pre">estudante</span></code> temos:</p>
@@ -249,56 +252,56 @@
 </ul>
 <hr class="docutils" />
 <p><strong>Tabela:</strong> <code class="docutils literal notranslate"><span class="pre">professor</span></code></p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">professor</span><span class="w"></span>
-<span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">codigo</span><span class="w">   </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">ALWAYS</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">nome</span><span class="w">     </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mf">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">professor</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">codigo</span><span class="w">   </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">ALWAYS</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nome</span><span class="w">     </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mf">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 <hr class="docutils" />
 <p><strong>Tabela:</strong> <code class="docutils literal notranslate"><span class="pre">disciplina</span></code></p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">disciplina</span><span class="w"></span>
-<span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">codigo</span><span class="w">           </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">ALWAYS</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">titulo</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mf">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">creditos</span><span class="w">         </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">creditos</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">creditos</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">6</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
-<span class="hll"><span class="w">    </span><span class="n">professor_codigo</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">professor</span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
-</span><span class="hll"><span class="w">                                          </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">NO</span><span class="w"> </span><span class="k">ACTION</span><span class="w"></span>
-</span><span class="hll"><span class="w">                                          </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w"></span>
-</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">disciplina</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">codigo</span><span class="w">           </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">ALWAYS</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">titulo</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mf">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">creditos</span><span class="w">         </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">creditos</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">creditos</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">6</span><span class="w"> </span><span class="p">),</span>
+<span class="hll"><span class="w">    </span><span class="n">professor_codigo</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">professor</span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
+</span><span class="hll"><span class="w">                                          </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">NO</span><span class="w"> </span><span class="k">ACTION</span>
+</span><span class="hll"><span class="w">                                          </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Nessa tabela temos a definição de uma <strong>chave estrangeira</strong>, impondo um relacionamento de <strong>integridade referencial</strong> entre as tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code> nas colunas <code class="docutils literal notranslate"><span class="pre">codigo</span></code> e <code class="docutils literal notranslate"><span class="pre">professor_codigo</span></code>. A sentença <code class="docutils literal notranslate"><span class="pre">ON</span> <span class="pre">DELETE</span> <span class="pre">NO</span> <span class="pre">ACTION</span></code> indica que no caso de remoção de linhas da tabela <code class="docutils literal notranslate"><span class="pre">professor</span></code> que tenham disciplinas associadas, deverá ser gerado um erro, impedindo a remoção das linhas da tabela <code class="docutils literal notranslate"><span class="pre">professor</span></code>. A setença <code class="docutils literal notranslate"><span class="pre">ON</span> <span class="pre">UPDATE</span> <span class="pre">CASCADE</span></code>, define que no caso de atualização da chave primária na tabela <code class="docutils literal notranslate"><span class="pre">professor</span></code>, o novo valor deva ser propagado automaticamente para as linhas relacionadas na tabela <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>Abaixo apresentamos como criar a chave estrangeira na seção dedicada a restrições da linha:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">disciplina2</span><span class="w"></span>
-<span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">codigo</span><span class="w">           </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">ALWAYS</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">titulo</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mf">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">creditos</span><span class="w">         </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">creditos</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">creditos</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">6</span><span class="w"> </span><span class="p">),</span><span class="w"></span>
-<span class="w">    </span><span class="n">professor_codigo</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="hll"><span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">professor_codigo</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">professor</span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
-</span><span class="hll"><span class="w">                                   </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">NO</span><span class="w"> </span><span class="k">ACTION</span><span class="w"></span>
-</span><span class="hll"><span class="w">                                   </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w"></span>
-</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">disciplina2</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">codigo</span><span class="w">           </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">ALWAYS</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">titulo</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mf">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">creditos</span><span class="w">         </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">creditos</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">creditos</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">6</span><span class="w"> </span><span class="p">),</span>
+<span class="w">    </span><span class="n">professor_codigo</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="hll"><span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">professor_codigo</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">professor</span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
+</span><span class="hll"><span class="w">                                   </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">NO</span><span class="w"> </span><span class="k">ACTION</span>
+</span><span class="hll"><span class="w">                                   </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <hr class="docutils" />
 <p><strong>Tabela:</strong> <code class="docutils literal notranslate"><span class="pre">estudante_disciplina</span></code></p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"></span>
-<span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">matricula</span><span class="w">   </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">estudante</span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
-<span class="w">                                        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">NO</span><span class="w"> </span><span class="k">ACTION</span><span class="w"></span>
-<span class="w">                                        </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">codigo</span><span class="w">       </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">disciplina</span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
-<span class="w">                                        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">NO</span><span class="w"> </span><span class="k">ACTION</span><span class="w"></span>
-<span class="w">                                        </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="k">data</span><span class="w">         </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_DATE</span><span class="p">,</span><span class="w"></span>
-<span class="hll"><span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
-</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">estudante_disciplina</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">matricula</span><span class="w">   </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">estudante</span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
+<span class="w">                                        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">NO</span><span class="w"> </span><span class="k">ACTION</span>
+<span class="w">                                        </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">codigo</span><span class="w">       </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">disciplina</span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
+<span class="w">                                        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">NO</span><span class="w"> </span><span class="k">ACTION</span>
+<span class="w">                                        </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">data</span><span class="w">         </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_DATE</span><span class="p">,</span>
+<span class="hll"><span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">codigo</span><span class="p">)</span>
+</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Repare na definição da tabela acima que:</p>
@@ -325,7 +328,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246a9e9400>
+<jinja2.runtime.BlockReference object at 0x7fe22d73b340>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

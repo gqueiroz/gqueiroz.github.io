@@ -63,6 +63,7 @@ Espera-se que o aluno aproveite a oportunidade no curso para aprofundar seus con
     algo-geom/index
     json/index
     prog-servidor/index
+    raster/index
     modelagem/index
     tips/index
 

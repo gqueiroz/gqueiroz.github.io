@@ -113,16 +113,28 @@ p.centered-paragraph {
     text-align: center;
 }
 
-details.summary-solucao > summary {
+details.summary-solucao[open] > summary,
+details.summary-solucao-1[open] > summary,
+details.summary-solucao-2[open] > summary {
     font-weight: bold;
+    padding-bottom: 1rem;
+}
+
+details.summary-solucao > summary,
+details.summary-solucao-1 > summary,
+details.summary-solucao-2 > summary {
+    font-weight: bold;
+    padding-bottom: 0rem;
 }
 
 details.summary-solucao,
+details.summary-solucao-1,
+details.summary-solucao-2,
 details.summary-carga-dados {
     background-color: #f3f6f6;
     padding: 1rem;
+    margin-bottom: 1rem;
 }
-
 
 .color-burntorange {
     color: #CC5500;

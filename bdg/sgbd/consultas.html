@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2.15. Consultas em SQL &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -38,12 +36,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../index.html" class="icon icon-home"> BDGeo
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -95,8 +97,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -128,9 +131,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
-      <li><span class="section-number">2.15. </span>Consultas em SQL</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2.15. </span>Consultas em SQL</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -183,9 +186,9 @@
 <p>Nesta seção veremos exemplos de consultas que envolvem uma única tabela como entrada.</p>
 <p><strong>1.</strong> Recuperar os dados do estudante <code class="docutils literal notranslate"><span class="pre">Eduardo</span></code>:</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Eduardo&#39;</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Eduardo&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -204,9 +207,9 @@
 </details><hr class="docutils" />
 <p><strong>2.</strong> Recuperar o número de matrícula, nome e a data de matrícula dos estudantes do gênero feminino (<code class="docutils literal notranslate"><span class="pre">F</span></code>):</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">,</span><span class="w"> </span><span class="n">genero</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">,</span><span class="w"> </span><span class="n">genero</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -234,9 +237,9 @@
 </details><hr class="docutils" />
 <p><strong>3.</strong>  Recuperar o número de matrícula e os três primeiros caracteres do nome dos estudantes matriculados no ano de 2020 do gênero feminino (<code class="docutils literal notranslate"><span class="pre">F</span></code>):</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">left</span><span class="p">(</span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">iniciais_nome</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="p">);</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">left</span><span class="p">(</span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">iniciais_nome</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -258,7 +261,7 @@
 <p><strong>4.</strong>  Recuperar o número de matrícula, o nome e a idade dos estudantes matriculados no ano de 2020 do gênero feminino (<code class="docutils literal notranslate"><span class="pre">F</span></code>):</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Para resolver esta consulta vamos precisar usar a função <code class="docutils literal notranslate"><span class="pre">age</span></code>, que computa um intervalo entre dois instantes de tempo. Considere o exemplo abaixo, onde usamos como referência o tempo do sistema atual (<code class="docutils literal notranslate"><span class="pre">CURRENT_TIMESTAMP</span></code>) e a data de <code class="docutils literal notranslate"><span class="pre">2000-02-01</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2000-02-01&#39;</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2000-02-01&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -273,7 +276,7 @@
 <p>O exemplo acima deverá retornar um valor diferente dependendo da data e hora em que você estará executando a consulta!</p>
 </div>
 <p>Para tomar apenas a quantidade de anos entre as duas datas, podemos usar a função <code class="docutils literal notranslate"><span class="pre">extract</span></code>, como mostrado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;year&#39;</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2000-02-01&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anos</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;year&#39;</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2000-02-01&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anos</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -284,9 +287,9 @@
 </pre></div>
 </div>
 <p>Agora estamos prontos para construir a consulta final:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span><span class="w"> </span><span class="n">data_nascimento</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">idade</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span><span class="w"> </span><span class="n">data_nascimento</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">idade</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -302,9 +305,9 @@
 </details><hr class="docutils" />
 <p><strong>5.</strong>  Recuperar o número de matrícula e o nome dos estudantes cujo nome comece com as iniciais <code class="docutils literal notranslate"><span class="pre">jo</span></code>:</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">lower</span><span class="p">(</span><span class="n">nome</span><span class="p">)</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;jo%&#39;</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">lower</span><span class="p">(</span><span class="n">nome</span><span class="p">)</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;jo%&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -330,9 +333,9 @@
 </details><hr class="docutils" />
 <p><strong>6.</strong>  Recuperar o número de matrícula e o nome dos estudantes que tenham número de matrícula no conjunto <code class="docutils literal notranslate"><span class="pre">{1,</span> <span class="pre">3,</span> <span class="pre">5,</span> <span class="pre">12,</span> <span class="pre">14,</span> <span class="pre">17}</span></code>:</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">matricula</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="p">);</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">matricula</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -350,9 +353,9 @@
 </details><hr class="docutils" />
 <p><strong>7.</strong>  Recuperar o número de matrícula e o nome dos estudantes que <strong>não</strong> estejam no conjunto de matrículas <code class="docutils literal notranslate"><span class="pre">{1,</span> <span class="pre">3,</span> <span class="pre">5,</span> <span class="pre">12,</span> <span class="pre">14,</span> <span class="pre">17}</span></code>:</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">matricula</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="p">);</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">matricula</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -376,8 +379,8 @@
 <p>Nesta seção veremos exemplos de consultas que envolvem duas ou mais tabelas como entrada.</p>
 <p><strong>8.</strong> Fazer o produto cartesiano entre as tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>:</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -400,8 +403,8 @@
 </div>
 <p>A cláusula <code class="docutils literal notranslate"><span class="pre">FROM</span></code> permite especificar uma lista de tabelas (ou itens de dados). Na consulta acima, a cláusula <code class="docutils literal notranslate"><span class="pre">FROM</span></code> realizou o produto cartesiano entre as duas tabelas. Como temos 06 professores e 10 discipllinas, o resultado contém 60 linhas, isto é, todas as linhas da tabela <code class="docutils literal notranslate"><span class="pre">professor</span></code> pareadas com todas as linhas da tabela <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>.</p>
 <p>Repare também que por termos usado o caractere <code class="docutils literal notranslate"><span class="pre">*</span></code> na cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code>, todas as colunas das duas tabelas participaram do resultado final. Na cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> é possível controlar a lista de colunas de saída especificando o nome qualificado da coluna, isto é, o <code class="docutils literal notranslate"><span class="pre">nome-tabela.nome-coluna</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -430,9 +433,9 @@
 <p>Chamamos este tipo de consulta de <strong>junção entre tabelas</strong>.</p>
 </div>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -453,8 +456,8 @@
 </div>
 <p>Repare na saída acima que agora os valores nas linhas para a primeira coluna <code class="docutils literal notranslate"><span class="pre">codigo</span></code> são iguais na coluna <code class="docutils literal notranslate"><span class="pre">professor_codigo</span></code>. Esse exemplo mostra como usar colunas relacionadas para busca da informação apropriada.</p>
 <p>Outra forma de realizar a consulta acima é utilizar a palavra-chave <code class="docutils literal notranslate"><span class="pre">INNER</span> <span class="pre">JOIN</span></code>, como indicado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -477,8 +480,8 @@
 <p id="cap-sgbd-consultas-10"><strong>10.</strong> Juntar as linhas correlatas das tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>, exibindo também algum professor que não esteja associado a disciplinas:</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Neste caso será necessário utilizar um tipo de junção (<code class="docutils literal notranslate"><span class="pre">JOIN</span></code>) que garanta que as linhas da tabela <code class="docutils literal notranslate"><span class="pre">professor</span></code> apareçam no resultado pelo menos uma vez, mesmo não havendo correspondência na tabela <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>. O tipo de junção necessária é conhecida como <code class="docutils literal notranslate"><span class="pre">LEFT</span> <span class="pre">OUTER</span> <span class="pre">JOIN</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -503,10 +506,10 @@
 <p><strong>11.</strong> Liste os professores que não estão associados a disciplinas:</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Podemos utilizar uma estratégia semelhante à da <a class="reference internal" href="#cap-sgbd-consultas-10"><span class="std std-ref">consulta 10</span></a>, usando <code class="docutils literal notranslate"><span class="pre">LEFT</span> <span class="pre">OUTER</span> <span class="pre">JOIN</span></code> entre as tabelas <code class="docutils literal notranslate"><span class="pre">professor</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>, acrescentando um predicado (ou filtro) com a cláusula <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> que verifique se o <code class="docutils literal notranslate"><span class="pre">codigo</span></code> da tabela <code class="docutils literal notranslate"><span class="pre">disciplina</span></code> é <code class="docutils literal notranslate"><span class="pre">NULL</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="w"></span>
-<span class="hll"><span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="w"></span>
-</span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nome</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span>
+<span class="hll"><span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span>
+</span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nome</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -520,9 +523,9 @@
 <p><strong>12.</strong> Liste as linhas correlatas das tabelas <code class="docutils literal notranslate"><span class="pre">estudante</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code> bem como aquelas que não tiverem correspondência:</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Neste caso precisamos utilizar o <code class="docutils literal notranslate"><span class="pre">FULL</span> <span class="pre">OUTER</span> <span class="pre">JOIN</span></code> entre as tabelas <code class="docutils literal notranslate"><span class="pre">estudante</span></code>, <code class="docutils literal notranslate"><span class="pre">estudante_disciplina</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>, para que os estudantes que não estejam associados a disciplinas sejam listados, bem como as disciplinas que não tiverem estudantes associados:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">FULL</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
-<span class="w">                 </span><span class="k">FULL</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">FULL</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">matricula</span><span class="p">)</span>
+<span class="w">                 </span><span class="k">FULL</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -542,13 +545,13 @@
 </details><hr class="docutils" />
 <p><strong>13.</strong> Qual o nome das disciplinas cursadas pelo estudante <code class="docutils literal notranslate"><span class="pre">Eduardo</span></code>?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">titulo</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">titulo</span>
 
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="p">,</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="p">,</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span>
 
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">matricula</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Eduardo&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">matricula</span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Eduardo&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -562,14 +565,14 @@
 </details><hr class="docutils" />
 <p><strong>14.</strong> Qual o nome dos professores do estudante <code class="docutils literal notranslate"><span class="pre">Eduardo</span></code>?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_professor</span><span class="p">,</span><span class="w"> </span><span class="n">titulo</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_professor</span><span class="p">,</span><span class="w"> </span><span class="n">titulo</span>
 
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="p">,</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">,</span><span class="w"> </span><span class="n">professor</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="p">,</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">,</span><span class="w"> </span><span class="n">professor</span>
 
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">matricula</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Eduardo&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">matricula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">matricula</span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Eduardo&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -600,8 +603,8 @@
 <p><strong>15.</strong> Quantos estudantes estão cadastrados?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Neste caso precisamos apenas usar uma função de agregação que conte o número de linhas de uma tabela, tratando todas as linhas como um único grupo. A função de agregação <code class="docutils literal notranslate"><span class="pre">COUNT</span></code> pode ser usada para esta finalidade:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -614,8 +617,8 @@
 </details><hr class="docutils" />
 <p><strong>16.</strong> Quantas são as disciplinas?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">disciplina</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">disciplina</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -628,8 +631,8 @@
 </details><hr class="docutils" />
 <p><strong>17.</strong> Quantos professores estão cadastrados?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_professores</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_professores</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -643,9 +646,9 @@
 <p><strong>18.</strong> Qual o número de estudantes do sexo masculino e feminino?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>O número de estudantes do sexo masculino pode ser computado com a seguinte consulta:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes_masculino</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes_masculino</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -656,9 +659,9 @@
 </pre></div>
 </div>
 <p>O número de estudantes do sexo feminino:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes_feminino</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes_feminino</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">genero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -676,9 +679,9 @@
 </figcaption>
 </figure>
 <p>Desta forma, podemos construir a seguinte consulta:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">genero</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"></span>
-</span><span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
-<span class="hll"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">genero</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">genero</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span>
+</span><span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
+<span class="hll"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">genero</span><span class="p">;</span>
 </span></pre></div>
 </div>
 <p>Resultado:</p>
@@ -700,13 +703,13 @@
 </figcaption>
 </figure>
 <p>Consulta:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span>
 </span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span>
 
-<span class="hll"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"></span>
+<span class="hll"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span>
 </span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ano</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ano</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -725,13 +728,13 @@
 <summary>Solução:</summary><p>Para solução dessa consulta temos que considerar a diferença entre a função <code class="docutils literal notranslate"><span class="pre">COUNT(*)</span></code> e <code class="docutils literal notranslate"><span class="pre">COUNT(&quot;nome-coluna&quot;)</span></code>. A função <code class="docutils literal notranslate"><span class="pre">COUNT(*)</span></code> conta o número de registros em cada grupo independente de haver alguma coluna com valor NULL. A função <code class="docutils literal notranslate"><span class="pre">COUNT(&quot;nome-coluna&quot;)</span></code> permite definirmos a coluna que será utilizada para contagem e caso o valor seja nulo (<code class="docutils literal notranslate"><span class="pre">NULL</span></code>), essa linha não será considerada na contagem geral.</p>
 <p>Além disso, temos que considerar que algum estudante pode não ter se matriculado em disciplinas. Neste caso precisaremos fazer um <code class="docutils literal notranslate"><span class="pre">LEFT</span> <span class="pre">OUTER</span> <span class="pre">JOIN</span></code> entre a tabela <code class="docutils literal notranslate"><span class="pre">estudante</span></code> e <code class="docutils literal notranslate"><span class="pre">estudante_matricula</span></code>.</p>
 <p>Abaixo mostramos uma consulta onde usamos as duas formas da função de agregação <code class="docutils literal notranslate"><span class="pre">COUNT</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span>
 
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
 
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span>
 
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -755,15 +758,15 @@
 <p id="cap-sgbd-consultas-21"><strong>21.</strong> Quais estudantes cursam três ou mais disciplinas?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Esta consulta precisará contar o número de disciplinas para cada estudante e em seguida aplicar um filtro no resultado do grupo. Isto indica que precisaremos utilizar a cláusula <code class="docutils literal notranslate"><span class="pre">HAVING</span></code> como mostrado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano</span>
 
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="n">INNET</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="n">INNET</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
 
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span>
 
-<span class="hll"><span class="w">  </span><span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">3</span>
 </span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -786,17 +789,17 @@
 <p><strong>22.</strong> Quais estudantes matriculados no ano de 2020 cursam três ou mais disciplinas?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Esta consulta é muito parecida com a <a class="reference internal" href="#cap-sgbd-consultas-21"><span class="std std-ref">consulta 21</span></a>, com a diferença de que precisaremos acrescentar a cláusula <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> para selecionar os estudantes que sejam do ano de 2020:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span>
 
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="n">INNET</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="n">INNET</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
 
-<span class="hll"><span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"></span>
+<span class="hll"><span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
 </span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span>
 
-<span class="hll"><span class="w">  </span><span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;codigo&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">3</span>
 </span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -812,13 +815,13 @@
 </details><hr class="docutils" />
 <p><strong>23.</strong> Qual o número de disciplinas oferecidas por cada professor?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span>
 
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">)</span>
 
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w">  </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w">  </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span>
 
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -837,16 +840,16 @@
 <p id="cap-sgbd-consultas-24"><strong>24.</strong> Quantos créditos cada estudante cursa?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Para solução dessa consulta precisaremos das seguintes tabelas: <code class="docutils literal notranslate"><span class="pre">estudante</span></code>, <code class="docutils literal notranslate"><span class="pre">estudante_disciplina</span></code> e <code class="docutils literal notranslate"><span class="pre">disciplina</span></code>.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span>
+<span class="w">         </span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span>
 
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
-<span class="w">                   </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
+<span class="w">                   </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
 
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span>
 
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -863,16 +866,16 @@
 </pre></div>
 </div>
 <p>Repare no resultado acima que a linha destacada possui uma soma nula (<code class="docutils literal notranslate"><span class="pre">NULL</span></code>). A função <code class="docutils literal notranslate"><span class="pre">SUM</span></code> assim como as demais funções de agregação, com exceção de <code class="docutils literal notranslate"><span class="pre">COUNT</span></code>, retornam <code class="docutils literal notranslate"><span class="pre">NULL</span></code> quando todas as linhas possuem valores nulo. Se nosso intuito é não ter valores nulo no resultado, podemos utilizar a função <code class="docutils literal notranslate"><span class="pre">COALESCE</span></code> junto com a função <code class="docutils literal notranslate"><span class="pre">SUM</span></code>. Veja a nova versão da consulta:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"></span>
-<span class="hll"><span class="w">         </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span>
+<span class="hll"><span class="w">         </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span>
 </span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
-<span class="w">                   </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
+<span class="w">                   </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
 
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span>
 
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -892,18 +895,18 @@
 <p><strong>25.</strong> Qual estudante realizou o maior número de créditos e quantos são esses créditos?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Se alterarmos a cláusula <code class="docutils literal notranslate"><span class="pre">ORDER</span> <span class="pre">BY</span></code> na <a class="reference internal" href="#cap-sgbd-consultas-24"><span class="std std-ref">consulta 24</span></a>, podemos ordenar de maneira decrescente pela coluna <code class="docutils literal notranslate"><span class="pre">total_creditos</span></code> e usar a cláusula <code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> para obter apenas a quantidade de linhas desejada:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span>
 
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
-<span class="w">                   </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
+<span class="w">                   </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
 
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span>
 
-<span class="hll"><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"> </span><span class="k">DESC</span><span class="w"></span>
+<span class="hll"><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"> </span><span class="k">DESC</span>
 </span>
-<span class="hll"><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="hll"><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </span></pre></div>
 </div>
 <p>Resultado:</p>
@@ -917,11 +920,11 @@
 <p><strong>26.</strong> Quantos estudantes estão matriculados em cada disciplina no ano de 2020?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Vamos começar construindo uma consulta que liste o código e título de cada disciplina bem como o número de matrículo do estudante associado:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="n">matricula</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span><span class="w"></span>
-<span class="w">       </span><span class="n">disciplina</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="n">matricula</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span>
+<span class="w">       </span><span class="n">disciplina</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -950,12 +953,12 @@
 </pre></div>
 </div>
 <p>A partir da consulta acima, podemos construir uma nova consulta incluindo uma cláusula <code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> utilizando as colunas <code class="docutils literal notranslate"><span class="pre">codigo</span></code> e <code class="docutils literal notranslate"><span class="pre">titulo</span></code> da tabela <code class="docutils literal notranslate"><span class="pre">disciplina</span></code> para criação dos grupos de linhas para então utilizar a função <code class="docutils literal notranslate"><span class="pre">COUNT</span></code> na cláusula <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> para contar o número de linhas de cada grupo. Desta maneira, temos a seguinte consulta:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"></span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">disciplina</span><span class="w"></span>
-<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"></span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"></span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span>
+<span class="w">         </span><span class="n">disciplina</span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -974,13 +977,13 @@
 </pre></div>
 </div>
 <p>Podemos ainda ordenar o resultado pelas disciplinas mais cursadas e, em caso de empate, utilizar a ordem alfabética como critério de desempate:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"></span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">disciplina</span><span class="w"></span>
-<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"></span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"></span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"></span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">,</span>
+<span class="w">         </span><span class="n">disciplina</span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -1010,20 +1013,20 @@
 <p><strong>27.</strong> Qual a média de créditos cursados pelos estudantes?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Para criar uma consulta que atenda a esta pergunta, podemos utilizar a <a class="reference internal" href="#cap-sgbd-consultas-24"><span class="std std-ref">consulta 24</span></a> como uma subconsulta e então tirar a média com a função <code class="docutils literal notranslate"><span class="pre">AVG</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">total_creditos</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">media_creditos</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">total_creditos</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">media_creditos</span>
 
-<span class="hll"><span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="hll"><span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
 </span>
-<span class="hll"><span class="w">              </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"></span>
-</span><span class="hll"><span class="w">                     </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span><span class="w"></span>
-</span><span class="hll"><span class="w">                     </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"></span>
+<span class="hll"><span class="w">              </span><span class="k">SELECT</span><span class="w"> </span><span class="n">matricula</span><span class="p">,</span><span class="w"> </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span>
+</span><span class="hll"><span class="w">                     </span><span class="k">COUNT</span><span class="p">(</span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_disciplinas</span><span class="p">,</span>
+</span><span class="hll"><span class="w">                     </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span>
 </span><span class="hll">
-</span><span class="hll"><span class="w">                </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
-</span><span class="hll"><span class="w">                               </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+</span><span class="hll"><span class="w">                </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
+</span><span class="hll"><span class="w">                               </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
 </span><span class="hll">
-</span><span class="hll"><span class="w">            </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="w"></span>
+</span><span class="hll"><span class="w">            </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span>
 </span>
-<span class="hll"><span class="w">         </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">creditos_estudante</span><span class="p">;</span><span class="w"></span>
+<span class="hll"><span class="w">         </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">creditos_estudante</span><span class="p">;</span>
 </span></pre></div>
 </div>
 <p>Resultado:</p>
@@ -1045,17 +1048,17 @@
 <p><strong>28.</strong> Qual a posição (<em>ranking</em>) de cada aluno em relação ao número de créditos cursado ao longo dos anos?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Vamos começar construindo uma consulta que liste o ano de matricula, número de matrícula, nome e total de créditos cursados por cada estudante:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano_matricula</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">matricula</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano_matricula</span><span class="p">,</span>
+<span class="w">         </span><span class="n">matricula</span><span class="p">,</span>
+<span class="w">         </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span>
 
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
-<span class="w">                   </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
+<span class="w">                   </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
 
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span>
 
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ano_matricula</span><span class="p">,</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ano_matricula</span><span class="p">,</span><span class="w"> </span><span class="n">matricula</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -1070,24 +1073,24 @@
 </pre></div>
 </div>
 <p>Em seguida, vamos construir uma nova consulta que utilize a consulta acima como subconsulta para podermos utilizar a função de janela <code class="docutils literal notranslate"><span class="pre">dense_rank</span></code> para criar partições no resultado:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">estudantes_creditos</span><span class="p">.</span><span class="o">*</span><span class="p">,</span><span class="w"></span>
-<span class="hll"><span class="w">         </span><span class="n">dense_rank</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ano_matricula</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">posicao_aluno</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">estudantes_creditos</span><span class="p">.</span><span class="o">*</span><span class="p">,</span>
+<span class="hll"><span class="w">         </span><span class="n">dense_rank</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ano_matricula</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">posicao_aluno</span>
 </span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
 
-<span class="w">                </span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano_matricula</span><span class="p">,</span><span class="w"></span>
-<span class="w">                       </span><span class="n">matricula</span><span class="p">,</span><span class="w"></span>
-<span class="w">                       </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span><span class="w"></span>
-<span class="w">                       </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span><span class="w"></span>
+<span class="w">                </span><span class="k">SELECT</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">data_matricula</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ano_matricula</span><span class="p">,</span>
+<span class="w">                       </span><span class="n">matricula</span><span class="p">,</span>
+<span class="w">                       </span><span class="n">estudante</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome_estudante</span><span class="p">,</span>
+<span class="w">                       </span><span class="k">COALESCE</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">creditos</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_creditos</span>
 
-<span class="w">                  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
-<span class="w">                                 </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+<span class="w">                  </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
+<span class="w">                                 </span><span class="k">LEFT</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
 
-<span class="w">              </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span><span class="w"></span>
+<span class="w">              </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">matricula</span>
 
-<span class="w">         </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w">  </span><span class="n">estudantes_creditos</span><span class="w"></span>
+<span class="w">         </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w">  </span><span class="n">estudantes_creditos</span>
 
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ano_matricula</span><span class="w"> </span><span class="k">ASC</span><span class="p">,</span><span class="w"> </span><span class="n">posicao_aluno</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ano_matricula</span><span class="w"> </span><span class="k">ASC</span><span class="p">,</span><span class="w"> </span><span class="n">posicao_aluno</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -1142,15 +1145,15 @@
 <p><strong>29.</strong> Quais as disciplina mais cursadas em 2020?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Vamos começar construindo uma consulta que nos forneça o total de alunos matriculados em cada disciplina no ano de 2020:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span>
 
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
 
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
 
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span>
 
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -1169,15 +1172,15 @@
 </pre></div>
 </div>
 <p>Podemos usar uma função de janela para classificar as linhas. Para isso, precisamos de uma coluna que permita criar uma partição única na tabela. Uma maneira de fazer isso é introduzir artificialmente uma coluna extra com um valor inteiro constante:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">particao</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">particao</span>
 </span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
 
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
 
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span>
 
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -1196,22 +1199,22 @@
 </pre></div>
 </div>
 <p>Agora podemos utilizar essa consulta como uma subconsulta, como mostrado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">codigo</span><span class="p">,</span><span class="w"></span>
-<span class="w">       </span><span class="n">titulo</span><span class="p">,</span><span class="w"></span>
-<span class="w">       </span><span class="n">num_estudantes</span><span class="p">,</span><span class="w"></span>
-<span class="hll"><span class="w">       </span><span class="n">dense_rank</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">particao</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">posicao</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">codigo</span><span class="p">,</span>
+<span class="w">       </span><span class="n">titulo</span><span class="p">,</span>
+<span class="w">       </span><span class="n">num_estudantes</span><span class="p">,</span>
+<span class="hll"><span class="w">       </span><span class="n">dense_rank</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">particao</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">posicao</span>
 </span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
 
-<span class="hll"><span class="w">          </span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">particao</span><span class="w"></span>
+<span class="hll"><span class="w">          </span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">particao</span>
 </span><span class="hll">
-</span><span class="hll"><span class="w">            </span><span class="k">FROM</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+</span><span class="hll"><span class="w">            </span><span class="k">FROM</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
 </span><span class="hll">
-</span><span class="hll"><span class="w">           </span><span class="k">WHERE</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"></span>
+</span><span class="hll"><span class="w">           </span><span class="k">WHERE</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
 </span><span class="hll">
-</span><span class="hll"><span class="w">        </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"></span>
+</span><span class="hll"><span class="w">        </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span>
 </span><span class="hll">
-</span><span class="hll"><span class="w">       </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">subconsulta_rank</span><span class="p">;</span><span class="w"></span>
+</span><span class="hll"><span class="w">       </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">subconsulta_rank</span><span class="p">;</span>
 </span></pre></div>
 </div>
 <p>Resultado:</p>
@@ -1230,30 +1233,30 @@
 </pre></div>
 </div>
 <p>Finalmente, podemos criar mais um nível de consulta para selecionar apenas as linhas da posição <code class="docutils literal notranslate"><span class="pre">1</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
 
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
 
-<span class="w">        </span><span class="k">SELECT</span><span class="w"> </span><span class="n">codigo</span><span class="p">,</span><span class="w"></span>
-<span class="w">               </span><span class="n">titulo</span><span class="p">,</span><span class="w"></span>
-<span class="w">               </span><span class="n">num_estudantes</span><span class="p">,</span><span class="w"></span>
-<span class="w">               </span><span class="n">dense_rank</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">particao</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">posicao</span><span class="w"></span>
+<span class="w">        </span><span class="k">SELECT</span><span class="w"> </span><span class="n">codigo</span><span class="p">,</span>
+<span class="w">               </span><span class="n">titulo</span><span class="p">,</span>
+<span class="w">               </span><span class="n">num_estudantes</span><span class="p">,</span>
+<span class="w">               </span><span class="n">dense_rank</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">particao</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num_estudantes</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">posicao</span>
 
-<span class="w">          </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">          </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
 
-<span class="w">                  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">particao</span><span class="w"></span>
+<span class="w">                  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_estudantes</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">particao</span>
 
-<span class="w">                    </span><span class="k">FROM</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+<span class="w">                    </span><span class="k">FROM</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
 
-<span class="w">                   </span><span class="k">WHERE</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span><span class="w"></span>
+<span class="w">                   </span><span class="k">WHERE</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="p">.</span><span class="k">data</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2020</span>
 
-<span class="w">                </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span><span class="w"></span>
+<span class="w">                </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">codigo</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">titulo</span>
 
-<span class="w">               </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">subconsulta_1</span><span class="w"></span>
+<span class="w">               </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">subconsulta_1</span>
 
-<span class="w">       </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">subconsulta_2</span><span class="w"></span>
+<span class="w">       </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">subconsulta_2</span>
 
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">posicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">posicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -1280,10 +1283,10 @@
 </pre></div>
 </div>
 <p>Vamos criar uma tabela chamada <code class="docutils literal notranslate"><span class="pre">prof_disciplina</span></code> a partir da relação entre professores e disciplinas:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">prof_disciplina</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">prof_disciplina</span><span class="w"> </span><span class="k">AS</span>
 
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="o">*</span><span class="w"></span>
-<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="o">*</span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Se realizarmos uma consulta na nova tabela criada <code class="docutils literal notranslate"><span class="pre">prof_disciplina</span></code>, obteremos o seguinte resultado:</p>
@@ -1320,7 +1323,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246b4393a0>
+<jinja2.runtime.BlockReference object at 0x7fe22e3d5be0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

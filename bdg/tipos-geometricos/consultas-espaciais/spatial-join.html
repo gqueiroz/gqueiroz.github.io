@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3.5.5. Junção Espacial &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script src="../../_static/clipboard.min.js"></script>
@@ -39,12 +37,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../../index.html" class="icon icon-home"> BDGeo
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -79,8 +81,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -112,10 +115,10 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a> &raquo;</li>
-      <li><span class="section-number">3.5.5. </span>Junção Espacial</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.5.5. </span>Junção Espacial</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -132,7 +135,7 @@
 <section id="carga-de-dados-terras-indigenas">
 <h2><span class="section-number">3.5.5.1. </span>Carga de Dados - Terras Indígenas<a class="headerlink" href="#carga-de-dados-terras-indigenas" title="Link permanente para este cabeçalho"></a></h2>
 <p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-spatial-join-terras-indigenas"><span class="std std-numref">Tabela 3.32</span></a>, que contem os limites de terras indígenas no Brasil. Faça a carga desse conjunto de dados para o servidor PostgreSQL de acordo com as informações apresentadas nessa tabela.</p>
-<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-terras-indigenas" style="width: 100%">
+<table class="styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-terras-indigenas" style="width: 100%">
 <caption><span class="caption-number">Tabela 3.32 - </span><span class="caption-text">Terras Indígenas <br/> <strong>Fonte Original:</strong> <a class="reference download external" download="" href="http://geoserver.funai.gov.br/geoserver/Funai/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=Funai:tis_poligonais&amp;outputFormat=SHAPE-ZIP"><code class="xref download docutils literal notranslate"><span class="pre">FUNAI</span></code></a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-spatial-join-terras-indigenas" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 60%" />
@@ -166,11 +169,11 @@
 <details class="summary-carga-dados">
 <summary>Carga Dados:</summary><p><br/></p>
 <p>Para converter este conjunto de dados do formato ESRI Shapefile para um arquivo contendo uma sequência de comandos SQL, vamos utilizar o comando <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4674</span> -i -I -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 terras_indigenas.shp public.terras_indigenas &gt; terras_indigenas.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql<span class="w"> </span>-c<span class="w"> </span>-g<span class="w"> </span><span class="s2">&quot;geom&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">4674</span><span class="w"> </span>-i<span class="w"> </span>-I<span class="w"> </span>-t<span class="w"> </span><span class="s2">&quot;2D&quot;</span><span class="w"> </span>-W<span class="w"> </span>UTF-8<span class="w"> </span>terras_indigenas.shp<span class="w"> </span>public.terras_indigenas<span class="w"> </span>&gt;<span class="w"> </span>terras_indigenas.sql
 </pre></div>
 </div>
 <p>Para carregar o arquivo <code class="docutils literal notranslate"><span class="pre">terras_indigenas.sql</span></code> para um banco de dados PostgreSQL, utilize o <code class="docutils literal notranslate"><span class="pre">psql</span></code>, como mostrado abaixo:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -U postgres -h localhost -p <span class="m">5432</span> -d bdgeo -f terras_indigenas.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-p<span class="w"> </span><span class="m">5432</span><span class="w"> </span>-d<span class="w"> </span>bdgeo<span class="w"> </span>-f<span class="w"> </span>terras_indigenas.sql
 </pre></div>
 </div>
 </details></section>
@@ -185,11 +188,11 @@
 </figcaption>
 </figure>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ti</span><span class="p">.</span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"></span>
-<span class="w">       </span><span class="n">terras_indigenas</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ti</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ti</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ti</span><span class="p">.</span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span>
+<span class="w">       </span><span class="n">terras_indigenas</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ti</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ti</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 </details></section>
@@ -197,7 +200,7 @@
 <section id="carga-de-dados-unidades-de-conservacao">
 <h2><span class="section-number">3.5.5.3. </span>Carga de Dados - Unidades de Conservação<a class="headerlink" href="#carga-de-dados-unidades-de-conservacao" title="Link permanente para este cabeçalho"></a></h2>
 <p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-spatial-join-unidades-conservacao"><span class="std std-numref">Tabela 3.33</span></a>, que contem os limites das unidades de conservação no Brasil. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
-<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-unidades-conservacao" style="width: 100%">
+<table class="styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-unidades-conservacao" style="width: 100%">
 <caption><span class="caption-number">Tabela 3.33 - </span><span class="caption-text">Unidades de Conservação <br/> <strong>Fonte Original:</strong> <a class="reference external" href="http://mapas.mma.gov.br/i3geo/datadownload.htm">MMA</a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-spatial-join-unidades-conservacao" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 60%" />
@@ -231,7 +234,7 @@
 <details class="summary-carga-dados">
 <summary>Carga Dados:</summary><p><br/></p>
 <p>Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>, use o seguinte comando:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4618</span> -i -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 unidades_conservacao.shp public.unidades_conservacao &gt; unidades_conservacao.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql<span class="w"> </span>-c<span class="w"> </span>-g<span class="w"> </span><span class="s2">&quot;geom&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">4618</span><span class="w"> </span>-i<span class="w"> </span>-t<span class="w"> </span><span class="s2">&quot;2D&quot;</span><span class="w"> </span>-W<span class="w"> </span>UTF-8<span class="w"> </span>unidades_conservacao.shp<span class="w"> </span>public.unidades_conservacao<span class="w"> </span>&gt;<span class="w"> </span>unidades_conservacao.sql
 </pre></div>
 </div>
 <div class="admonition note">
@@ -243,14 +246,14 @@
 </pre></div>
 </div>
 <p>Transforme as coordenadas das geometria para o sistema de referência espacial formada pela projeção geográfica para <code class="docutils literal notranslate"><span class="pre">LAT/LONG</span></code> e sistema geodésico de referência <code class="docutils literal notranslate"><span class="pre">SIRGAS</span> <span class="pre">2000</span></code> (SRID 4674):</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="w"></span>
-<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">MULTIPOLYGON</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">unidades_conservacao</span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span>
+<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">MULTIPOLYGON</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span>
+<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Agora, vamos criar um índice espacial sobre a coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">unidades_conservacao_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">unidades_conservacao_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span>
 </pre></div>
 </div>
 </details><hr class="docutils" />
@@ -258,7 +261,7 @@
 <section id="carga-de-dados-focos-de-queimada-janeiro-de-2020">
 <span id="cap-tipos-geometricos-consultas-espaciais-spatial-join-focos-2020"></span><h2><span class="section-number">3.5.5.4. </span>Carga de Dados - Focos de Queimada (Janeiro de 2020)<a class="headerlink" href="#carga-de-dados-focos-de-queimada-janeiro-de-2020" title="Link permanente para este cabeçalho"></a></h2>
 <p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-spatial-join-focos-2020"><span class="std std-numref">Tabela 3.34</span></a>, que contém focos de incêndio na vegetação entre o dia 01/01/2020 e 25/01/2020. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
-<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-focos-2020" style="width: 100%">
+<table class="styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-focos-2020" style="width: 100%">
 <caption><span class="caption-number">Tabela 3.34 - </span><span class="caption-text">Focos de Queimada – 2020 <br/> <strong>Fonte Original:</strong> <a class="reference external" href="http://queimadas.dgi.inpe.br/queimadas/bdqueimadas">Programa Queimadas/INPE</a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-spatial-join-focos-2020" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 60%" />
@@ -291,7 +294,7 @@
 <details class="summary-carga-dados">
 <summary>Carga Dados:</summary><p><br/></p>
 <p>Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>, use o seguinte comando:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4326</span> -i -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 focos_2020.shp public.focos_2020 &gt; focos_2020.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql<span class="w"> </span>-c<span class="w"> </span>-g<span class="w"> </span><span class="s2">&quot;geom&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">4326</span><span class="w"> </span>-i<span class="w"> </span>-t<span class="w"> </span><span class="s2">&quot;2D&quot;</span><span class="w"> </span>-W<span class="w"> </span>UTF-8<span class="w"> </span>focos_2020.shp<span class="w"> </span>public.focos_2020<span class="w"> </span>&gt;<span class="w"> </span>focos_2020.sql
 </pre></div>
 </div>
 <div class="admonition note">
@@ -299,29 +302,29 @@
 <p>Repare no comando acima que não iremos criar o índice espacial sobre a coluna geométrica, isto é, não incluímos a opção <code class="docutils literal notranslate"><span class="pre">-I</span></code> no comando acima.</p>
 </div>
 <p>Para carregar o arquivo <code class="docutils literal notranslate"><span class="pre">focos_2020.sql</span></code> para um banco de dados PostgreSQL, utilize o <code class="docutils literal notranslate"><span class="pre">psql</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -h localhost -p <span class="m">5432</span> -d bdgeo -U postgres -f focos_2020.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-p<span class="w"> </span><span class="m">5432</span><span class="w"> </span>-d<span class="w"> </span>bdgeo<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-f<span class="w"> </span>focos_2020.sql
 </pre></div>
 </div>
 <p>Veja se o atributo com a data de observação (<code class="docutils literal notranslate"><span class="pre">datahora</span></code>) foi importado com o tipo correto: <code class="docutils literal notranslate"><span class="pre">TIMESTAMP</span> <span class="pre">WITHOUT</span> <span class="pre">TIME</span> <span class="pre">ZONE</span></code>. Caso não tenha sido, use o seguinte comando para acertar o tipo da coluna:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos_2020</span><span class="w"></span>
-<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">datahora</span><span class="w"></span>
-<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="w"></span>
-<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">datahora</span><span class="p">::</span><span class="k">timestamp</span><span class="w"> </span><span class="k">without</span><span class="w"> </span><span class="k">time</span><span class="w"> </span><span class="k">zone</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos_2020</span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">datahora</span>
+<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span>
+<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">datahora</span><span class="p">::</span><span class="k">timestamp</span><span class="w"> </span><span class="k">without</span><span class="w"> </span><span class="k">time</span><span class="w"> </span><span class="k">zone</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Faça uma reprojeção das geometrias do foco:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos_2020</span><span class="w"></span>
-<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">POINT</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos_2020</span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span>
+<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">POINT</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span>
+<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Uma vez que iremos realizar consultas sobre a coluna <code class="docutils literal notranslate"><span class="pre">datahora</span></code>, vamos criar um índice sobre esta coluna:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_2020_datahora_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos_2020</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">datahora</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_2020_datahora_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos_2020</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">datahora</span><span class="w"> </span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Também vamos criar um índice espacial sobre a coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_2020_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_2020_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span>
 </pre></div>
 </div>
 </details></section>
@@ -336,18 +339,18 @@
 </figcaption>
 </figure>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos_2020</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">unidades_conservacao</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ucs</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">uf</span><span class="w"></span>
-<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="w"></span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">jurisdicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Estadual&#39;</span><span class="w"></span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos_2020</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"></span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">total_focos</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos_2020</span><span class="p">,</span>
+<span class="w">         </span><span class="n">unidades_conservacao</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ucs</span><span class="p">,</span>
+<span class="w">         </span><span class="n">uf</span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">jurisdicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Estadual&#39;</span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos_2020</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">id</span><span class="p">,</span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">total_focos</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
 </pre></div>
 </div>
 </details></section>
@@ -355,7 +358,7 @@
 <section id="carga-de-dados-focos-2017-2018">
 <h2><span class="section-number">3.5.5.6. </span>Carga de Dados - Focos 2017/2018<a class="headerlink" href="#carga-de-dados-focos-2017-2018" title="Link permanente para este cabeçalho"></a></h2>
 <p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-spatial-join-focos-1718"><span class="std std-numref">Tabela 3.35</span></a>, que contém focos de incêndio na vegetação dos anos de 2017 e 2018. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
-<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-focos-1718" style="width: 100%">
+<table class="styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-focos-1718" style="width: 100%">
 <caption><span class="caption-number">Tabela 3.35 - </span><span class="caption-text">Focos de Queimada – 2017/2018 <br/> <strong>Fonte Original:</strong> <a class="reference external" href="http://queimadas.dgi.inpe.br/queimadas/bdqueimadas">Programa Queimadas/INPE</a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-spatial-join-focos-1718" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 60%" />
@@ -389,7 +392,7 @@
 <details class="summary-carga-dados">
 <summary>Carga Dados:</summary><p><br/></p>
 <p>Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>, use o seguinte comando:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4326</span> -i -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 focos_2017_2018.shp public.focos &gt; focos.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql<span class="w"> </span>-c<span class="w"> </span>-g<span class="w"> </span><span class="s2">&quot;geom&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">4326</span><span class="w"> </span>-i<span class="w"> </span>-t<span class="w"> </span><span class="s2">&quot;2D&quot;</span><span class="w"> </span>-W<span class="w"> </span>UTF-8<span class="w"> </span>focos_2017_2018.shp<span class="w"> </span>public.focos<span class="w"> </span>&gt;<span class="w"> </span>focos.sql
 </pre></div>
 </div>
 <div class="admonition note">
@@ -401,7 +404,7 @@
 <p>O comando acima levou cerca de 35 segundos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.</p>
 </div>
 <p>Para carregar o arquivo <code class="docutils literal notranslate"><span class="pre">focos.sql</span></code> para um banco de dados PostgreSQL, utilize o <code class="docutils literal notranslate"><span class="pre">psql</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -h localhost -p <span class="m">5432</span> -d bdgeo -U postgres -f focos.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-p<span class="w"> </span><span class="m">5432</span><span class="w"> </span>-d<span class="w"> </span>bdgeo<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-f<span class="w"> </span>focos.sql
 </pre></div>
 </div>
 <div class="admonition note">
@@ -409,10 +412,10 @@
 <p>O comando acima levou cerca de 9 minutos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.</p>
 </div>
 <p>Veja se o atributo com a data de observação (<code class="docutils literal notranslate"><span class="pre">data_obser</span></code>) foi importado com o tipo correto: <code class="docutils literal notranslate"><span class="pre">TIMESTAMP</span> <span class="pre">WITHOUT</span> <span class="pre">TIME</span> <span class="pre">ZONE</span></code>. Caso não tenha sido, use o seguinte comando para acertar o tipo da coluna:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos</span><span class="w"></span>
-<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">data_obser</span><span class="w"></span>
-<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="w"></span>
-<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">data_obser</span><span class="p">::</span><span class="k">timestamp</span><span class="w"> </span><span class="k">without</span><span class="w"> </span><span class="k">time</span><span class="w"> </span><span class="k">zone</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos</span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">data_obser</span>
+<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span>
+<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">data_obser</span><span class="p">::</span><span class="k">timestamp</span><span class="w"> </span><span class="k">without</span><span class="w"> </span><span class="k">time</span><span class="w"> </span><span class="k">zone</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -420,10 +423,10 @@
 <p>O comando acima levou cerca de 32 segundos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.</p>
 </div>
 <p>Faça uma reprojeção das geometrias da tabela <code class="docutils literal notranslate"><span class="pre">foco</span></code> para o SRID 4674:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos</span><span class="w"></span>
-<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">POINT</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">focos</span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span>
+<span class="w">        </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">POINT</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span>
+<span class="w">        </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -431,7 +434,7 @@
 <p>O comando acima levou cerca de 41 segundos em um notebook com disco comum e o servidor PostgreSQL com as configurações básicas.</p>
 </div>
 <p>Uma vez que iremos realizar consultas sobre a coluna <code class="docutils literal notranslate"><span class="pre">data_obser</span></code>, vamos criar um índice sobre esta coluna:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_data_obser_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">data_obser</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_data_obser_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">data_obser</span><span class="w"> </span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -439,7 +442,7 @@
 <p>O comando acima levou cerca de 3 segundos com o parâmero <code class="docutils literal notranslate"><span class="pre">maintenance_work_mem</span></code> ajustado para uso de 4GB de memória RAM.</p>
 </div>
 <p>Também vamos criar um índice espacial sobre a coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">focos_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">focos</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -453,45 +456,45 @@
 <p><strong>Consulta:</strong> Quantos focos de incêndio na vegetação foram detectados mensalmente em Unidades de Conservação Estaduais do Estado do Tocantins ao longo de 2017?</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Versão 1:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">month</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">unidades_conservacao</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ucs</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">uf</span><span class="w"></span>
-<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="w"></span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">jurisdicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Estadual&#39;</span><span class="w"></span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2017</span><span class="w"></span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"></span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="w"> </span><span class="k">ASC</span><span class="p">,</span><span class="w"> </span><span class="n">total_focos</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">month</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span>
+<span class="w">         </span><span class="n">unidades_conservacao</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ucs</span><span class="p">,</span>
+<span class="w">         </span><span class="n">uf</span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ucs</span><span class="p">.</span><span class="n">jurisdicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Estadual&#39;</span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2017</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">id</span><span class="p">,</span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="w"> </span><span class="k">ASC</span><span class="p">,</span><span class="w"> </span><span class="n">total_focos</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Versão 2:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">tocantins</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">             </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="w"></span>
-<span class="w">         </span><span class="p">),</span><span class="w"></span>
-<span class="w">         </span><span class="n">ucs</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">             </span><span class="k">SELECT</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">.</span><span class="o">*</span><span class="w"></span>
-<span class="w">               </span><span class="k">FROM</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">,</span><span class="w"></span>
-<span class="w">                    </span><span class="n">tocantins</span><span class="w"></span>
-<span class="w">              </span><span class="k">WHERE</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">.</span><span class="n">jurisdicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Estadual&#39;</span><span class="w"></span>
-<span class="w">                </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">tocantins</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">month</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">ucs</span><span class="w"></span>
-<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2017</span><span class="w"></span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"></span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="w"> </span><span class="k">ASC</span><span class="p">,</span><span class="w"> </span><span class="n">total_focos</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">tocantins</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">             </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span>
+<span class="w">         </span><span class="p">),</span>
+<span class="w">         </span><span class="n">ucs</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">             </span><span class="k">SELECT</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">.</span><span class="o">*</span>
+<span class="w">               </span><span class="k">FROM</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">,</span>
+<span class="w">                    </span><span class="n">tocantins</span>
+<span class="w">              </span><span class="k">WHERE</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">.</span><span class="n">jurisdicao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Estadual&#39;</span>
+<span class="w">                </span><span class="k">AND</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">tocantins</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">unidades_conservacao</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
+<span class="w">         </span><span class="p">)</span>
+<span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">month</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span>
+<span class="w">         </span><span class="n">ucs</span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">ucs</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
+<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="k">Extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2017</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="p">,</span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">id</span><span class="p">,</span>
+<span class="w">         </span><span class="n">ucs</span><span class="p">.</span><span class="n">nome</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mes</span><span class="w"> </span><span class="k">ASC</span><span class="p">,</span><span class="w"> </span><span class="n">total_focos</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
 </pre></div>
 </div>
 </details></section>
@@ -499,7 +502,7 @@
 <section id="carga-de-dados-trechos-rodoviarios">
 <h2><span class="section-number">3.5.5.8. </span>Carga de Dados - Trechos Rodoviários<a class="headerlink" href="#carga-de-dados-trechos-rodoviarios" title="Link permanente para este cabeçalho"></a></h2>
 <p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-spatial-join-trechos-rodoviarios"><span class="std std-numref">Tabela 3.36</span></a>, que contem os trechos rodoviários do Brasil, ano de referência 2019. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
-<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-trechos-rodoviarios" style="width: 100%">
+<table class="styled-table docutils align-center" id="tbl-consultas-espaciais-spatial-join-trechos-rodoviarios" style="width: 100%">
 <caption><span class="caption-number">Tabela 3.36 - </span><span class="caption-text">Trechos Rodoviários – 2019 <br/> <strong>Fonte Original:</strong> <a class="reference download external" download="" href="https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2019/shapefile/bc250_shapefile_06_11_2019.zip"><code class="xref download docutils literal notranslate"><span class="pre">IBGE</span></code></a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-spatial-join-trechos-rodoviarios" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 60%" />
@@ -533,11 +536,11 @@
 <details class="summary-carga-dados">
 <summary>Carga Dados:</summary><p><br/></p>
 <p>Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>, use o seguinte comando:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4674</span> -i -I -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 rod_trecho_rodoviario_l.shp public.trechos_rodoviarios &gt; trechos_rodoviarios.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql<span class="w"> </span>-c<span class="w"> </span>-g<span class="w"> </span><span class="s2">&quot;geom&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">4674</span><span class="w"> </span>-i<span class="w"> </span>-I<span class="w"> </span>-t<span class="w"> </span><span class="s2">&quot;2D&quot;</span><span class="w"> </span>-W<span class="w"> </span>UTF-8<span class="w"> </span>rod_trecho_rodoviario_l.shp<span class="w"> </span>public.trechos_rodoviarios<span class="w"> </span>&gt;<span class="w"> </span>trechos_rodoviarios.sql
 </pre></div>
 </div>
 <p>Para carregar o arquivo <code class="docutils literal notranslate"><span class="pre">trechos_rodoviarios.sql</span></code> para um banco de dados PostgreSQL, utilize o <code class="docutils literal notranslate"><span class="pre">psql</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -h localhost -p <span class="m">5432</span> -d bdgeo -U postgres -f trechos_rodoviarios.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-p<span class="w"> </span><span class="m">5432</span><span class="w"> </span>-d<span class="w"> </span>bdgeo<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-f<span class="w"> </span>trechos_rodoviarios.sql
 </pre></div>
 </div>
 </details></section>
@@ -552,16 +555,16 @@
 </figcaption>
 </figure>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">id</span><span class="w"></span>
-<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span><span class="w"></span>
-<span class="w">             </span><span class="n">trechos_rodoviarios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">trechos</span><span class="w"></span>
-<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">111000</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">AND</span><span class="w"> </span><span class="n">codtrechor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;BR-153&#39;</span><span class="w"></span>
-<span class="w">         </span><span class="k">AND</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="s1">&#39;2017-09-01&#39;</span><span class="w"></span>
-<span class="w">         </span><span class="k">AND</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="s1">&#39;2017-10-01&#39;</span><span class="w"></span>
-<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">focos_sel</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total_focos</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">id</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span>
+<span class="w">             </span><span class="n">trechos_rodoviarios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">trechos</span>
+<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">111000</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">         </span><span class="k">AND</span><span class="w"> </span><span class="n">codtrechor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;BR-153&#39;</span>
+<span class="w">         </span><span class="k">AND</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="s1">&#39;2017-09-01&#39;</span>
+<span class="w">         </span><span class="k">AND</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">data_obser</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="s1">&#39;2017-10-01&#39;</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">focos_sel</span><span class="p">;</span>
 </pre></div>
 </div>
 </details></section>
@@ -576,12 +579,12 @@
 </figcaption>
 </figure>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">vizinho</span><span class="p">,</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">geom</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">m1</span><span class="p">,</span><span class="w"></span>
-<span class="w">       </span><span class="n">municipios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">m2</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="n">m1</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">m1</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;OURO PRETO&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;OURO PRETO&#39;</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">vizinho</span><span class="p">,</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">geom</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">m1</span><span class="p">,</span>
+<span class="w">       </span><span class="n">municipios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">m2</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="n">m1</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">m1</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;OURO PRETO&#39;</span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">m2</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;OURO PRETO&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 </details><hr class="docutils" />
@@ -607,7 +610,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246ac70df0>
+<jinja2.runtime.BlockReference object at 0x7fe22eabfa00>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

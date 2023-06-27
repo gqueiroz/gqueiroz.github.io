@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>4.4. Árvores de Partição do Espaço &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -39,12 +37,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../index.html" class="icon icon-home"> BDGeo
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -71,8 +73,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -104,9 +107,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais</a> &raquo;</li>
-      <li><span class="section-number">4.4. </span>Árvores de Partição do Espaço</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.4. </span>Árvores de Partição do Espaço</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -120,7 +123,7 @@
              
   <section id="arvores-de-particao-do-espaco">
 <span id="cap-estrutura-dados-space-partitioning"></span><h1><span class="section-number">4.4. </span>Árvores de Partição do Espaço<a class="headerlink" href="#arvores-de-particao-do-espaco" title="Link permanente para este cabeçalho"></a></h1>
-<p>As Árvores-B e suas variantes, assim como as Árvore-R e suas variantes, e o GiST, dão suporte à classe de árvores balanceadas. Existe também uma classe de árvores denomina de <strong>Árvores de Partição do Espaço</strong> (<strong>Space-partitioning Trees</strong>) que particionam o espaço multidimensional em subregiões disjuntas. As Árvore-<em>k-d</em> <span id="id1">[<a class="reference internal" href="../referencias.html#id7" title="Jon Louis Bentley. Multidimensional binary search trees used for associative searching. Commun. ACM, 18(9):509–517, 1975. doi:10.1145/361002.361007.">5</a>]</span> <span id="id2">[<a class="reference internal" href="../referencias.html#id8" title="Jon Louis Bentley. Multidimensional binary search trees in database applications. IEEE Trans. Software Eng., 5(4):333–340, 1979. doi:10.1109/TSE.1979.234200.">6</a>]</span> e as Quad-trees <span id="id3">[<a class="reference internal" href="../referencias.html#id22" title="Raphael A. Finkel and Jon Louis Bentley. Quad trees: A data structure for retrieval on composite keys. Acta Informatica, 4:1–9, 1974. doi:10.1007/BF00288933.">15</a>]</span> <span id="id4">[<a class="reference internal" href="../referencias.html#id46" title="Hanan Samet. The quadtree and related hierarchical data structures. ACM Comput. Surv., 16(2):187–260, 1984. doi:10.1145/356924.356930.">33</a>]</span> se enquadram nessa classe de árvores.</p>
+<p>As Árvores-B e suas variantes, assim como as Árvore-R e suas variantes, e o GiST, dão suporte à classe de árvores balanceadas. Existe também uma classe de árvores denomina de <strong>Árvores de Partição do Espaço</strong> (<strong>Space-partitioning Trees</strong>) que particionam o espaço multidimensional em subregiões disjuntas. As Árvore-<em>k-d</em> <span id="id1">[<a class="reference internal" href="../referencias.html#id7" title="Jon Louis Bentley. Multidimensional binary search trees used for associative searching. Commun. ACM, 18(9):509–517, 1975. doi:10.1145/361002.361007.">5</a>]</span> <span id="id2">[<a class="reference internal" href="../referencias.html#id8" title="Jon Louis Bentley. Multidimensional binary search trees in database applications. IEEE Trans. Software Eng., 5(4):333–340, 1979. doi:10.1109/TSE.1979.234200.">6</a>]</span> e as Quad-trees <span id="id3">[<a class="reference internal" href="../referencias.html#id23" title="Raphael A. Finkel and Jon Louis Bentley. Quad trees: A data structure for retrieval on composite keys. Acta Informatica, 4:1–9, 1974. doi:10.1007/BF00288933.">15</a>]</span> <span id="id4">[<a class="reference internal" href="../referencias.html#id52" title="Hanan Samet. The quadtree and related hierarchical data structures. ACM Comput. Surv., 16(2):187–260, 1984. doi:10.1145/356924.356930.">37</a>]</span> se enquadram nessa classe de árvores.</p>
 <p>Para ilustrar a idéia dessa classe de árvores, considere os 38 pontos mostrados na <a class="reference internal" href="#fig-estrutura-dados-cidades-triangulo-mg"><span class="std std-numref">Figura 4.11</span></a>, que representam os centróides de algumas das cidades da região do triângulo mineiro no Estado de Minas Gerais.</p>
 <figure class="align-center align-default" id="fig-estrutura-dados-cidades-triangulo-mg">
 <a class="reference internal image-reference" href="../_images/cidades-triangulo-mg.png"><img alt="Centróides de cidades do triângulo mineiro" src="../_images/cidades-triangulo-mg.png" style="width: 100%;" /></a>
@@ -143,8 +146,8 @@
 <p><span class="caption-number">Figura 4.13 - </span><span class="caption-text">Árvore-k-d.</span><a class="headerlink" href="#fig-estrutura-dados-kdtree" title="Link Permanente para essa imagem"></a></p>
 </figcaption>
 </figure>
-<p>Assim como as Árvores Binárias de Pesquisa, as Árvores-<em>k-d</em> são utilizadas para problemas que cabem completamente na memória principal (RAM), não sendo apropriadas como índices armazenados em meio secundário (disco). Existem variantes dessa estrutura que foram projetadas para permitir seu uso eficiente em meio secundário. A K-D-B-Tree é uma dessas variantes <span id="id6">[<a class="reference internal" href="../referencias.html#id43" title="John T. Robinson. The k-d-b-tree: A search structure for large multidimensional dynamic indexes. In Y. Edmund Lien, editor, Proceedings of the 1981 ACM SIGMOD International Conference on Management of Data, Ann Arbor, Michigan, USA, April 29 - May 1, 1981, 10–18. ACM Press, 1981. doi:10.1145/582318.582321.">31</a>]</span>, mas no entanto não é muita utilizada na prática pelos atuais sistemas de bancos de dados.</p>
-<p>Outro tipo de árvore importante pertencente a esta classe denomina de Árvores de Partição do Espaço são as <strong>Quad-trees</strong> <span id="id7">[<a class="reference internal" href="../referencias.html#id22" title="Raphael A. Finkel and Jon Louis Bentley. Quad trees: A data structure for retrieval on composite keys. Acta Informatica, 4:1–9, 1974. doi:10.1007/BF00288933.">15</a>]</span>. Para uma revisão da literatura sobre essa estrutura, consulte <span id="id8">[<a class="reference internal" href="../referencias.html#id46" title="Hanan Samet. The quadtree and related hierarchical data structures. ACM Comput. Surv., 16(2):187–260, 1984. doi:10.1145/356924.356930.">33</a>]</span>.</p>
+<p>Assim como as Árvores Binárias de Pesquisa, as Árvores-<em>k-d</em> são utilizadas para problemas que cabem completamente na memória principal (RAM), não sendo apropriadas como índices armazenados em meio secundário (disco). Existem variantes dessa estrutura que foram projetadas para permitir seu uso eficiente em meio secundário. A K-D-B-Tree é uma dessas variantes <span id="id6">[<a class="reference internal" href="../referencias.html#id49" title="John T. Robinson. The k-d-b-tree: A search structure for large multidimensional dynamic indexes. In Y. Edmund Lien, editor, Proceedings of the 1981 ACM SIGMOD International Conference on Management of Data, Ann Arbor, Michigan, USA, April 29 - May 1, 1981, 10–18. ACM Press, 1981. doi:10.1145/582318.582321.">35</a>]</span>, mas no entanto não é muita utilizada na prática pelos atuais sistemas de bancos de dados.</p>
+<p>Outro tipo de árvore importante pertencente a esta classe denomina de Árvores de Partição do Espaço são as <strong>Quad-trees</strong> <span id="id7">[<a class="reference internal" href="../referencias.html#id23" title="Raphael A. Finkel and Jon Louis Bentley. Quad trees: A data structure for retrieval on composite keys. Acta Informatica, 4:1–9, 1974. doi:10.1007/BF00288933.">15</a>]</span>. Para uma revisão da literatura sobre essa estrutura, consulte <span id="id8">[<a class="reference internal" href="../referencias.html#id52" title="Hanan Samet. The quadtree and related hierarchical data structures. ACM Comput. Surv., 16(2):187–260, 1984. doi:10.1145/356924.356930.">37</a>]</span>.</p>
 </section>
 
 
@@ -162,7 +165,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246b1b96a0>
+<jinja2.runtime.BlockReference object at 0x7fe22d6dd940>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

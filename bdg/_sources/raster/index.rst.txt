@@ -1,0 +1,30 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_raster:
+
+Dados Matriciais
+================
+
+
+Cada vez mais, novas funcionalidades geoespaciais têm sido integradas aos SGBD-R. A extensão PostGIS Raster do SGBD PostgreSQL, lançada oficialmente em 2012, possibilita armazenar no banco de dados imagens de sensoriamento remoto. O `Oracle GeoRaster <https://www.oracle.com/a/tech/docs/georaster-2021.pdf>`__ é outro produto da linha de SGBD-R (ou SGBD-OR) com capacidade de armazenamento de dados matriciais. Além dos SGBD-R, existem sistemas com modelos de dados mais especializados, como o SciDB :cite:`stonebraker:2011`, com um modelo baseado em matrizes multidimensionais.
+
+
+Esta aula irá apresentar uma visão geral do tratamento de dados **matriciais** ou **raster** em SGBD-R. O foco será em imagens de sensoriamento remoto ótico por satélites de observação da Terra com a prática no PostGIS Raster. Também será apresentado de maneira teórica o uso do SciDB com dados mariciais.
+
+
+.. toctree::
+    :maxdepth: 1
+    :titlesonly:
+
+    ./conceitos
+    ./geotiff
+    ./postgis-raster
+    ./consideracoes
+    ./exercicios
+

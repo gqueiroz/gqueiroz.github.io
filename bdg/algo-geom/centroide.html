@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>5.3. Centróides e Pontos dentro Superfície &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -39,12 +37,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../index.html" class="icon icon-home"> BDGeo
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -73,8 +75,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -106,9 +109,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">5. </span>Algoritmos Geométricos</a> &raquo;</li>
-      <li><span class="section-number">5.3. </span>Centróides e Pontos dentro Superfície</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5. </span>Algoritmos Geométricos</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5.3. </span>Centróides e Pontos dentro Superfície</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -134,13 +137,13 @@
 \[A = \frac{1}{2} \sum_{i=0}^{n-1}(x_iy_{i+1} - y_ix_{i+1})\]</div>
 <p>Pelas fórmulas apresentadas, podemos concluir que o algoritmo para cálculo do centróide de um polígono é <span class="math notranslate nohighlight">\(O(n)\)</span>, onde <span class="math notranslate nohighlight">\(n\)</span> corresponde ao número de vértices dos anéis do polígono.</p>
 <p>Vamos ilustrar o uso da função <code class="docutils literal notranslate"><span class="pre">ST_Centroid</span></code> para criação do centróide de três municípios da tabela <code class="docutils literal notranslate"><span class="pre">municipios</span></code> (<a class="reference internal" href="../tipos-geometricos/consultas-espaciais/proximity-query.html#cap-tipos-geometricos-consultas-espaciais-proximity-query"><span class="std std-numref">Seção 3.5.4</span></a>):</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">municipio_centroide</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">municipio_centroide</span><span class="w"> </span><span class="k">AS</span>
 
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">geocodigo</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Centroid</span><span class="p">(</span><span class="n">geom</span><span class="p">)::</span><span class="n">geometry</span><span class="p">(</span><span class="n">point</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">geocodigo</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Centroid</span><span class="p">(</span><span class="n">geom</span><span class="p">)::</span><span class="n">geometry</span><span class="p">(</span><span class="n">point</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
 
-<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span><span class="w"></span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span>
 
-<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">geocodigo</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;1600303&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;3107307&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;3146107&#39;</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">geocodigo</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;1600303&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;3107307&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;3146107&#39;</span><span class="w"> </span><span class="p">);</span>
 </pre></div>
 </div>
 <p>As Figuras <a class="reference internal" href="#fig-alg-geom-centroide-macapa"><span class="std std-numref">5.1</span></a>, <a class="reference internal" href="#fig-alg-geom-centroide-bocaiuva"><span class="std std-numref">5.2</span></a> e <a class="reference internal" href="#fig-alg-geom-centroide-ouropreto"><span class="std std-numref">5.3</span></a> apresentam os centróides dos municípios de  Macapá no Amapá (<code class="docutils literal notranslate"><span class="pre">geocodigo</span> <span class="pre">=</span> <span class="pre">1600303</span></code>), Bocaiúva (<code class="docutils literal notranslate"><span class="pre">geocodigo</span> <span class="pre">=</span> <span class="pre">3107307</span></code>) e Ouro Preto (<code class="docutils literal notranslate"><span class="pre">geocodigo</span> <span class="pre">=</span> <span class="pre">3146107</span></code>) em Minas Gerais. Repare que o centróide não necessariamente será um ponto localizado no interior do polígono, como mostrado nas Figuras <a class="reference internal" href="#fig-alg-geom-centroide-macapa"><span class="std std-numref">5.1</span></a> e <a class="reference internal" href="#fig-alg-geom-centroide-bocaiuva"><span class="std std-numref">5.2</span></a>.</p>
@@ -168,13 +171,13 @@
 <section id="ponto-sobre-a-superficie">
 <h2><span class="section-number">5.3.2. </span>Ponto sobre a Superfície<a class="headerlink" href="#ponto-sobre-a-superficie" title="Link permanente para este cabeçalho"></a></h2>
 <p>Enquanto a função <code class="docutils literal notranslate"><span class="pre">ST_Centroid</span></code> pode computar um ponto que não seja localizado no interior do polígono de entrada, existe uma função chamada <code class="docutils literal notranslate"><span class="pre">ST_PointOnSurface</span></code> que garante a geração de um ponto no interior do polígono de entrada. Vamos ilustrar o uso dessa função com os mesmos polígonos de municípios da seção anterior:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">municipio_ponto_interior</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">municipio_ponto_interior</span><span class="w"> </span><span class="k">AS</span>
 
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">geocodigo</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_PointOnSurface</span><span class="p">(</span><span class="n">geom</span><span class="p">)::</span><span class="n">geometry</span><span class="p">(</span><span class="n">point</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">geocodigo</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_PointOnSurface</span><span class="p">(</span><span class="n">geom</span><span class="p">)::</span><span class="n">geometry</span><span class="p">(</span><span class="n">point</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
 
-<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span><span class="w"></span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span>
 
-<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">geocodigo</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;1600303&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;3107307&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;3146107&#39;</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">geocodigo</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;1600303&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;3107307&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;3146107&#39;</span><span class="w"> </span><span class="p">);</span>
 </pre></div>
 </div>
 <p>As Figuras <a class="reference internal" href="#fig-alg-geom-point-on-surface-macapa"><span class="std std-numref">5.4</span></a>, <a class="reference internal" href="#fig-alg-geom-point-on-surface-bocaiuva"><span class="std std-numref">5.5</span></a> e <a class="reference internal" href="#fig-alg-geom-point-on-surface-ouropreto"><span class="std std-numref">5.6</span></a> apresentam em vermelho os centróides e em amarelo os pontos calculados pela função <code class="docutils literal notranslate"><span class="pre">ST_PointOnSurface</span></code> para os municípios de Macapá no Amapá (<code class="docutils literal notranslate"><span class="pre">geocodigo</span> <span class="pre">=</span> <span class="pre">1600303</span></code>), Bocaiúva (<code class="docutils literal notranslate"><span class="pre">geocodigo</span> <span class="pre">=</span> <span class="pre">3107307</span></code>) e Ouro Preto (<code class="docutils literal notranslate"><span class="pre">geocodigo</span> <span class="pre">=</span> <span class="pre">3146107</span></code>) em Minas Gerais.</p>
@@ -216,7 +219,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246b0252e0>
+<jinja2.runtime.BlockReference object at 0x7fe22d6cefd0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

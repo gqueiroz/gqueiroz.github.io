@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3.5.1. Carregando Dados no PostgreSQL/PostGIS &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script src="../../_static/clipboard.min.js"></script>
@@ -39,12 +37,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../../index.html" class="icon icon-home"> BDGeo
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -79,8 +81,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -112,10 +115,10 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a> &raquo;</li>
-      <li><span class="section-number">3.5.1. </span>Carregando Dados no PostgreSQL/PostGIS</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.5.1. </span>Carregando Dados no PostgreSQL/PostGIS</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -130,7 +133,7 @@
   <section id="carregando-dados-no-postgresql-postgis">
 <span id="cap-tipos-geometricos-consultas-espaciais-carga-dados"></span><h1><span class="section-number">3.5.1. </span>Carregando Dados no PostgreSQL/PostGIS<a class="headerlink" href="#carregando-dados-no-postgresql-postgis" title="Link permanente para este cabeçalho"></a></h1>
 <p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-carga-dados-uf-2018"><span class="std std-numref">Tabela 3.30</span></a>, que contem os limites estaduais brasileiros referentes ao ano de 2018.</p>
-<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-carga-dados-uf-2018" style="width: 100%">
+<table class="styled-table docutils align-center" id="tbl-consultas-espaciais-carga-dados-uf-2018" style="width: 100%">
 <caption><span class="caption-number">Tabela 3.30 - </span><span class="caption-text">Unidades Federativas do Brasil - 2018 <br/> <strong>Fonte Original:</strong> <a class="reference download external" download="" href="https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2018/Brasil/BR/br_unidades_da_federacao.zip"><code class="xref download docutils literal notranslate"><span class="pre">IBGE</span></code></a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-carga-dados-uf-2018" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 60%" />
@@ -243,11 +246,11 @@
 <p><strong>Preparando seu Terminal</strong></p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Microsoft Windows 10</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">macOS</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>Inclua o caminho dos aplicativos instalados pelo PostgreSQL e PostGIS na variável de ambiente <code class="docutils literal notranslate"><span class="pre">PATH</span></code> para que os aplicativos possam ser chamados na linha de comando do Windows:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>SET <span class="nv">PATH</span><span class="o">=</span>%PATH%<span class="p">;</span><span class="s2">&quot;C:\Program Files\PostgreSQL\14\bin&quot;</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>SET<span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>%PATH%<span class="p">;</span><span class="s2">&quot;C:\Program Files\PostgreSQL\14\bin&quot;</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>Se você tiver instalado a versão 14 do PostgreSQL através da distribuição <strong>Postgres.app</strong> e quiser usar o terminal de comandos, sugerimos incluir o caminho dos aplicativos de linha de comando na sua variável <code class="docutils literal notranslate"><span class="pre">PATH</span></code>:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PATH</span><span class="s2">:/Applications/Postgres.app/Contents/Versions/14/bin/&quot;</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PATH</span><span class="s2">:/Applications/Postgres.app/Contents/Versions/14/bin/&quot;</span>
 </pre></div>
 </div>
 </div></div>
@@ -357,7 +360,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246b439fa0>
+<jinja2.runtime.BlockReference object at 0x7fe22f22dfd0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

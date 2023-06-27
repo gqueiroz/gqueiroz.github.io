@@ -1,0 +1,799 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_raster_conceitos:
+
+Imagens de Satélites
+====================
+
+
+Atualmente existem diversas fontes de dados geoespaciais, como os satélites de observação da Terra mostrados na :numref:`Figura %s <fig:raster:conceitos:earthsat-hd>`. Sensores a bordo de satélites como Terra e Aqua e da série Landsat, têm sido importantes instrumentos de coleta de dados sobre nosso planeta. Esses satélites produzem dados sobre superfície, oceanos, atmosfera, entre outros, servindo de insumo básico para a construção de diversas aplicações. No INPE, as imagens da série Landsat são utilizadas, por exemplo, no sistema de monitoramento da Floresta Amazônica. Através dessas imagens, o `PRODES <http://www.obt.inpe.br/OBT/assuntos/programas/amazonia/prodes>`_ mantém o inventário de todo o desmatamento por corte raso na vegatação natural ocorrido na Amazônia Legal desde 1988.
+
+
+.. figure:: ../img/raster/conceitos/earthsat-hd.jpg
+    :alt: Satélites de Observação da Terra
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:conceitos:earthsat-hd
+
+    Satélites de Observação da Terra. |br| **Fonte:** NASA :cite:`nasa:2021:a`.
+
+
+A :numref:`Figura %s <fig:raster:conceitos:lcc>` apresenta imagens da série Landsat para uma mesma região em duas datas diferentes. A imagem à esquerda mostra como era parte da floresta amazônica, numa região do Peru, em 13 de Novembro de 1986. A imagem à direita mostra essa mesma região no ano de 2016, onde podemos observar algumas ocupações, áreas de pastagem e estradas em áreas que antes eram floresta.
+
+
+.. figure:: ../img/raster/conceitos/lcc.png
+    :alt: Monitoramento da mudança na cobertura
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:conceitos:lcc
+
+    Monitoramento da mudança na cobertura. |br| **Fonte:** Adaptado de :cite:`nasa:2021:b`.
+
+
+Esta seção apresenta conceitos e terminologias importantes para o tratamento de imagens de sensoriamento remoto em bancos de dados. Vamos começar assistindo ao vídeo abaixo.
+
+
+.. raw:: html
+
+    <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/eFW8tV38We0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <br/>
+    <center><b>Fonte:</b> <a href="https://prog-geo.github.io/imagens.html">Introdução à Programação com Dados Geoespaciais</a></center>
+    <br/>
+
+
+Sensores Passivos e Ativos
+--------------------------
+
+
+Bandas Espectrais
+-----------------
+
+
+Resolução Espacial
+------------------
+
+
+A **resolução espacial** se refere a área da superfície terrestre capturada por um único pixel de uma imagem. Este parâmetro influencia a precisão dos detalhes que podem ser percebidos na imagem, como apresentado nas figuras abaixo, com imagens da região da barragem de `Sobradinho <https://pt.wikipedia.org/wiki/Usina_Hidrel%C3%A9trica_de_Sobradinho>`__. Essas imagens possuem, respectivamente, resolução espacial de 10m, 60m e 100m .
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :show_captions_below:
+    :show_fade:
+    :data-bs-interval: false
+    
+    .. figure:: ../img/raster/conceitos/t24ltq_10m.png
+        :alt: Resolução espacial de 10 metros
+        :width: 100%
+        :figclass: align-center
+        :name: fig:raster:conceitos:resolucao-espacial:t24ltq_10m
+
+        Imagem Sentinel-2 com resolução espacial original de 10 metros.<br>Composição colorida das bandas 4-3-2 (cores verdadeiras).<br>Região da barragem de Sobradinho.
+
+
+    .. figure:: ../img/raster/conceitos/t24ltq_60m.png
+        :alt: Resolução espacial de 60 metros
+        :width: 100%
+        :figclass: align-center
+        :name: fig:raster:conceitos:resolucao-espacial:t24ltq_60m
+
+        Imagem Sentinel-2 com resolução espacial degradada para 60 metros.<br>Composição colorida das bandas 4-3-2 (cores verdadeiras).<br>Região da barragem de Sobradinho.
+
+
+    .. figure:: ../img/raster/conceitos/t24ltq_100m.png
+        :alt: Resolução espacial de 100 metros
+        :width: 100%
+        :figclass: align-center
+        :name: fig:raster:conceitos:resolucao-espacial:t24ltq_100m
+
+        Imagem Sentinel-2 com resolução espacial degradada para 100 metros.<br>Composição colorida das bandas 4-3-2 (cores Verdadeiras).<br>Região da barragem de Sobradinho.
+
+
+Nas figuras abaixo, podemos perceber que na imagem de 100m de resolução conseguimos ver poucos detalhes da barragem. Com a imagem de 10m de resolução, já conseguimos identificar a barragem. Finalmente, na imagem de 2m, conseguimos visualizar mais detalhes sobre as feições da barragem.
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :show_captions_below:
+    :show_fade:
+    :data-bs-interval: false
+
+    .. figure:: ../img/raster/conceitos/img-sentinel2-100m.png
+        :alt: Resolução espacial de 100 metros
+        :width: 100%
+        :figclass: align-center
+        :name: fig:raster:conceitos:resolucao-espacial-100m
+
+        Imagem Sentinel-2 com resolução espacial degradada para 100 metros.<br>Composição colorida 4-3-2 (cores verdadeiras).<br>Região da barragem de Sobradinho.
+
+
+    .. figure:: ../img/raster/conceitos/img-sentinel2-10m.png
+        :alt: Resolução espacial de 10 metros
+        :width: 100%
+        :figclass: align-center
+        :name: fig:raster:conceitos:resolucao-espacial-10m
+
+        Imagem Sentinel-2 com resolução espacial original de 10 metros.<br>Composição colorida das bandas 4-3-2 (cores Verdadeiras).<br>Região da barragem de Sobradinho.
+
+
+    .. figure:: ../img/raster/conceitos/img-cbers4a-2m.png
+        :alt: Resolução espacial de 2 metros
+        :width: 100%
+        :figclass: align-center
+        :name: fig:raster:conceitos:resolucao-espacial-2m
+
+        Imagem CBERS-4A/WPM com resolução espacial original de 2 metros.<br>Processo de fusão usado: PCA (Componentes Principais).<br>Região da barragem de Sobradinho.
+
+
+Resolução Temporal
+------------------
+
+
+A **resolução temporal** é o tempo que um sensor leva para revisitar uma localização geográfica específica. As imagens apresentadas na figura abaixo ilustram algumas revisitas do sensor Sentinel-2/MSI à cena 21LZF (grade MGRS).
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :show_fade:
+    :data-bs-interval: false
+    
+    .. figure:: ../img/raster/conceitos/t21lzf_20220418.png
+        :target: https://data.inpe.br/sentinel-hub/odata/v1/Products('eb812ef2-78c8-4b75-a6e8-dbd7d9624919')/$value
+    
+        18/04/2022
+
+    
+    .. figure:: ../img/raster/conceitos/t21lzf_20220423.png
+        :target: https://data.inpe.br/sentinel-hub/odata/v1/Products('3df2a932-8536-42eb-8f13-165741e51e65')/$value
+        
+        23/04/2022
+
+    
+    .. figure:: ../img/raster/conceitos/t21lzf_20220428.png
+        :target: https://data.inpe.br/sentinel-hub/odata/v1/Products('3a7507c4-caaa-4728-8a1e-713f601e15fa')/$value
+        
+        28/04/2022
+
+    
+    .. figure:: ../img/raster/conceitos/t21lzf_20220503.png
+        :target: https://data.inpe.br/sentinel-hub/odata/v1/Products('4a51ce55-c246-4b96-b868-217d8dfdb0d5')/$value
+        
+        03/05/2022
+
+    
+    .. figure:: ../img/raster/conceitos/t21lzf_20220508.png
+        :target: https://data.inpe.br/sentinel-hub/odata/v1/Products('0ae27644-f47c-4909-a692-132a3c7c007d')/$value
+        
+        08/05/2022
+
+    
+    .. figure:: ../img/raster/conceitos/t21lzf_20220513.png
+        :target: https://data.inpe.br/sentinel-hub/odata/v1/Products('a49c4ee2-96bc-472c-a1ff-d75692c8056a')/$value
+        
+        13/05/2022
+
+    
+    .. figure:: ../img/raster/conceitos/t21lzf_20220518.png
+        :target: https://data.inpe.br/sentinel-hub/odata/v1/Products('7c9d0dc9-a1ad-4cad-818b-5eb8c1bf3e0d')/$value
+        
+        18/05/2022
+
+    
+    .. figure:: ../img/raster/conceitos/t21lzf_20220523.png
+        :target: https://data.inpe.br/sentinel-hub/odata/v1/Products('a5baad0a-a88e-4fe5-bd22-cef70b9e6993')/$value
+        
+        23/05/2022
+
+
+A :numref:`Tabela %s <tbl:raster:conceitos:resolucao-temporal>` apresenta a resolução temporal de alguns satélites/sensores muito utilizados na área geoespacial.
+
+
+.. table:: Resolução temporal de alguns satélites/sensores. |br| **Fontes:** `NASA <https://modis.gsfc.nasa.gov/about/>`__, `ESA <https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-2-msi/revisit-coverage>`__.
+    :name: tbl:raster:conceitos:resolucao-temporal
+    :header-alignment: center center center
+    :column-alignment: left left left
+    :widths: 30 30 40
+
+    +----------------------+----------------------+--------------------+
+    | Satélites            | Sensores             | Resolução Temporal |   
+    +======================+======================+====================+
+    | Landsat 5            | TM                   | 16 dias            |
+    +----------------------+----------------------+--------------------+
+    | Landsat 7            | ETM\ :sup:`+`        | 16 dias            |
+    +----------------------+----------------------+--------------------+
+    | Landsat 8            | OLI                  | 16 dias            |
+    +----------------------+----------------------+--------------------+
+    | Landsat 9            | OLI-2                | 16 dias            |
+    +----------------------+----------------------+--------------------+
+    | Sentinel 2A e 2B     | MSI                  | 05 dias            |
+    +----------------------+----------------------+--------------------+
+    | Terra/Aqua           | MODIS                | 01 a 02 dias       |
+    +----------------------+----------------------+--------------------+
+
+
+    
+
+Quantização
+-----------
+
+
+Formatos
+--------
+
+
+As imagens de sensoriamento remoto são disponibilizadas nos mais diversos formatos. As imagens MODIS, por exemplo, são disponibilizadas no formato **HDF4** (extensão ``.hdf``). Já as imagens Landsat são distribuias no formato GeoTIFF (extensão ``.tif``). As imagens Sentinel 2/MSI são distribuídas no formato JPEG 2000 (extensão ``.jp2``).
+
+
+
+Distribuição de Imagens - Cenas
+-------------------------------
+
+
+Os produtos de imagens de cada satélite/sensor são distribuídos em cenas que mantém alguma organização do tamanho dos arquivos de imagem. Os produtos de superfície do sendor MODIS utilizam uma grade de *tiles* com aproximadamete 10 graus x 10 graus na linha do equador (:numref:`Figura %s <fig:raster:conceitos:grade-modis>`). As imagens com 250m de resolução espacial possuem cerca de 4800 x 4800 pixels.
+
+
+.. figure:: https://modis-land.gsfc.nasa.gov/images/MODIS_sinusoidal_grid1.gif
+    :alt: Grade sinusoidal dos produtos de superfície do MODIS
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:conceitos:grade-modis
+    
+    Grade sinusoidal dos produtos de superfície do MODIS. |br| **Fonte:** `NASA <https://modis-land.gsfc.nasa.gov/MODLAND_grid.html>`__.
+
+
+As imagens do Landsat 5, 7, 8 e 9 utilizam uma grade donominada **Worldwide Reference System-2** (**WRS-2**) :cite:`nasa:2023:a`. Nessa grade as imagens são organizadas em 233 órbitas, também chamadas de *paths*, numerados de 001 a 233, de leste para oeste. O *path* 001 cruza a Linha do Equador com 64.60 graus de longitude oeste. Cada órbita é particionada em 248 linhas ou *rows*, com a linha 60 coicidindo com a Linha do Equador. A expressão *path/row* é muito comum para nos referirmos a uma determinada cena nessa grade (:numref:`Figura %s <fig:raster:conceitos:grade-wrs2>`. O arquivo *ESRI Shapefile* dessa grade pode ser baixado do site da `USGS <https://www.usgs.gov/media/files/landsat-wrs-2-descending-path-row-shapefile>`__.
+
+
+.. figure:: https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/wrs2.gif
+    :alt: Worldwide Reference System-2
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:conceitos:grade-wrs2
+    
+    Worldwide Reference System-2. |br| **Fonte:** `USGS <https://www.usgs.gov/media/images/world-reference-system-2-wrs-2-daydescending>`__.
+
+
+As imagens Sentinel 2/MSI são disponibilizadas em uma grade com células de 110km x 110km em UTM/WGS84 (:numref:`Figura %s <fig:raster:conceitos:grade-mgrs2>`). A grade KML pode ser baixada do site da `ESA <https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-2/data-products>`__.
+
+
+.. figure:: ../img/raster/conceitos/mgrs-sentinel-2.png
+    :alt: Grade Sentinel 2 / MSI
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:conceitos:grade-mgrs2
+    
+    Grade Sentinel 2 / MSI
+
+
+Tiling
+------
+
+
+.. figure:: ../img/raster/conceitos/T24LTQ_20221015T130249_TCI_10m_tile_256x256.png
+    :alt: Organizando um *raster* em tiles (blocos)
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:conceitos:tiling
+    
+    Organizando um *raster* em *tiles* (blocos).
+
+
+
+
+Piramides Multiresolução
+------------------------
+
+
+
+.. figure:: ../img/raster/conceitos/piramide-multiresolucao.png
+    :alt: Pirâmide Multiresolução
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:conceitos:piramide-multiresolucao
+    
+    Pirâmide Multiresolução.
+
+
+Características de Alguns Sensores
+----------------------------------
+
+
+Série Landsat
++++++++++++++
+
+
+A série de satélites Landsat têm fornecido imagens da superfície da Terra desde 1972 :cite:`wulder:2022`. O **Landsat 5**, lançado em 1984 e descomissionado em 2013, possuia dois sensores, o **Multispectral Scanner** (**MSS**) com quatro bandas espectrais com resolução espacial de 57m x 79m e o **Thematic Mapper** (**TM**), com sete bandas espectrais, sendo seis de 30m de resolução espacial e a termal com 120m. O **Landsat 7**, lançado em 1999, possui um sensor denominado **Enhanced Thematic Mapper Plus** (ETM\ :sup:`+`) que inclui oito bandas espectrais, sendo seis de 30m de resolução espacial, uma termal de 30m, e uma pancromática (Panchromatic ou PAN) de 15m. Lançado em 2013, o **Landsat 8**, possui dois sensores: o **Operational Land Imager** (**OLI**) e o **Thermal Infrared Sensor** (**TIRS**). O OLI possui nove bandas espectrais, sendo oito de 30m de resolução espacial e uma PAN de 15m, enquanto o TIRS possui duas bandas termais de 100m. Em 2021, foi lançado o **Landsat 9** com aperfeiçoamentos na resolução radiométrica dos sensores, denominados de OLI-2 e TIRS-2, com quantização de 14-bit. A Figura abaixo apresenta a linha do tempo do lançamento dos satélites Landsat.
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :data-bs-interval: 3000
+    :show_captions_below:
+   
+    .. figure:: https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/images/Landsat-timeline-LNext-2023_4297.PNG
+    
+        Missões Landsat.<br><b>Fonte:</b> <a href="https://www.usgs.gov/media/images/landsat-missions-timeline">USGS</a>
+
+
+    .. figure:: ../img/raster/landsat/landsat-4-5.png
+
+        Ilustração dos satélites Landsat 4 e 5.<br><b>Fonte:</b> <a href="https://www.usgs.gov/media/images/rendering-landsat-4-and-landsat-5">USGS</a>
+
+
+    .. figure:: ../img/raster/landsat/landsat-7.png
+
+        Ilustração do satélite Landsat 7.<br><b>Fonte:</b> <a href="https://www.usgs.gov/media/images/illustration-landsat-7-orbit">USGS</a>
+
+
+    .. figure:: ../img/raster/landsat/landsat-8.png
+
+        Ilustração do satélite Landsat 8.<br><b>Fonte:</b> <a href="https://www.usgs.gov/media/images/landsat-8-image-7">USGS</a>
+
+
+    .. figure:: ../img/raster/landsat/landsat-9.png
+    
+        Ilustração do satélite Landsat 9.<br><b>Fonte:</b> <a href="https://www.usgs.gov/landsat-missions/landsat-9">USGS</a>
+
+
+    .. figure:: https://landsat.gsfc.nasa.gov/wp-content/uploads/2020-07/Landsat_timeline_20200318_title.gif
+    
+        Linha do tempo do programa Landsat.<br><b>Fonte:</b> <a href="https://landsat.gsfc.nasa.gov/satellites/landsat-9/">USGS</a>
+
+
+.. tip::
+
+    Veja: https://svs.gsfc.nasa.gov/13259.
+
+
+Landsat 5/TM
+************
+
+
+O sensor TM a bordo do Landsat 5 realiza o imageamento da superfície terrestre usando um *swath* de 185km x 185km com resolução temporal de 16 dias e produz imagens de 8-bit. As características das bandas espectrais desse sensor são apresentadas na :numref:`Tabela %s <tbl:raster:conceitos:l5-tm>`.
+
+
+.. table:: Características do sensor TM a bordo do satélite Landsat 5. |br| **Fonte:** `USGS <https://www.usgs.gov/landsat-missions/landsat-5>`__
+    :name: tbl:raster:conceitos:l5-tm
+    :header-alignment: center center center
+    :column-alignment: left center center
+    :widths: 30 35 25
+
+    +----------------------+---------------------------+--------------------+
+    | Banda                | Intervalo (:math:`\mu m`) | Resolução Espacial |
+    +======================+===========================+====================+
+    | 1 - Blue             | 0.45 - 0.52               | 30 metros          |
+    +----------------------+---------------------------+                    +
+    | 2 - Green            | 0.52 - 0.60               |                    |
+    +----------------------+---------------------------+                    +
+    | 3 - Red              | 0.63 - 0.69               |                    |
+    +----------------------+---------------------------+                    +
+    | 4 - NIR              | 0.76 - 0.90               |                    |
+    +----------------------+---------------------------+                    +
+    | 5 - SWIR             | 1.55 - 1.75               |                    |
+    +----------------------+---------------------------+                    +
+    | 7 - MIR              | 2.08 - 2.35               |                    |
+    +----------------------+---------------------------+--------------------+
+    | 6 - Thermal          | 10.40 - 12.50             | 120 metros         |
+    +----------------------+---------------------------+--------------------+
+
+
+As imagens da coleção 2 nível 2 (produto reflectância de superfície) são disponibilizadas em arquivos GeoTIFF com 7751 x 6891 pixels(bandas de 30m), organizados em blocos de 256 x 256 pixels, com valores do tipo inteiro de 16-bit sem sinal (UInt16 ou 16-bit unsigned integer) e usando a projeção UTM com datum WGS 84. Cada uma das 07 bandas espectrais são disponibilizadas em arquivos distintos. Esses arquivos possuem seis níveis de *overview* com as seguintes dimensões:
+
+- **Nível 1:** 3876 x 3446 pixels.
+- **Nível 2:** 1938 x 1723 pixels.
+- **Nível 3:** 969 x 862 pixels.
+- **Nível 4:** 485 x 431 pixels.
+- **Nível 5:** 243 x 216 pixels.
+- **Nível 6:** 122 x 108 pixels.
+
+
+.. warning::
+
+    É importante ressaltar que existe uma pequena variação no número de colunas e linhas das cenas Landsat. Por isso, os valores apresentados acima, tanto da imagem em resolução plena quanto dos *overviews* são fornecidos apenas para dar uma idéia do tamanho dos arquivos dessas cenas. Além disso, esses valores referem-se somente às bandas de 30m.
+
+
+Os dois conjuntos de imagens abaixo apresentam a composição colorida e falsa cor de duas cenas Landsat 5/TM do oeste da Bahia, nos anos de 1984 e 1990, respectivamente.
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :show_captions_below:
+    :show_fade:
+    :data-bs-interval: false
+
+    .. figure:: ../img/raster/gallery/landsat5-220070-19840620.png
+
+        Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 20/06/1984
+
+
+
+    .. figure:: ../img/raster/gallery/landsat5-220070-19840620-cores-verdadeiras.png
+
+        Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 20/06/1984
+
+
+    .. figure:: ../img/raster/gallery/landsat5-220070-19840620-falsa-cor.png
+
+        Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição falsa cor das bandas 4-3-1 (destaque da vegetação em vermelho) <br> Região do oeste do Estado da Bahia - 20/06/1984
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :show_captions_below:
+    :show_fade:
+    :data-bs-interval: false
+
+    .. figure:: ../img/raster/gallery/landsat5-220070-19900605.png
+
+        Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 05/06/1990
+
+
+
+    .. figure:: ../img/raster/gallery/landsat5-220070-19900605-cores-verdadeiras.png
+
+        Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 05/06/1990
+
+
+    .. figure:: ../img/raster/gallery/landsat5-220070-19900605-falsa-cor.png
+
+        Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição falsa cor das bandas 4-3-1 (destaque da vegetação em vermelho) <br> Região do oeste do Estado da Bahia - 05/06/1990
+
+
+.. tip::
+
+    As cenas acima correspondem, respectivamente, às imagens ``LT05_L2SP_220070_19840620_20200918_02_T1`` e ``LT05_L2SP_220070_19900605_20200916_02_T1`` no catálogo da USGS.
+
+
+Landsat 7/ETM\ :sup:`+`
+***********************
+
+
+O sensor ETM\ :sup:`+` a bordo do Landsat 7 realiza o imageamento da superfície terrestre usando um *swath* de 185km x 185km com resolução temporal de 16 dias e produz imagens de 8-bit. As características das bandas espectrais desse sensor são apresentadas na :numref:`Tabela %s <tbl:raster:conceitos:l7-etm>`.
+
+
+.. table:: Características do sensor ETM\ :sup:`+` a bordo do satélite Landsat 7. |br| **Fonte:** `USGS <https://www.usgs.gov/landsat-missions/landsat-7>`__
+    :name: tbl:raster:conceitos:l7-etm
+    :header-alignment: center center center
+    :column-alignment: left center center
+    :widths: 30 35 25
+
+    +----------------------+---------------------------+--------------------+
+    | Banda                | Intervalo (:math:`\mu m`) | Resolução Espacial |
+    +======================+===========================+====================+
+    | 1 - Blue             | 0.45 - 0.52               | 30 metros          |
+    +----------------------+---------------------------+                    +
+    | 2 - Green            | 0.52 - 0.60               |                    |
+    +----------------------+---------------------------+                    +
+    | 3 - Red              | 0.63 - 0.69               |                    |
+    +----------------------+---------------------------+                    +
+    | 4 - NIR              | 0.77 - 0.90               |                    |
+    +----------------------+---------------------------+                    +
+    | 5 - SWIR             | 1.55 - 1.75               |                    |
+    +----------------------+---------------------------+                    +
+    | 7 - MIR              | 2.08 - 2.35               |                    |
+    +----------------------+---------------------------+--------------------+
+    | 6 - Thermal          | 10.40 - 12.50             | 60 metros          |
+    +----------------------+---------------------------+--------------------+
+    | 8 - PAN              | 0.52 - 0.90               | 15 metros          |
+    +----------------------+---------------------------+--------------------+
+
+
+As imagens da coleção 2 nível 2 (produto reflectância de superfície) são disponibilizadas em arquivos GeoTIFF com 7821 x 6971 pixels (bandas de 30m), organizados em blocos de 256 x 256 pixels, com valores tipo inteiro de 16-bit sem sinal (UInt16 ou 16-bit unsigned integer) e usando a projeção UTM com datum WGS 84. Cada uma das 07 bandas espectrais são disponibilizadas em arquivos distintos. Esses arquivos possuem seis níveis de *overview* com as seguintes dimensões:
+
+- **Nível 1:** 3911 x 3486
+- **Nível 2:** 1956 x 1743
+- **Nível 3:** 978 x 872
+- **Nível 4:** 489 x 436
+- **Nível 5:** 245 x 218
+- **Nível 6:** 123 x 109
+
+
+.. warning::
+
+    É importante ressaltar que existe uma pequena variação no número de colunas e linhas das cenas Landsat. Por isso, os valores apresentados acima, tanto da imagem em resolução plena quanto dos *overviews* são fornecidos apenas para dar uma idéia do tamanho dos arquivos dessas cenas. Além disso, esses valores referem-se somente às bandas de 30m.
+
+
+O conjunto de imagens abaixo apresenta a composição colorida e falsa cor de uma cenas Landsat 7/ETM\ :sup:`+` do oeste da Bahia no ano de 2000.
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :show_captions_below:
+    :show_fade:
+    :data-bs-interval: false
+
+    .. figure:: ../img/raster/gallery/landsat7-220070-20000726.png
+
+        Imagem Landsat 7/ETM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 26/07/2000
+
+
+    .. figure:: ../img/raster/gallery/landsat7-220070-20000726-cores-verdadeiras.png
+
+        Imagem Landsat 7/ETM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 26/07/2000
+
+
+    .. figure:: ../img/raster/gallery/landsat7-220070-20000726-falsa-cor.png
+
+        Imagem Landsat 7/ETM com resolução espacial de 30 metros <br> Composição falsa cor das bandas 4-3-1 (destaque da vegetação em vermelho) <br> Região do oeste do Estado da Bahia - 26/07/2000
+
+
+.. tip::
+
+    A cena acima corresponde à imagem ``LE07_L2SP_220070_20000726_20200918_02_T1`` no catálogo da USGS.
+
+
+Landsat 8/OLI
+*************
+
+
+O sensor OLI a bordo do Landsat 8 realiza o imageamento da superfície terrestre usando um *swath* de 185km x 185km com resolução temporal de 16 dias e produz imagens de 12-bit. As características das bandas espectrais desse sensor são apresentadas na :numref:`Tabela %s <tbl:raster:conceitos:l8-oli>`.
+
+
+.. table:: Características do sensor OLI a bordo do satélite Landsat 8. |br| **Fonte:** `USGS <https://www.usgs.gov/landsat-missions/landsat-8>`__
+    :name: tbl:raster:conceitos:l8-oli
+    :header-alignment: center center center
+    :column-alignment: left center center
+    :widths: 30 35 25
+
+    +----------------------+---------------------------+--------------------+
+    | Banda                | Intervalo (:math:`\mu m`) | Resolução Espacial |
+    +======================+===========================+====================+
+    | 1 - Coastal Aerosol  | 0.43 - 0.45               | 30 metros          |
+    +----------------------+---------------------------+                    +
+    | 2 - Blue             | 0.45 - 0.51               |                    |
+    +----------------------+---------------------------+                    +
+    | 3 - Green            | 0.53 - 0.59               |                    |
+    +----------------------+---------------------------+                    +
+    | 4 - Red              | 0.64 - 0.67               |                    |
+    +----------------------+---------------------------+                    +
+    | 5 - NIR              | 0.85 - 0.88               |                    |
+    +----------------------+---------------------------+                    +
+    | 6 - SWIR 1           | 1.57 - 1.65               |                    |
+    +----------------------+---------------------------+                    +
+    | 7 - SWIR 2           | 2.11 - 2.29               |                    |
+    +----------------------+---------------------------+                    +
+    | 9 - Cirrus           | 1.36 - 1.38               |                    |
+    +----------------------+---------------------------+--------------------+
+    | 8 - PAN              | 0.50 - 0.68               | 15 metros          |
+    +----------------------+---------------------------+--------------------+
+
+
+As imagens da coleção 2 nível 2 (produto reflectância de superfície) são disponibilizadas em arquivos GeoTIFF com 7601 x 7731 pixels, organizados em blocos de 256 x 256 pixels, com valores tipo inteiro de 16-bit sem sinal (UInt16 ou 16-bit unsigned integer) e usando a projeção UTM com datum WGS 84. Cada banda espectral é disponibilizada em um arquivos separados. Esses arquivos possuem seis níveis de *overview* com as seguintes dimensões:
+
+- **Nível 1:** 3801 x 3866
+- **Nível 2:** 1901 x 1933
+- **Nível 3:** 951 x 967
+- **Nível 4:** 476 x 484
+- **Nível 5:** 238 x 242
+- **Nível 6:** 119 x 121
+
+
+.. warning::
+
+    É importante ressaltar que existe uma pequena variação no número de colunas e linhas das cenas Landsat. Por isso, os valores apresentados acima, tanto da imagem em resolução plena quanto dos *overviews* são fornecidos apenas para dar uma idéia do tamanho dos arquivos dessas cenas. Além disso, esses valores referem-se somente às bandas de 30m.
+
+
+O conjunto de imagens abaixo apresenta a composição colorida e falsa cor de uma cenas Landsat 8/OLI do oeste da Bahia no ano de 2015.
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :show_captions_below:
+    :show_fade:
+    :data-bs-interval: false
+
+    .. figure:: ../img/raster/gallery/landsat8-220070-20150908.png
+
+        Imagem Landsat 8/OLI com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 08/09/2015
+
+
+
+    .. figure:: ../img/raster/gallery/landsat8-220070-20150908-cores-verdadeiras.png
+
+        Imagem Landsat 8/OLI com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 08/09/2015
+
+
+    .. figure:: ../img/raster/gallery/landsat8-220070-20150908-falsa-cor.png
+
+        Imagem Landsat 8/OLI com resolução espacial de 30 metros <br> Composição falsa cor das bandas 5-4-2 (destaque da vegetação em vermelho) <br> Região do oeste do Estado da Bahia - 08/09/2015
+
+
+.. tip::
+
+    A cena acima corresponde à imagem ``LC08_L2SP_220070_20150728_20200908_02_T1`` no catálogo da USGS.
+
+
+Landsat 9/OLI-2
+***************
+
+
+O sensor OLI-2 a bordo do Landsat 9 realiza o imageamento da superfície terrestre usando um *swath* de 185km x 185km com resolução temporal de 16 dias e produz imagens de 14-bit. As características das bandas espectrais desse sensor são apresentadas na :numref:`Tabela %s <tbl:raster:conceitos:l9-oli-2>`.
+
+
+.. table:: Características do sensor OLI a bordo do satélite Landsat 8. |br| **Fonte:** `USGS <https://www.usgs.gov/landsat-missions/landsat-9>`__
+    :name: tbl:raster:conceitos:l9-oli-2
+    :header-alignment: center center center
+    :column-alignment: left center center
+    :widths: 30 35 25
+
+    +----------------------+---------------------------+--------------------+
+    | Banda                | Intervalo (:math:`\mu m`) | Resolução Espacial |
+    +======================+===========================+====================+
+    | 1 - Coastal Aerosol  | 0.43 - 0.45               | 30 metros          |
+    +----------------------+---------------------------+                    +
+    | 2 - Blue             | 0.45 - 0.51               |                    |
+    +----------------------+---------------------------+                    +
+    | 3 - Green            | 0.53 - 0.59               |                    |
+    +----------------------+---------------------------+                    +
+    | 4 - Red              | 0.64 - 0.67               |                    |
+    +----------------------+---------------------------+                    +
+    | 5 - NIR              | 0.85 - 0.88               |                    |
+    +----------------------+---------------------------+                    +
+    | 6 - SWIR 1           | 1.57 - 1.65               |                    |
+    +----------------------+---------------------------+                    +
+    | 7 - SWIR 2           | 2.11 - 2.29               |                    |
+    +----------------------+---------------------------+                    +
+    | 9 - Cirrus           | 1.36 - 1.38               |                    |
+    +----------------------+---------------------------+--------------------+
+    | 8 - PAN              | 0.50 - 0.68               | 15 metros          |
+    +----------------------+---------------------------+--------------------+
+
+
+As imagens da coleção 2 nível 2 (produto reflectância de superfície) são disponibilizadas em arquivos GeoTIFF com 7601 x 7711 pixels, organizados em blocos de 256 x 256 pixels, com valores tipo inteiro de 16-bit sem sinal (UInt16 ou 16-bit unsigned integer) e usando a projeção UTM com datum WGS 84. Cada banda espectral é disponibilizada em um arquivos separados. Esses arquivos possuem seis níveis de *overview* com as seguintes dimensões:
+
+- **Nível 1:** 3801 x 3856
+- **Nível 2:** 1901 x 1928
+- **Nível 3:** 951 x 964
+- **Nível 4:** 476 x 483
+- **Nível 5:** 238 x 242
+- **Nível 6:** 119 x 121
+
+
+.. warning::
+
+    É importante ressaltar que existe uma pequena variação no número de colunas e linhas das cenas Landsat. Por isso, os valores apresentados acima, tanto da imagem em resolução plena quanto dos *overviews* são fornecidos apenas para dar uma idéia do tamanho dos arquivos dessas cenas. Além disso, esses valores referem-se somente às bandas de 30m.
+
+
+O conjunto de imagens abaixo apresenta a composição colorida e falsa cor de uma cenas Landsat 9/OLI-2 do oeste da Bahia no ano de 2022.
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :show_captions_below:
+    :show_fade:
+    :data-bs-interval: false
+
+    .. figure:: ../img/raster/gallery/landsat9-220070-20220723.png
+
+        Imagem Landsat 9/OLI-2 com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 23/07/2022
+
+
+
+    .. figure:: ../img/raster/gallery/landsat9-220070-20220723-cores-verdadeiras.png
+
+        Imagem Landsat 9/OLI-2 com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 23/07/2022
+
+
+    .. figure:: ../img/raster/gallery/landsat9-220070-20220723-falsa-cor.png
+
+        Imagem Landsat 9/OLI-2 com resolução espacial de 30 metros <br> Composição falsa cor das bandas 5-4-2 (destaque da vegetação em vermelho) <br> Região do oeste do Estado da Bahia - 23/07/2022
+
+
+.. tip::
+
+    A cena acima corresponde à imagem ``LC09_L2SP_220070_20220723_20230406_02_T1`` no catálogo da USGS.
+
+
+Imagens Landsat de 1984 a 2022
+******************************
+
+
+A figura abaixo apresenta a visa de uma mesma região com base em imagens Landsat 5, 7, 8 e 9 entre os anos de 1984 e 2022.
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :show_captions_below:
+    :show_fade:
+    :data-bs-interval: false
+
+    .. figure:: ../img/raster/gallery/landsat5-220070-19840620-cores-verdadeiras.png
+
+        Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 20/06/1984
+
+
+
+    .. figure:: ../img/raster/gallery/landsat5-220070-19900605-cores-verdadeiras.png
+
+        Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 05/06/1990
+
+
+    .. figure:: ../img/raster/gallery/landsat7-220070-20000726-cores-verdadeiras.png
+
+        Imagem Landsat 7/ETM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 26/07/2000
+
+
+    .. figure:: ../img/raster/gallery/landsat8-220070-20150908-cores-verdadeiras.png
+
+        Imagem Landsat 8/OLI com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 08/09/2015
+
+
+    .. figure:: ../img/raster/gallery/landsat9-220070-20220723-cores-verdadeiras.png
+
+        Imagem Landsat 9/OLI-2 com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 23/07/2022
+
+
+Sentinel-2/MSI
+++++++++++++++
+
+
+O sensor MSI a bordo dos satélites Sentinel-2A e 2B realiza o imageamento da superfície terrestre usando um *swath* de 25km x 23km com resolução temporal de 05 dias e produz imagens de 12-bit. As características das 13 bandas espectrais desse sensor são apresentadas na :numref:`Tabela %s <tbl:raster:conceitos:s2-msi>`.
+
+
+.. table:: Características do sensor MSI a bordo dos satélite Sentinel-2. |br| **Fonte:** `ESA <https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-2-msi/resolutions/spectral>`__
+    :name: tbl:raster:conceitos:s2-msi
+    :header-alignment: center center center
+    :column-alignment: left center center
+    :widths: 50 25 25
+
+    +---------------------------------------+----------------------------+--------------------+
+    | Banda                                 | Intervalo (:math:`\eta m`) | Resolução Espacial |
+    +=======================================+============================+====================+
+    | 1 - Ultra Blue (Coastal Aerosol)      | 443                        | 60 metros          |
+    +---------------------------------------+----------------------------+--------------------+
+    | 2 - Blue                              | 493                        | 10 metros          |
+    +---------------------------------------+----------------------------+                    +
+    | 3 - Green                             | 560                        |                    |
+    +---------------------------------------+----------------------------+                    +
+    | 4 - Red                               | 665                        |                    |
+    +---------------------------------------+----------------------------+--------------------+
+    | 5 - Red-edge (VNIR)                   | 704                        | 20 metros          |
+    +---------------------------------------+----------------------------+                    +
+    | 6 - Red-edge (VNIR 2)                 | 740                        |                    |
+    +---------------------------------------+----------------------------+                    +
+    | 7 - Red-edge (VNIR 3)                 | 783                        |                    |
+    +---------------------------------------+----------------------------+--------------------+
+    | 8 - NIR                               | 833                        | 10 metros          |
+    +---------------------------------------+----------------------------+--------------------+
+    | 8a - NIR                              | 865                        | 20 metros          |
+    +---------------------------------------+----------------------------+--------------------+
+    | 9 - NIR (Water Vapour)                | 945                        | 60 metros          |
+    +---------------------------------------+----------------------------+                    +
+    | 10 - SWIR (Cirrus)                    | 1374                       |                    |
+    +---------------------------------------+----------------------------+--------------------+
+    | 11- SWIR                              | 1610                       | 20 metros          |
+    +---------------------------------------+----------------------------+                    +
+    | 12 - SWIR                             | 2190                       |                    |
+    +---------------------------------------+----------------------------+--------------------+
+
+
+.. note::
+
+    Significado de algumas siglas:
+
+        - **NIR:** Near Infrared.
+        - **VNIR:** Visible and Near Infrared.
+        - **SWIR:** Short Wave Infrared.
+        - **PAN:** Panchromatic.
+
+
+.. note::
+
+    Veja a seguinte `nomenclatura de bandas usada pelo STAC <https://github.com/stac-extensions/eo/blob/main/README.md#common-band-names>`__.
+

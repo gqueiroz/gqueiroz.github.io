@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.1. Imagens de Satélites &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bootstrap-carousel.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/carousel-custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/raster/conceitos.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="../_static/bootstrap-carousel.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="8.2. GeoTIFF" href="geotiff.html" />
+    <link rel="prev" title="8. Dados Matriciais" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">8. Dados Matriciais</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8.1. Imagens de Satélites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sensores-passivos-e-ativos">8.1.1. Sensores Passivos e Ativos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bandas-espectrais">8.1.2. Bandas Espectrais</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resolucao-espacial">8.1.3. Resolução Espacial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resolucao-temporal">8.1.4. Resolução Temporal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quantizacao">8.1.5. Quantização</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#formatos">8.1.6. Formatos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#distribuicao-de-imagens-cenas">8.1.7. Distribuição de Imagens - Cenas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tiling">8.1.8. Tiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#piramides-multiresolucao">8.1.9. Piramides Multiresolução</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caracteristicas-de-alguns-sensores">8.1.10. Características de Alguns Sensores</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="geotiff.html">8.2. GeoTIFF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geotiff.html#cloud-optimized-geotiff">8.3. Cloud Optimized GeoTIFF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postgis-raster.html">8.4. PostGIS Raster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">8.5. Considerações Finais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercicios.html">8.6. Exercícios</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8. </span>Dados Matriciais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.1. </span>Imagens de Satélites</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="index.html" class="btn btn-neutral float-left" title="8. Dados Matriciais" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="geotiff.html" class="btn btn-neutral float-right" title="8.2. GeoTIFF" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="imagens-de-satelites">
+<span id="cap-raster-conceitos"></span><h1><span class="section-number">8.1. </span>Imagens de Satélites<a class="headerlink" href="#imagens-de-satelites" title="Link permanente para este cabeçalho"></a></h1>
+<p>Atualmente existem diversas fontes de dados geoespaciais, como os satélites de observação da Terra mostrados na <a class="reference internal" href="#fig-raster-conceitos-earthsat-hd"><span class="std std-numref">Figura 8.1</span></a>. Sensores a bordo de satélites como Terra e Aqua e da série Landsat, têm sido importantes instrumentos de coleta de dados sobre nosso planeta. Esses satélites produzem dados sobre superfície, oceanos, atmosfera, entre outros, servindo de insumo básico para a construção de diversas aplicações. No INPE, as imagens da série Landsat são utilizadas, por exemplo, no sistema de monitoramento da Floresta Amazônica. Através dessas imagens, o <a class="reference external" href="http://www.obt.inpe.br/OBT/assuntos/programas/amazonia/prodes">PRODES</a> mantém o inventário de todo o desmatamento por corte raso na vegatação natural ocorrido na Amazônia Legal desde 1988.</p>
+<figure class="align-center align-default" id="fig-raster-conceitos-earthsat-hd">
+<a class="reference internal image-reference" href="../_images/earthsat-hd.jpg"><img alt="Satélites de Observação da Terra" src="../_images/earthsat-hd.jpg" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.1 - </span><span class="caption-text">Satélites de Observação da Terra. <br/> <strong>Fonte:</strong> NASA <span id="id1">[<a class="reference internal" href="../referencias.html#id40" title="NASA. Nasa’s earth science satellite fleet. 2013. Online; acessado 27 de Fevereiro de 2021. URL: https://earthobservatory.nasa.gov/images/81559/nasas-earth-science-satellite-fleet.">31</a>]</span>.</span><a class="headerlink" href="#fig-raster-conceitos-earthsat-hd" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>A <a class="reference internal" href="#fig-raster-conceitos-lcc"><span class="std std-numref">Figura 8.2</span></a> apresenta imagens da série Landsat para uma mesma região em duas datas diferentes. A imagem à esquerda mostra como era parte da floresta amazônica, numa região do Peru, em 13 de Novembro de 1986. A imagem à direita mostra essa mesma região no ano de 2016, onde podemos observar algumas ocupações, áreas de pastagem e estradas em áreas que antes eram floresta.</p>
+<figure class="align-center align-default" id="fig-raster-conceitos-lcc">
+<a class="reference internal image-reference" href="../_images/lcc.png"><img alt="Monitoramento da mudança na cobertura" src="../_images/lcc.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.2 - </span><span class="caption-text">Monitoramento da mudança na cobertura. <br/> <strong>Fonte:</strong> Adaptado de <span id="id2">[<a class="reference internal" href="../referencias.html#id41" title="NASA. Monitoring deforestation in the amazon. 2016. Online; acessado 27 de Fevereiro de 2021. URL: https://www.usgs.gov/media/images/monitoring-deforestation-amazon.">32</a>]</span>.</span><a class="headerlink" href="#fig-raster-conceitos-lcc" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Esta seção apresenta conceitos e terminologias importantes para o tratamento de imagens de sensoriamento remoto em bancos de dados. Vamos começar assistindo ao vídeo abaixo.</p>
+<iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/eFW8tV38We0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<br/>
+<center><b>Fonte:</b> <a href="https://prog-geo.github.io/imagens.html">Introdução à Programação com Dados Geoespaciais</a></center>
+<br/><section id="sensores-passivos-e-ativos">
+<h2><span class="section-number">8.1.1. </span>Sensores Passivos e Ativos<a class="headerlink" href="#sensores-passivos-e-ativos" title="Link permanente para este cabeçalho"></a></h2>
+</section>
+<section id="bandas-espectrais">
+<h2><span class="section-number">8.1.2. </span>Bandas Espectrais<a class="headerlink" href="#bandas-espectrais" title="Link permanente para este cabeçalho"></a></h2>
+</section>
+<section id="resolucao-espacial">
+<h2><span class="section-number">8.1.3. </span>Resolução Espacial<a class="headerlink" href="#resolucao-espacial" title="Link permanente para este cabeçalho"></a></h2>
+<p>A <strong>resolução espacial</strong> se refere a área da superfície terrestre capturada por um único pixel de uma imagem. Este parâmetro influencia a precisão dos detalhes que podem ser percebidos na imagem, como apresentado nas figuras abaixo, com imagens da região da barragem de <a class="reference external" href="https://pt.wikipedia.org/wiki/Usina_Hidrel%C3%A9trica_de_Sobradinho">Sobradinho</a>. Essas imagens possuem, respectivamente, resolução espacial de 10m, 60m e 100m .</p>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-0">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-0" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-0" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-0" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<a class="scbs-d-block scbs-w-100 reference internal image-reference" href="../_images/t24ltq_10m.png"><img alt="Resolução espacial de 10 metros" class="scbs-d-block scbs-w-100" src="../_images/t24ltq_10m.png" style="width: 100%;" /></a>
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Sentinel-2 com resolução espacial original de 10 metros.<br>Composição colorida das bandas 4-3-2 (cores verdadeiras).<br>Região da barragem de Sobradinho.</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="scbs-d-block scbs-w-100 reference internal image-reference" href="../_images/t24ltq_60m.png"><img alt="Resolução espacial de 60 metros" class="scbs-d-block scbs-w-100" src="../_images/t24ltq_60m.png" style="width: 100%;" /></a>
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Sentinel-2 com resolução espacial degradada para 60 metros.<br>Composição colorida das bandas 4-3-2 (cores verdadeiras).<br>Região da barragem de Sobradinho.</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="scbs-d-block scbs-w-100 reference internal image-reference" href="../_images/t24ltq_100m.png"><img alt="Resolução espacial de 100 metros" class="scbs-d-block scbs-w-100" src="../_images/t24ltq_100m.png" style="width: 100%;" /></a>
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Sentinel-2 com resolução espacial degradada para 100 metros.<br>Composição colorida das bandas 4-3-2 (cores Verdadeiras).<br>Região da barragem de Sobradinho.</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-0" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-0" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+<p>Nas figuras abaixo, podemos perceber que na imagem de 100m de resolução conseguimos ver poucos detalhes da barragem. Com a imagem de 10m de resolução, já conseguimos identificar a barragem. Finalmente, na imagem de 2m, conseguimos visualizar mais detalhes sobre as feições da barragem.</p>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-1">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-1" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-1" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-1" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<a class="scbs-d-block scbs-w-100 reference internal image-reference" href="../_images/img-sentinel2-100m.png"><img alt="Resolução espacial de 100 metros" class="scbs-d-block scbs-w-100" src="../_images/img-sentinel2-100m.png" style="width: 100%;" /></a>
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Sentinel-2 com resolução espacial degradada para 100 metros.<br>Composição colorida 4-3-2 (cores verdadeiras).<br>Região da barragem de Sobradinho.</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="scbs-d-block scbs-w-100 reference internal image-reference" href="../_images/img-sentinel2-10m.png"><img alt="Resolução espacial de 10 metros" class="scbs-d-block scbs-w-100" src="../_images/img-sentinel2-10m.png" style="width: 100%;" /></a>
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Sentinel-2 com resolução espacial original de 10 metros.<br>Composição colorida das bandas 4-3-2 (cores Verdadeiras).<br>Região da barragem de Sobradinho.</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="scbs-d-block scbs-w-100 reference internal image-reference" href="../_images/img-cbers4a-2m.png"><img alt="Resolução espacial de 2 metros" class="scbs-d-block scbs-w-100" src="../_images/img-cbers4a-2m.png" style="width: 100%;" /></a>
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem CBERS-4A/WPM com resolução espacial original de 2 metros.<br>Processo de fusão usado: PCA (Componentes Principais).<br>Região da barragem de Sobradinho.</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-1" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-1" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+</section>
+<section id="resolucao-temporal">
+<h2><span class="section-number">8.1.4. </span>Resolução Temporal<a class="headerlink" href="#resolucao-temporal" title="Link permanente para este cabeçalho"></a></h2>
+<p>A <strong>resolução temporal</strong> é o tempo que um sensor leva para revisitar uma localização geográfica específica. As imagens apresentadas na figura abaixo ilustram algumas revisitas do sensor Sentinel-2/MSI à cena 21LZF (grade MGRS).</p>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-2">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-2" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-2" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-2" type="button"></button>
+<button aria-label="Slide 4" data-bs-slide-to="3" data-bs-target="#carousel-2" type="button"></button>
+<button aria-label="Slide 5" data-bs-slide-to="4" data-bs-target="#carousel-2" type="button"></button>
+<button aria-label="Slide 6" data-bs-slide-to="5" data-bs-target="#carousel-2" type="button"></button>
+<button aria-label="Slide 7" data-bs-slide-to="6" data-bs-target="#carousel-2" type="button"></button>
+<button aria-label="Slide 8" data-bs-slide-to="7" data-bs-target="#carousel-2" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<a class="reference external image-reference" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('eb812ef2-78c8-4b75-a6e8-dbd7d9624919')/$value"><img alt="../_images/t21lzf_20220418.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20220418.png" /></a>
+<div class="scbs-carousel-caption scbs-d-none scbs-d-md-block">
+<h5>18/04/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="reference external image-reference" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('3df2a932-8536-42eb-8f13-165741e51e65')/$value"><img alt="../_images/t21lzf_20220423.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20220423.png" /></a>
+<div class="scbs-carousel-caption scbs-d-none scbs-d-md-block">
+<h5>23/04/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="reference external image-reference" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('3a7507c4-caaa-4728-8a1e-713f601e15fa')/$value"><img alt="../_images/t21lzf_20220428.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20220428.png" /></a>
+<div class="scbs-carousel-caption scbs-d-none scbs-d-md-block">
+<h5>28/04/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="reference external image-reference" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('4a51ce55-c246-4b96-b868-217d8dfdb0d5')/$value"><img alt="../_images/t21lzf_20220503.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20220503.png" /></a>
+<div class="scbs-carousel-caption scbs-d-none scbs-d-md-block">
+<h5>03/05/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="reference external image-reference" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('0ae27644-f47c-4909-a692-132a3c7c007d')/$value"><img alt="../_images/t21lzf_20220508.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20220508.png" /></a>
+<div class="scbs-carousel-caption scbs-d-none scbs-d-md-block">
+<h5>08/05/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="reference external image-reference" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('a49c4ee2-96bc-472c-a1ff-d75692c8056a')/$value"><img alt="../_images/t21lzf_20220513.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20220513.png" /></a>
+<div class="scbs-carousel-caption scbs-d-none scbs-d-md-block">
+<h5>13/05/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="reference external image-reference" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('7c9d0dc9-a1ad-4cad-818b-5eb8c1bf3e0d')/$value"><img alt="../_images/t21lzf_20220518.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20220518.png" /></a>
+<div class="scbs-carousel-caption scbs-d-none scbs-d-md-block">
+<h5>18/05/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<a class="reference external image-reference" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('a5baad0a-a88e-4fe5-bd22-cef70b9e6993')/$value"><img alt="../_images/t21lzf_20220523.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20220523.png" /></a>
+<div class="scbs-carousel-caption scbs-d-none scbs-d-md-block">
+<h5>23/05/2022</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-2" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-2" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+<p>A <a class="reference internal" href="#tbl-raster-conceitos-resolucao-temporal"><span class="std std-numref">Tabela 8.1</span></a> apresenta a resolução temporal de alguns satélites/sensores muito utilizados na área geoespacial.</p>
+<table class="styled-table docutils align-default" id="tbl-raster-conceitos-resolucao-temporal">
+<caption><span class="caption-number">Tabela 8.1 - </span><span class="caption-text">Resolução temporal de alguns satélites/sensores. <br/> <strong>Fontes:</strong> <a class="reference external" href="https://modis.gsfc.nasa.gov/about/">NASA</a>, <a class="reference external" href="https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-2-msi/revisit-coverage">ESA</a>.</span><a class="headerlink" href="#tbl-raster-conceitos-resolucao-temporal" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head center-align"><p>Satélites</p></th>
+<th class="head center-align"><p>Sensores</p></th>
+<th class="head center-align"><p>Resolução Temporal</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align"><p>Landsat 5</p></td>
+<td class="left-align"><p>TM</p></td>
+<td class="left-align"><p>16 dias</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>Landsat 7</p></td>
+<td class="left-align"><p>ETM<sup>+</sup></p></td>
+<td class="left-align"><p>16 dias</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>Landsat 8</p></td>
+<td class="left-align"><p>OLI</p></td>
+<td class="left-align"><p>16 dias</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>Landsat 9</p></td>
+<td class="left-align"><p>OLI-2</p></td>
+<td class="left-align"><p>16 dias</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>Sentinel 2A e 2B</p></td>
+<td class="left-align"><p>MSI</p></td>
+<td class="left-align"><p>05 dias</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>Terra/Aqua</p></td>
+<td class="left-align"><p>MODIS</p></td>
+<td class="left-align"><p>01 a 02 dias</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="quantizacao">
+<h2><span class="section-number">8.1.5. </span>Quantização<a class="headerlink" href="#quantizacao" title="Link permanente para este cabeçalho"></a></h2>
+</section>
+<section id="formatos">
+<h2><span class="section-number">8.1.6. </span>Formatos<a class="headerlink" href="#formatos" title="Link permanente para este cabeçalho"></a></h2>
+<p>As imagens de sensoriamento remoto são disponibilizadas nos mais diversos formatos. As imagens MODIS, por exemplo, são disponibilizadas no formato <strong>HDF4</strong> (extensão <code class="docutils literal notranslate"><span class="pre">.hdf</span></code>). Já as imagens Landsat são distribuias no formato GeoTIFF (extensão <code class="docutils literal notranslate"><span class="pre">.tif</span></code>). As imagens Sentinel 2/MSI são distribuídas no formato JPEG 2000 (extensão <code class="docutils literal notranslate"><span class="pre">.jp2</span></code>).</p>
+</section>
+<section id="distribuicao-de-imagens-cenas">
+<h2><span class="section-number">8.1.7. </span>Distribuição de Imagens - Cenas<a class="headerlink" href="#distribuicao-de-imagens-cenas" title="Link permanente para este cabeçalho"></a></h2>
+<p>Os produtos de imagens de cada satélite/sensor são distribuídos em cenas que mantém alguma organização do tamanho dos arquivos de imagem. Os produtos de superfície do sendor MODIS utilizam uma grade de <em>tiles</em> com aproximadamete 10 graus x 10 graus na linha do equador (<a class="reference internal" href="#fig-raster-conceitos-grade-modis"><span class="std std-numref">Figura 8.3</span></a>). As imagens com 250m de resolução espacial possuem cerca de 4800 x 4800 pixels.</p>
+<figure class="align-center align-default" id="fig-raster-conceitos-grade-modis">
+<a class="reference internal image-reference" href="https://modis-land.gsfc.nasa.gov/images/MODIS_sinusoidal_grid1.gif"><img alt="Grade sinusoidal dos produtos de superfície do MODIS" src="https://modis-land.gsfc.nasa.gov/images/MODIS_sinusoidal_grid1.gif" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.3 - </span><span class="caption-text">Grade sinusoidal dos produtos de superfície do MODIS. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://modis-land.gsfc.nasa.gov/MODLAND_grid.html">NASA</a>.</span><a class="headerlink" href="#fig-raster-conceitos-grade-modis" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>As imagens do Landsat 5, 7, 8 e 9 utilizam uma grade donominada <strong>Worldwide Reference System-2</strong> (<strong>WRS-2</strong>) <span id="id3">[<a class="reference internal" href="../referencias.html#id42" title="NASA. The worldwide reference system. 2023. Online; acessado 25 de Junho de 2023. URL: https://landsat.gsfc.nasa.gov/about/the-worldwide-reference-system/.">33</a>]</span>. Nessa grade as imagens são organizadas em 233 órbitas, também chamadas de <em>paths</em>, numerados de 001 a 233, de leste para oeste. O <em>path</em> 001 cruza a Linha do Equador com 64.60 graus de longitude oeste. Cada órbita é particionada em 248 linhas ou <em>rows</em>, com a linha 60 coicidindo com a Linha do Equador. A expressão <em>path/row</em> é muito comum para nos referirmos a uma determinada cena nessa grade (<a class="reference internal" href="#fig-raster-conceitos-grade-wrs2"><span class="std std-numref">Figura 8.4</span></a>. O arquivo <em>ESRI Shapefile</em> dessa grade pode ser baixado do site da <a class="reference external" href="https://www.usgs.gov/media/files/landsat-wrs-2-descending-path-row-shapefile">USGS</a>.</p>
+<figure class="align-center align-default" id="fig-raster-conceitos-grade-wrs2">
+<a class="reference internal image-reference" href="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/wrs2.gif"><img alt="Worldwide Reference System-2" src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/wrs2.gif" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.4 - </span><span class="caption-text">Worldwide Reference System-2. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://www.usgs.gov/media/images/world-reference-system-2-wrs-2-daydescending">USGS</a>.</span><a class="headerlink" href="#fig-raster-conceitos-grade-wrs2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>As imagens Sentinel 2/MSI são disponibilizadas em uma grade com células de 110km x 110km em UTM/WGS84 (<a class="reference internal" href="#fig-raster-conceitos-grade-mgrs2"><span class="std std-numref">Figura 8.5</span></a>). A grade KML pode ser baixada do site da <a class="reference external" href="https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-2/data-products">ESA</a>.</p>
+<figure class="align-center align-default" id="fig-raster-conceitos-grade-mgrs2">
+<a class="reference internal image-reference" href="../_images/mgrs-sentinel-2.png"><img alt="Grade Sentinel 2 / MSI" src="../_images/mgrs-sentinel-2.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.5 - </span><span class="caption-text">Grade Sentinel 2 / MSI</span><a class="headerlink" href="#fig-raster-conceitos-grade-mgrs2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="tiling">
+<h2><span class="section-number">8.1.8. </span>Tiling<a class="headerlink" href="#tiling" title="Link permanente para este cabeçalho"></a></h2>
+<figure class="align-center align-default" id="fig-raster-conceitos-tiling">
+<a class="reference internal image-reference" href="../_images/T24LTQ_20221015T130249_TCI_10m_tile_256x256.png"><img alt="Organizando um *raster* em tiles (blocos)" src="../_images/T24LTQ_20221015T130249_TCI_10m_tile_256x256.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.6 - </span><span class="caption-text">Organizando um <em>raster</em> em <em>tiles</em> (blocos).</span><a class="headerlink" href="#fig-raster-conceitos-tiling" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="piramides-multiresolucao">
+<h2><span class="section-number">8.1.9. </span>Piramides Multiresolução<a class="headerlink" href="#piramides-multiresolucao" title="Link permanente para este cabeçalho"></a></h2>
+<figure class="align-center align-default" id="fig-raster-conceitos-piramide-multiresolucao">
+<a class="reference internal image-reference" href="../_images/piramide-multiresolucao.png"><img alt="Pirâmide Multiresolução" src="../_images/piramide-multiresolucao.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.7 - </span><span class="caption-text">Pirâmide Multiresolução.</span><a class="headerlink" href="#fig-raster-conceitos-piramide-multiresolucao" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="caracteristicas-de-alguns-sensores">
+<h2><span class="section-number">8.1.10. </span>Características de Alguns Sensores<a class="headerlink" href="#caracteristicas-de-alguns-sensores" title="Link permanente para este cabeçalho"></a></h2>
+<section id="serie-landsat">
+<h3><span class="section-number">8.1.10.1. </span>Série Landsat<a class="headerlink" href="#serie-landsat" title="Link permanente para este cabeçalho"></a></h3>
+<p>A série de satélites Landsat têm fornecido imagens da superfície da Terra desde 1972 <span id="id4">[<a class="reference internal" href="../referencias.html#id57" title="Michael A. Wulder, David P. Roy, Volker C. Radeloff, Thomas R. Loveland, Martha C. Anderson, David M. Johnson, Sean Healey, Zhe Zhu, Theodore A. Scambos, Nima Pahlevan, Matthew Hansen, Noel Gorelick, Christopher J. Crawford, Jeffrey G. Masek, Txomin Hermosilla, Joanne C. White, Alan S. Belward, Crystal Schaaf, Curtis E. Woodcock, Justin L. Huntington, Leo Lymburner, Patrick Hostert, Feng Gao, Alexei Lyapustin, Jean-Francois Pekel, Peter Strobl, and Bruce D. Cook. Fifty years of landsat science and impacts. Remote Sensing of Environment, 280:113195, 2022. doi:https://doi.org/10.1016/j.rse.2022.113195.">42</a>]</span>. O <strong>Landsat 5</strong>, lançado em 1984 e descomissionado em 2013, possuia dois sensores, o <strong>Multispectral Scanner</strong> (<strong>MSS</strong>) com quatro bandas espectrais com resolução espacial de 57m x 79m e o <strong>Thematic Mapper</strong> (<strong>TM</strong>), com sete bandas espectrais, sendo seis de 30m de resolução espacial e a termal com 120m. O <strong>Landsat 7</strong>, lançado em 1999, possui um sensor denominado <strong>Enhanced Thematic Mapper Plus</strong> (ETM<sup>+</sup>) que inclui oito bandas espectrais, sendo seis de 30m de resolução espacial, uma termal de 30m, e uma pancromática (Panchromatic ou PAN) de 15m. Lançado em 2013, o <strong>Landsat 8</strong>, possui dois sensores: o <strong>Operational Land Imager</strong> (<strong>OLI</strong>) e o <strong>Thermal Infrared Sensor</strong> (<strong>TIRS</strong>). O OLI possui nove bandas espectrais, sendo oito de 30m de resolução espacial e uma PAN de 15m, enquanto o TIRS possui duas bandas termais de 100m. Em 2021, foi lançado o <strong>Landsat 9</strong> com aperfeiçoamentos na resolução radiométrica dos sensores, denominados de OLI-2 e TIRS-2, com quantização de 14-bit. A Figura abaixo apresenta a linha do tempo do lançamento dos satélites Landsat.</p>
+<div class="scbs-carousel scbs-slide" data-bs-interval="3000" id="carousel-3">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-3" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-3" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-3" type="button"></button>
+<button aria-label="Slide 4" data-bs-slide-to="3" data-bs-target="#carousel-3" type="button"></button>
+<button aria-label="Slide 5" data-bs-slide-to="4" data-bs-target="#carousel-3" type="button"></button>
+<button aria-label="Slide 6" data-bs-slide-to="5" data-bs-target="#carousel-3" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<img alt="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/images/Landsat-timeline-LNext-2023_4297.PNG" class="scbs-d-block scbs-w-100" src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/images/Landsat-timeline-LNext-2023_4297.PNG" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Missões Landsat.<br><b>Fonte:</b> <a href="https://www.usgs.gov/media/images/landsat-missions-timeline">USGS</a></h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat-4-5.png" class="scbs-d-block scbs-w-100" src="../_images/landsat-4-5.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Ilustração dos satélites Landsat 4 e 5.<br><b>Fonte:</b> <a href="https://www.usgs.gov/media/images/rendering-landsat-4-and-landsat-5">USGS</a></h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat-7.png" class="scbs-d-block scbs-w-100" src="../_images/landsat-7.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Ilustração do satélite Landsat 7.<br><b>Fonte:</b> <a href="https://www.usgs.gov/media/images/illustration-landsat-7-orbit">USGS</a></h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat-8.png" class="scbs-d-block scbs-w-100" src="../_images/landsat-8.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Ilustração do satélite Landsat 8.<br><b>Fonte:</b> <a href="https://www.usgs.gov/media/images/landsat-8-image-7">USGS</a></h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat-9.png" class="scbs-d-block scbs-w-100" src="../_images/landsat-9.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Ilustração do satélite Landsat 9.<br><b>Fonte:</b> <a href="https://www.usgs.gov/landsat-missions/landsat-9">USGS</a></h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="https://landsat.gsfc.nasa.gov/wp-content/uploads/2020-07/Landsat_timeline_20200318_title.gif" class="scbs-d-block scbs-w-100" src="https://landsat.gsfc.nasa.gov/wp-content/uploads/2020-07/Landsat_timeline_20200318_title.gif" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Linha do tempo do programa Landsat.<br><b>Fonte:</b> <a href="https://landsat.gsfc.nasa.gov/satellites/landsat-9/">USGS</a></h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-3" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-3" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Veja: <a class="reference external" href="https://svs.gsfc.nasa.gov/13259">https://svs.gsfc.nasa.gov/13259</a>.</p>
+</div>
+<section id="landsat-5-tm">
+<h4><span class="section-number">8.1.10.1.1. </span>Landsat 5/TM<a class="headerlink" href="#landsat-5-tm" title="Link permanente para este cabeçalho"></a></h4>
+<p>O sensor TM a bordo do Landsat 5 realiza o imageamento da superfície terrestre usando um <em>swath</em> de 185km x 185km com resolução temporal de 16 dias e produz imagens de 8-bit. As características das bandas espectrais desse sensor são apresentadas na <a class="reference internal" href="#tbl-raster-conceitos-l5-tm"><span class="std std-numref">Tabela 8.2</span></a>.</p>
+<table class="styled-table docutils align-default" id="tbl-raster-conceitos-l5-tm">
+<caption><span class="caption-number">Tabela 8.2 - </span><span class="caption-text">Características do sensor TM a bordo do satélite Landsat 5. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://www.usgs.gov/landsat-missions/landsat-5">USGS</a></span><a class="headerlink" href="#tbl-raster-conceitos-l5-tm" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 39%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head center-align"><p>Banda</p></th>
+<th class="head center-align"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
+<th class="head center-align"><p>Resolução Espacial</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align"><p>1 - Blue</p></td>
+<td class="center-align"><p>0.45 - 0.52</p></td>
+<td class="center-align" rowspan="6"><p>30 metros</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>2 - Green</p></td>
+<td class="center-align"><p>0.52 - 0.60</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>3 - Red</p></td>
+<td class="center-align"><p>0.63 - 0.69</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>4 - NIR</p></td>
+<td class="center-align"><p>0.76 - 0.90</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>5 - SWIR</p></td>
+<td class="center-align"><p>1.55 - 1.75</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>7 - MIR</p></td>
+<td class="center-align"><p>2.08 - 2.35</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>6 - Thermal</p></td>
+<td class="center-align"><p>10.40 - 12.50</p></td>
+<td class="center-align"><p>120 metros</p></td>
+</tr>
+</tbody>
+</table>
+<p>As imagens da coleção 2 nível 2 (produto reflectância de superfície) são disponibilizadas em arquivos GeoTIFF com 7751 x 6891 pixels(bandas de 30m), organizados em blocos de 256 x 256 pixels, com valores do tipo inteiro de 16-bit sem sinal (UInt16 ou 16-bit unsigned integer) e usando a projeção UTM com datum WGS 84. Cada uma das 07 bandas espectrais são disponibilizadas em arquivos distintos. Esses arquivos possuem seis níveis de <em>overview</em> com as seguintes dimensões:</p>
+<ul class="simple">
+<li><p><strong>Nível 1:</strong> 3876 x 3446 pixels.</p></li>
+<li><p><strong>Nível 2:</strong> 1938 x 1723 pixels.</p></li>
+<li><p><strong>Nível 3:</strong> 969 x 862 pixels.</p></li>
+<li><p><strong>Nível 4:</strong> 485 x 431 pixels.</p></li>
+<li><p><strong>Nível 5:</strong> 243 x 216 pixels.</p></li>
+<li><p><strong>Nível 6:</strong> 122 x 108 pixels.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>É importante ressaltar que existe uma pequena variação no número de colunas e linhas das cenas Landsat. Por isso, os valores apresentados acima, tanto da imagem em resolução plena quanto dos <em>overviews</em> são fornecidos apenas para dar uma idéia do tamanho dos arquivos dessas cenas. Além disso, esses valores referem-se somente às bandas de 30m.</p>
+</div>
+<p>Os dois conjuntos de imagens abaixo apresentam a composição colorida e falsa cor de duas cenas Landsat 5/TM do oeste da Bahia, nos anos de 1984 e 1990, respectivamente.</p>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-4">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-4" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-4" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-4" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<img alt="../_images/landsat5-220070-19840620.png" class="scbs-d-block scbs-w-100" src="../_images/landsat5-220070-19840620.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 20/06/1984</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat5-220070-19840620-cores-verdadeiras.png" class="scbs-d-block scbs-w-100" src="../_images/landsat5-220070-19840620-cores-verdadeiras.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 20/06/1984</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat5-220070-19840620-falsa-cor.png" class="scbs-d-block scbs-w-100" src="../_images/landsat5-220070-19840620-falsa-cor.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição falsa cor das bandas 4-3-1 (destaque da vegetação em vermelho) <br> Região do oeste do Estado da Bahia - 20/06/1984</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-4" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-4" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-5">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-5" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-5" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-5" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<img alt="../_images/landsat5-220070-19900605.png" class="scbs-d-block scbs-w-100" src="../_images/landsat5-220070-19900605.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 05/06/1990</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat5-220070-19900605-cores-verdadeiras.png" class="scbs-d-block scbs-w-100" src="../_images/landsat5-220070-19900605-cores-verdadeiras.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 05/06/1990</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat5-220070-19900605-falsa-cor.png" class="scbs-d-block scbs-w-100" src="../_images/landsat5-220070-19900605-falsa-cor.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição falsa cor das bandas 4-3-1 (destaque da vegetação em vermelho) <br> Região do oeste do Estado da Bahia - 05/06/1990</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-5" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-5" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>As cenas acima correspondem, respectivamente, às imagens <code class="docutils literal notranslate"><span class="pre">LT05_L2SP_220070_19840620_20200918_02_T1</span></code> e <code class="docutils literal notranslate"><span class="pre">LT05_L2SP_220070_19900605_20200916_02_T1</span></code> no catálogo da USGS.</p>
+</div>
+</section>
+<section id="landsat-7-etm">
+<h4><span class="section-number">8.1.10.1.2. </span>Landsat 7/ETM<sup>+</sup><a class="headerlink" href="#landsat-7-etm" title="Link permanente para este cabeçalho"></a></h4>
+<p>O sensor ETM<sup>+</sup> a bordo do Landsat 7 realiza o imageamento da superfície terrestre usando um <em>swath</em> de 185km x 185km com resolução temporal de 16 dias e produz imagens de 8-bit. As características das bandas espectrais desse sensor são apresentadas na <a class="reference internal" href="#tbl-raster-conceitos-l7-etm"><span class="std std-numref">Tabela 8.3</span></a>.</p>
+<table class="styled-table docutils align-default" id="tbl-raster-conceitos-l7-etm">
+<caption><span class="caption-number">Tabela 8.3 - </span><span class="caption-text">Características do sensor ETM<sup>+</sup> a bordo do satélite Landsat 7. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://www.usgs.gov/landsat-missions/landsat-7">USGS</a></span><a class="headerlink" href="#tbl-raster-conceitos-l7-etm" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 39%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head center-align"><p>Banda</p></th>
+<th class="head center-align"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
+<th class="head center-align"><p>Resolução Espacial</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align"><p>1 - Blue</p></td>
+<td class="center-align"><p>0.45 - 0.52</p></td>
+<td class="center-align" rowspan="6"><p>30 metros</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>2 - Green</p></td>
+<td class="center-align"><p>0.52 - 0.60</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>3 - Red</p></td>
+<td class="center-align"><p>0.63 - 0.69</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>4 - NIR</p></td>
+<td class="center-align"><p>0.77 - 0.90</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>5 - SWIR</p></td>
+<td class="center-align"><p>1.55 - 1.75</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>7 - MIR</p></td>
+<td class="center-align"><p>2.08 - 2.35</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>6 - Thermal</p></td>
+<td class="center-align"><p>10.40 - 12.50</p></td>
+<td class="center-align"><p>60 metros</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>8 - PAN</p></td>
+<td class="center-align"><p>0.52 - 0.90</p></td>
+<td class="center-align"><p>15 metros</p></td>
+</tr>
+</tbody>
+</table>
+<p>As imagens da coleção 2 nível 2 (produto reflectância de superfície) são disponibilizadas em arquivos GeoTIFF com 7821 x 6971 pixels (bandas de 30m), organizados em blocos de 256 x 256 pixels, com valores tipo inteiro de 16-bit sem sinal (UInt16 ou 16-bit unsigned integer) e usando a projeção UTM com datum WGS 84. Cada uma das 07 bandas espectrais são disponibilizadas em arquivos distintos. Esses arquivos possuem seis níveis de <em>overview</em> com as seguintes dimensões:</p>
+<ul class="simple">
+<li><p><strong>Nível 1:</strong> 3911 x 3486</p></li>
+<li><p><strong>Nível 2:</strong> 1956 x 1743</p></li>
+<li><p><strong>Nível 3:</strong> 978 x 872</p></li>
+<li><p><strong>Nível 4:</strong> 489 x 436</p></li>
+<li><p><strong>Nível 5:</strong> 245 x 218</p></li>
+<li><p><strong>Nível 6:</strong> 123 x 109</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>É importante ressaltar que existe uma pequena variação no número de colunas e linhas das cenas Landsat. Por isso, os valores apresentados acima, tanto da imagem em resolução plena quanto dos <em>overviews</em> são fornecidos apenas para dar uma idéia do tamanho dos arquivos dessas cenas. Além disso, esses valores referem-se somente às bandas de 30m.</p>
+</div>
+<p>O conjunto de imagens abaixo apresenta a composição colorida e falsa cor de uma cenas Landsat 7/ETM<sup>+</sup> do oeste da Bahia no ano de 2000.</p>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-6">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-6" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-6" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-6" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<img alt="../_images/landsat7-220070-20000726.png" class="scbs-d-block scbs-w-100" src="../_images/landsat7-220070-20000726.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 7/ETM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 26/07/2000</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat7-220070-20000726-cores-verdadeiras.png" class="scbs-d-block scbs-w-100" src="../_images/landsat7-220070-20000726-cores-verdadeiras.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 7/ETM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 26/07/2000</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat7-220070-20000726-falsa-cor.png" class="scbs-d-block scbs-w-100" src="../_images/landsat7-220070-20000726-falsa-cor.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 7/ETM com resolução espacial de 30 metros <br> Composição falsa cor das bandas 4-3-1 (destaque da vegetação em vermelho) <br> Região do oeste do Estado da Bahia - 26/07/2000</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-6" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-6" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>A cena acima corresponde à imagem <code class="docutils literal notranslate"><span class="pre">LE07_L2SP_220070_20000726_20200918_02_T1</span></code> no catálogo da USGS.</p>
+</div>
+</section>
+<section id="landsat-8-oli">
+<h4><span class="section-number">8.1.10.1.3. </span>Landsat 8/OLI<a class="headerlink" href="#landsat-8-oli" title="Link permanente para este cabeçalho"></a></h4>
+<p>O sensor OLI a bordo do Landsat 8 realiza o imageamento da superfície terrestre usando um <em>swath</em> de 185km x 185km com resolução temporal de 16 dias e produz imagens de 12-bit. As características das bandas espectrais desse sensor são apresentadas na <a class="reference internal" href="#tbl-raster-conceitos-l8-oli"><span class="std std-numref">Tabela 8.4</span></a>.</p>
+<table class="styled-table docutils align-default" id="tbl-raster-conceitos-l8-oli">
+<caption><span class="caption-number">Tabela 8.4 - </span><span class="caption-text">Características do sensor OLI a bordo do satélite Landsat 8. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://www.usgs.gov/landsat-missions/landsat-8">USGS</a></span><a class="headerlink" href="#tbl-raster-conceitos-l8-oli" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 39%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head center-align"><p>Banda</p></th>
+<th class="head center-align"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
+<th class="head center-align"><p>Resolução Espacial</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align"><p>1 - Coastal Aerosol</p></td>
+<td class="center-align"><p>0.43 - 0.45</p></td>
+<td class="center-align" rowspan="8"><p>30 metros</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>2 - Blue</p></td>
+<td class="center-align"><p>0.45 - 0.51</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>3 - Green</p></td>
+<td class="center-align"><p>0.53 - 0.59</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>4 - Red</p></td>
+<td class="center-align"><p>0.64 - 0.67</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>5 - NIR</p></td>
+<td class="center-align"><p>0.85 - 0.88</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>6 - SWIR 1</p></td>
+<td class="center-align"><p>1.57 - 1.65</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>7 - SWIR 2</p></td>
+<td class="center-align"><p>2.11 - 2.29</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>9 - Cirrus</p></td>
+<td class="center-align"><p>1.36 - 1.38</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>8 - PAN</p></td>
+<td class="center-align"><p>0.50 - 0.68</p></td>
+<td class="center-align"><p>15 metros</p></td>
+</tr>
+</tbody>
+</table>
+<p>As imagens da coleção 2 nível 2 (produto reflectância de superfície) são disponibilizadas em arquivos GeoTIFF com 7601 x 7731 pixels, organizados em blocos de 256 x 256 pixels, com valores tipo inteiro de 16-bit sem sinal (UInt16 ou 16-bit unsigned integer) e usando a projeção UTM com datum WGS 84. Cada banda espectral é disponibilizada em um arquivos separados. Esses arquivos possuem seis níveis de <em>overview</em> com as seguintes dimensões:</p>
+<ul class="simple">
+<li><p><strong>Nível 1:</strong> 3801 x 3866</p></li>
+<li><p><strong>Nível 2:</strong> 1901 x 1933</p></li>
+<li><p><strong>Nível 3:</strong> 951 x 967</p></li>
+<li><p><strong>Nível 4:</strong> 476 x 484</p></li>
+<li><p><strong>Nível 5:</strong> 238 x 242</p></li>
+<li><p><strong>Nível 6:</strong> 119 x 121</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>É importante ressaltar que existe uma pequena variação no número de colunas e linhas das cenas Landsat. Por isso, os valores apresentados acima, tanto da imagem em resolução plena quanto dos <em>overviews</em> são fornecidos apenas para dar uma idéia do tamanho dos arquivos dessas cenas. Além disso, esses valores referem-se somente às bandas de 30m.</p>
+</div>
+<p>O conjunto de imagens abaixo apresenta a composição colorida e falsa cor de uma cenas Landsat 8/OLI do oeste da Bahia no ano de 2015.</p>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-7">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-7" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-7" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-7" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<img alt="../_images/landsat8-220070-20150908.png" class="scbs-d-block scbs-w-100" src="../_images/landsat8-220070-20150908.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 8/OLI com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 08/09/2015</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat8-220070-20150908-cores-verdadeiras.png" class="scbs-d-block scbs-w-100" src="../_images/landsat8-220070-20150908-cores-verdadeiras.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 8/OLI com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 08/09/2015</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat8-220070-20150908-falsa-cor.png" class="scbs-d-block scbs-w-100" src="../_images/landsat8-220070-20150908-falsa-cor.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 8/OLI com resolução espacial de 30 metros <br> Composição falsa cor das bandas 5-4-2 (destaque da vegetação em vermelho) <br> Região do oeste do Estado da Bahia - 08/09/2015</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-7" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-7" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>A cena acima corresponde à imagem <code class="docutils literal notranslate"><span class="pre">LC08_L2SP_220070_20150728_20200908_02_T1</span></code> no catálogo da USGS.</p>
+</div>
+</section>
+<section id="landsat-9-oli-2">
+<h4><span class="section-number">8.1.10.1.4. </span>Landsat 9/OLI-2<a class="headerlink" href="#landsat-9-oli-2" title="Link permanente para este cabeçalho"></a></h4>
+<p>O sensor OLI-2 a bordo do Landsat 9 realiza o imageamento da superfície terrestre usando um <em>swath</em> de 185km x 185km com resolução temporal de 16 dias e produz imagens de 14-bit. As características das bandas espectrais desse sensor são apresentadas na <a class="reference internal" href="#tbl-raster-conceitos-l9-oli-2"><span class="std std-numref">Tabela 8.5</span></a>.</p>
+<table class="styled-table docutils align-default" id="tbl-raster-conceitos-l9-oli-2">
+<caption><span class="caption-number">Tabela 8.5 - </span><span class="caption-text">Características do sensor OLI a bordo do satélite Landsat 8. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://www.usgs.gov/landsat-missions/landsat-9">USGS</a></span><a class="headerlink" href="#tbl-raster-conceitos-l9-oli-2" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 39%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head center-align"><p>Banda</p></th>
+<th class="head center-align"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
+<th class="head center-align"><p>Resolução Espacial</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align"><p>1 - Coastal Aerosol</p></td>
+<td class="center-align"><p>0.43 - 0.45</p></td>
+<td class="center-align" rowspan="8"><p>30 metros</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>2 - Blue</p></td>
+<td class="center-align"><p>0.45 - 0.51</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>3 - Green</p></td>
+<td class="center-align"><p>0.53 - 0.59</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>4 - Red</p></td>
+<td class="center-align"><p>0.64 - 0.67</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>5 - NIR</p></td>
+<td class="center-align"><p>0.85 - 0.88</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>6 - SWIR 1</p></td>
+<td class="center-align"><p>1.57 - 1.65</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>7 - SWIR 2</p></td>
+<td class="center-align"><p>2.11 - 2.29</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>9 - Cirrus</p></td>
+<td class="center-align"><p>1.36 - 1.38</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>8 - PAN</p></td>
+<td class="center-align"><p>0.50 - 0.68</p></td>
+<td class="center-align"><p>15 metros</p></td>
+</tr>
+</tbody>
+</table>
+<p>As imagens da coleção 2 nível 2 (produto reflectância de superfície) são disponibilizadas em arquivos GeoTIFF com 7601 x 7711 pixels, organizados em blocos de 256 x 256 pixels, com valores tipo inteiro de 16-bit sem sinal (UInt16 ou 16-bit unsigned integer) e usando a projeção UTM com datum WGS 84. Cada banda espectral é disponibilizada em um arquivos separados. Esses arquivos possuem seis níveis de <em>overview</em> com as seguintes dimensões:</p>
+<ul class="simple">
+<li><p><strong>Nível 1:</strong> 3801 x 3856</p></li>
+<li><p><strong>Nível 2:</strong> 1901 x 1928</p></li>
+<li><p><strong>Nível 3:</strong> 951 x 964</p></li>
+<li><p><strong>Nível 4:</strong> 476 x 483</p></li>
+<li><p><strong>Nível 5:</strong> 238 x 242</p></li>
+<li><p><strong>Nível 6:</strong> 119 x 121</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>É importante ressaltar que existe uma pequena variação no número de colunas e linhas das cenas Landsat. Por isso, os valores apresentados acima, tanto da imagem em resolução plena quanto dos <em>overviews</em> são fornecidos apenas para dar uma idéia do tamanho dos arquivos dessas cenas. Além disso, esses valores referem-se somente às bandas de 30m.</p>
+</div>
+<p>O conjunto de imagens abaixo apresenta a composição colorida e falsa cor de uma cenas Landsat 9/OLI-2 do oeste da Bahia no ano de 2022.</p>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-8">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-8" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-8" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-8" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<img alt="../_images/landsat9-220070-20220723.png" class="scbs-d-block scbs-w-100" src="../_images/landsat9-220070-20220723.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 9/OLI-2 com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 23/07/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat9-220070-20220723-cores-verdadeiras.png" class="scbs-d-block scbs-w-100" src="../_images/landsat9-220070-20220723-cores-verdadeiras.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 9/OLI-2 com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 23/07/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat9-220070-20220723-falsa-cor.png" class="scbs-d-block scbs-w-100" src="../_images/landsat9-220070-20220723-falsa-cor.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 9/OLI-2 com resolução espacial de 30 metros <br> Composição falsa cor das bandas 5-4-2 (destaque da vegetação em vermelho) <br> Região do oeste do Estado da Bahia - 23/07/2022</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-8" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-8" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>A cena acima corresponde à imagem <code class="docutils literal notranslate"><span class="pre">LC09_L2SP_220070_20220723_20230406_02_T1</span></code> no catálogo da USGS.</p>
+</div>
+</section>
+<section id="imagens-landsat-de-1984-a-2022">
+<h4><span class="section-number">8.1.10.1.5. </span>Imagens Landsat de 1984 a 2022<a class="headerlink" href="#imagens-landsat-de-1984-a-2022" title="Link permanente para este cabeçalho"></a></h4>
+<p>A figura abaixo apresenta a visa de uma mesma região com base em imagens Landsat 5, 7, 8 e 9 entre os anos de 1984 e 2022.</p>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-9">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-9" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-9" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-9" type="button"></button>
+<button aria-label="Slide 4" data-bs-slide-to="3" data-bs-target="#carousel-9" type="button"></button>
+<button aria-label="Slide 5" data-bs-slide-to="4" data-bs-target="#carousel-9" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<img alt="../_images/landsat5-220070-19840620-cores-verdadeiras.png" class="scbs-d-block scbs-w-100" src="../_images/landsat5-220070-19840620-cores-verdadeiras.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 20/06/1984</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat5-220070-19900605-cores-verdadeiras.png" class="scbs-d-block scbs-w-100" src="../_images/landsat5-220070-19900605-cores-verdadeiras.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 5/TM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 05/06/1990</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat7-220070-20000726-cores-verdadeiras.png" class="scbs-d-block scbs-w-100" src="../_images/landsat7-220070-20000726-cores-verdadeiras.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 7/ETM com resolução espacial de 30 metros <br> Composição colorida das bandas 3-2-1 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 26/07/2000</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat8-220070-20150908-cores-verdadeiras.png" class="scbs-d-block scbs-w-100" src="../_images/landsat8-220070-20150908-cores-verdadeiras.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 8/OLI com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 08/09/2015</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/landsat9-220070-20220723-cores-verdadeiras.png" class="scbs-d-block scbs-w-100" src="../_images/landsat9-220070-20220723-cores-verdadeiras.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem Landsat 9/OLI-2 com resolução espacial de 30 metros <br> Composição colorida das bandas 4-3-2 (cores verdadeiras) <br> Região do oeste do Estado da Bahia - 23/07/2022</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-9" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-9" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+</section>
+</section>
+<section id="sentinel-2-msi">
+<h3><span class="section-number">8.1.10.2. </span>Sentinel-2/MSI<a class="headerlink" href="#sentinel-2-msi" title="Link permanente para este cabeçalho"></a></h3>
+<p>O sensor MSI a bordo dos satélites Sentinel-2A e 2B realiza o imageamento da superfície terrestre usando um <em>swath</em> de 25km x 23km com resolução temporal de 05 dias e produz imagens de 12-bit. As características das 13 bandas espectrais desse sensor são apresentadas na <a class="reference internal" href="#tbl-raster-conceitos-s2-msi"><span class="std std-numref">Tabela 8.6</span></a>.</p>
+<table class="styled-table docutils align-default" id="tbl-raster-conceitos-s2-msi">
+<caption><span class="caption-number">Tabela 8.6 - </span><span class="caption-text">Características do sensor MSI a bordo dos satélite Sentinel-2. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-2-msi/resolutions/spectral">ESA</a></span><a class="headerlink" href="#tbl-raster-conceitos-s2-msi" title="Link Permanente para essa tabela"></a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head center-align"><p>Banda</p></th>
+<th class="head center-align"><p>Intervalo (<span class="math notranslate nohighlight">\(\eta m\)</span>)</p></th>
+<th class="head center-align"><p>Resolução Espacial</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align"><p>1 - Ultra Blue (Coastal Aerosol)</p></td>
+<td class="center-align"><p>443</p></td>
+<td class="center-align"><p>60 metros</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>2 - Blue</p></td>
+<td class="center-align"><p>493</p></td>
+<td class="center-align" rowspan="3"><p>10 metros</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>3 - Green</p></td>
+<td class="center-align"><p>560</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>4 - Red</p></td>
+<td class="center-align"><p>665</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>5 - Red-edge (VNIR)</p></td>
+<td class="center-align"><p>704</p></td>
+<td class="center-align" rowspan="3"><p>20 metros</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>6 - Red-edge (VNIR 2)</p></td>
+<td class="center-align"><p>740</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>7 - Red-edge (VNIR 3)</p></td>
+<td class="center-align"><p>783</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>8 - NIR</p></td>
+<td class="center-align"><p>833</p></td>
+<td class="center-align"><p>10 metros</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>8a - NIR</p></td>
+<td class="center-align"><p>865</p></td>
+<td class="center-align"><p>20 metros</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>9 - NIR (Water Vapour)</p></td>
+<td class="center-align"><p>945</p></td>
+<td class="center-align" rowspan="2"><p>60 metros</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>10 - SWIR (Cirrus)</p></td>
+<td class="center-align"><p>1374</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align"><p>11- SWIR</p></td>
+<td class="center-align"><p>1610</p></td>
+<td class="center-align" rowspan="2"><p>20 metros</p></td>
+</tr>
+<tr class="row-even"><td class="left-align"><p>12 - SWIR</p></td>
+<td class="center-align"><p>2190</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Significado de algumas siglas:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>NIR:</strong> Near Infrared.</p></li>
+<li><p><strong>VNIR:</strong> Visible and Near Infrared.</p></li>
+<li><p><strong>SWIR:</strong> Short Wave Infrared.</p></li>
+<li><p><strong>PAN:</strong> Panchromatic.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Veja a seguinte <a class="reference external" href="https://github.com/stac-extensions/eo/blob/main/README.md#common-band-names">nomenclatura de bandas usada pelo STAC</a>.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="index.html" class="btn btn-neutral float-left" title="8. Dados Matriciais" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="geotiff.html" class="btn btn-neutral float-right" title="8.2. GeoTIFF" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7fe22db936a0>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

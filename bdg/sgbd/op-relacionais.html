@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2.9. Operadores Relacionais &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -39,12 +37,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../index.html" class="icon icon-home"> BDGeo
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -91,8 +93,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -124,9 +127,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
-      <li><span class="section-number">2.9. </span>Operadores Relacionais</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2.9. </span>Operadores Relacionais</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -143,83 +146,77 @@
 <p>Os <strong>operadores relacionais</strong> ou <strong>operadores de comparação</strong> permitem comparar dois valores e produzir um valor booleano como resultado. Esse tipo de operador, juntamente com os operadores lógicos, são essenciais nas expressões da cláusula <code class="docutils literal notranslate"><span class="pre">WHERE</span></code>, nos <strong>comandos condicionais</strong> e nos <strong>testes condicionais dos laços de repetição</strong>. A <a class="reference internal" href="#tbl-sgbd-op-relacionais"><span class="std std-numref">Tabela 2.6</span></a> apresenta a notação desses operadores e seus significados.</p>
 <table class="styled-table docutils align-center" id="tbl-sgbd-op-relacionais">
 <caption><span class="caption-number">Tabela 2.6 - </span><span class="caption-text">Operadores relacionais.</span><a class="headerlink" href="#tbl-sgbd-op-relacionais" title="Link Permanente para essa tabela"></a></caption>
-<colgroup>
-<col style="width: 19%" />
-<col style="width: 20%" />
-<col style="width: 48%" />
-<col style="width: 13%" />
-</colgroup>
 <thead>
-<tr class="row-odd"><th class="center-align head"><p>Operador</p></th>
-<th class="center-align head"><p>Nome</p></th>
-<th class="center-align head"><p>Expressão</p></th>
-<th class="left-align head"><p>Valor</p></th>
+<tr class="row-odd"><th class="head center-align"><p>Operador</p></th>
+<th class="head center-align"><p>Nome</p></th>
+<th class="head center-align"><p>Expressão</p></th>
+<th class="head left-align"><p>Valor</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td class="center-align" rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">=</span></code></p></td>
 <td class="left-align" rowspan="2"><p>igual</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>false</p></td>
 </tr>
-<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span></code></p></td>
+<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>true</p></td>
 </tr>
 <tr class="row-even"><td class="center-align" rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code></p></td>
 <td class="left-align" rowspan="2"><p>diferente</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>true</p></td>
 </tr>
-<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span></code></p></td>
+<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>false</p></td>
 </tr>
 <tr class="row-even"><td class="center-align" rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">&lt;</span></code></p></td>
 <td class="left-align" rowspan="2"><p>menor que</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>false</p></td>
 </tr>
-<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span></code></p></td>
+<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>true</p></td>
 </tr>
 <tr class="row-even"><td class="center-align" rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p></td>
 <td class="left-align" rowspan="2"><p>menor ou
 igual a</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>true</p></td>
 </tr>
-<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span></code></p></td>
+<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>false</p></td>
 </tr>
 <tr class="row-even"><td class="center-align" rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">&gt;</span></code></p></td>
 <td class="left-align" rowspan="2"><p>maior que</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>true</p></td>
 </tr>
-<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span></code></p></td>
+<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>false</p></td>
 </tr>
 <tr class="row-even"><td class="center-align" rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">&gt;=</span></code></p></td>
 <td class="left-align" rowspan="2"><p>maior ou
 igual a</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>true</p></td>
 </tr>
-<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span><span class="w"></span></code></p></td>
+<tr class="row-odd"><td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span></code></p></td>
 <td class="left-align"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 <p>Exemplos:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">.</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">.</span><span class="mi">1</span><span class="p">;</span>
 </pre></div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Land&#39;</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="s1">&#39;Landsat&#39;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Land&#39;</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="s1">&#39;Landsat&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Land Cover&#39;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">&#39;Landsat&#39;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Land Cover&#39;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">&#39;Landsat&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">.</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">.</span><span class="mi">1</span><span class="p">;</span>
 </pre></div>
 </div>
 <section id="exercicios">
@@ -227,9 +224,9 @@ igual a</p></td>
 <p>Os exercícios desta seção consideram as tabelas criadas na <a class="reference internal" href="tipos-numericos.html#cap-sgbd-tipos-numericos"><span class="std std-numref">Seção 2.7 - Tipos Numéricos</span></a>.</p>
 <p><strong>Exercício 1.</strong> Quais os focos com valor de FRP maior que 90?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">frp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">90</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">frp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">90</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -249,9 +246,9 @@ igual a</p></td>
 <li><p><span class="math notranslate nohighlight">\(latitude_{2} = -6.5\)</span></p></li>
 </ul>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">longitude</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">52</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">longitude</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">latitude</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">latitude</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">6</span><span class="p">.</span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">longitude</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">52</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">longitude</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">latitude</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">latitude</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">6</span><span class="p">.</span><span class="mi">5</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -265,9 +262,9 @@ igual a</p></td>
 </details><hr class="docutils" />
 <p><strong>Exercício 3.</strong> Quais Unidades da Federação do Brasil (tabela <code class="docutils literal notranslate"><span class="pre">populacao_1940</span></code>) possuiam população feminina maior que a masculina em 1940?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_1940</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">mulheres</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">homens</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_1940</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">mulheres</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">homens</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -281,8 +278,8 @@ igual a</p></td>
 </details><hr class="docutils" />
 <p><strong>Exercício 4.</strong> Faça uma consulta na tabela <code class="docutils literal notranslate"><span class="pre">populacao_1940</span></code> que apresente como resultado uma coluna com o nome da UF e outra com um valor booleando indicando se a população masculina é ou não maior na UF.</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"> </span><span class="n">homens</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">mulheres</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;homens &gt; mulheres&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_1940</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"> </span><span class="n">homens</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">mulheres</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;homens &gt; mulheres&quot;</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_1940</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -319,7 +316,7 @@ igual a</p></td>
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246a761c10>
+<jinja2.runtime.BlockReference object at 0x7fe22db6b280>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>7.1.7. Retornando Conjuntos ou Tuplas &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script src="../../_static/clipboard.min.js"></script>
@@ -38,12 +36,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../../index.html" class="icon icon-home"> BDGeo
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -80,8 +82,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../exercicios.html">7.6. Exercícios</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -113,10 +116,10 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">7.1. </span>PL/pgSQL</a> &raquo;</li>
-      <li><span class="section-number">7.1.7. </span>Retornando Conjuntos ou Tuplas</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.1. </span>PL/pgSQL</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.1.7. </span>Retornando Conjuntos ou Tuplas</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -132,38 +135,38 @@
 <span id="cap-prog-servidor-plpgsql-return-tuplas"></span><h1><span class="section-number">7.1.7. </span>Retornando Conjuntos ou Tuplas<a class="headerlink" href="#retornando-conjuntos-ou-tuplas" title="Link permanente para este cabeçalho"></a></h1>
 <p>Podemos definir o tipo de retorno de uma função como sendo um conjunto de valores usando o construtor <code class="docutils literal notranslate"><span class="pre">SETOF</span></code> ou <code class="docutils literal notranslate"><span class="pre">TABLE</span></code>. Neste caso, ao invés de usar uma única instrução <code class="docutils literal notranslate"><span class="pre">RETURN</span></code>, utilizamos as instruções <code class="docutils literal notranslate"><span class="pre">RETURN</span> <span class="pre">NEXT</span></code> ou <code class="docutils literal notranslate"><span class="pre">RETURN</span> <span class="pre">QUERY</span></code>.</p>
 <p>A função <code class="docutils literal notranslate"><span class="pre">generate_4pts</span></code> irá gerar um conjunto com quatro pontos sorteados de forma aleatória:</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">generate_4pts</span><span class="p">()</span><span class="w"></span>
-<span class="k">RETURNS</span><span class="w"> </span><span class="k">SETOF</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="w"></span>
-<span class="k">AS</span><span class="w"></span>
-<span class="s">$$</span><span class="w"></span>
-<span class="k">DECLARE</span><span class="w"></span>
-<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">;</span><span class="w"></span>
-<span class="k">BEGIN</span><span class="w"></span>
-<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">generate_4pts</span><span class="p">()</span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="k">SETOF</span><span class="w"> </span><span class="n">GEOMETRY</span>
+<span class="k">AS</span>
+<span class="s">$$</span>
+<span class="k">DECLARE</span>
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span>
+<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span>
 
-<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span>
+<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span>
 
-<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span>
+<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span>
 
-<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mf">360.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">180.0</span><span class="p">,</span>
+<span class="w">                                  </span><span class="mf">180.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">90.0</span><span class="p">),</span><span class="w"> </span><span class="mf">4326</span><span class="p">);</span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span>
 
-<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span><span class="w"></span>
-<span class="k">END</span><span class="p">;</span><span class="w"></span>
-<span class="s">$$</span><span class="w"></span>
-<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="s">$$</span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Atente-se a um detalhe importante no código da função <code class="docutils literal notranslate"><span class="pre">generate_4pts</span></code>: ela termina com uma instrução <code class="docutils literal notranslate"><span class="pre">RETURN</span></code>.</p>
 <p>Podemos invocar a função <code class="docutils literal notranslate"><span class="pre">generate_4pts</span></code> da seguinte forma:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">generate_4pts</span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">generate_4pts</span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -177,30 +180,30 @@
 </pre></div>
 </div>
 <p>Outra possibilidade de retornar um conjunto de valores é através do comando <code class="docutils literal notranslate"><span class="pre">RETURN</span> <span class="pre">QUERY</span></code>. A função <code class="docutils literal notranslate"><span class="pre">nearest_pluviometros</span></code> ilustra como podemos utilizar este comando:</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">nearest_pluviometros</span><span class="p">(</span><span class="k">location</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                                </span><span class="n">distance</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">)</span><span class="w"></span>
-<span class="k">RETURNS</span><span class="w"> </span><span class="k">SETOF</span><span class="w"> </span><span class="n">pluviometros</span><span class="w"></span>
-<span class="k">AS</span><span class="w"></span>
-<span class="s">$$</span><span class="w"></span>
-<span class="k">DECLARE</span><span class="w"></span>
-<span class="w">    </span><span class="n">q</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">;</span><span class="w"></span>
-<span class="k">BEGIN</span><span class="w"></span>
-<span class="w">    </span><span class="n">q</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s1">&#39;SELECT * FROM pluviometros&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"></span>
-<span class="w">         </span><span class="s1">&#39; WHERE ST_DWithin(location, $1, $2)&#39;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">nearest_pluviometros</span><span class="p">(</span><span class="k">location</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">,</span>
+<span class="w">                                                </span><span class="n">distance</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">)</span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="k">SETOF</span><span class="w"> </span><span class="n">pluviometros</span>
+<span class="k">AS</span>
+<span class="s">$$</span>
+<span class="k">DECLARE</span>
+<span class="w">    </span><span class="n">q</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+<span class="w">    </span><span class="n">q</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s1">&#39;SELECT * FROM pluviometros&#39;</span><span class="w"> </span><span class="o">||</span>
+<span class="w">         </span><span class="s1">&#39; WHERE ST_DWithin(location, $1, $2)&#39;</span><span class="p">;</span>
 
-<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">QUERY</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="n">q</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="k">location</span><span class="p">,</span><span class="w"> </span><span class="n">distance</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">QUERY</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="n">q</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="k">location</span><span class="p">,</span><span class="w"> </span><span class="n">distance</span><span class="p">;</span>
 
-<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span><span class="w"></span>
-<span class="k">END</span><span class="p">;</span><span class="w"></span>
-<span class="s">$$</span><span class="w"></span>
-<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="s">$$</span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Invocando a função <code class="docutils literal notranslate"><span class="pre">nearest_pluviometros</span></code> obtemos o resultado mostrado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="k">location</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">nearest_pluviometros</span><span class="p">(</span><span class="w"></span>
-<span class="w">           </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">23</span><span class="p">),</span><span class="w"> </span><span class="mi">4326</span><span class="p">),</span><span class="w"></span>
-<span class="w">           </span><span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="k">location</span><span class="p">)</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">nearest_pluviometros</span><span class="p">(</span>
+<span class="w">           </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">23</span><span class="p">),</span><span class="w"> </span><span class="mi">4326</span><span class="p">),</span>
+<span class="w">           </span><span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -211,26 +214,26 @@
 </pre></div>
 </div>
 <p>Outra possibilidade de escrita da função <code class="docutils literal notranslate"><span class="pre">nearest_pluviometros</span></code> seria sem a utilização do comando <code class="docutils literal notranslate"><span class="pre">EXECUTE</span></code>:</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">nearest_pluviometros</span><span class="p">(</span><span class="k">location</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                                </span><span class="n">distance</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">)</span><span class="w"></span>
-<span class="k">RETURNS</span><span class="w"> </span><span class="k">SETOF</span><span class="w"> </span><span class="n">pluviometros</span><span class="w"></span>
-<span class="k">AS</span><span class="w"></span>
-<span class="s">$$</span><span class="w"></span>
-<span class="k">BEGIN</span><span class="w"></span>
-<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">QUERY</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">                   </span><span class="k">FROM</span><span class="w"> </span><span class="n">pluviometros</span><span class="w"></span>
-<span class="w">                  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span><span class="n">pluviometros</span><span class="mf">.</span><span class="k">location</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                   </span><span class="n">nearest_pluviometros</span><span class="mf">.</span><span class="k">location</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                   </span><span class="n">distance</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">nearest_pluviometros</span><span class="p">(</span><span class="k">location</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">,</span>
+<span class="w">                                                </span><span class="n">distance</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">)</span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="k">SETOF</span><span class="w"> </span><span class="n">pluviometros</span>
+<span class="k">AS</span>
+<span class="s">$$</span>
+<span class="k">BEGIN</span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">QUERY</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">                   </span><span class="k">FROM</span><span class="w"> </span><span class="n">pluviometros</span>
+<span class="w">                  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span><span class="n">pluviometros</span><span class="mf">.</span><span class="k">location</span><span class="p">,</span>
+<span class="w">                                   </span><span class="n">nearest_pluviometros</span><span class="mf">.</span><span class="k">location</span><span class="p">,</span>
+<span class="w">                                   </span><span class="n">distance</span><span class="p">);</span>
 
-<span class="w">    </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">FOUND</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
-<span class="w">        </span><span class="k">RAISE</span><span class="w"> </span><span class="k">EXCEPTION</span><span class="w"> </span><span class="s1">&#39;Nenhum pluviometro nas proximidades: %&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="nv">$1</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">FOUND</span><span class="w"> </span><span class="k">THEN</span>
+<span class="w">        </span><span class="k">RAISE</span><span class="w"> </span><span class="k">EXCEPTION</span><span class="w"> </span><span class="s1">&#39;Nenhum pluviometro nas proximidades: %&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="nv">$1</span><span class="p">);</span>
+<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span>
 
-<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span><span class="w"></span>
-<span class="k">END</span><span class="p">;</span><span class="w"></span>
-<span class="s">$$</span><span class="w"></span>
-<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="s">$$</span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
@@ -250,7 +253,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246aa8fe80>
+<jinja2.runtime.BlockReference object at 0x7fe22fa9c6a0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

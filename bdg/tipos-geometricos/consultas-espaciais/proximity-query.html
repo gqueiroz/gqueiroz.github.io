@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3.5.4. Consultas de Proximidade &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script src="../../_static/clipboard.min.js"></script>
@@ -39,12 +37,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../../index.html" class="icon icon-home"> BDGeo
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -79,8 +81,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -112,10 +115,10 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a> &raquo;</li>
-      <li><span class="section-number">3.5.4. </span>Consultas de Proximidade</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.5.4. </span>Consultas de Proximidade</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -132,7 +135,7 @@
 <section id="carga-de-dados-municipios-do-brasil">
 <h2><span class="section-number">3.5.4.1. </span>Carga de Dados - Municípios do Brasil<a class="headerlink" href="#carga-de-dados-municipios-do-brasil" title="Link permanente para este cabeçalho"></a></h2>
 <p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-proximity-query-municipios-2018"><span class="std std-numref">Tabela 3.31</span></a>, que contem os limites municipais do Brasil referentes ao ano de 2018. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
-<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-proximity-query-municipios-2018" style="width: 100%">
+<table class="styled-table docutils align-center" id="tbl-consultas-espaciais-proximity-query-municipios-2018" style="width: 100%">
 <caption><span class="caption-number">Tabela 3.31 - </span><span class="caption-text">Municípios do Brasil - 2018 <br/> <strong>Fonte Original:</strong> <a class="reference download external" download="" href="https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2018/Brasil/BR/br_municipios.zip"><code class="xref download docutils literal notranslate"><span class="pre">IBGE</span></code></a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-proximity-query-municipios-2018" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 60%" />
@@ -166,10 +169,10 @@
 <details class="summary-carga-dados">
 <summary>Carga Dados:</summary><p><br/></p>
 <p>Carregando os dados dos municípios brasileiros usando o comando <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code> e o <code class="docutils literal notranslate"><span class="pre">psql</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4674</span> -i -I -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 municipios_2018.shp public.municipios &gt; municipios.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql<span class="w"> </span>-c<span class="w"> </span>-g<span class="w"> </span><span class="s2">&quot;geom&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">4674</span><span class="w"> </span>-i<span class="w"> </span>-I<span class="w"> </span>-t<span class="w"> </span><span class="s2">&quot;2D&quot;</span><span class="w"> </span>-W<span class="w"> </span>UTF-8<span class="w"> </span>municipios_2018.shp<span class="w"> </span>public.municipios<span class="w"> </span>&gt;<span class="w"> </span>municipios.sql
 </pre></div>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -U postgres -h localhost -p <span class="m">5432</span> -d bdgeo -f municipios.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-p<span class="w"> </span><span class="m">5432</span><span class="w"> </span>-d<span class="w"> </span>bdgeo<span class="w"> </span>-f<span class="w"> </span>municipios.sql
 </pre></div>
 </div>
 </details></section>
@@ -177,7 +180,7 @@
 <section id="consulta">
 <h2><span class="section-number">3.5.4.2. </span>Consulta<a class="headerlink" href="#consulta" title="Link permanente para este cabeçalho"></a></h2>
 <p><strong>Consulta:</strong> Quais os municípios num raio de 2 graus da coordenada <span class="math notranslate nohighlight">\((-43.59, -20.32)\)</span>?</p>
-<table class="colwidths-given styled-table docutils align-center" style="width: 100%">
+<table class="styled-table docutils align-center" style="width: 100%">
 <colgroup>
 <col style="width: 30%" />
 <col style="width: 70%" />
@@ -193,13 +196,13 @@
 </tbody>
 </table>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span><span class="w"></span>
-<span class="w">           </span><span class="n">geom</span><span class="p">,</span><span class="w"></span>
-<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(-43.59 -20.32)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">),</span><span class="w"></span>
-<span class="w">           </span><span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="w"></span>
-<span class="w">       </span><span class="p">);</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_DWithin</span><span class="p">(</span>
+<span class="w">           </span><span class="n">geom</span><span class="p">,</span>
+<span class="w">           </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(-43.59 -20.32)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">),</span>
+<span class="w">           </span><span class="mi">2</span><span class="p">.</span><span class="mi">0</span>
+<span class="w">       </span><span class="p">);</span>
 </pre></div>
 </div>
 </details><hr class="docutils" />
@@ -225,7 +228,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246a864910>
+<jinja2.runtime.BlockReference object at 0x7fe22e39bca0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

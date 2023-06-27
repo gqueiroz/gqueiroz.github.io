@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>4.6. Busca dos Vizinhos Mais Próximos &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -39,12 +37,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../index.html" class="icon icon-home"> BDGeo
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -71,8 +73,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -104,9 +107,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais</a> &raquo;</li>
-      <li><span class="section-number">4.6. </span>Busca dos Vizinhos Mais Próximos</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.6. </span>Busca dos Vizinhos Mais Próximos</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -126,20 +129,20 @@
 <p>Apesar do SP-GiST possibilitar a realização de buscas de vizinhança, a implementação do índice para o tipo geométrico do PostGIS não possui suporte a esse operador.</p>
 </div>
 <p>Vamos considerar a tabela <code class="docutils literal notranslate"><span class="pre">pts_pgis</span></code> novamente. Nessa tabela as linhas são identificadas por um UUID. Suponha que exista uma linha com <code class="docutils literal notranslate"><span class="pre">id</span></code> igual a <code class="docutils literal notranslate"><span class="pre">b3d0a686-5a7d-4567-a797-5450439a3d73</span></code>. Poderíamos calcular os 10 vizinhos mais próximos desse ponto através da seguinte consulta:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">WITH</span><span class="w"> </span><span class="n">localizacao</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
-<span class="w">    </span><span class="p">(</span><span class="w"></span>
-<span class="w">        </span><span class="k">SELECT</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="w">          </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
-<span class="w">         </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span><span class="w"></span>
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">WITH</span><span class="w"> </span><span class="n">localizacao</span><span class="w"> </span><span class="k">AS</span>
+<span class="w">    </span><span class="p">(</span>
+<span class="w">        </span><span class="k">SELECT</span><span class="w"> </span><span class="n">geom</span>
+<span class="w">          </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span>
+<span class="w">         </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span>
+<span class="w">    </span><span class="p">)</span>
 
-<span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Distance</span><span class="p">(</span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">distancia</span><span class="w"></span>
+<span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Distance</span><span class="p">(</span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">distancia</span>
 
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span>
 
-<span class="hll"><span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span><span class="w"></span>
+<span class="hll"><span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span>
 </span>
-<span class="hll"><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="w"> </span><span class="o">&lt;-&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">)</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span><span class="w"></span>
+<span class="hll"><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="w"> </span><span class="o">&lt;-&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">)</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span>
 </span></pre></div>
 </div>
 <p>Saída:</p>
@@ -159,22 +162,22 @@
 </pre></div>
 </div>
 <p>Vamos ver como essa consulta é realizada:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span>
 
-<span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">localizacao</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
-<span class="w">        </span><span class="p">(</span><span class="w"></span>
-<span class="w">            </span><span class="k">SELECT</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="w">              </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
-<span class="w">             </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span><span class="w"></span>
-<span class="w">        </span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">localizacao</span><span class="w"> </span><span class="k">AS</span>
+<span class="w">        </span><span class="p">(</span>
+<span class="w">            </span><span class="k">SELECT</span><span class="w"> </span><span class="n">geom</span>
+<span class="w">              </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span>
+<span class="w">             </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span>
+<span class="w">        </span><span class="p">)</span>
 
-<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Distance</span><span class="p">(</span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">distancia</span><span class="w"></span>
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Distance</span><span class="p">(</span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">distancia</span>
 
-<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span>
 
-<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span><span class="w"></span>
+<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">&#39;b3d0a686-5a7d-4567-a797-5450439a3d73&#39;</span>
 
-<span class="w">    </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="w"> </span><span class="o">&lt;-&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">)</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pts_pgis</span><span class="mf">.</span><span class="n">geom</span><span class="w"> </span><span class="o">&lt;-&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">localizacao</span><span class="p">)</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -218,7 +221,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246b2b00d0>
+<jinja2.runtime.BlockReference object at 0x7fe22d73eb50>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

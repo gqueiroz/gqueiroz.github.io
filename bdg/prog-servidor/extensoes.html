@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>7.4. Extensões &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -38,12 +36,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../index.html" class="icon icon-home"> BDGeo
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -69,8 +71,9 @@
 <li class="toctree-l2"><a class="reference internal" href="exercicios.html">7.6. Exercícios</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -102,9 +105,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
-      <li><span class="section-number">7.4. </span>Extensões</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.4. </span>Extensões</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -120,106 +123,106 @@
 <span id="prog-servidor-extensoes"></span><h1><span class="section-number">7.4. </span>Extensões<a class="headerlink" href="#extensoes" title="Link permanente para este cabeçalho"></a></h1>
 <p>Esta seção apresenta um exemplo simples de como criar um novo tipo de dados para representação de coordenadas geográficas.</p>
 <p><strong>1.</strong> Criando um tipo denominado <code class="docutils literal notranslate"><span class="pre">geo_point</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="n">geo_point</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
-<span class="p">(</span><span class="w"></span>
-<span class="w">  </span><span class="n">x</span><span class="w">    </span><span class="nb">REAL</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">y</span><span class="w">    </span><span class="nb">REAL</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">srid</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="n">geo_point</span><span class="w"> </span><span class="k">AS</span>
+<span class="p">(</span>
+<span class="w">  </span><span class="n">x</span><span class="w">    </span><span class="nb">REAL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">y</span><span class="w">    </span><span class="nb">REAL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">srid</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>2.</strong> Criando uma tabela para armazenar a localização de escolas de primeiro e segundo grau:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">escolas</span><span class="w"></span>
-<span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">gid</span><span class="w">         </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">nome</span><span class="w">        </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span><span class="w"></span>
-<span class="w">    </span><span class="n">localizacao</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">escolas</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">gid</span><span class="w">         </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nome</span><span class="w">        </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">localizacao</span><span class="w"> </span><span class="n">GEO_POINT</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>3.</strong> Inserindo tuplas (linhas ou registros) na tabela <code class="docutils literal notranslate"><span class="pre">escolas</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">escolas</span><span class="w"> </span><span class="p">(</span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">localizacao</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Escola Estadual Arlindo Bittencourt&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-47.88497, -22.02557, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">),</span><span class="w"></span>
-<span class="w">            </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Colégio Arquidiocesano de Ouro Preto&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-43.51592, -20.38144, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">),</span><span class="w"></span>
-<span class="w">            </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Instituto São José&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-45.90245, -23.20000, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">escolas</span><span class="w"> </span><span class="p">(</span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">localizacao</span><span class="p">)</span>
+<span class="w">     </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Escola Estadual Arlindo Bittencourt&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-47.88497, -22.02557, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">),</span>
+<span class="w">            </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Colégio Arquidiocesano de Ouro Preto&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-43.51592, -20.38144, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">),</span>
+<span class="w">            </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Instituto São José&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-45.90245, -23.20000, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>4.</strong> Recuperando as tuplas da tabela <code class="docutils literal notranslate"><span class="pre">escolas</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">escolas</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">escolas</span><span class="p">;</span>
 </pre></div>
 </div>
 <p><strong>5.</strong> Criando uma função para computar a distância entre dois pontos no plano cartesiano:</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">distance</span><span class="p">(</span><span class="k">first</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"> </span><span class="k">second</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="nb">REAL</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">$$</span><span class="w"></span>
-<span class="w">    </span><span class="k">DECLARE</span><span class="w"></span>
-<span class="w">        </span><span class="n">dx</span><span class="w"> </span><span class="nb">REAL</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="n">dy</span><span class="w"> </span><span class="nb">REAL</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">BEGIN</span><span class="w"></span>
-<span class="w">        </span><span class="n">dx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">first</span><span class="mf">.</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">second</span><span class="mf">.</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">distance</span><span class="p">(</span><span class="k">first</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"> </span><span class="k">second</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">)</span>
+<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="nb">REAL</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">$$</span>
+<span class="w">    </span><span class="k">DECLARE</span>
+<span class="w">        </span><span class="n">dx</span><span class="w"> </span><span class="nb">REAL</span><span class="p">;</span>
+<span class="w">        </span><span class="n">dy</span><span class="w"> </span><span class="nb">REAL</span><span class="p">;</span>
+<span class="w">    </span><span class="k">BEGIN</span>
+<span class="w">        </span><span class="n">dx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">first</span><span class="mf">.</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">second</span><span class="mf">.</span><span class="n">x</span><span class="p">);</span>
 
-<span class="w">        </span><span class="n">dy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">first</span><span class="mf">.</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">second</span><span class="mf">.</span><span class="n">y</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">dy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">first</span><span class="mf">.</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">second</span><span class="mf">.</span><span class="n">y</span><span class="p">);</span>
 
-<span class="w">        </span><span class="k">RETURN</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dy</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">END</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="s">$$</span><span class="w"></span>
-<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">RETURN</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dy</span><span class="p">);</span>
+<span class="w">    </span><span class="k">END</span><span class="p">;</span>
+<span class="w">    </span><span class="s">$$</span>
+<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span>
 </pre></div>
 </div>
 <p><strong>6.</strong> Utilizando a função <code class="docutils literal notranslate"><span class="pre">distance</span></code> para computar a distância entre dois pontos:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">distance</span><span class="p">(</span><span class="s1">&#39;(1, 1, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(2, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">distance</span><span class="p">(</span><span class="s1">&#39;(1, 1, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(2, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>7.</strong> Criando um operador para comparação entre dois pontos:</p>
 <ol class="loweralpha simple">
 <li><p>Criação da função de comparação:</p></li>
 </ol>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">less_than</span><span class="p">(</span><span class="k">first</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"> </span><span class="k">second</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="nb">BOOL</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">$$</span><span class="w"></span>
-<span class="w">    </span><span class="k">BEGIN</span><span class="w"></span>
-<span class="w">        </span><span class="k">IF</span><span class="p">(</span><span class="k">first</span><span class="mf">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">second</span><span class="mf">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
-<span class="w">            </span><span class="k">RETURN</span><span class="w"> </span><span class="k">TRUE</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">less_than</span><span class="p">(</span><span class="k">first</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"> </span><span class="k">second</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">)</span>
+<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="nb">BOOL</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">$$</span>
+<span class="w">    </span><span class="k">BEGIN</span>
+<span class="w">        </span><span class="k">IF</span><span class="p">(</span><span class="k">first</span><span class="mf">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">second</span><span class="mf">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span>
+<span class="w">            </span><span class="k">RETURN</span><span class="w"> </span><span class="k">TRUE</span><span class="p">;</span>
+<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span>
 
-<span class="w">        </span><span class="k">IF</span><span class="p">(</span><span class="k">first</span><span class="mf">.</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">second</span><span class="mf">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
-<span class="w">            </span><span class="k">RETURN</span><span class="w"> </span><span class="k">FALSE</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">IF</span><span class="p">(</span><span class="k">first</span><span class="mf">.</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">second</span><span class="mf">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span>
+<span class="w">            </span><span class="k">RETURN</span><span class="w"> </span><span class="k">FALSE</span><span class="p">;</span>
+<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span>
 
-<span class="w">        </span><span class="k">IF</span><span class="p">(</span><span class="k">first</span><span class="mf">.</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">second</span><span class="mf">.</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
-<span class="w">            </span><span class="k">RETURN</span><span class="w"> </span><span class="k">TRUE</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">IF</span><span class="p">(</span><span class="k">first</span><span class="mf">.</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">second</span><span class="mf">.</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span>
+<span class="w">            </span><span class="k">RETURN</span><span class="w"> </span><span class="k">TRUE</span><span class="p">;</span>
+<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span>
 
-<span class="w">        </span><span class="k">RETURN</span><span class="w"> </span><span class="k">FALSE</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">END</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="s">$$</span><span class="w"></span>
-<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">RETURN</span><span class="w"> </span><span class="k">FALSE</span><span class="p">;</span>
+<span class="w">    </span><span class="k">END</span><span class="p">;</span>
+<span class="w">    </span><span class="s">$$</span>
+<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span>
 </pre></div>
 </div>
 <ol class="loweralpha simple" start="2">
 <li><p>A função acima poderia ser utilizada da seguinte forma:</p></li>
 </ol>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">less_than</span><span class="p">(</span><span class="s1">&#39;(1, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(10, 20, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">less_than</span><span class="p">(</span><span class="s1">&#39;(1, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(10, 20, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">);</span>
 </pre></div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">less_than</span><span class="p">(</span><span class="s1">&#39;(1, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-1, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">less_than</span><span class="p">(</span><span class="s1">&#39;(1, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-1, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">);</span>
 </pre></div>
 </div>
 <ol class="loweralpha simple" start="3">
 <li><p>Criando o operador associado à função de comparação:</p></li>
 </ol>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OPERATOR</span><span class="w"> </span><span class="o">&lt;</span><span class="w"></span>
-<span class="p">(</span><span class="w"></span>
-<span class="w">  </span><span class="n">leftarg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">rightarg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="k">procedure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">less_than</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">commutator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">negator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OPERATOR</span><span class="w"> </span><span class="o">&lt;</span>
+<span class="p">(</span>
+<span class="w">  </span><span class="n">leftarg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">,</span>
+<span class="w">  </span><span class="n">rightarg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GEO_POINT</span><span class="p">,</span>
+<span class="w">  </span><span class="k">procedure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">less_than</span><span class="p">,</span>
+<span class="w">  </span><span class="n">commutator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&gt;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">negator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&gt;=</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 <ol class="loweralpha simple" start="4">
 <li><p>Utilizando a função <code class="docutils literal notranslate"><span class="pre">less_than</span></code> através do operador <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>:</p></li>
 </ol>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;(1, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="s1">&#39;(10, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;(1, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="s1">&#39;(10, 2, 4326)&#39;</span><span class="p">::</span><span class="n">GEO_POINT</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
@@ -239,7 +242,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246ad71790>
+<jinja2.runtime.BlockReference object at 0x7fe22f965be0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

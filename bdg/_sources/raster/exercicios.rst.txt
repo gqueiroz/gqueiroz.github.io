@@ -1,0 +1,81 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. _cap_raster_exercicios:
+
+
+Exercícios
+==========
+
+
+.. warning::
+
+    .. rst-class:: open
+
+    - Os exercícios práticos devem ser desenvolvidos em SQL ou PL/pgSQL ou PL/Python.
+
+    - Escreva a documentação que achar pertinente dentro do próprio código fonte, que deverá utilizar a codificação de caracteres ``UTF-8``.
+
+    - A solução de cada exercício deverá ser entregue em arquivos de código fonte com a extensão ``.sql``. 
+
+    - Envie por e-mail **um único** arquivo no **formato zip**, chamado ``lista-02.zip``, contendo todos os arquivos de código fonte dos exercícios.
+
+    - O título (assunto) do e-mail deve seguir o seguinte padrão: ``[geoinformatica-2023][lista-02] nome-aluno``. Exemplo: ``[geoinformatica-2023][lista-02] gilberto``.
+
+    - Não use acentos ou caracteres especiais nos nomes dos arquivos ou no título do e-mail.
+
+    - **Prazo para entrega:** 30/06/2023 - 12:00
+
+
+-----
+
+
+**Exercício 01.** Baixe duas cenas Sentinel-2 L2A no site https://data.inpe.br/sentinel-hub. Em seguida, importe as seguintes bandas de 10m para tabelas de um banco de dados PostgreSQL com a extensão PostGIS Raster: *Green* (B3), *Red* (B4) e *NIR* (B8). Deverão ser criadas duas tabelas, uma para cada imagem, e cada dessas tabelas deverá conter as três bandas espectrais. Você deverá entregar como resultado o nome da cena das imagens utilizadas (ex: ``S2A_MSIL2A_20220523T143731_N0400_R096_T20LKQ_20220523T220712``) e um arquivo texto contendo a sequência de instruções utilizadas para realizar a carga de dados no PostgreSQL.
+
+
+.. warning::
+
+    Você não deve enviar o arquivo SQL contendo a imagem formatada de acordo com o tipo ``raster``.
+
+
+-----
+
+
+**Exercício 02.** Considere as equações dos seguintes índices espectrais:
+
+
+- NDWI:
+
+    .. math::
+        :label: :eq:raster:exercicios:ndwi
+
+        NDWI = \frac{(X_{green} - X_{nir})}{(X_{green} + X_{nir})}
+
+
+    onde: :math:`X_{green}` refere-se à banda espectral da faixa do verde e :math:`X_{nir}` refere-se à banda do infravermelho próximo.
+
+    .. note::
+
+        A equação acima pode ser encontrada em :cite:`mcfeeters:1996`.
+
+
+- NDVI:
+
+    .. math::
+        :label: :eq:raster:exercicios:ndvi
+
+        NDVI = \frac{(X_{nir} - X_{red})}{(X_{nir} + X_{red})}
+
+
+    onde: :math:`X_{red}` refere-se à banda espectral da faixa do vermelho e :math:`X_{nir}` refere-se à banda do infravermelho próximo.
+
+
+De acordo com as equações acima, crie novas tabelas *raster* contendo apenas esses índices a partir das imagens importadas no **Exercício 01**. Você deverá entregar os comandos utilizados para criação das novas tabelas com esses índices.
+
+
+-----
+
+
+**Exercício 03.** Criar um mosaico de 04 cenas adjacentes do modelo digital de elevação fornecido pelo `TOPODATA <http://www.dsr.inpe.br/topodata/>`__. Faça também algum tipo de consulta sobre esses dados. Você deverá entregar os comandos utilizados para criação desse mosaico assim com da consulta proposta.

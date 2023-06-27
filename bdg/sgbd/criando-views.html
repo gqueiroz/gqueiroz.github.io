@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2.19. Criando Views &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -38,12 +36,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../index.html" class="icon icon-home"> BDGeo
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -87,8 +89,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -120,9 +123,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
-      <li><span class="section-number">2.19. </span>Criando Views</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2.19. </span>Criando Views</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -146,14 +149,14 @@
 <p>A sintaxe completa do comando de criação de visões pode ser vista no manual do PostgreSQL: <a class="reference external" href="https://www.postgresql.org/docs/14/sql-createview.html">CREATE VIEW</a>.</p>
 </div>
 <p>Vamos criar uma <em>view</em> chamada <code class="docutils literal notranslate"><span class="pre">professor_disciplina</span></code> que nos forneça uma forma rápida de referenciar a lista de disciplinas por professor:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="w"> </span><span class="k">AS</span>
 
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="o">*</span><span class="w"></span>
-<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="o">*</span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="p">.</span><span class="n">codigo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disciplina</span><span class="p">.</span><span class="n">professor_codigo</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Agora, podemos utilizar essa função em uma consulta SQL do tipo <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> como mostrado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -173,9 +176,9 @@
 </pre></div>
 </div>
 <p>Podemos também utilizar a cláusulo <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> para selecionar linhas específicas retornadas pela <em>view</em>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="w"></span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Romildo&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Karine&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Carolina&#39;</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor_disciplina</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Romildo&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Karine&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Carolina&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -190,8 +193,8 @@
 </pre></div>
 </div>
 <p>Uma <em>view</em> é tratada como uma subconsulta ou tabela, de modo que podemos faezr junções também:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">professor_disciplina</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -228,7 +231,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246b2917f0>
+<jinja2.runtime.BlockReference object at 0x7fe22e3bc790>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

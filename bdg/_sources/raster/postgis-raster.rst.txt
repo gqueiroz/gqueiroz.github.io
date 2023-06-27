@@ -1,0 +1,1599 @@
+..
+    This file is part of "Notas de Aula do Curso Bancos de Dados Geográficos".
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. include:: ../def.rst
+
+
+.. _cap_raster_postgis_raster:
+
+PostGIS Raster
+==============
+
+
+A extensão PostGIS Raster do SGBD PostgreSQL, lançada oficialmente em 2012, possibilita armazenar no banco de dados imagens como as de sensoriamento remoto. Esta extensão fornece um novo tipo de dados denominado ``raster`` com operações que possibilitam desde a manipulação dos valores dos pixels de uma banda até a realização de álgebra de mapas. 
+
+
+O tipo ``raster`` permite usar duas estratégias de armazenamento. A primeira, denominada **in-db**, consiste em carregar a imagem para dentro de uma tabela do banco de dados. A segunda, denominada **out-db**, consiste em armazenar apenas metadados básicos da imagem dentro de uma tabela do banco de dados, mantedo assim, uma referência para a localização dessa imagem. Nessa última estratégia, a localização pode ser um endereço válido no sistema de arquivos do servidor PostgreSQL ou até mesmo o endereço da imagem em um sistema de armazenamento de nuvem como o S3 da AWS.
+
+
+Habilitando a extensão PostGIS Raster
+-------------------------------------
+
+
+Se a extensão ``postgis_raster`` encontra-se instalada corretamente em seu sistema, ela será listada na visão ``pg_available_extensions``, como mostrado no resultado da consulta abaixo:
+
+
+.. code-block:: postgresql
+
+    SELECT * FROM pg_available_extensions WHERE name LIKE 'postgis_raster%';
+
+
+Saída:
+
+
+.. code-block:: text
+    :emphasize-lines: 3
+
+           name       | default_version | installed_version |              comment               
+    ------------------+-----------------+-------------------+------------------------------------
+     postgis_raster-3 | 3.3.1           |                   | PostGIS raster types and functions
+    (1 row)
+
+
+Para que seja possível utilizar o tipo ``raster``, devemos carregar a extensão PostGIS Raster através do comando :postgresql:`CREATE EXTENSION` :
+
+
+.. code-block:: postgresql
+
+    CREATE EXTENSION postgis_raster;
+
+
+Após esse comando, a extensão ``postgis_raster`` deverá aparecer na lista de extensões habilitadas para seu banco de dados:
+
+
+.. code-block:: postgresql
+
+    SELECT extname FROM pg_extension ORDER BY extname;
+
+
+Saída:
+
+
+.. code-block:: text
+    :emphasize-lines: 5
+
+        extname     
+    ----------------
+     plpgsql
+     postgis
+     postgis_raster
+    (3 rows)
+
+
+.. _cap_raster_postgis_raster_indb:
+
+Carregando uma Imagem para uma tabela do banco de dados
+-------------------------------------------------------
+
+
+A ferramenta de linha de comando **raster2pgsql** é capaz de transformar um arquivo de imagem em uma sequência de comandos SQL contendo os dados dessa imagem formatados de acordo com o tipo ``raster``. Para exemplificar seu uso, vamos utilizar a cena `S2B_MSIL2A_20221015T130249_N0400_R095_T24LTQ_20221015T164700 <https://data.inpe.br/sentinel-hub/odata/v1/Products('b6c96800-3315-4842-bcad-1544b098b14c')/$value>`__ do Sentinel-2/MSI. Iremos transformar o arquivo ``T24LTQ_20221015T130249_B04_10m.jp2`` com dados da banda 04 (:numref:`Figura %s <fig:raster:postgis-raster:T24LTQ_20221015T130249_B04_10m>`) em um arquivo chamado ``t24ltq.sql``.
+
+
+.. figure:: ../img/raster/postgis-raster/T24LTQ_20221015T130249_B04_10m.png
+    :alt: Imagem T24LTQ_20221015T130249_B04_10m (banda 04 do sendor Sentinel-2/MSI)
+    :width: 80%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:T24LTQ_20221015T130249_B04_10m
+
+    Imagem ``T24LTQ_20221015T130249_B04_10m`` |br| (banda 04 do sensor Sentinel-2/MSI)
+
+
+Esse arquivo, ``t24ltq.sql``, conterá instruções SQL com a imagem de entrada convertida em *tiles* de tamanho :math:`256 \times 256` pixels (:numref:`Figura %s <fig:raster:postgis-raster:raster2pgsql-img-tabela>`). Esses tiles serão armazenados em uma tabela chamada ``t24ltq`` contendo um *tile* por linha (:numref:`Figura %s <fig:raster:postgis-raster:postgis-raster-table>`).
+
+
+.. figure:: ../img/raster/postgis-raster/raster2pgsql-img-tabela.png
+    :alt: Transformando o raster de entrada T24LTQ_20221015T130249_B04_10m.png em tiles de 256 x 256
+    :width: 80%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:raster2pgsql-img-tabela
+
+    Transformando o *raster* de entrada ``T24LTQ_20221015T130249_B04_10m.jp2`` em *tiles* de :math:`256 \times 256` pixels.
+
+
+|br|
+
+
+.. figure:: ../img/raster/postgis-raster/postgis-raster-table.png
+    :alt: Raster T24LTQ_20221015T130249_B04_10m.jp2 importado para uma tabela do banco de dados chamada t24ltq
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:postgis-raster-table
+
+    *Raster* ``T24LTQ_20221015T130249_B04_10m.jp2`` importado para uma tabela do banco de dados chamada ``t24ltq``\ .
+
+
+Para criar o arquivo SQL de carga da imagem no banco, utilize o seguinte comando:
+
+
+.. code-block:: bash
+
+    raster2pgsql -c -C -r -s 32724 -t 256x256 -P -f rast -I -M -N 0 \
+                 T24LTQ_20221015T130249_B04_10m.jp2 \
+                 public.t24ltq > t24ltq.sql
+
+
+.. note::
+
+    As opções utilizadas no comando acima possuem os seguintes significados:
+
+    .. rst-class:: open
+
+    - ``-c``: Faz com que seja incluído um comando DDL para criação da tabela ``t24ltq``.
+
+        .. code-block:: sql
+    
+            CREATE TABLE "public"."t24ltq"
+            (
+                "rid" serial PRIMARY KEY,
+                "rast" raster
+            );
+
+
+    - ``-C``: Faz com que um comando para definição de restrições sobre a coluna ``raster`` seja incluído ao final do arquivo.
+
+        .. code-block:: sql
+    
+            SELECT AddRasterConstraints('public','t24ltq','rast',
+                                        TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE);
+
+
+    - ``-r``: Indica que deve ser aplicada restrição de blocagem regular à coluna ``raster​``\ ​.
+
+    - ``-s``: Define o sistema de coordenadas de referência da imagem. No caso, o código 32724 corresponde ao CRS ``UTM Zona 24 Sul / Datum WGS84``.
+
+    - ``-t``: Dimensões do *tile* usado na divisão da imagem, no caso, 256 colunas x 256 linhas.
+
+    - ``-P``: Realiza um *pad* nos blocos mais a direita e mais abaixo, para garantir que todos tenham as mesmas dimensões.
+
+    - ``-f``: Nome da coluna do tipo *raster*.
+
+    - ``-I``: Inclui comando para criação do índice espacial sobre a coluna ``raster``.
+
+        .. code-block:: postgresql
+
+            CREATE INDEX ON "public"."t24ltq" USING gist (st_convexhull("rast"));
+        
+            ANALYZE "public"."t24ltq";
+
+
+    - ``-M``: Inclui comando para executar :sql:`VACUUM ANALYZE` na tabela *raster* após todo o processo de carga de dados.​
+
+        .. code-block:: postgresql
+
+            VACUUM ANALYZE "public"."t24ltq";
+
+
+    - ``-N``: Define o valor de *nodata* (ou *missing value*) como zero pois a imagem de entrada não possui essa informação.
+
+
+Após gerar o arquivo ``t24ltq.sql``, podemos carregar seu conteúdo através do seguinte comando::
+
+    psql -U postgres -h localhost -d bdgeo -f t24ltq.sql
+
+
+Visualizando imagens do PostGIS Raster com o QGIS
+-------------------------------------------------
+
+
+O QGIS também possui funcionalidades para visualização de imagens armazenadas no PostgreSQL com a extensão PostGIS Raster. Para visualizar a imagem contida na tabela ``t24ltq``, crie uma fonte de dados associada ao seu servidor PostgreSQL. Para isso, abra o **Data Source Manager** (:numref:`Figura %s <fig:raster:postgis-raster:visualizacao:qgis-datasource-manager>`).
+
+
+.. figure:: ../img/consultas-espaciais/qgis-carga-01.png
+    :alt: Abrindo o Data Source Manager do QGIS
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:visualizacao:qgis-datasource-manager
+
+    Abrindo o Data Source Manager do QGIS.
+
+
+Na janela do **Data Source Manager**, crie uma nova conexão com o servidor PostgreSQL (:numref:`Figura %s <fig:raster:postgis-raster:visualizacao:qgis-pg>`).
+
+
+.. figure:: ../img/consultas-espaciais/qgis-carga-02.png
+    :alt: Nova conexão ao servidor PostgreSQL
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:visualizacao:qgis-pg
+
+    Nova conexão ao servidor PostgreSQL.
+
+
+Na janela que se abre, :numref:`Figura %s <fig:raster:postgis-raster:visualizacao:qgis-pg-conn1>`, entre com o endereço do servidor e as credenciais do usuário para acesso ao servidor.
+
+
+.. figure:: ../img/consultas-espaciais/qgis-carga-03.png
+    :alt: Configurando a conexão ao servidor PostgreSQL
+    :width: 60%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:visualizacao:qgis-pg-conn1
+
+    Configurando a conexão ao servidor PostgreSQL.
+
+
+Se as informações estiverem corretas, o teste de conexão apresentará uma mensagem de sucesso, como na :numref:`Figura %s <fig:raster:postgis-raster:visualizacao:qgis-pg-conn2>`.
+
+
+.. figure:: ../img/consultas-espaciais/qgis-carga-04.png
+    :alt: Conexão ao servidor PostgreSQL configurada corretamente
+    :width: 60%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:visualizacao:qgis-pg-conn2
+
+    Conexão ao servidor PostgreSQL configurada corretamente.
+
+
+Novamente na janela do **Data Source Manager**, selecione a opção conectar (:numref:`Figura %s <fig:raster:postgis-raster:visualizacao:qgis-pg-conn3>`) para que a tabela com a coluna ``raster`` seja listada (:numref:`Figura %s <fig:raster:postgis-raster:visualizacao:qgis-pg-conn4>`).
+
+
+.. figure:: ../img/consultas-espaciais/qgis-carga-05.png
+    :alt: Conectando ao PostgreSQL
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:visualizacao:qgis-pg-conn3
+
+    Conectando ao PostgreSQL.
+
+
+.. figure:: ../img/raster/qgis/qgis-datasource-manager-raster-layers.png
+    :alt: Lista de camadas raster
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:visualizacao:qgis-pg-conn4
+
+    Lista de camadas *raster*.
+
+
+Ao adicionar a camada com o *raster*, você deverá visualizá-lo como mostrado na :numref:`Figura %s <fig:raster:postgis-raster:visualizacao:qgis-raster-layer>`
+
+.. figure:: ../img/raster/qgis/qgis-view-postgis-raster-layer.png
+    :alt: Visualização de uma tabela contendo um raster
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:visualizacao:qgis-raster-layer
+
+    Visualização de uma tabela contendo um raster
+
+
+Índice Espacial
+---------------
+
+
+Ao importar a imagem ``T24LTQ_20221015T130249_B04_10m.jp2`` (:numref:`Figura %s <fig:raster:postgis-raster:T24LTQ_20221015T130249_B04_10m>`) para o banco de dados, foi criado um índice espacial para os *tiles* da imagem, com base no envoltório convexo de cada *tile*. Os comandos SQL mostrados abaixo, incluídos no arquivo ``t24ltq.sql``, realizam, respectivamente, a criação do índice espacial e atualização das estatísticas sobre a tabela no catálogo do sistema de banco de dados.
+
+
+.. code-block:: postgresql
+
+    CREATE INDEX ON "public"."t24ltq" USING gist (st_convexhull("rast"));
+
+    ANALYZE "public"."t24ltq";
+
+
+Para visualizar as geometrias usadas para criação do índice, vamos criar uma tabela auxiliar e populá-la com o envoltório convexo da coluna ``raster``:
+
+
+.. code-block:: postgresql
+
+    CREATE TABLE hull
+    (
+        gid INTEGER PRIMARY KEY,
+        geom GEOMETRY(POLYGON, 32724)
+    );
+
+    INSERT INTO hull (SELECT rid, ST_ConvexHull(rast) FROM t24ltq);
+
+    CREATE INDEX hull_geom_idx ON hull USING GIST(geom);
+
+
+A tabela criada, chamada ``hull``, poderá então ser visualizada no QGIS (:numref:`Figura %s <fig:raster:postgis-raster:visualizacao:indice-espacial>`).
+
+
+.. figure:: ../img/raster/sam/qgis-postgis-raster.png
+    :alt: Geometrias contendo o envoltório convexo de cada tile da tabela t24ltq
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:visualizacao:indice-espacial
+
+    Geometrias contendo o envoltório convexo de cada *tile* da tabela ``t24ltq``\ .
+
+
+Criando Imagens com Overviews
+-----------------------------
+
+
+A extensão PostGIS Raster também possibilita a criação de **pirâmides de multi-resolução** ou **overviews**, recurso muito utilizado para acelerar a visualização de imagens por parte das aplicações. Quando carregamos uma imagem do disco para uma tabela do banco de dados usando este recurso, outras tabelas auxiliares, com os *overviews*, são criadas. No comando *raster2pgsql*, a opção ``-l`` permite especificar os níveis da pirâmide multiresolução desejados. 
+
+
+Para exemplificar a criação de *overviews*, vamos carregar novamente a imagem ``T24LTQ_20221015T130249_B04_10m.jp2`` (:numref:`Figura %s <fig:raster:postgis-raster:T24LTQ_20221015T130249_B04_10m>`) com ajuda da ferramenta *raster2pgsql* mas incluindo a opção ``-l``:
+
+
+.. code-block:: bash
+
+    raster2pgsql -c -C -r -s 32724 -t 256x256 -P -f rast -I -M -N 0 -l 2,4,8,16 \
+                 T24LTQ_20221015T130249_B04_10m.jp2 \
+                 public.t24ltq_v2 > t24ltq_v2.sql
+
+
+Dessa vez, além da tabela ``t24ltq_v2``, foram criadas as tabelas contendo os *tiles* de cada nível da pirâmide multiresolução: ``o_2_t24ltq_v2``, ``o_4_t24ltq_v2``, ``o_8_t24ltq_v2``, ``o_16_t24ltq_v2``\ .
+
+
+Todos os *tiles* tanto na tabela principal da imagem quanto nas tabelas com os *overviews* possuem o mesmo tamanho: :math:`256 \times 256`. No entanto, a cada nível teremos um número menor de blocos, como podemos verificar com as consultas abaixo:
+
+.. rst-class:: open
+
+- Realizando a contagem de blocos do raster na resolução primária:
+
+    .. code-block:: sql
+
+        SELECT COUNT(*) FROM t24ltq_v2;
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         count 
+        -------
+          1418
+        (1 row)
+
+
+- Nível 1:
+
+    .. code-block:: sql
+
+        SELECT COUNT(*) FROM o_2_t24ltq_v2;
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         count 
+        -------
+           484
+        (1 row)
+
+
+- Nível 2:
+
+    .. code-block:: sql
+
+        SELECT COUNT(*) FROM o_4_t24ltq_v2;
+
+
+    Saída:
+
+    .. code-block:: text
+
+         count 
+        -------
+           121
+        (1 row)
+
+
+- Nível 3:
+
+    .. code-block:: sql
+
+        SELECT COUNT(*) FROM o_8_t24ltq_v2;
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         count 
+        -------
+            36
+        (1 row)
+
+
+- Nível 4:
+
+    .. code-block:: sql
+
+        SELECT COUNT(*) FROM o_16_t24ltq_v2;
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         count 
+        -------
+             9
+        (1 row)
+
+
+Visões com Metadados Raster
+---------------------------
+
+
+Ao carregar a extensão PostGIS Raster, duas novas visões são criadas no banco de dados:
+
+.. rst-class:: open
+
+- ``raster_columns``: Contém a lista de todas as colunas *raster* em tabelas do banco de dados.
+
+
+    .. table::
+        :name: tbl:raster:postgis-raster:raster_columns
+        :header-alignment: center center center
+        :column-alignment: left left left
+        
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        | nome visão: **raster_columns**                                                                                                              +
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        | colunas           | tipo de dados      | descrição                                                                                          |
+        +===================+====================+====================================================================================================+
+        +  r_table_catalog  + name               +  nome do banco de dados onde a tabela com a coluna *raster* se encontra                            |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  r_table_schema   + name               +  nome do esquema onde a tabela com a coluna *raster* se encontra                                   |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+       
+        +  r_table_name     + name               +  nome da tabela contendo a coluna *raster*                                                         |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  r_raster_column  + name               +  nome da coluna *raster*                                                                           |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  srid             + integer            +  CRS da coluna *raster*, deve ser um valor válido da coluna ``srid`` na tabela ``spatial_ref_sys`` |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  scale_x          + double precision   +  resolução do pixel no eixo-x                                                                      |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  scale_y          + double precision   +  resolução do pixel no eixo-y                                                                      |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  blocksize_x      + integer            +  largura do *tile* (número de pixels)                                                              |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  blocksize_y      + integer            +  altura do *tile* (número de pixels)                                                               |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  same_alignment   + boolean            +                                                                                                    |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  regular_blocking + boolean            +                                                                                                    |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  num_bands        + integer            + Número de bandas em cada *tile* do *raster*                                                        | 
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  pixel_types      + text[]             +                                                                                                    |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  nodata_values    + double precision[] +                                                                                                    |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  out_db           + boolean[]          + Vetor indicando se as bandas são mantidas dentro ou fora do banco de dados                         |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+        +  extent           + geometry           + Retângulo envolvente de todas as linhas da tabela com a coluna *raster*                            |
+        +  spatial_index    + boolean            + O valor ``TRUE`` indica que a coluna ``raster`` possui um índice espacial criado                   |
+        +-------------------+--------------------+----------------------------------------------------------------------------------------------------+
+
+
+    Vamos consultar a *view* ``raster_columns``:
+
+
+    .. code-block:: sql
+    
+        SELECT * FROM raster_columns;
+        
+    
+    Saída:
+    
+    
+    .. code-block:: text
+
+        -[ RECORD 1 ]----+----------------------------------
+        r_table_catalog  | bdgeo
+        r_table_schema   | public
+        r_table_name     | t24ltq
+        r_raster_column  | rast
+        srid             | 32724
+        scale_x          | 10
+        scale_y          | -10
+        blocksize_x      | 256
+        blocksize_y      | 256
+        same_alignment   | t
+        regular_blocking | t
+        num_bands        | 1
+        pixel_types      | {16BUI}
+        nodata_values    | {NULL}
+        out_db           | {f}
+        extent           | 0103000020D47F0000010000000500...
+        spatial_index    | t
+
+
+- ``raster_overviews``: contém metadados das tabelas com colunas *raster* usadas como *overviews*.
+
+
+    .. table::
+        :name: tbl:raster:postgis-raster:raster_overviews
+        :header-alignment: center center center
+        :column-alignment: left left left
+        
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+        | nome visão: **raster_columns**                                                                                                      +
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+        | colunas           | tipo de dados  | descrição                                                                                      |
+        +===================+================+================================================================================================+
+        + o_table_catalog   + name           +  nome do banco de dados onde a tabela de *overview* se encontra                                |
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+        + o_table_schema    + name           +  nome do esquema onde a tabela de *overview* se encontra                                       |
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+        + o_table_name      + name           +  nome da tabela de *overview* contendo a coluna *raster*                                       |
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+        + o_raster_column   + name           +  nome da coluna *raster* na tebale de *overview*                                               |
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+        + r_table_catalog   + name           +  nome do banco de dados onde se encontra a tabela *raster* para a qual o *overview* foi criado |
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+        + r_table_schema    + name           +  nome do esquema onde se encontra a tabela *raster* para a qual o *overview* foi criado        |
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+        + r_table_name      + name           +  nome da tabela *raster* para a qual o *overview* foi criado                                   |
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+        + r_raster_column   + name           +  nome da coluna *raster* para a qual o *overview* foi criado                                   |
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+        + overview_factor   + integer        +  nível da pirâmide                                                                             |
+        +-------------------+----------------+------------------------------------------------------------------------------------------------+
+
+    Vamos consultar a *view* ``raster_columns``:
+
+
+    .. code-block:: sql
+    
+        SELECT * FROM raster_overviews;
+        
+    
+    Saída:
+    
+    
+    .. code-block:: text
+    
+         o_table_catalog | o_table_schema |  o_table_name  | o_raster_column | r_table_catalog | r_table_schema | r_table_name | r_raster_column | overview_factor 
+        -----------------+----------------+----------------+-----------------+-----------------+----------------+--------------+-----------------+-----------------
+         bdgeo           | public         | o_2_t24ltq_v2  | rast            | bdgeo           | public         | t24ltq_v2    | rast            |               2
+         bdgeo           | public         | o_4_t24ltq_v2  | rast            | bdgeo           | public         | t24ltq_v2    | rast            |               4
+         bdgeo           | public         | o_8_t24ltq_v2  | rast            | bdgeo           | public         | t24ltq_v2    | rast            |               8
+         bdgeo           | public         | o_16_t24ltq_v2 | rast            | bdgeo           | public         | t24ltq_v2    | rast            |              16
+        (4 rows)
+
+
+Operações com o Tipo Raster
+---------------------------
+
+
+**Consulta 01.** Descobrindo o tamanho do bloco (largura x altura), resolução espacial, SRID e valor de *nodata* (ou *missing value*) do *tile* de ID 687 da tabela ``t24ltq``:
+
+
+.. collapse:: Solução:
+
+    .. code-block:: sql
+
+        SELECT ST_Width(rast) AS tile_width,
+               ST_Height(rast) AS tile_height,
+               ST_PixelWidth(rast) AS res_x,
+               ST_PixelHeight(rast) AS res_y,
+               ST_SRID(rast) AS srid,
+               ST_BandNoDataValue(rast, 1) AS nodata
+
+          FROM t24ltq
+
+         WHERE rid = 687;
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         tile_width | tile_height | res_x | res_y | srid  | nodata 
+        ------------+-------------+-------+-------+-------+--------
+                256 |         256 |    10 |    10 | 32724 |      0
+        (1 row)
+
+
+-----
+
+
+**Consulta 02.** Obtendo estatísticas sobre o *tile* de ID 687 na tabela ``t24ltq``:
+
+
+.. collapse:: Solução:
+
+
+    .. code-block:: sql
+
+        --
+        -- Estatísticas básicas da banda 01
+        --
+        SELECT rid, (ST_SummaryStats(rast, 1)).*
+        
+          FROM t24ltq
+
+         WHERE rid = 687;
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         rid | count |    sum    |        mean        |       stddev       | min  | max  
+        -----+-------+-----------+--------------------+--------------------+------+------
+         687 | 65536 | 162503031 | 2479.5994720458984 | 1261.1462832950708 | 1143 | 6724
+        (1 row)
+
+
+    .. note::
+    
+        Repare na notação usada na cláusula :sql:`SELECT`, com :sql:`(ST_SummaryStats(rast, 1)).*`. No PostgreSQL utilizamos a notação :sql:`(objeto).*` para decompor um objeto composto.
+
+
+    .. code-block:: sql
+
+        --
+        -- histograma da banda 01 com 08 faixas
+        --
+        SELECT rid, (ST_Histogram(rast, 1, 8)).*
+        
+          FROM t24ltq
+
+         WHERE rid = 687;
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+         rid |   min    |   max    | count |      percent       
+        -----+----------+----------+-------+--------------------
+         687 |     1143 | 1840.625 | 25200 |     0.384521484375
+         687 | 1840.625 |  2538.25 | 11890 |  0.181427001953125
+         687 |  2538.25 | 3235.875 | 16135 | 0.2462005615234375
+         687 | 3235.875 |   3933.5 |  4768 |      0.07275390625
+         687 |   3933.5 | 4631.125 |  2241 | 0.0341949462890625
+         687 | 4631.125 |  5328.75 |  1504 |      0.02294921875
+         687 |  5328.75 | 6026.375 |  2085 | 0.0318145751953125
+         687 | 6026.375 |     6724 |  1713 | 0.0261383056640625
+        (8 rows)
+
+
+-----
+
+
+**Consulta 03.** Obtendo estatísticas sobre o *raster* armazenado na tabela ``t24ltq``:
+
+
+.. collapse:: Solução:
+
+
+    .. code-block:: sql
+
+        --
+        -- Estatísticas da banda 01 (desconsiderando valores de nodata)
+        -- 
+        SELECT (ST_SummaryStatsAgg(rast, 1, TRUE)).* FROM t24ltq;
+
+
+    Saída:
+
+
+    .. code-block:: text
+
+          count   |     sum      |       mean        |      stddev       | min | max  
+        ----------+--------------+-------------------+-------------------+-----+------
+         90703708 | 209818297682 | 2313.227345479636 | 600.8904215238014 | 588 | 9128
+        (1 row)
+
+
+-----
+
+.. _cap_raster_postgis_raster_consulta_04:
+
+**Consulta 04.** Recortar a imagem contida na tabela ``t24ltq`` pela região definida no *buffer* de coordenadas ``x = 305640.842`` e ``y = 8959237.399``, e raio ``2500 metros`` (:numref:`Figura %s <fig:raster:postgis-raster:clip-buffer>`):
+
+
+.. figure:: ../img/raster/postgis-raster/clip-buffer.png
+    :alt: Buffer de 2500m sobre a imagem contida na tabela t24ltq
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:clip-buffer
+
+    Buffer de 2500m sobre a imagem contida na tabela ``t24ltq``.
+
+
+.. collapse:: Solução:
+
+
+    Antes de fazer o recorte, vamos identificar quais *tiles* possuem interseção com a região definida pelo *buffer*:
+
+
+    .. code-block:: sql
+    
+        WITH buffer(geom) AS (
+            VALUES (ST_Buffer(
+                        ST_SetSRID(
+                            ST_MakePoint(305640.842,8959237.399),
+                            32724
+                        ),
+                        2500,
+                        256)
+                   )
+        )
+
+        SELECT rid
+
+          FROM t24ltq, buffer
+
+         WHERE ST_Intersects(rast, buffer.geom);
+
+
+    Resultado:
+    
+    
+    .. code-block:: text
+    
+         rid 
+        -----
+         447
+         478
+         479
+         480
+         510
+         511
+         512
+        (7 rows)
+
+
+    Visualmente, os sete *tiles* de interesse são representados na :numref:`Figura %s <fig:raster:postgis-raster:buffer-intersected-tiles>`.
+
+
+    .. figure:: ../img/raster/postgis-raster/buffer-intersected-tiles.png
+        :alt: Tiles com interseção com o buffer de interesse
+        :width: 80%
+        :figclass: align-center
+        :name: fig:raster:postgis-raster:buffer-intersected-tiles
+
+        *Tiles* com interseção com o *buffer* de interesse.
+
+
+    Para recortar os *tiles*, podemos usar a função ``ST_Clip``, como mostrado abaixo:
+
+
+    .. code-block:: sql
+
+        CREATE TABLE t24ltq_clipped AS
+
+            WITH buffer(geom) AS (
+                VALUES (ST_Buffer(
+                            ST_SetSRID(
+                                ST_MakePoint(305640.842,8959237.399),
+                                32724
+                            ),
+                            2500,
+                            256)
+                       )
+            )
+
+            SELECT rid, ST_Clip(rast, buffer.geom) AS rast
+
+              FROM t24ltq, buffer
+
+             WHERE ST_Intersects(rast, buffer.geom);
+
+
+    O resultado do comando acima é uma tabela chamada ``t24ltq_clipped`` com o conteúdo apresentado na :numref:`Figura %s <fig:raster:postgis-raster:clip-buffer>`.
+
+
+    .. figure:: ../img/raster/postgis-raster/clipped-tiles.png
+        :alt: Recorte da imagem t24ltq
+        :width: 80%
+        :figclass: align-center
+        :name: fig:raster:postgis-raster:clipped-buffer
+
+        Recorte da imagem ``t24ltq`` por uma geometria de interesse.
+
+
+    Repare que a nova tabela ``t24ltq_clipped`` contém *tiles* com diferentes tamanhos de blocos:
+    
+    
+    .. code-block:: sql
+
+        SELECT ST_Width(rast) AS tile_width,
+                       ST_Height(rast) AS tile_height,
+                       ST_PixelWidth(rast) AS res_x,
+                       ST_PixelHeight(rast) AS res_y,
+                       ST_SRID(rast) AS srid,
+                       ST_BandNoDataValue(rast, 1) AS nodata
+
+          FROM t24ltq_clipped ;
+
+
+    Resultado:
+    
+    
+    .. code-block:: text
+
+         tile_width | tile_height | res_x | res_y | srid  | nodata 
+        ------------+-------------+-------+-------+-------+--------
+                139 |          10 |    10 |    10 | 32724 |      0
+                180 |         256 |    10 |    10 | 32724 |      0
+                256 |         256 |    10 |    10 | 32724 |      0
+                 64 |         183 |    10 |    10 | 32724 |      0
+                180 |         224 |    10 |    10 | 32724 |      0
+                256 |         234 |    10 |    10 | 32724 |      0
+                 64 |         151 |    10 |    10 | 32724 |      0
+        (7 rows)
+
+
+-----
+
+
+**Consulta 05.** Considere as bandas do infravermelho próximo (NIR 1) das imagens Sentinel-2/MSI da cena 21LZF (grade MGRS) dos dias `17/06/2022 <https://data.inpe.br/sentinel-hub/odata/v1/Products('14b71086-bb3f-4c0f-9fbb-ccbe4394cff2')/$value>`__ e `17/06/2023 <https://data.inpe.br/sentinel-hub/odata/v1/Products('e9baafe6-da2a-42a2-88a6-0687daccec99')/$value>`__, mostradas na Figura abaixo. Pede-se:
+
+.. rst-class:: open
+
+- Importe a banda 08, do infravermelho próximo (NIR 1), que possui resolução espacial de 10 metros, de cada imagem para duas tabelas dentro do banco de dados.
+
+- Crie uma terceira tabela denominada ``t21lzf_diff``, a partir de uma consulta SQL, contendo a diferença entre as duas imagens importadas anteriormente.
+
+
+.. carousel::
+    :show_controls:
+    :show_indicators:
+    :show_captions_below:
+    :show_fade:
+    :data-bs-interval: false
+    
+    .. figure:: ../img/raster/postgis-raster/t21lzf_20220617.png
+        :alt: Resolução espacial de 10 metros
+
+        Banda 08 Sentinel-2/MSI<br>17/06/2022
+
+
+    .. figure:: ../img/raster/postgis-raster/t21lzf_20230617.png
+        :alt: Resolução espacial de 60 metros
+
+        Banda 08 Sentinel-2/MSI<br>17/06/2023
+
+
+.. note::
+
+    Essas imagens podem ser obtidas no endereço https://data.inpe.br/sentinel-hub/ com os seguintes identificadores:
+    
+    .. rst-class:: open
+    
+    -  `S2A_MSIL2A_20220617T134721_N0400_R024_T21LZF_20220617T205913 <https://data.inpe.br/sentinel-hub/odata/v1/Products('14b71086-bb3f-4c0f-9fbb-ccbe4394cff2')/$value>`__.
+
+    - `S2B_MSIL2A_20230617T134709_N0509_R024_T21LZF_20230617T180935 <https://data.inpe.br/sentinel-hub/odata/v1/Products('e9baafe6-da2a-42a2-88a6-0687daccec99')/$value>`__.
+
+
+.. collapse:: Solução:
+
+
+    Convertendo as imagens para arquivos contendo as instruções de carga de dados:
+
+
+    .. code-block:: bash
+    
+        raster2pgsql -c -C -r -s 32721 -t 256x256 -P -f rast -I -M -N 0 -l 2,4,8,16 \
+                     T21LZF_20220617T134721_B08_10m.jp2 \
+                     public.t21lzf_20220617 > t21lzf_20220617.sql
+
+
+    .. code-block:: bash
+    
+        raster2pgsql -c -C -r -s 32721 -t 256x256 -P -f rast -I -M -N 0 -l 2,4,8,16 \
+                     T21LZF_20230617T134709_B08_10m.jp2 \
+                     public.t21lzf_20230617 > t21lzf_20230617.sql    
+
+
+    As imagens podem ser carregadas com o *psql*:
+
+
+    .. code-block:: bash
+
+        psql -U postgres -h localhost -d bdgeo -f t21lzf_20220617.sql
+
+
+    .. code-block:: bash
+
+        psql -U postgres -h localhost -d bdgeo -f t21lzf_20230617.sql
+
+
+    A função :postgresql:`ST_MapAlgebra` permite realizar álgebra com dados matriciais a partir de expressões aplicadas aos pixels de dois objetos ``raster``. Uma das versões dessa função, que é sobrecarregada, possui a seguinte sintaxe:
+    
+    
+    .. code-block:: sql
+    
+        raster ST_MapAlgebra(raster rast1, integer nband1,
+                             raster rast2, integer nband2,
+                             text expression,
+                             text pixeltype=NULL,
+                             text extenttype=INTERSECTION,
+                             text nodata1expr=NULL,
+                             text nodata2expr=NULL,
+                             double precision nodatanodataval=NULL);
+    
+    
+    Onde:
+    
+    .. rst-class:: open
+    
+    - ``expression``: Pode ser uma expressão do PostgreSQL envolvendo os dois *rasters*. No caso da diferença, poderíamos utilizar algo como: :postgresql:`'([rast2] - [rast1])'`.
+    
+    - ``pixeltype``: O tipo de dado do pixel resultante. Os possíveis tipo podem ser consultados `aqui <https://postgis.net/docs/RT_ST_BandPixelType.html>`__. No caso de interesse, a diferença poderia capturar valores negativos e positivos usando o tipo ``16BSI`` (16-bit signed integer).
+    
+    - ``extenttype``: Controla a extensão do raster resultante. Como no exemplo os dois *rasters* possuem exatamente a mesma extensão, podemos usar o valor ``FIRST``, que indica o uso da extensão dos blocos do primeiro *raster* na operação.
+    
+    - ``nodata1expr``: Expressão ou valor usado quando o pixel do ``raster1`` é *nodata*. No nosso exemplo, usaremos ``-32768``.
+    
+    - ``nodata2expr``: Expressão ou valor usado quando o pixel do ``raster2`` é *nodata*. No nosso exemplo, usaremos ``-32768``.
+    
+    - ``nodatanodataval``: Expressão ou valor usado quando tanto o pixel do ``raster1`` quanto do ``raster2`` são *nodata*. No nosso exemplo, usaremos ``-32768``.
+
+
+    Considerando que o ``raster1`` será o da data 17/06/2022 e o ``raster2``, o de 17/06/2023, podemos construir a seguinte consulta:
+
+
+    .. code-block:: sql
+
+        CREATE TABLE t21lzf_diff AS
+
+            SELECT  r1.rid, ST_MapAlgebra(r1.rast, 1, r2.rast, 1, '([rast2] - [rast1])', '16BSI', 'FIRST', '(-32768)', '(-32768)', '-99999') AS rast
+
+              FROM t21lzf_20220617 AS r1,
+                   t21lzf_20230617 AS r2
+
+             WHERE  r1.rid = r2.rid;
+
+
+    .. code-block:: sql
+    
+        UPDATE t21lzf_diff SET rast = ST_SetBandNoDataValue(rast, 1, -32768);
+
+
+    .. code-block:: sql
+
+        CREATE INDEX ON "public"."t21lzf_diff" USING gist (st_convexhull("rast"));
+
+        ANALYZE "public"."t21lzf_diff";
+
+
+    .. code-block:: sql
+    
+        SELECT AddRasterConstraints('public','t21lzf_diff','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE);
+
+
+    .. code-block:: sql
+
+        VACUUM ANALYZE "public"."t21lzf_diff";
+
+
+    .. code-block:: sql
+    
+        SELECT * FROM raster_columns WHERE r_table_name = 't21lzf_diff';
+        
+        
+    Como resultado, teremos um *raster* como o mostrado na figura abaixo.
+
+
+    .. carousel::
+        :show_controls:
+        :show_indicators:
+        :show_captions_below:
+        :show_fade:
+        :data-bs-interval: false
+   
+        .. figure:: ../img/raster/postgis-raster/t21lzf_20220617.png
+
+            Banda 08 Sentinel-2/MSI<br>17/06/2022
+
+
+        .. figure:: ../img/raster/postgis-raster/t21lzf_20230617.png
+
+            Banda 08 Sentinel-2/MSI<br>17/06/2023    
+
+
+        .. figure:: ../img/raster/postgis-raster/t21lzf_diff.png
+
+            Imagem diferença entre as cenas 21LZF de 17/06/2023 e 17/06/2022.
+
+
+    Outra expressão que poderíamos adotar é a diferença limitada ao intrevalo :math:`[-1.0, 1.0]`, nesse caso, os pixels da imagem resutante poderiam ser do tipo ``32BF`` (32-bit float):
+
+
+    .. code-block:: sql
+
+        CREATE TABLE t21lzf_diff_norm AS
+
+            SELECT  r1.rid, ST_MapAlgebra(r1.rast, 1, r2.rast, 1, '( ([rast2] - [rast1]) / ([rast1] + [rast2]) )', '32BF', 'FIRST', '(-99999)', '(-99999)', '-99999') AS rast
+
+              FROM t21lzf_20220617 AS r1,
+                   t21lzf_20230617 AS r2
+
+             WHERE  r1.rid = r2.rid;
+
+
+    .. code-block:: sql
+    
+        UPDATE t21lzf_diff_norm SET rast = ST_SetBandNoDataValue(rast, 1, -99999);
+
+
+    .. code-block:: sql
+
+        CREATE INDEX ON "public"."t21lzf_diff_norm" USING gist (st_convexhull("rast"));
+
+        ANALYZE "public"."t21lzf_diff_norm";
+
+
+    .. code-block:: sql
+    
+        SELECT AddRasterConstraints('public','t21lzf_diff_norm','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE);
+
+
+    .. code-block:: sql
+
+        VACUUM ANALYZE "public"."t21lzf_diff_norm";
+
+-----
+
+
+**Consulta 06.** Utilizando o mesmo *buffer* da :ref:`Consulta 04 <cap_raster_postgis_raster_consulta_04>`, forneça a estatística dos pixels delimitados por ele.
+
+
+.. collapse:: Solução:
+
+
+    .. code-block:: sql
+
+        SELECT ( ST_SummaryStatsAgg(rast, 1, TRUE) ).*
+
+          FROM (
+
+                WITH buffer(geom) AS (
+                    VALUES (
+                        ST_Buffer(
+                            ST_SetSRID(
+                                ST_MakePoint(305640.842,8959237.399),
+                                32724
+                            ),
+                            2500,
+                            256
+                        )
+                    )
+                )
+                
+                SELECT rid, ST_Clip(rast, buffer.geom) As rast
+
+                  FROM t24ltq, buffer
+
+                 WHERE ST_Intersects(t24ltq.rast, buffer.geom)
+                 
+        ) AS clipped_raster;
+
+
+    Resultado:
+
+
+    .. code-block:: text
+
+         count  |    sum    |       mean        |      stddev       | min  | max  
+        --------+-----------+-------------------+-------------------+------+------
+         196351 | 469456882 | 2390.906499075635 | 506.3295022640984 | 1158 | 5932
+        (1 row)
+
+
+-----
+
+
+**Consulta 07.** Novamente considerando o *buffer* da :ref:`Consulta 04 <cap_raster_postgis_raster_consulta_04>`, compute quantos pixels possuem valor acima da média (2390.906499075635).
+
+
+.. collapse:: Solução 1:
+
+
+    .. code-block:: sql
+
+        WITH buffer(geom) AS (
+            VALUES (
+                ST_Buffer(
+                    ST_SetSRID(
+                        ST_MakePoint(305640.842,8959237.399),
+                        32724
+                    ),
+                    2500,
+                    256
+                )
+            )
+        )
+
+        SELECT ST_CountAgg(
+                   ST_MapAlgebra(
+                       ST_Clip(rast, buffer.geom),
+                       1,
+                       '8BUI',
+                       'CASE WHEN [rast] >  2390.906499075635 THEN 1 ELSE 0 END' 
+                   ),
+                   1,
+                   TRUE
+               ) AS num_pixels_acima_media
+
+          FROM t24ltq, buffer
+
+         WHERE ST_Intersects(t24ltq.rast, buffer.geom);
+
+
+    Resultado:
+    
+    
+    .. code-block::
+    
+         num_pixels_acima_media 
+        ------------------------
+                          87251
+        (1 row)
+
+
+.. collapse:: Solução 2:
+
+
+    .. code-block:: sql
+    
+        SELECT count(*) AS num_pixels_acima_media
+        
+          FROM (
+
+              WITH buffer(geom) AS (
+                  VALUES (
+                      ST_Buffer(
+                          ST_SetSRID(
+                              ST_MakePoint(305640.842,8959237.399),
+                              32724
+                          ),
+                          2500,
+                          256
+                      )
+                  )
+              )
+
+              SELECT rid, (ST_Intersection(buffer.geom, rast, 1)).val AS value         
+
+                FROM t24ltq, buffer
+
+               WHERE ST_Intersects(t24ltq.rast, buffer.geom) 
+               
+        ) AS pixel_values
+        
+         WHERE value > 2390.906499075635;
+
+
+    Resultado:
+    
+    
+    .. code-block::
+    
+         num_pixels_acima_media 
+        ------------------------
+                          86332
+        (1 row)
+
+
+-----
+
+
+Registrando Imagens do Sistema de Arquivos do Servidor de Bancos de Dados
+-------------------------------------------------------------------------
+
+
+O projeto do PostGIS Raster permite tratar imagens armazenadas em arquivos externos ao banco de dados PostgreSQL. Essa estratégia, denominada **out-db**, consiste em usar o mesmo tipo ``raster`` para referenciar as imagens desses arquivos, como ilustrado nos esquemas das Figuras :numref:`%s <fig:raster:postgis-raster:outdb-1>` e :numref:`%s <fig:raster:postgis-raster:outdb-2>`.
+
+
+.. figure:: ../img/raster/postgis-raster/outdb-1.png
+    :alt: Esquema de armazenamento de imagens externas ao banco de dados PostgreSQL
+    :width: 70%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:outdb-1
+
+    Esquema de armazenamento de imagens externas ao banco de dados PostgreSQL.
+
+
+.. figure:: ../img/raster/postgis-raster/outdb-2.png
+    :alt: Esquema de armazenamento de imagens externas ao banco de dados PostgreSQL
+    :width: 100%
+    :figclass: align-center
+    :name: fig:raster:postgis-raster:outdb-2
+
+    Esquema de armazenamento de imagens externas ao banco de dados PostgreSQL.
+
+
+Habilitando o tratamento de imagens externas
+++++++++++++++++++++++++++++++++++++++++++++
+
+
+Por padrão, as funções que operam sobre o tipo ``raster`` não permitem a manipulação de imagens armazenadas externamente. Para permitir esse acesso, é necessário configurar o servidor PostgreSQL. Temos várias formas de realizar essa configuração:
+
+.. rst-class:: open
+
+- As variáveis de ambiente ``POSTGIS_ENABLE_OUTDB_RASTERS`` e ``POSTGIS_GDAL_ENABLED_DRIVERS`` controlam, respectivamente, o acesso a *rasters* externos e os *drivers* da GDAL que podem ser utilizados nesse acesso.
+
+
+    .. tip::
+    
+        Nos sistemas Linux Ubuntu, essas duas variáveis podem ser incluídas em um arquivo chamado ``environment``, localizado no diretório de configuração do servidor, geralmente, ``/etc/postgresql/POSTGRESQL_VERSION/CLUSTER_NAME/environment``:
+
+        
+        .. code-block:: linux-config
+        
+            POSTGIS_ENABLE_OUTDB_RASTERS = 1
+            
+            POSTGIS_GDAL_ENABLED_DRIVERS = 'ENABLE_ALL'
+
+
+    .. tip::
+    
+        Será necessário reinicializar o servidor caso essas variáveis sejam incluídas após ele ter entrado em funcionamento.
+
+
+- Outra forma de habilitar o uso de *rasters* externos e os *drivers* GDAL é usar o comando ``SET`` na sessão do usuário:
+
+
+    .. code-block:: sql
+    
+        SET postgis.enable_outdb_rasters TO True;
+
+        SET postgis.gdal_enabled_drivers TO 'ENABLE_ALL';
+
+
+- Também podemos configurar essas opções apenas para um banco de dados específico:
+
+
+    .. code-block:: sql
+
+        ALTER DATABASE bdgeo SET postgis.enable_outdb_rasters TO True;
+        
+        ALTER DATABASE bdgeo SET postgis.gdal_enabled_drivers TO 'ENABLE_ALL';
+
+
+- Por último, podemos incluir as opções diretamente no arquivo ``postgresql.conf`` ou usar o comando :postgresql:`ALTER SYSTEM` para editar o arquivo de configuração auxiliar ``postgres.auto.conf``:
+
+
+    .. code-block:: sql
+
+        ALTER SYSTEM SET postgis.enable_outdb_rasters TO True;
+        
+        ALTER SYSTEM SET postgis.gdal_enabled_drivers TO 'ENABLE_ALL';
+        
+        SELECT pg_reload_conf();
+
+
+.. note::
+
+    O PostGIS possui um conjunto de variáveis de configuração conhecidos por `GUC (Grand Unified Custom variables) <https://postgis.net/docs/reference.html#PostGIS_GUC>`__.
+
+
+.. tip::
+
+    Para mais detalhes sobre os parâmetros de configuração *raster* consulte os seguintes links: `enable_outdb_rasters <https://postgis.net/docs/postgis_enable_outdb_rasters.html>`__ e `gdal_enabled_drivers <https://postgis.net/docs/postgis_gdal_enabled_drivers.html>`__.
+
+
+Registrando um conjunto de imagens externas
++++++++++++++++++++++++++++++++++++++++++++
+
+
+Considere o seguinte conjunto de imagens Sentinel-2/MSI *True Color* (TCI) da cena 21JYM (grade MGRS) entre os dias 04/07/2022 e 08/08/2022: 
+
+.. rst-class:: open
+
+- T21JYM_20220704T133851_TCI_10m.jp2
+- T21JYM_20220709T133839_TCI_10m.jp2
+- T21JYM_20220714T133851_TCI_10m.jp2
+- T21JYM_20220719T133839_TCI_10m.jp2
+- T21JYM_20220724T133851_TCI_10m.jp2
+- T21JYM_20220729T133839_TCI_10m.jp2
+- T21JYM_20220803T133851_TCI_10m.jp2
+- T21JYM_20220808T133839_TCI_10m.jp2
+
+
+Vamos criar uma tabela denominada ``t21jym`` que conterá em cada linha uma referência a uma das imagens em disco. Para tal, vamos utilizar o comando *raster2pgsql* começando pela imagem ``T21JYM_20220704T133851_TCI_10m.jp2``:
+
+
+.. code-block:: shell
+
+    raster2pgsql -c \
+                 -s 32721 \
+                 -N 0 -k \
+                 -Y \
+                 -f rast \
+                 -F -n cena \
+                 -I \
+                 -R /shared-data/img/sentinel-2/TCI/T21JYM_20220704T133851_TCI_10m.jp2 "public"."t21jym" | \
+    psql -U postgres -h localhost -d bdgeo
+    
+
+Em seguida, vamos apenas registrar as demais imagens:
+
+
+.. code-block:: shell
+
+    find /shared-data/img/sentinel-2/TCI \
+        -not -name "T21JYM_20220704T133851_TCI_10m.jp2" \
+        -name "T21JYM*_TCI_10m.jp2" | \
+    sort | \
+    xargs -I {} raster2pgsql -a \
+                             -s 32721 \
+                             -N 0  -k \
+                             -Y \
+                             -f rast \
+                             -F -n cena \
+                             -R {} "public"."t21jym" | \
+    psql -U postgres -h localhost -d bdgeo
+
+
+.. tip::
+
+    Nos comandos *raster2pgsql* acima, experimente adicionar a opção ``-t 1024x1024`` e veja o que será carregado para o banco de dados.
+
+
+.. tip::
+
+    Nos comandos *raster2pgsql* acima, experimente adicionar a opção ``-t 1024x1024 -l 4,8,16,32`` e veja o que será carregado para o banco de dados.
+
+
+Consultas sobre as imagens externas
++++++++++++++++++++++++++++++++++++
+
+
+Uma vez que as imagens encontram-se registradas no banco de dados, podemos consultar a tabela ``t21jym`` para obter informações dessas imagens:
+
+
+.. code-block:: sql
+
+    SELECT ST_Width(rast) AS tile_width,
+           ST_Height(rast) AS tile_height,
+           ST_PixelWidth(rast) AS res_x,
+           ST_PixelHeight(rast) AS res_y,
+           ST_SRID(rast) AS srid,
+           ST_BandNoDataValue(rast, 1) AS nodata
+
+      FROM t21jym;
+
+
+O caminho da imagem no sistema de arquivos do Servidor PostgreSQL e o tamanho em Megabytes da banda 1 de cada imagem podem ser obtidos com as funções :sql:`ST_BandPath` e :sql:`ST_BandFileSize`:
+
+
+.. code-block:: sql
+    
+    SELECT ST_BandPath(rast, 1) AS path,
+           ST_BandFileSize(rast, 1)/1024/1024 AS "size(MB)"
+           
+     FROM t21jym;
+
+
+Resultado:
+
+
+.. code-block:: text
+
+                                path                            | size(MB) 
+    ------------------------------------------------------------+----------
+     /shared-data/sentinel-2/T21JYM_20220704T133851_TCI_10m.jp2 |      129
+     /shared-data/sentinel-2/T21JYM_20220709T133839_TCI_10m.jp2 |      128
+     /shared-data/sentinel-2/T21JYM_20220714T133851_TCI_10m.jp2 |       50
+     /shared-data/sentinel-2/T21JYM_20220719T133839_TCI_10m.jp2 |      104
+     /shared-data/sentinel-2/T21JYM_20220724T133851_TCI_10m.jp2 |      128
+     /shared-data/sentinel-2/T21JYM_20220729T133839_TCI_10m.jp2 |      128
+     /shared-data/sentinel-2/T21JYM_20220803T133851_TCI_10m.jp2 |      128
+     /shared-data/sentinel-2/T21JYM_20220808T133839_TCI_10m.jp2 |       93
+    (8 rows)
+
+
+Para obter estatísticas da banda 1 de cada imagem, podemos utilizar a função ``ST_SummaryStats``, da mesma forma que fizemos com as imagens armazenadas dentro do banco:
+
+
+.. code-block:: sql
+
+    SELECT (ST_SummaryStats(rast, 1, TRUE)).* 
+
+      FROM t21jym;
+
+
+
+Trabalhando com Imagens Disponíveis na Nuvem
+---------------------------------------------
+
+
+Os formatos de imagem voltados para uso em sistemas de armazenamento em nuvem, como o :ref:`COG <cap_raster_cog>`, também podem ser registrados como *rasters* externos no PostGIS Raster. A biblioteca GDAL, utilizada na implementação dessa extensão, possui um *driver* chamado *VSI* (*Virtual File Systems*) que permite acessar arquivos de imagens  armazenados em *buckets* do serviço AWS S3 (driver `/vsis3/ <https://gdal.org/user/virtual_file_systems.html#vsis3-aws-s3-files>`__) ou via HTTP/HTTPS (`/vsicurl/ <https://gdal.org/user/virtual_file_systems.html#vsicurl-http-https-ftp-files-random-access>`__).
+
+
+Esse *driver* da GDAL também pode demandar algumas configurações, seja através de variáveis de ambiente informadas na inicialização do servidor PostgreSQL ou através de parâmetros de configuração do servidor. Por exemplo, no caso de *buckets* da AWS S3 que não necessitam de credenciais para acesso, devemos definir a variável de ambiente ``AWS_NO_SIGN_REQUEST=YES`` ou ajustar o parâmetro de configuração ``postgis.gdal_vsi_options``. Isso pode ser feito de uma das seguintes formas:
+
+.. rst-class:: open
+
+- Na sessão do usuário atual:
+
+
+    .. code-block:: sql
+
+        SET postgis.gdal_vsi_options TO 'AWS_NO_SIGN_REQUEST=YES';
+
+
+- Para um banco de dados específico:
+
+
+    .. code-block:: sql
+
+        ALTER DATABASE bdgeo SET postgis.gdal_vsi_options TO 'AWS_NO_SIGN_REQUEST=YES';
+
+
+- Para todo o servidor:
+
+
+    .. code-block:: sql
+
+        ALTER SYSTEM SET postgis.gdal_vsi_options TO 'AWS_NO_SIGN_REQUEST=YES';
+
+        SELECT pg_reload_conf();
+
+
+Registrando as Imagens
+++++++++++++++++++++++
+
+
+Vamos criar tabelas para armazenar referências a algumas imagens disponíveis na AWS. As seguintes imagens serã utilizadas:
+
+.. rst-class:: open
+
+- ``s3://sentinel-cogs/sentinel-s2-l2a-cogs/22/L/HL/2023/6/S2B_22LHL_20230621_0_L2A/B08.tif``
+
+- ``https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22/M/HS/2023/6/S2B_22MHS_20230621_0_L2A/B08.tif``
+
+
+.. tip::
+
+    Para obter informações os metadados básicos dessas imagens, utilize a ferramenta de linha de comando *gdalinfo*:
+    
+    
+    .. code-block:: bash
+    
+        AWS_NO_SIGN_REQUEST=YES \
+        gdalinfo /vsis3/sentinel-cogs/sentinel-s2-l2a-cogs/22/L/HL/2023/6/S2B_22LHL_20230621_0_L2A/B08.tif
+
+
+    .. code-block:: bash
+
+        gdalinfo /vsicurl/https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22/M/HS/2023/6/S2B_22MHS_20230621_0_L2A/B08.tif
+
+
+Para gerar os comandos de registro das imagens, podemos fazer:
+
+
+.. code-block:: bash
+
+    AWS_NO_SIGN_REQUEST=YES \
+    raster2pgsql -c -s 32722 -t 1024x1024 -N 0 -I -C -r -k -Y -f rast -R \
+                 /vsis3/sentinel-cogs/sentinel-s2-l2a-cogs/22/L/HL/2023/6/S2B_22LHL_20230621_0_L2A/B08.tif \
+                 public.t22lhl_cloud | psql -U postgres -h localhost -d bdgeo
+
+
+.. code-block:: bash
+
+    raster2pgsql -s 32722 -t 1024x1024 -N 0 -I -C -r -k -Y -f rast -R \
+                 /vsicurl/https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22/M/HS/2023/6/S2B_22MHS_20230621_0_L2A/B08.tif \
+                 public.t22mhs_cloud | psql -U postgres -h localhost -d bdgeo
+
+
+.. tip::
+
+    Repare que no comando acima, que no caso do protocolo S3 foi introduzida uma variável de ambiente denominada ``AWS_NO_SIGN_REQUEST``. Esta variável é usada pelo *driver* GDAL para não que não seja necessário usar credenciais para acesso ao *bucket* S3.
+
+
+.. tip::
+
+    Crie uma view com o envoltório convexo de cada *tile* das imagens acima:
+
+    .. code-block:: sql
+    
+        CREATE VIEW t22mhs_cloud_hull AS
+            SELECT rid, ST_ConvexHull(rast) AS geom
+              FROM t22mhs_cloud;
+
+
+.. tip::
+
+    Nos comandos *raster2pgsql* acima, experimente remover a opçãp ``-R`` e adicionar as opções ``-l 4,8,16,32`` e veja o que será carregado para o banco de dados.
+
+
+Consultas sobre as imagens da cloud
++++++++++++++++++++++++++++++++++++
+
+
+Depois de registradas, as imagens podem ser consultadas normalmente:
+
+
+.. code-block:: sql
+
+    SELECT rid,
+           ST_BandPath(rast, 1) AS path,
+           ST_Width(rast) AS tile_width,
+           ST_Height(rast) AS tile_height,
+           ST_PixelWidth(rast) AS res_x,
+           ST_PixelHeight(rast) AS res_y,
+           ST_SRID(rast) AS srid,
+           ST_BandNoDataValue(rast, 1) AS nodata
+
+      FROM t22mhs_cloud;
+
+
+Obtendo estatísticas de dois blocos da imagem registrada via S3:
+
+
+.. code-block:: sql
+
+    SELECT (ST_SummaryStats(rast, 1, TRUE)).* 
+
+      FROM t22lhl_cloud 
+
+     WHERE ST_BandPath(rast, 1) = '/vsis3/sentinel-cogs/sentinel-s2-l2a-cogs/22/L/HL/2023/6/S2B_22LHL_20230621_0_L2A/B08.tif'
+     
+    OFFSET 10
+    
+     LIMIT 2;
+
+
+Resultado:
+
+
+.. code-block:: text
+
+      count  |    sum     |        mean        |       stddev       | min | max  
+    ---------+------------+--------------------+--------------------+-----+------
+      757760 | 1476154934 | 1948.0507469383447 | 242.15514605321923 |  53 | 4312
+     1048576 | 2147028814 | 2047.5662364959717 |  722.6200427133809 |   1 | 4948
+    (2 rows)
+
+
+.. warning::
+
+    Para que a consulta acima funcione, precisamos que o servidor PostgreSQL esteja configurado com a variável de ambiente ``AWS_NO_SIGN_REQUEST=YES``.
+
+
+Obtendo estatísticas de dois blocos da imagem registrada via HTTPS:
+
+
+.. code-block:: sql
+
+    SELECT (ST_SummaryStats(rast, 1, TRUE)).* 
+
+      FROM cloud_raster 
+
+     WHERE ST_BandPath(rast, 1) = '/vsicurl/https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22/M/HS/2023/6/S2B_22MHS_20230621_0_L2A/B08.tif'
+     
+    OFFSET 10
+    
+     LIMIT 2;
+
+
+Resultado:
+
+
+.. code-block:: text
+
+      count  |    sum     |        mean        |      stddev       | min | max  
+    ---------+------------+--------------------+-------------------+-----+------
+      757760 | 1890008141 |  2494.204155669341 | 334.8203750580895 | 157 | 5348
+     1048576 | 2591633717 | 2471.5745134353638 | 359.1709088526156 | 130 | 5537
+    (2 rows)
+
+
+
+
+

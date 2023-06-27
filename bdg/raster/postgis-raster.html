@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.4. PostGIS Raster &mdash; BDGeo</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/table_styling.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bootstrap-carousel.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/carousel-custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/bd-geoespacial.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://prog-geo.github.io/raster/postgis-raster.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="../_static/bootstrap-carousel.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="next" title="8.5. Considerações Finais" href="consideracoes.html" />
+    <link rel="prev" title="8.2. GeoTIFF" href="geotiff.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bancos de Dados Geográficos</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Aulas:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../instalacao/index.html">1. Instalando e Configurando o Ambiente de Trabalho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sgbd/index.html">2. Sistemas de Bancos de Dados Relacionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tipos-geometricos/index.html">3. Tipos de Dados e Operações Espaciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estrutura-dados/index.html">4. Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">8. Dados Matriciais</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="conceitos.html">8.1. Imagens de Satélites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geotiff.html">8.2. GeoTIFF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geotiff.html#cloud-optimized-geotiff">8.3. Cloud Optimized GeoTIFF</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8.4. PostGIS Raster</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#habilitando-a-extensao-postgis-raster">8.4.1. Habilitando a extensão PostGIS Raster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#carregando-uma-imagem-para-uma-tabela-do-banco-de-dados">8.4.2. Carregando uma Imagem para uma tabela do banco de dados</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visualizando-imagens-do-postgis-raster-com-o-qgis">8.4.3. Visualizando imagens do PostGIS Raster com o QGIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#indice-espacial">8.4.4. Índice Espacial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#criando-imagens-com-overviews">8.4.5. Criando Imagens com Overviews</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visoes-com-metadados-raster">8.4.6. Visões com Metadados Raster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operacoes-com-o-tipo-raster">8.4.7. Operações com o Tipo Raster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#registrando-imagens-do-sistema-de-arquivos-do-servidor-de-bancos-de-dados">8.4.8. Registrando Imagens do Sistema de Arquivos do Servidor de Bancos de Dados</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trabalhando-com-imagens-disponiveis-na-nuvem">8.4.9. Trabalhando com Imagens Disponíveis na Nuvem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="consideracoes.html">8.5. Considerações Finais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercicios.html">8.6. Exercícios</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Listas de Exercícios:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listas.html">Listas de Exercícios</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BDGeo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8. </span>Dados Matriciais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.4. </span>PostGIS Raster</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="geotiff.html" class="btn btn-neutral float-left" title="8.2. GeoTIFF" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="8.5. Considerações Finais" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="postgis-raster">
+<span id="cap-raster-postgis-raster"></span><h1><span class="section-number">8.4. </span>PostGIS Raster<a class="headerlink" href="#postgis-raster" title="Link permanente para este cabeçalho"></a></h1>
+<p>A extensão PostGIS Raster do SGBD PostgreSQL, lançada oficialmente em 2012, possibilita armazenar no banco de dados imagens como as de sensoriamento remoto. Esta extensão fornece um novo tipo de dados denominado <code class="docutils literal notranslate"><span class="pre">raster</span></code> com operações que possibilitam desde a manipulação dos valores dos pixels de uma banda até a realização de álgebra de mapas.</p>
+<p>O tipo <code class="docutils literal notranslate"><span class="pre">raster</span></code> permite usar duas estratégias de armazenamento. A primeira, denominada <strong>in-db</strong>, consiste em carregar a imagem para dentro de uma tabela do banco de dados. A segunda, denominada <strong>out-db</strong>, consiste em armazenar apenas metadados básicos da imagem dentro de uma tabela do banco de dados, mantedo assim, uma referência para a localização dessa imagem. Nessa última estratégia, a localização pode ser um endereço válido no sistema de arquivos do servidor PostgreSQL ou até mesmo o endereço da imagem em um sistema de armazenamento de nuvem como o S3 da AWS.</p>
+<section id="habilitando-a-extensao-postgis-raster">
+<h2><span class="section-number">8.4.1. </span>Habilitando a extensão PostGIS Raster<a class="headerlink" href="#habilitando-a-extensao-postgis-raster" title="Link permanente para este cabeçalho"></a></h2>
+<p>Se a extensão <code class="docutils literal notranslate"><span class="pre">postgis_raster</span></code> encontra-se instalada corretamente em seu sistema, ela será listada na visão <code class="docutils literal notranslate"><span class="pre">pg_available_extensions</span></code>, como mostrado no resultado da consulta abaixo:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_available_extensions</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;postgis_raster%&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       name       | default_version | installed_version |              comment
+------------------+-----------------+-------------------+------------------------------------
+<span class="hll"> postgis_raster-3 | 3.3.1           |                   | PostGIS raster types and functions
+</span>(1 row)
+</pre></div>
+</div>
+<p>Para que seja possível utilizar o tipo <code class="docutils literal notranslate"><span class="pre">raster</span></code>, devemos carregar a extensão PostGIS Raster através do comando <code class="code highlight postgresql docutils literal highlight-postgresql"><span class="k">CREATE</span><span class="w"> </span><span class="k">EXTENSION</span></code> :</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">EXTENSION</span><span class="w"> </span><span class="n">postgis_raster</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Após esse comando, a extensão <code class="docutils literal notranslate"><span class="pre">postgis_raster</span></code> deverá aparecer na lista de extensões habilitadas para seu banco de dados:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">extname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_extension</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">extname</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    extname
+----------------
+ plpgsql
+ postgis
+<span class="hll"> postgis_raster
+</span>(3 rows)
+</pre></div>
+</div>
+</section>
+<section id="carregando-uma-imagem-para-uma-tabela-do-banco-de-dados">
+<span id="cap-raster-postgis-raster-indb"></span><h2><span class="section-number">8.4.2. </span>Carregando uma Imagem para uma tabela do banco de dados<a class="headerlink" href="#carregando-uma-imagem-para-uma-tabela-do-banco-de-dados" title="Link permanente para este cabeçalho"></a></h2>
+<p>A ferramenta de linha de comando <strong>raster2pgsql</strong> é capaz de transformar um arquivo de imagem em uma sequência de comandos SQL contendo os dados dessa imagem formatados de acordo com o tipo <code class="docutils literal notranslate"><span class="pre">raster</span></code>. Para exemplificar seu uso, vamos utilizar a cena <a class="reference external" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('b6c96800-3315-4842-bcad-1544b098b14c')/$value">S2B_MSIL2A_20221015T130249_N0400_R095_T24LTQ_20221015T164700</a> do Sentinel-2/MSI. Iremos transformar o arquivo <code class="docutils literal notranslate"><span class="pre">T24LTQ_20221015T130249_B04_10m.jp2</span></code> com dados da banda 04 (<a class="reference internal" href="#fig-raster-postgis-raster-t24ltq-20221015t130249-b04-10m"><span class="std std-numref">Figura 8.8</span></a>) em um arquivo chamado <code class="docutils literal notranslate"><span class="pre">t24ltq.sql</span></code>.</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-t24ltq-20221015t130249-b04-10m">
+<a class="reference internal image-reference" href="../_images/T24LTQ_20221015T130249_B04_10m.png"><img alt="Imagem T24LTQ_20221015T130249_B04_10m (banda 04 do sendor Sentinel-2/MSI)" src="../_images/T24LTQ_20221015T130249_B04_10m.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.8 - </span><span class="caption-text">Imagem <code class="docutils literal notranslate"><span class="pre">T24LTQ_20221015T130249_B04_10m</span></code> <br/> (banda 04 do sensor Sentinel-2/MSI)</span><a class="headerlink" href="#fig-raster-postgis-raster-t24ltq-20221015t130249-b04-10m" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Esse arquivo, <code class="docutils literal notranslate"><span class="pre">t24ltq.sql</span></code>, conterá instruções SQL com a imagem de entrada convertida em <em>tiles</em> de tamanho <span class="math notranslate nohighlight">\(256 \times 256\)</span> pixels (<a class="reference internal" href="#fig-raster-postgis-raster-raster2pgsql-img-tabela"><span class="std std-numref">Figura 8.9</span></a>). Esses tiles serão armazenados em uma tabela chamada <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code> contendo um <em>tile</em> por linha (<a class="reference internal" href="#fig-raster-postgis-raster-postgis-raster-table"><span class="std std-numref">Figura 8.10</span></a>).</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-raster2pgsql-img-tabela">
+<a class="reference internal image-reference" href="../_images/raster2pgsql-img-tabela.png"><img alt="Transformando o raster de entrada T24LTQ_20221015T130249_B04_10m.png em tiles de 256 x 256" src="../_images/raster2pgsql-img-tabela.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.9 - </span><span class="caption-text">Transformando o <em>raster</em> de entrada <code class="docutils literal notranslate"><span class="pre">T24LTQ_20221015T130249_B04_10m.jp2</span></code> em <em>tiles</em> de <span class="math notranslate nohighlight">\(256 \times 256\)</span> pixels.</span><a class="headerlink" href="#fig-raster-postgis-raster-raster2pgsql-img-tabela" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p><br/></p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-postgis-raster-table">
+<a class="reference internal image-reference" href="../_images/postgis-raster-table.png"><img alt="Raster T24LTQ_20221015T130249_B04_10m.jp2 importado para uma tabela do banco de dados chamada t24ltq" src="../_images/postgis-raster-table.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.10 - </span><span class="caption-text"><em>Raster</em> <code class="docutils literal notranslate"><span class="pre">T24LTQ_20221015T130249_B04_10m.jp2</span></code> importado para uma tabela do banco de dados chamada <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code>.</span><a class="headerlink" href="#fig-raster-postgis-raster-postgis-raster-table" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Para criar o arquivo SQL de carga da imagem no banco, utilize o seguinte comando:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>raster2pgsql<span class="w"> </span>-c<span class="w"> </span>-C<span class="w"> </span>-r<span class="w"> </span>-s<span class="w"> </span><span class="m">32724</span><span class="w"> </span>-t<span class="w"> </span>256x256<span class="w"> </span>-P<span class="w"> </span>-f<span class="w"> </span>rast<span class="w"> </span>-I<span class="w"> </span>-M<span class="w"> </span>-N<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>T24LTQ_20221015T130249_B04_10m.jp2<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>public.t24ltq<span class="w"> </span>&gt;<span class="w"> </span>t24ltq.sql
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>As opções utilizadas no comando acima possuem os seguintes significados:</p>
+<ul class="open">
+<li><p><code class="docutils literal notranslate"><span class="pre">-c</span></code>: Faz com que seja incluído um comando DDL para criação da tabela <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code>.</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="ss">&quot;public&quot;</span><span class="p">.</span><span class="ss">&quot;t24ltq&quot;</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="ss">&quot;rid&quot;</span><span class="w"> </span><span class="nb">serial</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;rast&quot;</span><span class="w"> </span><span class="n">raster</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-C</span></code>: Faz com que um comando para definição de restrições sobre a coluna <code class="docutils literal notranslate"><span class="pre">raster</span></code> seja incluído ao final do arquivo.</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">AddRasterConstraints</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">,</span><span class="s1">&#39;t24ltq&#39;</span><span class="p">,</span><span class="s1">&#39;rast&#39;</span><span class="p">,</span>
+<span class="w">                            </span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-r</span></code>: Indica que deve ser aplicada restrição de blocagem regular à coluna <code class="docutils literal notranslate"><span class="pre">raster​</span></code>​.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-s</span></code>: Define o sistema de coordenadas de referência da imagem. No caso, o código 32724 corresponde ao CRS <code class="docutils literal notranslate"><span class="pre">UTM</span> <span class="pre">Zona</span> <span class="pre">24</span> <span class="pre">Sul</span> <span class="pre">/</span> <span class="pre">Datum</span> <span class="pre">WGS84</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-t</span></code>: Dimensões do <em>tile</em> usado na divisão da imagem, no caso, 256 colunas x 256 linhas.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-P</span></code>: Realiza um <em>pad</em> nos blocos mais a direita e mais abaixo, para garantir que todos tenham as mesmas dimensões.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-f</span></code>: Nome da coluna do tipo <em>raster</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-I</span></code>: Inclui comando para criação do índice espacial sobre a coluna <code class="docutils literal notranslate"><span class="pre">raster</span></code>.</p>
+<blockquote>
+<div><div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="s s-Name">&quot;public&quot;</span><span class="mf">.</span><span class="s s-Name">&quot;t24ltq&quot;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">gist</span><span class="w"> </span><span class="p">(</span><span class="n">st_convexhull</span><span class="p">(</span><span class="s s-Name">&quot;rast&quot;</span><span class="p">));</span>
+
+<span class="k">ANALYZE</span><span class="w"> </span><span class="s s-Name">&quot;public&quot;</span><span class="mf">.</span><span class="s s-Name">&quot;t24ltq&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-M</span></code>: Inclui comando para executar <code class="code highlight sql docutils literal highlight-sql"><span class="k">VACUUM</span><span class="w"> </span><span class="k">ANALYZE</span></code> na tabela <em>raster</em> após todo o processo de carga de dados.​</p>
+<blockquote>
+<div><div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">VACUUM</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"> </span><span class="s s-Name">&quot;public&quot;</span><span class="mf">.</span><span class="s s-Name">&quot;t24ltq&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-N</span></code>: Define o valor de <em>nodata</em> (ou <em>missing value</em>) como zero pois a imagem de entrada não possui essa informação.</p></li>
+</ul>
+</div>
+<p>Após gerar o arquivo <code class="docutils literal notranslate"><span class="pre">t24ltq.sql</span></code>, podemos carregar seu conteúdo através do seguinte comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psql</span> <span class="o">-</span><span class="n">U</span> <span class="n">postgres</span> <span class="o">-</span><span class="n">h</span> <span class="n">localhost</span> <span class="o">-</span><span class="n">d</span> <span class="n">bdgeo</span> <span class="o">-</span><span class="n">f</span> <span class="n">t24ltq</span><span class="o">.</span><span class="n">sql</span>
+</pre></div>
+</div>
+</section>
+<section id="visualizando-imagens-do-postgis-raster-com-o-qgis">
+<h2><span class="section-number">8.4.3. </span>Visualizando imagens do PostGIS Raster com o QGIS<a class="headerlink" href="#visualizando-imagens-do-postgis-raster-com-o-qgis" title="Link permanente para este cabeçalho"></a></h2>
+<p>O QGIS também possui funcionalidades para visualização de imagens armazenadas no PostgreSQL com a extensão PostGIS Raster. Para visualizar a imagem contida na tabela <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code>, crie uma fonte de dados associada ao seu servidor PostgreSQL. Para isso, abra o <strong>Data Source Manager</strong> (<a class="reference internal" href="#fig-raster-postgis-raster-visualizacao-qgis-datasource-manager"><span class="std std-numref">Figura 8.11</span></a>).</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-visualizacao-qgis-datasource-manager">
+<a class="reference internal image-reference" href="../_images/qgis-carga-01.png"><img alt="Abrindo o Data Source Manager do QGIS" src="../_images/qgis-carga-01.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.11 - </span><span class="caption-text">Abrindo o Data Source Manager do QGIS.</span><a class="headerlink" href="#fig-raster-postgis-raster-visualizacao-qgis-datasource-manager" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Na janela do <strong>Data Source Manager</strong>, crie uma nova conexão com o servidor PostgreSQL (<a class="reference internal" href="#fig-raster-postgis-raster-visualizacao-qgis-pg"><span class="std std-numref">Figura 8.12</span></a>).</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-visualizacao-qgis-pg">
+<a class="reference internal image-reference" href="../_images/qgis-carga-02.png"><img alt="Nova conexão ao servidor PostgreSQL" src="../_images/qgis-carga-02.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.12 - </span><span class="caption-text">Nova conexão ao servidor PostgreSQL.</span><a class="headerlink" href="#fig-raster-postgis-raster-visualizacao-qgis-pg" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Na janela que se abre, <a class="reference internal" href="#fig-raster-postgis-raster-visualizacao-qgis-pg-conn1"><span class="std std-numref">Figura 8.13</span></a>, entre com o endereço do servidor e as credenciais do usuário para acesso ao servidor.</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-visualizacao-qgis-pg-conn1">
+<a class="reference internal image-reference" href="../_images/qgis-carga-03.png"><img alt="Configurando a conexão ao servidor PostgreSQL" src="../_images/qgis-carga-03.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.13 - </span><span class="caption-text">Configurando a conexão ao servidor PostgreSQL.</span><a class="headerlink" href="#fig-raster-postgis-raster-visualizacao-qgis-pg-conn1" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Se as informações estiverem corretas, o teste de conexão apresentará uma mensagem de sucesso, como na <a class="reference internal" href="#fig-raster-postgis-raster-visualizacao-qgis-pg-conn2"><span class="std std-numref">Figura 8.14</span></a>.</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-visualizacao-qgis-pg-conn2">
+<a class="reference internal image-reference" href="../_images/qgis-carga-04.png"><img alt="Conexão ao servidor PostgreSQL configurada corretamente" src="../_images/qgis-carga-04.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.14 - </span><span class="caption-text">Conexão ao servidor PostgreSQL configurada corretamente.</span><a class="headerlink" href="#fig-raster-postgis-raster-visualizacao-qgis-pg-conn2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Novamente na janela do <strong>Data Source Manager</strong>, selecione a opção conectar (<a class="reference internal" href="#fig-raster-postgis-raster-visualizacao-qgis-pg-conn3"><span class="std std-numref">Figura 8.15</span></a>) para que a tabela com a coluna <code class="docutils literal notranslate"><span class="pre">raster</span></code> seja listada (<a class="reference internal" href="#fig-raster-postgis-raster-visualizacao-qgis-pg-conn4"><span class="std std-numref">Figura 8.16</span></a>).</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-visualizacao-qgis-pg-conn3">
+<a class="reference internal image-reference" href="../_images/qgis-carga-05.png"><img alt="Conectando ao PostgreSQL" src="../_images/qgis-carga-05.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.15 - </span><span class="caption-text">Conectando ao PostgreSQL.</span><a class="headerlink" href="#fig-raster-postgis-raster-visualizacao-qgis-pg-conn3" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-visualizacao-qgis-pg-conn4">
+<a class="reference internal image-reference" href="../_images/qgis-datasource-manager-raster-layers.png"><img alt="Lista de camadas raster" src="../_images/qgis-datasource-manager-raster-layers.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.16 - </span><span class="caption-text">Lista de camadas <em>raster</em>.</span><a class="headerlink" href="#fig-raster-postgis-raster-visualizacao-qgis-pg-conn4" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Ao adicionar a camada com o <em>raster</em>, você deverá visualizá-lo como mostrado na <a class="reference internal" href="#fig-raster-postgis-raster-visualizacao-qgis-raster-layer"><span class="std std-numref">Figura 8.17</span></a></p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-visualizacao-qgis-raster-layer">
+<a class="reference internal image-reference" href="../_images/qgis-view-postgis-raster-layer.png"><img alt="Visualização de uma tabela contendo um raster" src="../_images/qgis-view-postgis-raster-layer.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.17 - </span><span class="caption-text">Visualização de uma tabela contendo um raster</span><a class="headerlink" href="#fig-raster-postgis-raster-visualizacao-qgis-raster-layer" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="indice-espacial">
+<h2><span class="section-number">8.4.4. </span>Índice Espacial<a class="headerlink" href="#indice-espacial" title="Link permanente para este cabeçalho"></a></h2>
+<p>Ao importar a imagem <code class="docutils literal notranslate"><span class="pre">T24LTQ_20221015T130249_B04_10m.jp2</span></code> (<a class="reference internal" href="#fig-raster-postgis-raster-t24ltq-20221015t130249-b04-10m"><span class="std std-numref">Figura 8.8</span></a>) para o banco de dados, foi criado um índice espacial para os <em>tiles</em> da imagem, com base no envoltório convexo de cada <em>tile</em>. Os comandos SQL mostrados abaixo, incluídos no arquivo <code class="docutils literal notranslate"><span class="pre">t24ltq.sql</span></code>, realizam, respectivamente, a criação do índice espacial e atualização das estatísticas sobre a tabela no catálogo do sistema de banco de dados.</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="s s-Name">&quot;public&quot;</span><span class="mf">.</span><span class="s s-Name">&quot;t24ltq&quot;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">gist</span><span class="w"> </span><span class="p">(</span><span class="n">st_convexhull</span><span class="p">(</span><span class="s s-Name">&quot;rast&quot;</span><span class="p">));</span>
+
+<span class="k">ANALYZE</span><span class="w"> </span><span class="s s-Name">&quot;public&quot;</span><span class="mf">.</span><span class="s s-Name">&quot;t24ltq&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Para visualizar as geometrias usadas para criação do índice, vamos criar uma tabela auxiliar e populá-la com o envoltório convexo da coluna <code class="docutils literal notranslate"><span class="pre">raster</span></code>:</p>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">hull</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">gid</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">geom</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="nb">POLYGON</span><span class="p">,</span><span class="w"> </span><span class="mf">32724</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">hull</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">rid</span><span class="p">,</span><span class="w"> </span><span class="n">ST_ConvexHull</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq</span><span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">hull_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">hull</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="p">(</span><span class="n">geom</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>A tabela criada, chamada <code class="docutils literal notranslate"><span class="pre">hull</span></code>, poderá então ser visualizada no QGIS (<a class="reference internal" href="#fig-raster-postgis-raster-visualizacao-indice-espacial"><span class="std std-numref">Figura 8.18</span></a>).</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-visualizacao-indice-espacial">
+<a class="reference internal image-reference" href="../_images/qgis-postgis-raster.png"><img alt="Geometrias contendo o envoltório convexo de cada tile da tabela t24ltq" src="../_images/qgis-postgis-raster.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.18 - </span><span class="caption-text">Geometrias contendo o envoltório convexo de cada <em>tile</em> da tabela <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code>.</span><a class="headerlink" href="#fig-raster-postgis-raster-visualizacao-indice-espacial" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="criando-imagens-com-overviews">
+<h2><span class="section-number">8.4.5. </span>Criando Imagens com Overviews<a class="headerlink" href="#criando-imagens-com-overviews" title="Link permanente para este cabeçalho"></a></h2>
+<p>A extensão PostGIS Raster também possibilita a criação de <strong>pirâmides de multi-resolução</strong> ou <strong>overviews</strong>, recurso muito utilizado para acelerar a visualização de imagens por parte das aplicações. Quando carregamos uma imagem do disco para uma tabela do banco de dados usando este recurso, outras tabelas auxiliares, com os <em>overviews</em>, são criadas. No comando <em>raster2pgsql</em>, a opção <code class="docutils literal notranslate"><span class="pre">-l</span></code> permite especificar os níveis da pirâmide multiresolução desejados.</p>
+<p>Para exemplificar a criação de <em>overviews</em>, vamos carregar novamente a imagem <code class="docutils literal notranslate"><span class="pre">T24LTQ_20221015T130249_B04_10m.jp2</span></code> (<a class="reference internal" href="#fig-raster-postgis-raster-t24ltq-20221015t130249-b04-10m"><span class="std std-numref">Figura 8.8</span></a>) com ajuda da ferramenta <em>raster2pgsql</em> mas incluindo a opção <code class="docutils literal notranslate"><span class="pre">-l</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>raster2pgsql<span class="w"> </span>-c<span class="w"> </span>-C<span class="w"> </span>-r<span class="w"> </span>-s<span class="w"> </span><span class="m">32724</span><span class="w"> </span>-t<span class="w"> </span>256x256<span class="w"> </span>-P<span class="w"> </span>-f<span class="w"> </span>rast<span class="w"> </span>-I<span class="w"> </span>-M<span class="w"> </span>-N<span class="w"> </span><span class="m">0</span><span class="w"> </span>-l<span class="w"> </span><span class="m">2</span>,4,8,16<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>T24LTQ_20221015T130249_B04_10m.jp2<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>public.t24ltq_v2<span class="w"> </span>&gt;<span class="w"> </span>t24ltq_v2.sql
+</pre></div>
+</div>
+<p>Dessa vez, além da tabela <code class="docutils literal notranslate"><span class="pre">t24ltq_v2</span></code>, foram criadas as tabelas contendo os <em>tiles</em> de cada nível da pirâmide multiresolução: <code class="docutils literal notranslate"><span class="pre">o_2_t24ltq_v2</span></code>, <code class="docutils literal notranslate"><span class="pre">o_4_t24ltq_v2</span></code>, <code class="docutils literal notranslate"><span class="pre">o_8_t24ltq_v2</span></code>, <code class="docutils literal notranslate"><span class="pre">o_16_t24ltq_v2</span></code>.</p>
+<p>Todos os <em>tiles</em> tanto na tabela principal da imagem quanto nas tabelas com os <em>overviews</em> possuem o mesmo tamanho: <span class="math notranslate nohighlight">\(256 \times 256\)</span>. No entanto, a cada nível teremos um número menor de blocos, como podemos verificar com as consultas abaixo:</p>
+<ul class="open">
+<li><p>Realizando a contagem de blocos do raster na resolução primária:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq_v2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> count
+-------
+  1418
+(1 row)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Nível 1:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">o_2_t24ltq_v2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> count
+-------
+   484
+(1 row)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Nível 2:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">o_4_t24ltq_v2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> count
+-------
+   121
+(1 row)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Nível 3:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">o_8_t24ltq_v2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> count
+-------
+    36
+(1 row)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Nível 4:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">o_16_t24ltq_v2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> count
+-------
+     9
+(1 row)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="visoes-com-metadados-raster">
+<h2><span class="section-number">8.4.6. </span>Visões com Metadados Raster<a class="headerlink" href="#visoes-com-metadados-raster" title="Link permanente para este cabeçalho"></a></h2>
+<p>Ao carregar a extensão PostGIS Raster, duas novas visões são criadas no banco de dados:</p>
+<ul class="open">
+<li><p><code class="docutils literal notranslate"><span class="pre">raster_columns</span></code>: Contém a lista de todas as colunas <em>raster</em> em tabelas do banco de dados.</p>
+<blockquote>
+<div><table class="styled-table docutils align-default" id="tbl-raster-postgis-raster-raster-columns">
+<thead>
+<tr class="row-odd"><th class="head center-align" colspan="3" rowspan="2"><p>nome visão: <strong>raster_columns</strong></p></th>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><th class="head center-align"><p>colunas</p></th>
+<th class="head center-align"><p>tipo de dados</p></th>
+<th class="head center-align"><p>descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>r_table_catalog</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome do banco de dados onde a tabela com a coluna <em>raster</em> se encontra</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>r_table_schema</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome do esquema onde a tabela com a coluna <em>raster</em> se encontra</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>r_table_name</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome da tabela contendo a coluna <em>raster</em></p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>r_raster_column</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome da coluna <em>raster</em></p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>srid</p></td>
+<td class="left-align" rowspan="2"><p>integer</p></td>
+<td class="left-align" rowspan="2"><p>CRS da coluna <em>raster</em>, deve ser um valor válido da coluna <code class="docutils literal notranslate"><span class="pre">srid</span></code> na tabela <code class="docutils literal notranslate"><span class="pre">spatial_ref_sys</span></code></p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>scale_x</p></td>
+<td class="left-align" rowspan="2"><p>double precision</p></td>
+<td class="left-align" rowspan="2"><p>resolução do pixel no eixo-x</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>scale_y</p></td>
+<td class="left-align" rowspan="2"><p>double precision</p></td>
+<td class="left-align" rowspan="2"><p>resolução do pixel no eixo-y</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>blocksize_x</p></td>
+<td class="left-align" rowspan="2"><p>integer</p></td>
+<td class="left-align" rowspan="2"><p>largura do <em>tile</em> (número de pixels)</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>blocksize_y</p></td>
+<td class="left-align" rowspan="2"><p>integer</p></td>
+<td class="left-align" rowspan="2"><p>altura do <em>tile</em> (número de pixels)</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>same_alignment</p></td>
+<td class="left-align" rowspan="2"><p>boolean</p></td>
+<td class="left-align" rowspan="2"></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>regular_blocking</p></td>
+<td class="left-align" rowspan="2"><p>boolean</p></td>
+<td class="left-align" rowspan="2"></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>num_bands</p></td>
+<td class="left-align" rowspan="2"><p>integer</p></td>
+<td class="left-align" rowspan="2"><p>Número de bandas em cada <em>tile</em> do <em>raster</em></p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>pixel_types</p></td>
+<td class="left-align" rowspan="2"><p>text[]</p></td>
+<td class="left-align" rowspan="2"></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>nodata_values</p></td>
+<td class="left-align" rowspan="2"><p>double precision[]</p></td>
+<td class="left-align" rowspan="2"></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>out_db</p></td>
+<td class="left-align" rowspan="2"><p>boolean[]</p></td>
+<td class="left-align" rowspan="2"><p>Vetor indicando se as bandas são mantidas dentro ou fora do banco de dados</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="3"><p>extent
+spatial_index</p></td>
+<td class="left-align" rowspan="3"><p>geometry
+boolean</p></td>
+<td class="left-align" rowspan="3"><p>Retângulo envolvente de todas as linhas da tabela com a coluna <em>raster</em>
+O valor <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> indica que a coluna <code class="docutils literal notranslate"><span class="pre">raster</span></code> possui um índice espacial criado</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+</tbody>
+</table>
+<p>Vamos consultar a <em>view</em> <code class="docutils literal notranslate"><span class="pre">raster_columns</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">raster_columns</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>-[ RECORD 1 ]----+----------------------------------
+r_table_catalog  | bdgeo
+r_table_schema   | public
+r_table_name     | t24ltq
+r_raster_column  | rast
+srid             | 32724
+scale_x          | 10
+scale_y          | -10
+blocksize_x      | 256
+blocksize_y      | 256
+same_alignment   | t
+regular_blocking | t
+num_bands        | 1
+pixel_types      | {16BUI}
+nodata_values    | {NULL}
+out_db           | {f}
+extent           | 0103000020D47F0000010000000500...
+spatial_index    | t
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">raster_overviews</span></code>: contém metadados das tabelas com colunas <em>raster</em> usadas como <em>overviews</em>.</p>
+<blockquote>
+<div><table class="styled-table docutils align-default" id="tbl-raster-postgis-raster-raster-overviews">
+<thead>
+<tr class="row-odd"><th class="head center-align" colspan="3" rowspan="2"><p>nome visão: <strong>raster_columns</strong></p></th>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><th class="head center-align"><p>colunas</p></th>
+<th class="head center-align"><p>tipo de dados</p></th>
+<th class="head center-align"><p>descrição</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>o_table_catalog</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome do banco de dados onde a tabela de <em>overview</em> se encontra</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>o_table_schema</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome do esquema onde a tabela de <em>overview</em> se encontra</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>o_table_name</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome da tabela de <em>overview</em> contendo a coluna <em>raster</em></p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>o_raster_column</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome da coluna <em>raster</em> na tebale de <em>overview</em></p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>r_table_catalog</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome do banco de dados onde se encontra a tabela <em>raster</em> para a qual o <em>overview</em> foi criado</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>r_table_schema</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome do esquema onde se encontra a tabela <em>raster</em> para a qual o <em>overview</em> foi criado</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>r_table_name</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome da tabela <em>raster</em> para a qual o <em>overview</em> foi criado</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>r_raster_column</p></td>
+<td class="left-align" rowspan="2"><p>name</p></td>
+<td class="left-align" rowspan="2"><p>nome da coluna <em>raster</em> para a qual o <em>overview</em> foi criado</p></td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td class="left-align" rowspan="2"><p>overview_factor</p></td>
+<td class="left-align" rowspan="2"><p>integer</p></td>
+<td class="left-align" rowspan="2"><p>nível da pirâmide</p></td>
+</tr>
+<tr class="row-odd"></tr>
+</tbody>
+</table>
+<p>Vamos consultar a <em>view</em> <code class="docutils literal notranslate"><span class="pre">raster_columns</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">raster_overviews</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> o_table_catalog | o_table_schema |  o_table_name  | o_raster_column | r_table_catalog | r_table_schema | r_table_name | r_raster_column | overview_factor
+-----------------+----------------+----------------+-----------------+-----------------+----------------+--------------+-----------------+-----------------
+ bdgeo           | public         | o_2_t24ltq_v2  | rast            | bdgeo           | public         | t24ltq_v2    | rast            |               2
+ bdgeo           | public         | o_4_t24ltq_v2  | rast            | bdgeo           | public         | t24ltq_v2    | rast            |               4
+ bdgeo           | public         | o_8_t24ltq_v2  | rast            | bdgeo           | public         | t24ltq_v2    | rast            |               8
+ bdgeo           | public         | o_16_t24ltq_v2 | rast            | bdgeo           | public         | t24ltq_v2    | rast            |              16
+(4 rows)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="operacoes-com-o-tipo-raster">
+<h2><span class="section-number">8.4.7. </span>Operações com o Tipo Raster<a class="headerlink" href="#operacoes-com-o-tipo-raster" title="Link permanente para este cabeçalho"></a></h2>
+<p><strong>Consulta 01.</strong> Descobrindo o tamanho do bloco (largura x altura), resolução espacial, SRID e valor de <em>nodata</em> (ou <em>missing value</em>) do <em>tile</em> de ID 687 da tabela <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code>:</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Width</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tile_width</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_Height</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tile_height</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_PixelWidth</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">res_x</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_PixelHeight</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">res_y</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_SRID</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">srid</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_BandNoDataValue</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nodata</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq</span>
+
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">rid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">687</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> tile_width | tile_height | res_x | res_y | srid  | nodata
+------------+-------------+-------+-------+-------+--------
+        256 |         256 |    10 |    10 | 32724 |      0
+(1 row)
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>Consulta 02.</strong> Obtendo estatísticas sobre o <em>tile</em> de ID 687 na tabela <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code>:</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">--</span>
+<span class="c1">-- Estatísticas básicas da banda 01</span>
+<span class="c1">--</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">rid</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">ST_SummaryStats</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)).</span><span class="o">*</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq</span>
+
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">rid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">687</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> rid | count |    sum    |        mean        |       stddev       | min  | max
+-----+-------+-----------+--------------------+--------------------+------+------
+ 687 | 65536 | 162503031 | 2479.5994720458984 | 1261.1462832950708 | 1143 | 6724
+(1 row)
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Repare na notação usada na cláusula <code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span></code>, com <code class="code highlight sql docutils literal highlight-sql"><span class="p">(</span><span class="n">ST_SummaryStats</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)).</span><span class="o">*</span></code>. No PostgreSQL utilizamos a notação <code class="code highlight sql docutils literal highlight-sql"><span class="p">(</span><span class="n">objeto</span><span class="p">).</span><span class="o">*</span></code> para decompor um objeto composto.</p>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">--</span>
+<span class="c1">-- histograma da banda 01 com 08 faixas</span>
+<span class="c1">--</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">rid</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">ST_Histogram</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">)).</span><span class="o">*</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq</span>
+
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">rid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">687</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> rid |   min    |   max    | count |      percent
+-----+----------+----------+-------+--------------------
+ 687 |     1143 | 1840.625 | 25200 |     0.384521484375
+ 687 | 1840.625 |  2538.25 | 11890 |  0.181427001953125
+ 687 |  2538.25 | 3235.875 | 16135 | 0.2462005615234375
+ 687 | 3235.875 |   3933.5 |  4768 |      0.07275390625
+ 687 |   3933.5 | 4631.125 |  2241 | 0.0341949462890625
+ 687 | 4631.125 |  5328.75 |  1504 |      0.02294921875
+ 687 |  5328.75 | 6026.375 |  2085 | 0.0318145751953125
+ 687 | 6026.375 |     6724 |  1713 | 0.0261383056640625
+(8 rows)
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>Consulta 03.</strong> Obtendo estatísticas sobre o <em>raster</em> armazenado na tabela <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code>:</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">--</span>
+<span class="c1">-- Estatísticas da banda 01 (desconsiderando valores de nodata)</span>
+<span class="c1">--</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="p">(</span><span class="n">ST_SummaryStatsAgg</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)).</span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  count   |     sum      |       mean        |      stddev       | min | max
+----------+--------------+-------------------+-------------------+-----+------
+ 90703708 | 209818297682 | 2313.227345479636 | 600.8904215238014 | 588 | 9128
+(1 row)
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p id="cap-raster-postgis-raster-consulta-04"><strong>Consulta 04.</strong> Recortar a imagem contida na tabela <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code> pela região definida no <em>buffer</em> de coordenadas <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">305640.842</span></code> e <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">8959237.399</span></code>, e raio <code class="docutils literal notranslate"><span class="pre">2500</span> <span class="pre">metros</span></code> (<a class="reference internal" href="#fig-raster-postgis-raster-clip-buffer"><span class="std std-numref">Figura 8.19</span></a>):</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-clip-buffer">
+<a class="reference internal image-reference" href="../_images/clip-buffer.png"><img alt="Buffer de 2500m sobre a imagem contida na tabela t24ltq" src="../_images/clip-buffer.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.19 - </span><span class="caption-text">Buffer de 2500m sobre a imagem contida na tabela <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code>.</span><a class="headerlink" href="#fig-raster-postgis-raster-clip-buffer" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<details class="summary-solucao">
+<summary>Solução:</summary><p>Antes de fazer o recorte, vamos identificar quais <em>tiles</em> possuem interseção com a região definida pelo <em>buffer</em>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">WITH</span><span class="w"> </span><span class="n">buffer</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">ST_Buffer</span><span class="p">(</span>
+<span class="w">                </span><span class="n">ST_SetSRID</span><span class="p">(</span>
+<span class="w">                    </span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">305640</span><span class="p">.</span><span class="mi">842</span><span class="p">,</span><span class="mi">8959237</span><span class="p">.</span><span class="mi">399</span><span class="p">),</span>
+<span class="w">                    </span><span class="mi">32724</span>
+<span class="w">                </span><span class="p">),</span>
+<span class="w">                </span><span class="mi">2500</span><span class="p">,</span>
+<span class="w">                </span><span class="mi">256</span><span class="p">)</span>
+<span class="w">           </span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">rid</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span>
+
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="n">geom</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> rid
+-----
+ 447
+ 478
+ 479
+ 480
+ 510
+ 511
+ 512
+(7 rows)
+</pre></div>
+</div>
+<p>Visualmente, os sete <em>tiles</em> de interesse são representados na <a class="reference internal" href="#fig-raster-postgis-raster-buffer-intersected-tiles"><span class="std std-numref">Figura 8.20</span></a>.</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-buffer-intersected-tiles">
+<a class="reference internal image-reference" href="../_images/buffer-intersected-tiles.png"><img alt="Tiles com interseção com o buffer de interesse" src="../_images/buffer-intersected-tiles.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.20 - </span><span class="caption-text"><em>Tiles</em> com interseção com o <em>buffer</em> de interesse.</span><a class="headerlink" href="#fig-raster-postgis-raster-buffer-intersected-tiles" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Para recortar os <em>tiles</em>, podemos usar a função <code class="docutils literal notranslate"><span class="pre">ST_Clip</span></code>, como mostrado abaixo:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">t24ltq_clipped</span><span class="w"> </span><span class="k">AS</span>
+
+<span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">buffer</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">ST_Buffer</span><span class="p">(</span>
+<span class="w">                    </span><span class="n">ST_SetSRID</span><span class="p">(</span>
+<span class="w">                        </span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">305640</span><span class="p">.</span><span class="mi">842</span><span class="p">,</span><span class="mi">8959237</span><span class="p">.</span><span class="mi">399</span><span class="p">),</span>
+<span class="w">                        </span><span class="mi">32724</span>
+<span class="w">                    </span><span class="p">),</span>
+<span class="w">                    </span><span class="mi">2500</span><span class="p">,</span>
+<span class="w">                    </span><span class="mi">256</span><span class="p">)</span>
+<span class="w">               </span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">rid</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Clip</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rast</span>
+
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span>
+
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="n">geom</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>O resultado do comando acima é uma tabela chamada <code class="docutils literal notranslate"><span class="pre">t24ltq_clipped</span></code> com o conteúdo apresentado na <a class="reference internal" href="#fig-raster-postgis-raster-clip-buffer"><span class="std std-numref">Figura 8.19</span></a>.</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-clipped-buffer">
+<a class="reference internal image-reference" href="../_images/clipped-tiles.png"><img alt="Recorte da imagem t24ltq" src="../_images/clipped-tiles.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.21 - </span><span class="caption-text">Recorte da imagem <code class="docutils literal notranslate"><span class="pre">t24ltq</span></code> por uma geometria de interesse.</span><a class="headerlink" href="#fig-raster-postgis-raster-clipped-buffer" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Repare que a nova tabela <code class="docutils literal notranslate"><span class="pre">t24ltq_clipped</span></code> contém <em>tiles</em> com diferentes tamanhos de blocos:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Width</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tile_width</span><span class="p">,</span>
+<span class="w">               </span><span class="n">ST_Height</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tile_height</span><span class="p">,</span>
+<span class="w">               </span><span class="n">ST_PixelWidth</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">res_x</span><span class="p">,</span>
+<span class="w">               </span><span class="n">ST_PixelHeight</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">res_y</span><span class="p">,</span>
+<span class="w">               </span><span class="n">ST_SRID</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">srid</span><span class="p">,</span>
+<span class="w">               </span><span class="n">ST_BandNoDataValue</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nodata</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq_clipped</span><span class="w"> </span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> tile_width | tile_height | res_x | res_y | srid  | nodata
+------------+-------------+-------+-------+-------+--------
+        139 |          10 |    10 |    10 | 32724 |      0
+        180 |         256 |    10 |    10 | 32724 |      0
+        256 |         256 |    10 |    10 | 32724 |      0
+         64 |         183 |    10 |    10 | 32724 |      0
+        180 |         224 |    10 |    10 | 32724 |      0
+        256 |         234 |    10 |    10 | 32724 |      0
+         64 |         151 |    10 |    10 | 32724 |      0
+(7 rows)
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>Consulta 05.</strong> Considere as bandas do infravermelho próximo (NIR 1) das imagens Sentinel-2/MSI da cena 21LZF (grade MGRS) dos dias <a class="reference external" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('14b71086-bb3f-4c0f-9fbb-ccbe4394cff2')/$value">17/06/2022</a> e <a class="reference external" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('e9baafe6-da2a-42a2-88a6-0687daccec99')/$value">17/06/2023</a>, mostradas na Figura abaixo. Pede-se:</p>
+<ul class="open">
+<li><p>Importe a banda 08, do infravermelho próximo (NIR 1), que possui resolução espacial de 10 metros, de cada imagem para duas tabelas dentro do banco de dados.</p></li>
+<li><p>Crie uma terceira tabela denominada <code class="docutils literal notranslate"><span class="pre">t21lzf_diff</span></code>, a partir de uma consulta SQL, contendo a diferença entre as duas imagens importadas anteriormente.</p></li>
+</ul>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-0">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-0" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-0" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<img alt="Resolução espacial de 10 metros" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20220617.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Banda 08 Sentinel-2/MSI<br>17/06/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="Resolução espacial de 60 metros" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20230617.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Banda 08 Sentinel-2/MSI<br>17/06/2023</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-0" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-0" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Essas imagens podem ser obtidas no endereço <a class="reference external" href="https://data.inpe.br/sentinel-hub/">https://data.inpe.br/sentinel-hub/</a> com os seguintes identificadores:</p>
+<ul class="open">
+<li><p><a class="reference external" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('14b71086-bb3f-4c0f-9fbb-ccbe4394cff2')/$value">S2A_MSIL2A_20220617T134721_N0400_R024_T21LZF_20220617T205913</a>.</p></li>
+<li><p><a class="reference external" href="https://data.inpe.br/sentinel-hub/odata/v1/Products('e9baafe6-da2a-42a2-88a6-0687daccec99')/$value">S2B_MSIL2A_20230617T134709_N0509_R024_T21LZF_20230617T180935</a>.</p></li>
+</ul>
+</div>
+<details class="summary-solucao">
+<summary>Solução:</summary><p>Convertendo as imagens para arquivos contendo as instruções de carga de dados:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>raster2pgsql<span class="w"> </span>-c<span class="w"> </span>-C<span class="w"> </span>-r<span class="w"> </span>-s<span class="w"> </span><span class="m">32721</span><span class="w"> </span>-t<span class="w"> </span>256x256<span class="w"> </span>-P<span class="w"> </span>-f<span class="w"> </span>rast<span class="w"> </span>-I<span class="w"> </span>-M<span class="w"> </span>-N<span class="w"> </span><span class="m">0</span><span class="w"> </span>-l<span class="w"> </span><span class="m">2</span>,4,8,16<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>T21LZF_20220617T134721_B08_10m.jp2<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>public.t21lzf_20220617<span class="w"> </span>&gt;<span class="w"> </span>t21lzf_20220617.sql
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>raster2pgsql<span class="w"> </span>-c<span class="w"> </span>-C<span class="w"> </span>-r<span class="w"> </span>-s<span class="w"> </span><span class="m">32721</span><span class="w"> </span>-t<span class="w"> </span>256x256<span class="w"> </span>-P<span class="w"> </span>-f<span class="w"> </span>rast<span class="w"> </span>-I<span class="w"> </span>-M<span class="w"> </span>-N<span class="w"> </span><span class="m">0</span><span class="w"> </span>-l<span class="w"> </span><span class="m">2</span>,4,8,16<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>T21LZF_20230617T134709_B08_10m.jp2<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>public.t21lzf_20230617<span class="w"> </span>&gt;<span class="w"> </span>t21lzf_20230617.sql
+</pre></div>
+</div>
+<p>As imagens podem ser carregadas com o <em>psql</em>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-d<span class="w"> </span>bdgeo<span class="w"> </span>-f<span class="w"> </span>t21lzf_20220617.sql
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-d<span class="w"> </span>bdgeo<span class="w"> </span>-f<span class="w"> </span>t21lzf_20230617.sql
+</pre></div>
+</div>
+<p>A função <code class="code highlight postgresql docutils literal highlight-postgresql"><span class="n">ST_MapAlgebra</span></code> permite realizar álgebra com dados matriciais a partir de expressões aplicadas aos pixels de dois objetos <code class="docutils literal notranslate"><span class="pre">raster</span></code>. Uma das versões dessa função, que é sobrecarregada, possui a seguinte sintaxe:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">raster</span><span class="w"> </span><span class="n">ST_MapAlgebra</span><span class="p">(</span><span class="n">raster</span><span class="w"> </span><span class="n">rast1</span><span class="p">,</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="n">nband1</span><span class="p">,</span>
+<span class="w">                     </span><span class="n">raster</span><span class="w"> </span><span class="n">rast2</span><span class="p">,</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="n">nband2</span><span class="p">,</span>
+<span class="w">                     </span><span class="nb">text</span><span class="w"> </span><span class="n">expression</span><span class="p">,</span>
+<span class="w">                     </span><span class="nb">text</span><span class="w"> </span><span class="n">pixeltype</span><span class="o">=</span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">                     </span><span class="nb">text</span><span class="w"> </span><span class="n">extenttype</span><span class="o">=</span><span class="n">INTERSECTION</span><span class="p">,</span>
+<span class="w">                     </span><span class="nb">text</span><span class="w"> </span><span class="n">nodata1expr</span><span class="o">=</span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">                     </span><span class="nb">text</span><span class="w"> </span><span class="n">nodata2expr</span><span class="o">=</span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">                     </span><span class="n">double</span><span class="w"> </span><span class="k">precision</span><span class="w"> </span><span class="n">nodatanodataval</span><span class="o">=</span><span class="k">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Onde:</p>
+<ul class="open">
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code>: Pode ser uma expressão do PostgreSQL envolvendo os dois <em>rasters</em>. No caso da diferença, poderíamos utilizar algo como: <code class="code highlight postgresql docutils literal highlight-postgresql"><span class="s1">&#39;([rast2] - [rast1])&#39;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pixeltype</span></code>: O tipo de dado do pixel resultante. Os possíveis tipo podem ser consultados <a class="reference external" href="https://postgis.net/docs/RT_ST_BandPixelType.html">aqui</a>. No caso de interesse, a diferença poderia capturar valores negativos e positivos usando o tipo <code class="docutils literal notranslate"><span class="pre">16BSI</span></code> (16-bit signed integer).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">extenttype</span></code>: Controla a extensão do raster resultante. Como no exemplo os dois <em>rasters</em> possuem exatamente a mesma extensão, podemos usar o valor <code class="docutils literal notranslate"><span class="pre">FIRST</span></code>, que indica o uso da extensão dos blocos do primeiro <em>raster</em> na operação.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nodata1expr</span></code>: Expressão ou valor usado quando o pixel do <code class="docutils literal notranslate"><span class="pre">raster1</span></code> é <em>nodata</em>. No nosso exemplo, usaremos <code class="docutils literal notranslate"><span class="pre">-32768</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nodata2expr</span></code>: Expressão ou valor usado quando o pixel do <code class="docutils literal notranslate"><span class="pre">raster2</span></code> é <em>nodata</em>. No nosso exemplo, usaremos <code class="docutils literal notranslate"><span class="pre">-32768</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nodatanodataval</span></code>: Expressão ou valor usado quando tanto o pixel do <code class="docutils literal notranslate"><span class="pre">raster1</span></code> quanto do <code class="docutils literal notranslate"><span class="pre">raster2</span></code> são <em>nodata</em>. No nosso exemplo, usaremos <code class="docutils literal notranslate"><span class="pre">-32768</span></code>.</p></li>
+</ul>
+<p>Considerando que o <code class="docutils literal notranslate"><span class="pre">raster1</span></code> será o da data 17/06/2022 e o <code class="docutils literal notranslate"><span class="pre">raster2</span></code>, o de 17/06/2023, podemos construir a seguinte consulta:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">t21lzf_diff</span><span class="w"> </span><span class="k">AS</span>
+
+<span class="w">    </span><span class="k">SELECT</span><span class="w">  </span><span class="n">r1</span><span class="p">.</span><span class="n">rid</span><span class="p">,</span><span class="w"> </span><span class="n">ST_MapAlgebra</span><span class="p">(</span><span class="n">r1</span><span class="p">.</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">r2</span><span class="p">.</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;([rast2] - [rast1])&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;16BSI&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;FIRST&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-32768)&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-32768)&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;-99999&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rast</span>
+
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">t21lzf_20220617</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">r1</span><span class="p">,</span>
+<span class="w">           </span><span class="n">t21lzf_20230617</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">r2</span>
+
+<span class="w">     </span><span class="k">WHERE</span><span class="w">  </span><span class="n">r1</span><span class="p">.</span><span class="n">rid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r2</span><span class="p">.</span><span class="n">rid</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">t21lzf_diff</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">rast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ST_SetBandNoDataValue</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">32768</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="ss">&quot;public&quot;</span><span class="p">.</span><span class="ss">&quot;t21lzf_diff&quot;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">gist</span><span class="w"> </span><span class="p">(</span><span class="n">st_convexhull</span><span class="p">(</span><span class="ss">&quot;rast&quot;</span><span class="p">));</span>
+
+<span class="k">ANALYZE</span><span class="w"> </span><span class="ss">&quot;public&quot;</span><span class="p">.</span><span class="ss">&quot;t21lzf_diff&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">AddRasterConstraints</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">,</span><span class="s1">&#39;t21lzf_diff&#39;</span><span class="p">,</span><span class="s1">&#39;rast&#39;</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">VACUUM</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"> </span><span class="ss">&quot;public&quot;</span><span class="p">.</span><span class="ss">&quot;t21lzf_diff&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">raster_columns</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">r_table_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t21lzf_diff&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Como resultado, teremos um <em>raster</em> como o mostrado na figura abaixo.</p>
+<div class="scbs-carousel scbs-slide scbs-carousel-fade" data-bs-interval="false" id="carousel-1">
+<div class="scbs-carousel-indicators">
+<button aria-current="true" aria-label="Slide 1" class="scbs-active" data-bs-slide-to="0" data-bs-target="#carousel-1" type="button"></button>
+<button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carousel-1" type="button"></button>
+<button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carousel-1" type="button"></button>
+</div>
+<div class="scbs-carousel-inner">
+<div class="scbs-carousel-item scbs-active">
+<img alt="../_images/t21lzf_20220617.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20220617.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Banda 08 Sentinel-2/MSI<br>17/06/2022</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/t21lzf_20230617.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_20230617.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Banda 08 Sentinel-2/MSI<br>17/06/2023</h5>
+</div>
+</div>
+<div class="scbs-carousel-item">
+<img alt="../_images/t21lzf_diff.png" class="scbs-d-block scbs-w-100" src="../_images/t21lzf_diff.png" />
+<div class="scbs-carousel-caption scbs-bg-dark scbs-d-sm-block scc-below-control">
+<h5>Imagem diferença entre as cenas 21LZF de 17/06/2023 e 17/06/2022.</h5>
+</div>
+</div>
+</div>
+<button class="scbs-carousel-control-prev" data-bs-slide="prev" data-bs-target="#carousel-1" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-prev-icon"></span>
+<span class="scbs-visually-hidden">Previous</span>
+</button>
+<button class="scbs-carousel-control-next" data-bs-slide="next" data-bs-target="#carousel-1" type="button">
+<span aria-hidden="true" class="scbs-carousel-control-next-icon"></span>
+<span class="scbs-visually-hidden">Next</span>
+</button>
+</div>
+<p>Outra expressão que poderíamos adotar é a diferença limitada ao intrevalo <span class="math notranslate nohighlight">\([-1.0, 1.0]\)</span>, nesse caso, os pixels da imagem resutante poderiam ser do tipo <code class="docutils literal notranslate"><span class="pre">32BF</span></code> (32-bit float):</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">t21lzf_diff_norm</span><span class="w"> </span><span class="k">AS</span>
+
+<span class="w">    </span><span class="k">SELECT</span><span class="w">  </span><span class="n">r1</span><span class="p">.</span><span class="n">rid</span><span class="p">,</span><span class="w"> </span><span class="n">ST_MapAlgebra</span><span class="p">(</span><span class="n">r1</span><span class="p">.</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">r2</span><span class="p">.</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;( ([rast2] - [rast1]) / ([rast1] + [rast2]) )&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;32BF&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;FIRST&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-99999)&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(-99999)&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;-99999&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rast</span>
+
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">t21lzf_20220617</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">r1</span><span class="p">,</span>
+<span class="w">           </span><span class="n">t21lzf_20230617</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">r2</span>
+
+<span class="w">     </span><span class="k">WHERE</span><span class="w">  </span><span class="n">r1</span><span class="p">.</span><span class="n">rid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r2</span><span class="p">.</span><span class="n">rid</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">t21lzf_diff_norm</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">rast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ST_SetBandNoDataValue</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">99999</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="ss">&quot;public&quot;</span><span class="p">.</span><span class="ss">&quot;t21lzf_diff_norm&quot;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">gist</span><span class="w"> </span><span class="p">(</span><span class="n">st_convexhull</span><span class="p">(</span><span class="ss">&quot;rast&quot;</span><span class="p">));</span>
+
+<span class="k">ANALYZE</span><span class="w"> </span><span class="ss">&quot;public&quot;</span><span class="p">.</span><span class="ss">&quot;t21lzf_diff_norm&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">AddRasterConstraints</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">,</span><span class="s1">&#39;t21lzf_diff_norm&#39;</span><span class="p">,</span><span class="s1">&#39;rast&#39;</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">,</span><span class="k">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">VACUUM</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"> </span><span class="ss">&quot;public&quot;</span><span class="p">.</span><span class="ss">&quot;t21lzf_diff_norm&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>Consulta 06.</strong> Utilizando o mesmo <em>buffer</em> da <a class="reference internal" href="#cap-raster-postgis-raster-consulta-04"><span class="std std-ref">Consulta 04</span></a>, forneça a estatística dos pixels delimitados por ele.</p>
+<details class="summary-solucao">
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">ST_SummaryStatsAgg</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span><span class="w"> </span><span class="p">).</span><span class="o">*</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
+
+<span class="w">        </span><span class="k">WITH</span><span class="w"> </span><span class="n">buffer</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">            </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
+<span class="w">                </span><span class="n">ST_Buffer</span><span class="p">(</span>
+<span class="w">                    </span><span class="n">ST_SetSRID</span><span class="p">(</span>
+<span class="w">                        </span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">305640</span><span class="p">.</span><span class="mi">842</span><span class="p">,</span><span class="mi">8959237</span><span class="p">.</span><span class="mi">399</span><span class="p">),</span>
+<span class="w">                        </span><span class="mi">32724</span>
+<span class="w">                    </span><span class="p">),</span>
+<span class="w">                    </span><span class="mi">2500</span><span class="p">,</span>
+<span class="w">                    </span><span class="mi">256</span>
+<span class="w">                </span><span class="p">)</span>
+<span class="w">            </span><span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
+
+<span class="w">        </span><span class="k">SELECT</span><span class="w"> </span><span class="n">rid</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Clip</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">As</span><span class="w"> </span><span class="n">rast</span>
+
+<span class="w">          </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span>
+
+<span class="w">         </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">t24ltq</span><span class="p">.</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
+
+<span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">clipped_raster</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> count  |    sum    |       mean        |      stddev       | min  | max
+--------+-----------+-------------------+-------------------+------+------
+ 196351 | 469456882 | 2390.906499075635 | 506.3295022640984 | 1158 | 5932
+(1 row)
+</pre></div>
+</div>
+</details><hr class="docutils" />
+<p><strong>Consulta 07.</strong> Novamente considerando o <em>buffer</em> da <a class="reference internal" href="#cap-raster-postgis-raster-consulta-04"><span class="std std-ref">Consulta 04</span></a>, compute quantos pixels possuem valor acima da média (2390.906499075635).</p>
+<details class="summary-solucao-1">
+<summary>Solução 1:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">WITH</span><span class="w"> </span><span class="n">buffer</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="n">ST_Buffer</span><span class="p">(</span>
+<span class="w">            </span><span class="n">ST_SetSRID</span><span class="p">(</span>
+<span class="w">                </span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">305640</span><span class="p">.</span><span class="mi">842</span><span class="p">,</span><span class="mi">8959237</span><span class="p">.</span><span class="mi">399</span><span class="p">),</span>
+<span class="w">                </span><span class="mi">32724</span>
+<span class="w">            </span><span class="p">),</span>
+<span class="w">            </span><span class="mi">2500</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">256</span>
+<span class="w">        </span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">ST_CountAgg</span><span class="p">(</span>
+<span class="w">           </span><span class="n">ST_MapAlgebra</span><span class="p">(</span>
+<span class="w">               </span><span class="n">ST_Clip</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="n">geom</span><span class="p">),</span>
+<span class="w">               </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">               </span><span class="s1">&#39;8BUI&#39;</span><span class="p">,</span>
+<span class="w">               </span><span class="s1">&#39;CASE WHEN [rast] &gt;  2390.906499075635 THEN 1 ELSE 0 END&#39;</span>
+<span class="w">           </span><span class="p">),</span>
+<span class="w">           </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">           </span><span class="k">TRUE</span>
+<span class="w">       </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_pixels_acima_media</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span>
+
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">t24ltq</span><span class="p">.</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="n">geom</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">num_pixels_acima_media</span>
+<span class="o">------------------------</span>
+                  <span class="mi">87251</span>
+<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+</details><details class="summary-solucao-2">
+<summary>Solução 2:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">num_pixels_acima_media</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
+
+<span class="w">      </span><span class="k">WITH</span><span class="w"> </span><span class="n">buffer</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">          </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
+<span class="w">              </span><span class="n">ST_Buffer</span><span class="p">(</span>
+<span class="w">                  </span><span class="n">ST_SetSRID</span><span class="p">(</span>
+<span class="w">                      </span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">305640</span><span class="p">.</span><span class="mi">842</span><span class="p">,</span><span class="mi">8959237</span><span class="p">.</span><span class="mi">399</span><span class="p">),</span>
+<span class="w">                      </span><span class="mi">32724</span>
+<span class="w">                  </span><span class="p">),</span>
+<span class="w">                  </span><span class="mi">2500</span><span class="p">,</span>
+<span class="w">                  </span><span class="mi">256</span>
+<span class="w">              </span><span class="p">)</span>
+<span class="w">          </span><span class="p">)</span>
+<span class="w">      </span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">rid</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">ST_Intersection</span><span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)).</span><span class="n">val</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">value</span>
+
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">t24ltq</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span>
+
+<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">t24ltq</span><span class="p">.</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
+
+<span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pixel_values</span>
+
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">2390</span><span class="p">.</span><span class="mi">906499075635</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">num_pixels_acima_media</span>
+<span class="o">------------------------</span>
+                  <span class="mi">86332</span>
+<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+</details></section>
+<hr class="docutils" />
+<section id="registrando-imagens-do-sistema-de-arquivos-do-servidor-de-bancos-de-dados">
+<h2><span class="section-number">8.4.8. </span>Registrando Imagens do Sistema de Arquivos do Servidor de Bancos de Dados<a class="headerlink" href="#registrando-imagens-do-sistema-de-arquivos-do-servidor-de-bancos-de-dados" title="Link permanente para este cabeçalho"></a></h2>
+<p>O projeto do PostGIS Raster permite tratar imagens armazenadas em arquivos externos ao banco de dados PostgreSQL. Essa estratégia, denominada <strong>out-db</strong>, consiste em usar o mesmo tipo <code class="docutils literal notranslate"><span class="pre">raster</span></code> para referenciar as imagens desses arquivos, como ilustrado nos esquemas das Figuras <a class="reference internal" href="#fig-raster-postgis-raster-outdb-1"><span class="std std-numref">8.22</span></a> e <a class="reference internal" href="#fig-raster-postgis-raster-outdb-2"><span class="std std-numref">8.23</span></a>.</p>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-outdb-1">
+<a class="reference internal image-reference" href="../_images/outdb-1.png"><img alt="Esquema de armazenamento de imagens externas ao banco de dados PostgreSQL" src="../_images/outdb-1.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.22 - </span><span class="caption-text">Esquema de armazenamento de imagens externas ao banco de dados PostgreSQL.</span><a class="headerlink" href="#fig-raster-postgis-raster-outdb-1" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center align-default" id="fig-raster-postgis-raster-outdb-2">
+<a class="reference internal image-reference" href="../_images/outdb-2.png"><img alt="Esquema de armazenamento de imagens externas ao banco de dados PostgreSQL" src="../_images/outdb-2.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 8.23 - </span><span class="caption-text">Esquema de armazenamento de imagens externas ao banco de dados PostgreSQL.</span><a class="headerlink" href="#fig-raster-postgis-raster-outdb-2" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<section id="habilitando-o-tratamento-de-imagens-externas">
+<h3><span class="section-number">8.4.8.1. </span>Habilitando o tratamento de imagens externas<a class="headerlink" href="#habilitando-o-tratamento-de-imagens-externas" title="Link permanente para este cabeçalho"></a></h3>
+<p>Por padrão, as funções que operam sobre o tipo <code class="docutils literal notranslate"><span class="pre">raster</span></code> não permitem a manipulação de imagens armazenadas externamente. Para permitir esse acesso, é necessário configurar o servidor PostgreSQL. Temos várias formas de realizar essa configuração:</p>
+<ul class="open">
+<li><p>As variáveis de ambiente <code class="docutils literal notranslate"><span class="pre">POSTGIS_ENABLE_OUTDB_RASTERS</span></code> e <code class="docutils literal notranslate"><span class="pre">POSTGIS_GDAL_ENABLED_DRIVERS</span></code> controlam, respectivamente, o acesso a <em>rasters</em> externos e os <em>drivers</em> da GDAL que podem ser utilizados nesse acesso.</p>
+<blockquote>
+<div><div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Nos sistemas Linux Ubuntu, essas duas variáveis podem ser incluídas em um arquivo chamado <code class="docutils literal notranslate"><span class="pre">environment</span></code>, localizado no diretório de configuração do servidor, geralmente, <code class="docutils literal notranslate"><span class="pre">/etc/postgresql/POSTGRESQL_VERSION/CLUSTER_NAME/environment</span></code>:</p>
+<div class="highlight-linux-config notranslate"><div class="highlight"><pre><span></span>POSTGIS_ENABLE_OUTDB_RASTERS<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+
+POSTGIS_GDAL_ENABLED_DRIVERS<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ENABLE_ALL&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Será necessário reinicializar o servidor caso essas variáveis sejam incluídas após ele ter entrado em funcionamento.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p>Outra forma de habilitar o uso de <em>rasters</em> externos e os <em>drivers</em> GDAL é usar o comando <code class="docutils literal notranslate"><span class="pre">SET</span></code> na sessão do usuário:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SET</span><span class="w"> </span><span class="n">postgis</span><span class="p">.</span><span class="n">enable_outdb_rasters</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="k">True</span><span class="p">;</span>
+
+<span class="k">SET</span><span class="w"> </span><span class="n">postgis</span><span class="p">.</span><span class="n">gdal_enabled_drivers</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;ENABLE_ALL&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Também podemos configurar essas opções apenas para um banco de dados específico:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">bdgeo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">postgis</span><span class="p">.</span><span class="n">enable_outdb_rasters</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="k">True</span><span class="p">;</span>
+
+<span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">bdgeo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">postgis</span><span class="p">.</span><span class="n">gdal_enabled_drivers</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;ENABLE_ALL&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Por último, podemos incluir as opções diretamente no arquivo <code class="docutils literal notranslate"><span class="pre">postgresql.conf</span></code> ou usar o comando <code class="code highlight postgresql docutils literal highlight-postgresql"><span class="k">ALTER</span><span class="w"> </span><span class="k">SYSTEM</span></code> para editar o arquivo de configuração auxiliar <code class="docutils literal notranslate"><span class="pre">postgres.auto.conf</span></code>:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">SYSTEM</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">postgis</span><span class="p">.</span><span class="n">enable_outdb_rasters</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="k">True</span><span class="p">;</span>
+
+<span class="k">ALTER</span><span class="w"> </span><span class="k">SYSTEM</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">postgis</span><span class="p">.</span><span class="n">gdal_enabled_drivers</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;ENABLE_ALL&#39;</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">pg_reload_conf</span><span class="p">();</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O PostGIS possui um conjunto de variáveis de configuração conhecidos por <a class="reference external" href="https://postgis.net/docs/reference.html#PostGIS_GUC">GUC (Grand Unified Custom variables)</a>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Para mais detalhes sobre os parâmetros de configuração <em>raster</em> consulte os seguintes links: <a class="reference external" href="https://postgis.net/docs/postgis_enable_outdb_rasters.html">enable_outdb_rasters</a> e <a class="reference external" href="https://postgis.net/docs/postgis_gdal_enabled_drivers.html">gdal_enabled_drivers</a>.</p>
+</div>
+</section>
+<section id="registrando-um-conjunto-de-imagens-externas">
+<h3><span class="section-number">8.4.8.2. </span>Registrando um conjunto de imagens externas<a class="headerlink" href="#registrando-um-conjunto-de-imagens-externas" title="Link permanente para este cabeçalho"></a></h3>
+<p>Considere o seguinte conjunto de imagens Sentinel-2/MSI <em>True Color</em> (TCI) da cena 21JYM (grade MGRS) entre os dias 04/07/2022 e 08/08/2022:</p>
+<ul class="open">
+<li><p>T21JYM_20220704T133851_TCI_10m.jp2</p></li>
+<li><p>T21JYM_20220709T133839_TCI_10m.jp2</p></li>
+<li><p>T21JYM_20220714T133851_TCI_10m.jp2</p></li>
+<li><p>T21JYM_20220719T133839_TCI_10m.jp2</p></li>
+<li><p>T21JYM_20220724T133851_TCI_10m.jp2</p></li>
+<li><p>T21JYM_20220729T133839_TCI_10m.jp2</p></li>
+<li><p>T21JYM_20220803T133851_TCI_10m.jp2</p></li>
+<li><p>T21JYM_20220808T133839_TCI_10m.jp2</p></li>
+</ul>
+<p>Vamos criar uma tabela denominada <code class="docutils literal notranslate"><span class="pre">t21jym</span></code> que conterá em cada linha uma referência a uma das imagens em disco. Para tal, vamos utilizar o comando <em>raster2pgsql</em> começando pela imagem <code class="docutils literal notranslate"><span class="pre">T21JYM_20220704T133851_TCI_10m.jp2</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>raster2pgsql<span class="w"> </span>-c<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-s<span class="w"> </span><span class="m">32721</span><span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-N<span class="w"> </span><span class="m">0</span><span class="w"> </span>-k<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-Y<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-f<span class="w"> </span>rast<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-F<span class="w"> </span>-n<span class="w"> </span>cena<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-I<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-R<span class="w"> </span>/shared-data/img/sentinel-2/TCI/T21JYM_20220704T133851_TCI_10m.jp2<span class="w"> </span><span class="s2">&quot;public&quot;</span>.<span class="s2">&quot;t21jym&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+psql<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-d<span class="w"> </span>bdgeo
+</pre></div>
+</div>
+<p>Em seguida, vamos apenas registrar as demais imagens:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>find<span class="w"> </span>/shared-data/img/sentinel-2/TCI<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-not<span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;T21JYM_20220704T133851_TCI_10m.jp2&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-name<span class="w"> </span><span class="s2">&quot;T21JYM*_TCI_10m.jp2&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+sort<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+xargs<span class="w"> </span>-I<span class="w"> </span><span class="o">{}</span><span class="w"> </span>raster2pgsql<span class="w"> </span>-a<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>-s<span class="w"> </span><span class="m">32721</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>-N<span class="w"> </span><span class="m">0</span><span class="w">  </span>-k<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>-Y<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>-f<span class="w"> </span>rast<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>-F<span class="w"> </span>-n<span class="w"> </span>cena<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>-R<span class="w"> </span><span class="o">{}</span><span class="w"> </span><span class="s2">&quot;public&quot;</span>.<span class="s2">&quot;t21jym&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+psql<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-d<span class="w"> </span>bdgeo
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Nos comandos <em>raster2pgsql</em> acima, experimente adicionar a opção <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">1024x1024</span></code> e veja o que será carregado para o banco de dados.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Nos comandos <em>raster2pgsql</em> acima, experimente adicionar a opção <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">1024x1024</span> <span class="pre">-l</span> <span class="pre">4,8,16,32</span></code> e veja o que será carregado para o banco de dados.</p>
+</div>
+</section>
+<section id="consultas-sobre-as-imagens-externas">
+<h3><span class="section-number">8.4.8.3. </span>Consultas sobre as imagens externas<a class="headerlink" href="#consultas-sobre-as-imagens-externas" title="Link permanente para este cabeçalho"></a></h3>
+<p>Uma vez que as imagens encontram-se registradas no banco de dados, podemos consultar a tabela <code class="docutils literal notranslate"><span class="pre">t21jym</span></code> para obter informações dessas imagens:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Width</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tile_width</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_Height</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tile_height</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_PixelWidth</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">res_x</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_PixelHeight</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">res_y</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_SRID</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">srid</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_BandNoDataValue</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nodata</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">t21jym</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>O caminho da imagem no sistema de arquivos do Servidor PostgreSQL e o tamanho em Megabytes da banda 1 de cada imagem podem ser obtidos com as funções <code class="code highlight sql docutils literal highlight-sql"><span class="n">ST_BandPath</span></code> e <code class="code highlight sql docutils literal highlight-sql"><span class="n">ST_BandFileSize</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_BandPath</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">path</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_BandFileSize</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="o">/</span><span class="mi">1024</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;size(MB)&quot;</span>
+
+<span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">t21jym</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                            path                            | size(MB)
+------------------------------------------------------------+----------
+ /shared-data/sentinel-2/T21JYM_20220704T133851_TCI_10m.jp2 |      129
+ /shared-data/sentinel-2/T21JYM_20220709T133839_TCI_10m.jp2 |      128
+ /shared-data/sentinel-2/T21JYM_20220714T133851_TCI_10m.jp2 |       50
+ /shared-data/sentinel-2/T21JYM_20220719T133839_TCI_10m.jp2 |      104
+ /shared-data/sentinel-2/T21JYM_20220724T133851_TCI_10m.jp2 |      128
+ /shared-data/sentinel-2/T21JYM_20220729T133839_TCI_10m.jp2 |      128
+ /shared-data/sentinel-2/T21JYM_20220803T133851_TCI_10m.jp2 |      128
+ /shared-data/sentinel-2/T21JYM_20220808T133839_TCI_10m.jp2 |       93
+(8 rows)
+</pre></div>
+</div>
+<p>Para obter estatísticas da banda 1 de cada imagem, podemos utilizar a função <code class="docutils literal notranslate"><span class="pre">ST_SummaryStats</span></code>, da mesma forma que fizemos com as imagens armazenadas dentro do banco:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">(</span><span class="n">ST_SummaryStats</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)).</span><span class="o">*</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">t21jym</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="trabalhando-com-imagens-disponiveis-na-nuvem">
+<h2><span class="section-number">8.4.9. </span>Trabalhando com Imagens Disponíveis na Nuvem<a class="headerlink" href="#trabalhando-com-imagens-disponiveis-na-nuvem" title="Link permanente para este cabeçalho"></a></h2>
+<p>Os formatos de imagem voltados para uso em sistemas de armazenamento em nuvem, como o <a class="reference internal" href="geotiff.html#cap-raster-cog"><span class="std std-ref">COG</span></a>, também podem ser registrados como <em>rasters</em> externos no PostGIS Raster. A biblioteca GDAL, utilizada na implementação dessa extensão, possui um <em>driver</em> chamado <em>VSI</em> (<em>Virtual File Systems</em>) que permite acessar arquivos de imagens  armazenados em <em>buckets</em> do serviço AWS S3 (driver <a class="reference external" href="https://gdal.org/user/virtual_file_systems.html#vsis3-aws-s3-files">/vsis3/</a>) ou via HTTP/HTTPS (<a class="reference external" href="https://gdal.org/user/virtual_file_systems.html#vsicurl-http-https-ftp-files-random-access">/vsicurl/</a>).</p>
+<p>Esse <em>driver</em> da GDAL também pode demandar algumas configurações, seja através de variáveis de ambiente informadas na inicialização do servidor PostgreSQL ou através de parâmetros de configuração do servidor. Por exemplo, no caso de <em>buckets</em> da AWS S3 que não necessitam de credenciais para acesso, devemos definir a variável de ambiente <code class="docutils literal notranslate"><span class="pre">AWS_NO_SIGN_REQUEST=YES</span></code> ou ajustar o parâmetro de configuração <code class="docutils literal notranslate"><span class="pre">postgis.gdal_vsi_options</span></code>. Isso pode ser feito de uma das seguintes formas:</p>
+<ul class="open">
+<li><p>Na sessão do usuário atual:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SET</span><span class="w"> </span><span class="n">postgis</span><span class="p">.</span><span class="n">gdal_vsi_options</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;AWS_NO_SIGN_REQUEST=YES&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Para um banco de dados específico:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">bdgeo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">postgis</span><span class="p">.</span><span class="n">gdal_vsi_options</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;AWS_NO_SIGN_REQUEST=YES&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Para todo o servidor:</p>
+<blockquote>
+<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">SYSTEM</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">postgis</span><span class="p">.</span><span class="n">gdal_vsi_options</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;AWS_NO_SIGN_REQUEST=YES&#39;</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">pg_reload_conf</span><span class="p">();</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<section id="registrando-as-imagens">
+<h3><span class="section-number">8.4.9.1. </span>Registrando as Imagens<a class="headerlink" href="#registrando-as-imagens" title="Link permanente para este cabeçalho"></a></h3>
+<p>Vamos criar tabelas para armazenar referências a algumas imagens disponíveis na AWS. As seguintes imagens serã utilizadas:</p>
+<ul class="open">
+<li><p><code class="docutils literal notranslate"><span class="pre">s3://sentinel-cogs/sentinel-s2-l2a-cogs/22/L/HL/2023/6/S2B_22LHL_20230621_0_L2A/B08.tif</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22/M/HS/2023/6/S2B_22MHS_20230621_0_L2A/B08.tif</span></code></p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Para obter informações os metadados básicos dessas imagens, utilize a ferramenta de linha de comando <em>gdalinfo</em>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">AWS_NO_SIGN_REQUEST</span><span class="o">=</span>YES<span class="w"> </span><span class="se">\</span>
+gdalinfo<span class="w"> </span>/vsis3/sentinel-cogs/sentinel-s2-l2a-cogs/22/L/HL/2023/6/S2B_22LHL_20230621_0_L2A/B08.tif
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gdalinfo<span class="w"> </span>/vsicurl/https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22/M/HS/2023/6/S2B_22MHS_20230621_0_L2A/B08.tif
+</pre></div>
+</div>
+</div>
+<p>Para gerar os comandos de registro das imagens, podemos fazer:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">AWS_NO_SIGN_REQUEST</span><span class="o">=</span>YES<span class="w"> </span><span class="se">\</span>
+raster2pgsql<span class="w"> </span>-c<span class="w"> </span>-s<span class="w"> </span><span class="m">32722</span><span class="w"> </span>-t<span class="w"> </span>1024x1024<span class="w"> </span>-N<span class="w"> </span><span class="m">0</span><span class="w"> </span>-I<span class="w"> </span>-C<span class="w"> </span>-r<span class="w"> </span>-k<span class="w"> </span>-Y<span class="w"> </span>-f<span class="w"> </span>rast<span class="w"> </span>-R<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>/vsis3/sentinel-cogs/sentinel-s2-l2a-cogs/22/L/HL/2023/6/S2B_22LHL_20230621_0_L2A/B08.tif<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>public.t22lhl_cloud<span class="w"> </span><span class="p">|</span><span class="w"> </span>psql<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-d<span class="w"> </span>bdgeo
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>raster2pgsql<span class="w"> </span>-s<span class="w"> </span><span class="m">32722</span><span class="w"> </span>-t<span class="w"> </span>1024x1024<span class="w"> </span>-N<span class="w"> </span><span class="m">0</span><span class="w"> </span>-I<span class="w"> </span>-C<span class="w"> </span>-r<span class="w"> </span>-k<span class="w"> </span>-Y<span class="w"> </span>-f<span class="w"> </span>rast<span class="w"> </span>-R<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>/vsicurl/https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22/M/HS/2023/6/S2B_22MHS_20230621_0_L2A/B08.tif<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>public.t22mhs_cloud<span class="w"> </span><span class="p">|</span><span class="w"> </span>psql<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-d<span class="w"> </span>bdgeo
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Repare que no comando acima, que no caso do protocolo S3 foi introduzida uma variável de ambiente denominada <code class="docutils literal notranslate"><span class="pre">AWS_NO_SIGN_REQUEST</span></code>. Esta variável é usada pelo <em>driver</em> GDAL para não que não seja necessário usar credenciais para acesso ao <em>bucket</em> S3.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Crie uma view com o envoltório convexo de cada <em>tile</em> das imagens acima:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">t22mhs_cloud_hull</span><span class="w"> </span><span class="k">AS</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">rid</span><span class="p">,</span><span class="w"> </span><span class="n">ST_ConvexHull</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">t22mhs_cloud</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Nos comandos <em>raster2pgsql</em> acima, experimente remover a opçãp <code class="docutils literal notranslate"><span class="pre">-R</span></code> e adicionar as opções <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">4,8,16,32</span></code> e veja o que será carregado para o banco de dados.</p>
+</div>
+</section>
+<section id="consultas-sobre-as-imagens-da-cloud">
+<h3><span class="section-number">8.4.9.2. </span>Consultas sobre as imagens da cloud<a class="headerlink" href="#consultas-sobre-as-imagens-da-cloud" title="Link permanente para este cabeçalho"></a></h3>
+<p>Depois de registradas, as imagens podem ser consultadas normalmente:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">rid</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_BandPath</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">path</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_Width</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tile_width</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_Height</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tile_height</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_PixelWidth</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">res_x</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_PixelHeight</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">res_y</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_SRID</span><span class="p">(</span><span class="n">rast</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">srid</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ST_BandNoDataValue</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nodata</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">t22mhs_cloud</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Obtendo estatísticas de dois blocos da imagem registrada via S3:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">(</span><span class="n">ST_SummaryStats</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)).</span><span class="o">*</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">t22lhl_cloud</span>
+
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_BandPath</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/vsis3/sentinel-cogs/sentinel-s2-l2a-cogs/22/L/HL/2023/6/S2B_22LHL_20230621_0_L2A/B08.tif&#39;</span>
+
+<span class="k">OFFSET</span><span class="w"> </span><span class="mi">10</span>
+
+<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  count  |    sum     |        mean        |       stddev       | min | max
+---------+------------+--------------------+--------------------+-----+------
+  757760 | 1476154934 | 1948.0507469383447 | 242.15514605321923 |  53 | 4312
+ 1048576 | 2147028814 | 2047.5662364959717 |  722.6200427133809 |   1 | 4948
+(2 rows)
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Para que a consulta acima funcione, precisamos que o servidor PostgreSQL esteja configurado com a variável de ambiente <code class="docutils literal notranslate"><span class="pre">AWS_NO_SIGN_REQUEST=YES</span></code>.</p>
+</div>
+<p>Obtendo estatísticas de dois blocos da imagem registrada via HTTPS:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">(</span><span class="n">ST_SummaryStats</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)).</span><span class="o">*</span>
+
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">cloud_raster</span>
+
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_BandPath</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/vsicurl/https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22/M/HS/2023/6/S2B_22MHS_20230621_0_L2A/B08.tif&#39;</span>
+
+<span class="k">OFFSET</span><span class="w"> </span><span class="mi">10</span>
+
+<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Resultado:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  count  |    sum     |        mean        |      stddev       | min | max
+---------+------------+--------------------+-------------------+-----+------
+  757760 | 1890008141 |  2494.204155669341 | 334.8203750580895 | 157 | 5348
+ 1048576 | 2591633717 | 2471.5745134353638 | 359.1709088526156 | 130 | 5537
+(2 rows)
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="geotiff.html" class="btn btn-neutral float-left" title="8.2. GeoTIFF" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="8.5. Considerações Finais" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2022, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7fe22d6d7b80>
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165908761-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165908761-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

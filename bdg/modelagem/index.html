@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>8. Modelagem &mdash; BDGeo</title>
+  <title>9. Modelagem &mdash; BDGeo</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -29,8 +27,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Buscar" href="../search.html" />
-    <link rel="next" title="8.1. Modelo Entidade Relacionamento" href="er/index.html" />
-    <link rel="prev" title="7.6. Exercícios" href="../prog-servidor/exercicios.html" /> 
+    <link rel="next" title="9.1. Modelo Entidade Relacionamento" href="er/index.html" />
+    <link rel="prev" title="8.6. Exercícios" href="../raster/exercicios.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,12 +36,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../index.html" class="icon icon-home"> BDGeo
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -61,11 +63,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">8. Modelagem</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="er/index.html">8.1. Modelo Entidade Relacionamento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">9. Modelagem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="er/index.html">9.1. Modelo Entidade Relacionamento</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -97,13 +100,13 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><span class="section-number">8. </span>Modelagem</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">9. </span>Modelagem</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
-        <a href="../prog-servidor/exercicios.html" class="btn btn-neutral float-left" title="7.6. Exercícios" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="er/index.html" class="btn btn-neutral float-right" title="8.1. Modelo Entidade Relacionamento" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../raster/exercicios.html" class="btn btn-neutral float-left" title="8.6. Exercícios" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="er/index.html" class="btn btn-neutral float-right" title="9.1. Modelo Entidade Relacionamento" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -111,10 +114,10 @@
            <div itemprop="articleBody">
              
   <section id="modelagem">
-<span id="cap-modelagem"></span><h1><span class="section-number">8. </span>Modelagem<a class="headerlink" href="#modelagem" title="Link permanente para este cabeçalho"></a></h1>
+<span id="cap-modelagem"></span><h1><span class="section-number">9. </span>Modelagem<a class="headerlink" href="#modelagem" title="Link permanente para este cabeçalho"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="er/index.html">8.1. Modelo Entidade Relacionamento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="er/index.html">9.1. Modelo Entidade Relacionamento</a></li>
 </ul>
 </div>
 </section>
@@ -123,8 +126,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="../prog-servidor/exercicios.html" class="btn btn-neutral float-left" title="7.6. Exercícios" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="er/index.html" class="btn btn-neutral float-right" title="8.1. Modelo Entidade Relacionamento" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../raster/exercicios.html" class="btn btn-neutral float-left" title="8.6. Exercícios" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="er/index.html" class="btn btn-neutral float-right" title="9.1. Modelo Entidade Relacionamento" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -134,7 +137,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246ad117f0>
+<jinja2.runtime.BlockReference object at 0x7fe22d73b3d0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2.7. Tipos Numéricos &mdash; BDGeo</title>
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -39,12 +37,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-            <a href="../index.html" class="icon icon-home"> BDGeo
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BDGeo
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -98,8 +100,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../algo-geom/index.html">5. Algoritmos Geométricos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../json/index.html">6. JSON (Java Script Object Notation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prog-servidor/index.html">7. Programação do Lado Servidor no PostgreSQL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">8. Modelagem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">9. Dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../raster/index.html">8. Dados Matriciais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelagem/index.html">9. Modelagem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/index.html">10. Dicas</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
 <ul>
@@ -131,9 +134,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
-      <li><span class="section-number">2.7. </span>Tipos Numéricos</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2.7. </span>Tipos Numéricos</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -151,7 +154,7 @@
 <h2><span class="section-number">2.7.1. </span><code class="docutils literal notranslate"><span class="pre">integer</span></code><a class="headerlink" href="#integer" title="Link permanente para este cabeçalho"></a></h2>
 <p>O tipo <strong>integer</strong> é capaz de representar números inteiros na faixa de valores entre -2147483648 a +2147483647. Portanto, esse tipo possui precisão “finita” e ocupa 4 bytes.</p>
 <p>Exemplo de notação:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
@@ -159,33 +162,33 @@
 <h2><span class="section-number">2.7.2. </span><code class="docutils literal notranslate"><span class="pre">bigint</span></code><a class="headerlink" href="#bigint" title="Link permanente para este cabeçalho"></a></h2>
 <p>O tipo <strong>bigint</strong> é capaz de representar números inteiros na faixa de valores entre -9223372036854775808 a +9223372036854775807. Portanto, esse tipo possui precisão “finita” e ocupa 8 bytes.</p>
 <p>Exemplo de notação:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">2247483647</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">2247483647</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
 <section id="double-precision">
 <h2><span class="section-number">2.7.3. </span><code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">precision</span></code><a class="headerlink" href="#double-precision" title="Link permanente para este cabeçalho"></a></h2>
 <p>O tipo <strong>double precision</strong>, ou <strong>float8</strong>, é capaz de representar números reais (ou números em ponto flutiante) com uma certa precisão numérica (64-bits). Um número em ponto flutuante pode ser expresso da seguinte maneira:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="nb">double precision</span><span class="w"> </span><span class="s1">&#39;5.1&#39;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="nb">double precision</span><span class="w"> </span><span class="s1">&#39;5.1&#39;</span><span class="p">;</span>
 
 
-<span class="k">SELECT</span><span class="w"> </span><span class="nb">double precision</span><span class="w"> </span><span class="s1">&#39;5.&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="nb">double precision</span><span class="w"> </span><span class="s1">&#39;5.&#39;</span><span class="p">;</span>
 
 
-<span class="k">SELECT</span><span class="w"> </span><span class="nb">double precision</span><span class="w"> </span><span class="s1">&#39;5.2e12&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="nb">double precision</span><span class="w"> </span><span class="s1">&#39;5.2e12&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
 <section id="numeric">
 <h2><span class="section-number">2.7.4. </span><code class="docutils literal notranslate"><span class="pre">numeric</span></code><a class="headerlink" href="#numeric" title="Link permanente para este cabeçalho"></a></h2>
 <p>O tipo <strong>numeric</strong> é capaz de representar números reais com grande número de dígitos. Em geral, é usado para representar valores numéricos com a melhor precisão possível. Trata-se do tipo de dados indicado para valores que representam dinheiro. Comparado aos tipos <code class="docutils literal notranslate"><span class="pre">integer</span></code> e <code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">precision</span></code>, pode ocupar mais espaço em disco e as operações são mais lentas pois são implementadas em software, enquanto que dos outros dois tipos as operações aritméticas básicas são implementadas em hardware.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="p">.</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="p">.</span><span class="mi">1</span><span class="p">;</span>
 
 
-<span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="p">.;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="p">.;</span>
 
 
-<span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="p">.</span><span class="mi">2</span><span class="n">e12</span><span class="p">;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="p">.</span><span class="mi">2</span><span class="n">e12</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -207,48 +210,42 @@
 <p>Para cada tipo de dado, existe um conjunto de operadores disponíveis. No caso das operações aritméticas, para os tipos numéricos, os símbolos utilizados são muito semelhantes aos que usamos na matemática (<a class="reference internal" href="#tbl-sgbd-op-aritmeticas"><span class="std std-numref">Tabela 2.2</span></a>):</p>
 <table class="styled-table docutils align-center" id="tbl-sgbd-op-aritmeticas">
 <caption><span class="caption-number">Tabela 2.2 - </span><span class="caption-text">Operadores aritméticos básicos.</span><a class="headerlink" href="#tbl-sgbd-op-aritmeticas" title="Link Permanente para essa tabela"></a></caption>
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 32%" />
-<col style="width: 39%" />
-<col style="width: 12%" />
-</colgroup>
 <thead>
-<tr class="row-odd"><th class="center-align head"><p>Operador</p></th>
-<th class="left-align head"><p>Nome</p></th>
-<th class="center-align head"><p>Expressão</p></th>
-<th class="center-align head"><p>Valor</p></th>
+<tr class="row-odd"><th class="head center-align"><p>Operador</p></th>
+<th class="head left-align"><p>Nome</p></th>
+<th class="head center-align"><p>Expressão</p></th>
+<th class="head center-align"><p>Valor</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">+</span></code></p></td>
 <td class="left-align"><p>soma</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span></code></p></td>
 <td class="center-align"><p>13</p></td>
 </tr>
 <tr class="row-odd"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">-</span></code></p></td>
 <td class="left-align"><p>subtração</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span></code></p></td>
 <td class="center-align"><p>1</p></td>
 </tr>
 <tr class="row-even"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">*</span></code></p></td>
 <td class="left-align"><p>multiplicação</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span></code></p></td>
 <td class="center-align"><p>12</p></td>
 </tr>
 <tr class="row-odd"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
 <td class="left-align"><p>divisão</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span></code></p></td>
 <td class="center-align"><p>1</p></td>
 </tr>
 <tr class="row-even"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">%</span></code></p></td>
 <td class="left-align"><p>resto da divisão</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span></code></p></td>
 <td class="center-align"><p>2</p></td>
 </tr>
 <tr class="row-odd"><td class="center-align"><p><code class="docutils literal notranslate"><span class="pre">^</span></code></p></td>
 <td class="left-align"><p>potenciação</p></td>
-<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span></code></p></td>
+<td class="center-align"><p><code class="code highlight sql docutils literal highlight-sql"><span class="k">SELECT</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span></code></p></td>
 <td class="center-align"><p>16</p></td>
 </tr>
 </tbody>
@@ -279,29 +276,29 @@
 <section id="funcoes-matematicas">
 <h2><span class="section-number">2.7.6. </span>Funções Matemáticas<a class="headerlink" href="#funcoes-matematicas" title="Link permanente para este cabeçalho"></a></h2>
 <p>Exemplos:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
 </pre></div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pi</span><span class="p">();</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pi</span><span class="p">();</span>
 </pre></div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">radians</span><span class="p">(</span><span class="mi">270</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">radians</span><span class="p">(</span><span class="mi">270</span><span class="p">);</span>
 </pre></div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="mi">900</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="mi">900</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
 <section id="trabalhando-com-tabelas-com-colunas-numericas">
 <h2><span class="section-number">2.7.7. </span>Trabalhando com Tabelas com Colunas Numéricas<a class="headerlink" href="#trabalhando-com-tabelas-com-colunas-numericas" title="Link permanente para este cabeçalho"></a></h2>
 <p>Para ilustrar o uso dos tipos numéricos na definição de colunas de uma tabela, considere um evento de foco de queimada na vegetação. Cada foco será representado por um par de coordenadas (latitude e longitude), o número de dias sem chuva na localização do foco e a potência radiativa do fogo (<em>Fire Radiative Power</em>). Podemos então definir uma tabela denominada <code class="docutils literal notranslate"><span class="pre">foco</span></code> para armazenar esse tipo de evento através do seguinte comando SQL:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">foco</span><span class="w"></span>
-<span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">latitude</span><span class="w">            </span><span class="nb">DOUBLE PRECISION</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">longitude</span><span class="w">           </span><span class="nb">DOUBLE PRECISION</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">num_dias_sem_chuva</span><span class="w">  </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">frp</span><span class="w">                 </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mf">4</span><span class="p">,</span><span class="mf">1</span><span class="p">)</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">foco</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">latitude</span><span class="w">            </span><span class="nb">DOUBLE PRECISION</span><span class="p">,</span>
+<span class="w">    </span><span class="n">longitude</span><span class="w">           </span><span class="nb">DOUBLE PRECISION</span><span class="p">,</span>
+<span class="w">    </span><span class="n">num_dias_sem_chuva</span><span class="w">  </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">frp</span><span class="w">                 </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mf">4</span><span class="p">,</span><span class="mf">1</span><span class="p">)</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -309,11 +306,11 @@
 <p>Consulte o <a class="reference external" href="https://queimadas.dgi.inpe.br/queimadas/portal/informacoes/perguntas-frequentes#p42">Portal do Programa Queimadas do INPE</a> para saber mais sobre o significado do atributo do foco FRP (<em>Fire Radiative Power</em>).</p>
 </div>
 <p>Vamos incluir alguns valores na tabela acima:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">foco</span><span class="w"> </span><span class="k">VALUES</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">.</span><span class="mi">41792</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">65176</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">89</span><span class="p">),</span><span class="w"></span>
-<span class="w">                       </span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">.</span><span class="mi">63565</span><span class="p">,</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">73956</span><span class="p">,</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w"> </span><span class="mi">103</span><span class="p">),</span><span class="w"></span>
-<span class="w">                       </span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">.</span><span class="mi">40959</span><span class="p">,</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">04929</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">.</span><span class="mi">9</span><span class="p">),</span><span class="w"></span>
-<span class="w">                       </span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">.</span><span class="mi">04535</span><span class="p">,</span><span class="o">-</span><span class="mi">52</span><span class="p">.</span><span class="mi">24566</span><span class="p">,</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w"> </span><span class="mi">44</span><span class="p">.</span><span class="mi">2</span><span class="p">),</span><span class="w"></span>
-<span class="w">                       </span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">.</span><span class="mi">67382</span><span class="p">,</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">89861</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">97</span><span class="p">.</span><span class="mi">8</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">foco</span><span class="w"> </span><span class="k">VALUES</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">.</span><span class="mi">41792</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">65176</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">89</span><span class="p">),</span>
+<span class="w">                       </span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">.</span><span class="mi">63565</span><span class="p">,</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">73956</span><span class="p">,</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w"> </span><span class="mi">103</span><span class="p">),</span>
+<span class="w">                       </span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">.</span><span class="mi">40959</span><span class="p">,</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">04929</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">.</span><span class="mi">9</span><span class="p">),</span>
+<span class="w">                       </span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">.</span><span class="mi">04535</span><span class="p">,</span><span class="o">-</span><span class="mi">52</span><span class="p">.</span><span class="mi">24566</span><span class="p">,</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w"> </span><span class="mi">44</span><span class="p">.</span><span class="mi">2</span><span class="p">),</span>
+<span class="w">                       </span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">.</span><span class="mi">67382</span><span class="p">,</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">89861</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">97</span><span class="p">.</span><span class="mi">8</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Agora, vamos fazer uma consulta para saber a distância euclidiana entre cada um dos focos e a localização da sede municipal de São Félix do Xingu, no Estado do Pará. Para isso adotaremos a localização de latitude -6.645 e longitude -51.995 para a sede municipal e que um grau decimal possui aproximadamente 111 km.</p>
@@ -323,8 +320,8 @@
 <div class="math notranslate nohighlight">
 \[d_{AB} = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}\]</div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">995</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">longitude</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">.</span><span class="mi">645</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">latitude</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">111</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;distancia km&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">995</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">longitude</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">.</span><span class="mi">645</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">latitude</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">111</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;distancia km&quot;</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -343,8 +340,8 @@
 <h2><span class="section-number">2.7.8. </span>Exercícios<a class="headerlink" href="#exercicios" title="Link permanente para este cabeçalho"></a></h2>
 <p><strong>Exercício 1.</strong> Faça uma consulta SQL que calcule o logaritmo do valor de FRP dos focos.</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="n">frp</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">log_frp</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="n">frp</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">log_frp</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -361,8 +358,8 @@
 </details><hr class="docutils" />
 <p><strong>Exercício 2:</strong> Qual a média do número de dias sem chuva dos focos?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">avg</span><span class="p">(</span><span class="n">num_dias_sem_chuva</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">media_sem_chuva</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">avg</span><span class="p">(</span><span class="n">num_dias_sem_chuva</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">media_sem_chuva</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">foco</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -375,17 +372,12 @@
 </details><hr class="docutils" />
 <p><strong>Exercício 3:</strong> Crie a tabela abaixo com os valores indicados.</p>
 <table class="styled-table docutils align-default" id="tbl-sgbd-tipos-numericos-cidades">
-<colgroup>
-<col style="width: 38%" />
-<col style="width: 28%" />
-<col style="width: 34%" />
-</colgroup>
 <thead>
-<tr class="row-odd"><th class="center-align head" colspan="3"><p><strong>populacao_1940</strong></p></th>
+<tr class="row-odd"><th class="head center-align" colspan="3"><p><strong>populacao_1940</strong></p></th>
 </tr>
-<tr class="row-even"><th class="center-align head"><p>uf</p></th>
-<th class="center-align head"><p>homens</p></th>
-<th class="center-align head"><p>mulheres</p></th>
+<tr class="row-even"><th class="head center-align"><p>uf</p></th>
+<th class="head center-align"><p>homens</p></th>
+<th class="head center-align"><p>mulheres</p></th>
 </tr>
 </thead>
 <tbody>
@@ -438,31 +430,31 @@
 </table>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>A tabela <code class="docutils literal notranslate"><span class="pre">populacao_1940</span></code> poder ser definida através do seguinte comando <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TABLE</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">populacao_1940</span><span class="w"></span>
-<span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">uf</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span><span class="w"></span>
-<span class="w">    </span><span class="n">homens</span><span class="w">   </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">mulheres</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">populacao_1940</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">uf</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">homens</span><span class="w">   </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">mulheres</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 <p>Para inserir valores na tabela <code class="docutils literal notranslate"><span class="pre">populacao_1940</span></code> usamos o comando <code class="docutils literal notranslate"><span class="pre">INSERT</span> <span class="pre">TABLE</span></code>, como mostrado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">populacao_1940</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Rondônia&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7879</span><span class="p">,</span><span class="w"> </span><span class="mi">6538</span><span class="p">),</span><span class="w"></span>
-<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Acre&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">44079</span><span class="p">,</span><span class="w"> </span><span class="mi">35689</span><span class="p">),</span><span class="w"></span>
-<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Amazonas&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">215681</span><span class="p">,</span><span class="w"> </span><span class="mi">203502</span><span class="p">),</span><span class="w"></span>
-<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Roraima&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5509</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p">),</span><span class="w"></span>
-<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Pará&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">457659</span><span class="p">,</span><span class="w"> </span><span class="mi">456238</span><span class="p">),</span><span class="w"></span>
-<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Amapá&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">15800</span><span class="p">,</span><span class="w"> </span><span class="mi">14947</span><span class="p">),</span><span class="w"></span>
-<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Tocantins&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">82268</span><span class="p">,</span><span class="w"> </span><span class="mi">82128</span><span class="p">),</span><span class="w"></span>
-<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Maranhão&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">613938</span><span class="p">,</span><span class="w"> </span><span class="mi">621231</span><span class="p">),</span><span class="w"></span>
-<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Piauí&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">404989</span><span class="p">,</span><span class="w"> </span><span class="mi">412612</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">populacao_1940</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Rondônia&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7879</span><span class="p">,</span><span class="w"> </span><span class="mi">6538</span><span class="p">),</span>
+<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Acre&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">44079</span><span class="p">,</span><span class="w"> </span><span class="mi">35689</span><span class="p">),</span>
+<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Amazonas&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">215681</span><span class="p">,</span><span class="w"> </span><span class="mi">203502</span><span class="p">),</span>
+<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Roraima&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5509</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p">),</span>
+<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Pará&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">457659</span><span class="p">,</span><span class="w"> </span><span class="mi">456238</span><span class="p">),</span>
+<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Amapá&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">15800</span><span class="p">,</span><span class="w"> </span><span class="mi">14947</span><span class="p">),</span>
+<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Tocantins&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">82268</span><span class="p">,</span><span class="w"> </span><span class="mi">82128</span><span class="p">),</span>
+<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Maranhão&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">613938</span><span class="p">,</span><span class="w"> </span><span class="mi">621231</span><span class="p">),</span>
+<span class="w">                                  </span><span class="p">(</span><span class="s1">&#39;Piauí&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">404989</span><span class="p">,</span><span class="w"> </span><span class="mi">412612</span><span class="p">);</span>
 </pre></div>
 </div>
 </details><hr class="docutils" />
 <p><strong>Exercício 4:</strong> Qual o total da população de cada estado?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">homens</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mulheres</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_populacao</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_1940</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">homens</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mulheres</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_populacao</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_1940</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -483,8 +475,8 @@
 </details><hr class="docutils" />
 <p><strong>Exercício 5:</strong> Apresente a população de homens e de mulheres na forma de porcentagem?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"> </span><span class="n">homens</span><span class="p">::</span><span class="nb">numeric</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">homens</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mulheres</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_homens</span><span class="p">,</span><span class="w"> </span><span class="n">mulheres</span><span class="p">::</span><span class="nb">numeric</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">homens</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mulheres</span><span class="p">)</span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_mulheres</span><span class="w"></span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_1940</span><span class="p">;</span><span class="w"></span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"> </span><span class="n">homens</span><span class="p">::</span><span class="nb">numeric</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">homens</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mulheres</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_homens</span><span class="p">,</span><span class="w"> </span><span class="n">mulheres</span><span class="p">::</span><span class="nb">numeric</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">homens</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mulheres</span><span class="p">)</span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_mulheres</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_1940</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -525,7 +517,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f246ab41d90>
+<jinja2.runtime.BlockReference object at 0x7fe22faff640>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 
