@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>7.2. Triggers e Relacionamentos de Integridade Espacial &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -105,9 +103,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">7.2. </span>Triggers e Relacionamentos de Integridade Espacial</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
+      <li><span class="section-number">7.2. </span>Triggers e Relacionamentos de Integridade Espacial</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -122,18 +120,18 @@
   <section id="triggers-e-relacionamentos-de-integridade-espacial">
 <span id="sec-prog-servidor-triggers-rel-espacial"></span><h1><span class="section-number">7.2. </span>Triggers e Relacionamentos de Integridade Espacial<a class="headerlink" href="#triggers-e-relacionamentos-de-integridade-espacial" title="Link permanente para este cabeçalho"></a></h1>
 <p>Uma restrição do tipo <em>check-constraint</em> permite definir regras básicas que devem ser asseguradas pelo SGBD quando realizamos operações de escrita sobre uma tabela. Para ilustrar o uso desse tipo de restrição, considere um empreendimento imobiliário de vendas de terrenos (ou lotes). Poderíamos criar uma tabela chamada <code class="docutils literal notranslate"><span class="pre">lotes</span></code> para armazenar as feições de cada terreno. Uma regra básica que poderia ser estabelecida, seria a de que o menor lote deva ter uma área mínima de 360m<sup>2</sup>. A definição abaixo mostra como poderíamos construir essa tabela.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">lotes</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">gid</span><span class="w">  </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
-<span class="w">    </span><span class="n">geom</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">POLYGON</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span>
-<span class="w">    </span><span class="k">CHECK</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">360</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">lotes</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">gid</span><span class="w">  </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">geom</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">POLYGON</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="k">CHECK</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">360</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Ao inserir a feição de um terreno com dimensões 12mx30m, respeitamos a regra imposta. Logo obteríamos uma mensagem de que a nova tupla foi adicionada à nossa tabela:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lotes</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
-<span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span>
-<span class="w">                </span><span class="s1">&#39;POLYGON((0 0, 12 0, 12 30, 0 30, 0 0))&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lotes</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"></span>
+<span class="w">                </span><span class="s1">&#39;POLYGON((0 0, 12 0, 12 30, 0 30, 0 0))&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -141,9 +139,9 @@
 </pre></div>
 </div>
 <p>No entanto, se tentarmos adicionar uma nova tupla com dados de um terreno com dimensões de 10mx24m, fora da regra, o SGBD iria abortar a operação de inserção, mantendo assim a consistência da tabela com a regra estabelecida:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lotes</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
-<span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span>
-<span class="w">                </span><span class="s1">&#39;POLYGON((12 0, 22 0, 22 24, 12 24, 12 0))&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lotes</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"></span>
+<span class="w">                </span><span class="s1">&#39;POLYGON((12 0, 22 0, 22 24, 12 24, 12 0))&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -153,31 +151,31 @@
 </pre></div>
 </div>
 <p>Suponha agora que queiramos incluir uma nova regra na nossa tabela a fim de evitar que um novo lote seja cadastrado de forma a ter sobreposição com algum outro lote já cadastrado. Neste caso, não é possível definir esta regra como uma restrição do tipo <em>check-constraint</em>. Precisamos de um mecanismo que possibilite expressar essa verificação do novo conteúdo sendo inserido na nossa tabela com dados que já existem na própria tabela.</p>
-<p>Um mecanismo útil para estabelecer este tipo de restrição é conhecido por <em>trigger</em>, que é uma ação associada a uma tabela, invocada automaticamente sempre que modificamos o conteúdo dessa tabela<a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>Um mecanismo útil para estabelecer este tipo de restrição é conhecido por <em>trigger</em>, que é uma ação associada a uma tabela, invocada automaticamente sempre que modificamos o conteúdo dessa tabela<a class="footnote-reference brackets" href="#f1" id="id1">1</a>.</p>
 <p>No PostgreSQL, um <em>trigger</em> nada mais é do que uma função com uma notação especial e algumas facilidades para gerenciar o tipo de evento responsável por disparar esta função.</p>
 <p>A função <code class="docutils literal notranslate"><span class="pre">PL/pgSQL</span></code> usada para definir o <em>trigger</em> não possui parâmetros e o tipo de retorno é do tipo <em>trigger</em>, como mostrado abaixo:</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">função</span><span class="o">-</span><span class="k">trigger</span><span class="p">()</span>
-<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="k">trigger</span>
-<span class="w">    </span><span class="k">AS</span>
-<span class="w">    </span><span class="s">$$</span>
-<span class="w">        </span><span class="k">DECLARE</span>
-<span class="w">            </span><span class="n">lista</span><span class="o">-</span><span class="n">variáveis</span><span class="p">;</span>
-<span class="w">        </span><span class="k">BEGIN</span>
-<span class="w">            </span><span class="n">comandos</span><span class="p">;</span>
-<span class="w">        </span><span class="k">END</span><span class="p">;</span>
-<span class="w">    </span><span class="s">$$</span><span class="w"> </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">função</span><span class="o">-</span><span class="k">trigger</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURNS</span><span class="w"> </span><span class="k">trigger</span><span class="w"></span>
+<span class="w">    </span><span class="k">AS</span><span class="w"></span>
+<span class="w">    </span><span class="s">$$</span><span class="w"></span>
+<span class="w">        </span><span class="k">DECLARE</span><span class="w"></span>
+<span class="w">            </span><span class="n">lista</span><span class="o">-</span><span class="n">variáveis</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">BEGIN</span><span class="w"></span>
+<span class="w">            </span><span class="n">comandos</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="s">$$</span><span class="w"> </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>A definição do <em>trigger</em> é realizada através do comando <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TRIGGER</span></code>, que possui a seguinte sintaxe:</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="p">[</span><span class="k">CONSTRAINT</span><span class="p">]</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="k">trigger</span>
-<span class="w">  </span><span class="p">{</span><span class="k">BEFORE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">AFTER</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">INSTEAD</span><span class="w"> </span><span class="k">OF</span><span class="p">}</span><span class="w"> </span><span class="p">{</span><span class="n">tipo</span><span class="o">-</span><span class="n">evento</span><span class="w"> </span><span class="p">[</span><span class="k">OR</span><span class="w"> </span><span class="mf">...</span><span class="p">]}</span>
-<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span>
-<span class="w">  </span><span class="p">[</span><span class="k">FROM</span><span class="w"> </span><span class="n">referenced_table_name</span><span class="w"> </span><span class="p">]</span>
-<span class="w">  </span><span class="p">[</span><span class="k">NOT</span><span class="w"> </span><span class="k">DEFERRABLE</span><span class="w"> </span><span class="o">|</span>
-<span class="w">    </span><span class="p">[</span><span class="k">DEFERRABLE</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="k">INITIALLY</span><span class="w"> </span><span class="k">IMMEDIATE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">INITIALLY</span><span class="w"> </span><span class="k">DEFERRED</span><span class="p">]]</span>
-<span class="w">  </span><span class="p">[</span><span class="k">FOR</span><span class="w"> </span><span class="p">[</span><span class="k">EACH</span><span class="p">]</span><span class="w"> </span><span class="p">{</span><span class="k">ROW</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">STATEMENT</span><span class="p">}]</span>
-<span class="w">  </span><span class="p">[</span><span class="k">WHEN</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)]</span>
-<span class="w">  </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">função</span><span class="o">-</span><span class="k">trigger</span><span class="p">(</span><span class="n">argumentos</span><span class="p">)</span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="p">[</span><span class="k">CONSTRAINT</span><span class="p">]</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="k">trigger</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="k">BEFORE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">AFTER</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">INSTEAD</span><span class="w"> </span><span class="k">OF</span><span class="p">}</span><span class="w"> </span><span class="p">{</span><span class="n">tipo</span><span class="o">-</span><span class="n">evento</span><span class="w"> </span><span class="p">[</span><span class="k">OR</span><span class="w"> </span><span class="mf">...</span><span class="p">]}</span><span class="w"></span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="w"></span>
+<span class="w">  </span><span class="p">[</span><span class="k">FROM</span><span class="w"> </span><span class="n">referenced_table_name</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="p">[</span><span class="k">NOT</span><span class="w"> </span><span class="k">DEFERRABLE</span><span class="w"> </span><span class="o">|</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="k">DEFERRABLE</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="k">INITIALLY</span><span class="w"> </span><span class="k">IMMEDIATE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">INITIALLY</span><span class="w"> </span><span class="k">DEFERRED</span><span class="p">]]</span><span class="w"></span>
+<span class="w">  </span><span class="p">[</span><span class="k">FOR</span><span class="w"> </span><span class="p">[</span><span class="k">EACH</span><span class="p">]</span><span class="w"> </span><span class="p">{</span><span class="k">ROW</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">STATEMENT</span><span class="p">}]</span><span class="w"></span>
+<span class="w">  </span><span class="p">[</span><span class="k">WHEN</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)]</span><span class="w"></span>
+<span class="w">  </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">função</span><span class="o">-</span><span class="k">trigger</span><span class="p">(</span><span class="n">argumentos</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>No caso de tabelas, um <em>trigger</em> pode ser definido para execução antes (<code class="docutils literal notranslate"><span class="pre">BEFORE</span></code>) ou após (<code class="docutils literal notranslate"><span class="pre">AFTER</span></code>) qualquer operação de inserção (<code class="docutils literal notranslate"><span class="pre">INSERT</span></code>), atualização (<code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>) ou remoção (<code class="docutils literal notranslate"><span class="pre">DELETE</span></code>). Também podemos definir que o <em>trigger</em> será disparado por múltiplos eventos, neste caso usamos um <em>ou-lógico</em> (<code class="docutils literal notranslate"><span class="pre">OR</span></code>) para encadear os tipos de eventos. Portanto, no comando acima, os tipos de eventos suportados são:</p>
@@ -189,67 +187,67 @@
 </ul>
 <p>Também podemos controlar se a função associada ao <em>trigger</em> será executada uma vez para cada linha modificada ou se será chamada uma única vez para todo o comando SQL que disparou o <em>trigger</em>.</p>
 <p>Para um <em>trigger</em> ser executado para cada linha modificada usamos:</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">ROW</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">função</span><span class="o">-</span><span class="k">trigger</span><span class="p">()</span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">ROW</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">função</span><span class="o">-</span><span class="k">trigger</span><span class="p">()</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Para um <em>trigger</em> ser executado uma única vez para todo o comando SQL que o disparou, usamos:</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">STATEMENT</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">função</span><span class="o">-</span><span class="k">trigger</span><span class="p">()</span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">STATEMENT</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">função</span><span class="o">-</span><span class="k">trigger</span><span class="p">()</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Uma função <code class="docutils literal notranslate"><span class="pre">PL/pgSQL</span></code> invocada como um <em>trigger</em> possui diversas variáveis especiais que são automaticamente criadas:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TG_OP</span></code>: uma constante string (<code class="docutils literal notranslate"><span class="pre">TEXT</span></code>) que diz o tipo de operação que disparou o <em>trigger</em>: <code class="docutils literal notranslate"><span class="pre">'INSERT'</span></code>, <code class="docutils literal notranslate"><span class="pre">'UPDATE'</span></code>, <code class="docutils literal notranslate"><span class="pre">'DELETE'</span></code> ou <code class="docutils literal notranslate"><span class="pre">'TRUNCATE'</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TG_WHEN</span></code>: uma constante string (<code class="docutils literal notranslate"><span class="pre">TEXT</span></code>) que diz quando o <em>trigger</em> foi disparado: <code class="docutils literal notranslate"><span class="pre">'BEFORE'</span></code>, <code class="docutils literal notranslate"><span class="pre">'AFTER'</span></code> ou <code class="docutils literal notranslate"><span class="pre">'INSTEAD</span> <span class="pre">OF'</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NEW</span></code>: variável do tipo registro (<code class="docutils literal notranslate"><span class="pre">RECORD</span></code>) contendo a nova tupla em operações de inserção (<code class="docutils literal notranslate"><span class="pre">INSERT</span></code>) e atualização (<code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>) em <em>triggers</em>, para <em>triggers</em> definidos em nível de linha<a class="footnote-reference brackets" href="#f2" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">OLD</span></code>: variável do tipo registro (<code class="docutils literal notranslate"><span class="pre">RECORD</span></code>) contendo o valor da antiga tupla em operações de atualização (<code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>) e remoção (<code class="docutils literal notranslate"><span class="pre">DELETE</span></code>), para <em>triggers</em> definidos em nível de linha<a class="footnote-reference brackets" href="#f3" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NEW</span></code>: variável do tipo registro (<code class="docutils literal notranslate"><span class="pre">RECORD</span></code>) contendo a nova tupla em operações de inserção (<code class="docutils literal notranslate"><span class="pre">INSERT</span></code>) e atualização (<code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>) em <em>triggers</em>, para <em>triggers</em> definidos em nível de linha<a class="footnote-reference brackets" href="#f2" id="id2">2</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OLD</span></code>: variável do tipo registro (<code class="docutils literal notranslate"><span class="pre">RECORD</span></code>) contendo o valor da antiga tupla em operações de atualização (<code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>) e remoção (<code class="docutils literal notranslate"><span class="pre">DELETE</span></code>), para <em>triggers</em> definidos em nível de linha<a class="footnote-reference brackets" href="#f3" id="id3">3</a>.</p></li>
 </ul>
 <p>A função que implementa a ação do <em>trigger</em> deve retornar <code class="docutils literal notranslate"><span class="pre">NULL</span></code> ou um valor do tipo registro (ou tupla) com a mesma estrutura da tabela para a qual o <em>trigger</em> foi disparado.</p>
 <p>Retomando o nosso exemplo do lote, podemos criar um <em>trigger</em> associado à tabela <code class="docutils literal notranslate"><span class="pre">lotes</span></code> que ajude a manter a integridade dos dados de forma a não haver sobreposição entre os lotes.</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">verifica_overlap_lote</span><span class="p">()</span>
-<span class="k">RETURNS</span><span class="w"> </span><span class="k">trigger</span>
-<span class="k">AS</span>
-<span class="s">$$</span>
-<span class="k">DECLARE</span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">verifica_overlap_lote</span><span class="p">()</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="k">trigger</span><span class="w"></span>
+<span class="k">AS</span><span class="w"></span>
+<span class="s">$$</span><span class="w"></span>
+<span class="k">DECLARE</span><span class="w"></span>
 <span class="w">    </span><span class="n">lote</span><span class="w"> </span><span class="n">lotes</span><span class="nb">%ROWTYPE</span><span class="p">;</span><span class="w"> </span><span class="c1">-- ou: RECORD</span>
-<span class="k">BEGIN</span>
-<span class="w">    </span><span class="k">IF</span><span class="w"> </span><span class="n">TG_OP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;INSERT&#39;</span><span class="w"> </span><span class="k">THEN</span>
-<span class="w">        </span><span class="k">FOR</span><span class="w"> </span><span class="n">lote</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
-<span class="w">                      </span><span class="k">FROM</span><span class="w"> </span><span class="n">lotes</span>
-<span class="w">                     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="k">NEW</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">LOOP</span>
-<span class="w">            </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="k">NEW</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">lote</span><span class="mf">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span>
-<span class="w">                </span><span class="k">RAISE</span><span class="w"> </span><span class="k">EXCEPTION</span><span class="w"> </span><span class="s1">&#39;Lote viola restrição de integridade espacial!&#39;</span><span class="p">;</span>
-<span class="w">            </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span>
-<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">LOOP</span><span class="p">;</span>
-<span class="w">    </span><span class="k">ELSIF</span><span class="w"> </span><span class="n">TG_OP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;UPDATE&#39;</span><span class="w"> </span><span class="k">THEN</span>
-<span class="w">        </span><span class="k">FOR</span><span class="w"> </span><span class="n">lote</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
-<span class="w">                      </span><span class="k">FROM</span><span class="w"> </span><span class="n">lotes</span>
-<span class="w">                     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="k">NEW</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="p">)</span>
-<span class="w">                       </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="n">lotes</span><span class="mf">.</span><span class="n">gid</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">OLD</span><span class="mf">.</span><span class="n">gid</span><span class="p">)</span><span class="w"> </span><span class="k">LOOP</span>
-<span class="w">            </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="k">NEW</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">lote</span><span class="mf">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span>
-<span class="w">                </span><span class="k">RAISE</span><span class="w"> </span><span class="k">EXCEPTION</span><span class="w"> </span><span class="s1">&#39;Lote viola restrição de integridade espacial!&#39;</span><span class="p">;</span>
-<span class="w">            </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span>
-<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">LOOP</span><span class="p">;</span>
-<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span>
+<span class="k">BEGIN</span><span class="w"></span>
+<span class="w">    </span><span class="k">IF</span><span class="w"> </span><span class="n">TG_OP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;INSERT&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
+<span class="w">        </span><span class="k">FOR</span><span class="w"> </span><span class="n">lote</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">                      </span><span class="k">FROM</span><span class="w"> </span><span class="n">lotes</span><span class="w"></span>
+<span class="w">                     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="k">NEW</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">LOOP</span><span class="w"></span>
+<span class="w">            </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="k">NEW</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">lote</span><span class="mf">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
+<span class="w">                </span><span class="k">RAISE</span><span class="w"> </span><span class="k">EXCEPTION</span><span class="w"> </span><span class="s1">&#39;Lote viola restrição de integridade espacial!&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">LOOP</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">ELSIF</span><span class="w"> </span><span class="n">TG_OP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;UPDATE&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
+<span class="w">        </span><span class="k">FOR</span><span class="w"> </span><span class="n">lote</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">                      </span><span class="k">FROM</span><span class="w"> </span><span class="n">lotes</span><span class="w"></span>
+<span class="w">                     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="k">NEW</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">                       </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="n">lotes</span><span class="mf">.</span><span class="n">gid</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">OLD</span><span class="mf">.</span><span class="n">gid</span><span class="p">)</span><span class="w"> </span><span class="k">LOOP</span><span class="w"></span>
+<span class="w">            </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_Touches</span><span class="p">(</span><span class="k">NEW</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">lote</span><span class="mf">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
+<span class="w">                </span><span class="k">RAISE</span><span class="w"> </span><span class="k">EXCEPTION</span><span class="w"> </span><span class="s1">&#39;Lote viola restrição de integridade espacial!&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">LOOP</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span><span class="w"></span>
 
-<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEW</span><span class="p">;</span>
-<span class="k">END</span><span class="p">;</span>
-<span class="s">$$</span><span class="w"> </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="k">NEW</span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="s">$$</span><span class="w"> </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Agora, precisamos definir o <em>trigger</em> sobre a tabela:</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">trigger_verifica_overlap_lote</span>
-<span class="w">  </span><span class="k">BEFORE</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">UPDATE</span>
-<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">lotes</span>
-<span class="w">  </span><span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">ROW</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">verifica_overlap_lote</span><span class="p">();</span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">trigger_verifica_overlap_lote</span><span class="w"></span>
+<span class="w">  </span><span class="k">BEFORE</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"></span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">lotes</span><span class="w"></span>
+<span class="w">  </span><span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">ROW</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">verifica_overlap_lote</span><span class="p">();</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Se inserirmos um lote que não viole nossa restrição de integridade espacial, o trigger irá executar normalmente e retornará o registro com o valor da nova linha que será inserida na tabela:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lotes</span>
-<span class="w">    </span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
-<span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
-<span class="w">        </span><span class="n">ST_GeomFromText</span><span class="p">(</span>
-<span class="w">            </span><span class="s1">&#39;POLYGON((12 0, 24 0, 24 30, 12 30, 12 0))&#39;</span><span class="p">,</span>
-<span class="w">            </span><span class="mi">0</span><span class="p">));</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lotes</span><span class="w"></span>
+<span class="w">    </span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="s1">&#39;POLYGON((12 0, 24 0, 24 30, 12 30, 12 0))&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -257,12 +255,12 @@
 </pre></div>
 </div>
 <p>No entanto, se tentarmos inserir um novo lote que viole a restrição de integridade espacial definida pelo <em>trigger</em>, o SGBD irá cancelar a operação de inserção:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lotes</span>
-<span class="w">    </span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
-<span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
-<span class="w">        </span><span class="n">ST_GeomFromText</span><span class="p">(</span>
-<span class="w">            </span><span class="s1">&#39;POLYGON((-5 0, 7 0, 7 30, -5 30, -5 0))&#39;</span><span class="p">,</span>
-<span class="w">             </span><span class="mi">0</span><span class="p">));</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lotes</span><span class="w"></span>
+<span class="w">    </span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="s1">&#39;POLYGON((-5 0, 7 0, 7 30, -5 30, -5 0))&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -270,35 +268,32 @@
 </pre></div>
 </div>
 <p>No caso de alterarmos a geometria do primeiro lote, o <em>trigger</em> também irá ajudar a manter a consistência do banco de dados, conforme podemos observar com o exemplo abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">lotes</span>
-<span class="w">   </span><span class="k">SET</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ST_GeomFromText</span><span class="p">(</span>
-<span class="w">                  </span><span class="s1">&#39;POLYGON((11 0, 23 0, 23 30, 11 30, 11 0))&#39;</span><span class="p">,</span>
-<span class="w">                  </span><span class="mi">0</span><span class="p">)</span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">gid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">lotes</span><span class="w"></span>
+<span class="w">   </span><span class="k">SET</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="w"></span>
+<span class="w">                  </span><span class="s1">&#39;POLYGON((11 0, 23 0, 23 30, 11 30, 11 0))&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                  </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">gid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>Para remover o objeto <em>trigger</em> use um comando como:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">trigger_verifica_overlap_lote</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">lotes</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">trigger_verifica_overlap_lote</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">lotes</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 <p class="rubric">Notas</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="f1" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Aqui a palavra modificação pode ser traduzida em um dos comandos <code class="docutils literal notranslate"><span class="pre">INSERT</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> ou <code class="docutils literal notranslate"><span class="pre">DELETE</span></code>.</p>
-</aside>
-<aside class="footnote brackets" id="f2" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>Essa variável não é definida em operações do tipo <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> ou em <em>triggers</em> definidos em nível de comandos.</p>
-</aside>
-<aside class="footnote brackets" id="f3" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
-<p>Essa variável não é definida em operações do tipo <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> ou em <em>triggers</em> definidos em nível de comandos.</p>
-</aside>
-</aside>
+<dl class="footnote brackets">
+<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Aqui a palavra modificação pode ser traduzida em um dos comandos <code class="docutils literal notranslate"><span class="pre">INSERT</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> ou <code class="docutils literal notranslate"><span class="pre">DELETE</span></code>.</p>
+</dd>
+<dt class="label" id="f2"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Essa variável não é definida em operações do tipo <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> ou em <em>triggers</em> definidos em nível de comandos.</p>
+</dd>
+<dt class="label" id="f3"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Essa variável não é definida em operações do tipo <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> ou em <em>triggers</em> definidos em nível de comandos.</p>
+</dd>
+</dl>
 </section>
 
 
@@ -316,7 +311,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22f822b80>
+<jinja2.runtime.BlockReference object at 0x7fd732f8a8e0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

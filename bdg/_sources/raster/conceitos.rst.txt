@@ -230,7 +230,7 @@ Formatos
 --------
 
 
-As imagens de sensoriamento remoto são disponibilizadas nos mais diversos formatos. As imagens MODIS, por exemplo, são disponibilizadas no formato **HDF4** (extensão ``.hdf``). Já as imagens Landsat são distribuias no formato GeoTIFF (extensão ``.tif``). As imagens Sentinel 2/MSI são distribuídas no formato JPEG 2000 (extensão ``.jp2``).
+As imagens de sensoriamento remoto são disponibilizadas nos mais diversos formatos. As imagens MODIS, por exemplo, são disponibilizadas no formato **HDF4** (extensão ``.hdf``). Já as imagens Landsat são distribuídas no formato GeoTIFF (extensão ``.tif``). As imagens Sentinel 2/MSI são distribuídas no formato JPEG 2000 (extensão ``.jp2``).
 
 
 

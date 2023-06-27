@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3.4.1. Carregando a Extensão PostGIS &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script src="../../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -114,10 +112,10 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a></li>
-          <li class="breadcrumb-item"><a href="../postgis-geometry.html"><span class="section-number">3.4. </span>PostGIS Geometry</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.4.1. </span>Carregando a Extensão PostGIS</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a> &raquo;</li>
+          <li><a href="../postgis-geometry.html"><span class="section-number">3.4. </span>PostGIS Geometry</a> &raquo;</li>
+      <li><span class="section-number">3.4.1. </span>Carregando a Extensão PostGIS</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -132,15 +130,15 @@
   <section id="carregando-a-extensao-postgis">
 <span id="cap-tipos-geometricos-postgis-geometry-carregando"></span><h1><span class="section-number">3.4.1. </span>Carregando a Extensão PostGIS<a class="headerlink" href="#carregando-a-extensao-postgis" title="Link permanente para este cabeçalho"></a></h1>
 <p><strong>1.</strong> Para criar um novo banco de dados no PostgreSQL:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">bdgeo</span><span class="w"> </span><span class="k">TEMPLATE</span><span class="w"> </span><span class="n">template1</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">bdgeo</span><span class="w"> </span><span class="k">TEMPLATE</span><span class="w"> </span><span class="n">template1</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p><strong>2.</strong> Para carregar a extensão PostGIS no banco de dados criado:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="n">postgis</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="n">postgis</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p><strong>3.</strong> Para saber as configurações da sua extensão PostGIS, utilize a função <code class="docutils literal notranslate"><span class="pre">postgis_full_version</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">postgis_full_version</span><span class="p">();</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">postgis_full_version</span><span class="p">();</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -160,7 +158,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22ec029a0>
+<jinja2.runtime.BlockReference object at 0x7fd732fec550>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

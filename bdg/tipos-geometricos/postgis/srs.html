@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3.4.7. Transformação entre Sistemas de Referencia Espacial &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script src="../../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -114,10 +112,10 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a></li>
-          <li class="breadcrumb-item"><a href="../postgis-geometry.html"><span class="section-number">3.4. </span>PostGIS Geometry</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.4.7. </span>Transformação entre Sistemas de Referencia Espacial</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a> &raquo;</li>
+          <li><a href="../postgis-geometry.html"><span class="section-number">3.4. </span>PostGIS Geometry</a> &raquo;</li>
+      <li><span class="section-number">3.4.7. </span>Transformação entre Sistemas de Referencia Espacial</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -132,38 +130,38 @@
   <section id="transformacao-entre-sistemas-de-referencia-espacial">
 <span id="cap-tipos-geometricos-postgis-geometry-srs"></span><h1><span class="section-number">3.4.7. </span>Transformação entre Sistemas de Referencia Espacial<a class="headerlink" href="#transformacao-entre-sistemas-de-referencia-espacial" title="Link permanente para este cabeçalho"></a></h1>
 <p>O PostGIS possui uma tabla de metadados denominada <code class="docutils literal notranslate"><span class="pre">spatial_ref_sys</span></code> que contém a lista de todos os sistemas de referência espacial suportados. Para obter uma lista dos sistemas de referência espacial suportados em seu sistema, utilize a seguinte consulta:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">spatial_ref_sys</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">spatial_ref_sys</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>A função <code class="docutils literal notranslate"><span class="pre">ST_Transform(geometria,</span> <span class="pre">novo–srid)</span></code> retorna uma nova geometria com as coordenadas transformadas para um novo  <code class="docutils literal notranslate"><span class="pre">SRID</span></code>. O novo <code class="docutils literal notranslate"><span class="pre">SRID</span></code> deve estar presente na tabela <code class="docutils literal notranslate"><span class="pre">spatial_ref_sys</span></code>. Vamos ver dois exemplos de uso dessa função:</p>
 <p><strong>1.</strong> Transformando do <code class="docutils literal notranslate"><span class="pre">SRID</span> <span class="pre">4618</span></code> (Lat/Long SAD/69) para <code class="docutils literal notranslate"><span class="pre">29101</span></code> (Policônica SAD/69):</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span>
-<span class="w">           </span><span class="n">ST_Transform</span><span class="p">(</span>
-<span class="w">               </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT (-54 -12)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4618</span><span class="p">),</span>
-<span class="w">               </span><span class="mi">29101</span>
-<span class="w">           </span><span class="p">)</span>
-<span class="w">       </span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_Transform</span><span class="p">(</span><span class="w"></span>
+<span class="w">               </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT (-54 -12)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4618</span><span class="p">),</span><span class="w"></span>
+<span class="w">               </span><span class="mi">29101</span><span class="w"></span>
+<span class="w">           </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p><strong>2.</strong> Transformando do SRID 4618 (Lat/Long SAD/69) para 4674 (Lat/Long SAD/69):</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span>
-<span class="w">           </span><span class="n">ST_Transform</span><span class="p">(</span>
-<span class="w">               </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT (-54 -12)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4618</span><span class="p">),</span>
-<span class="w">               </span><span class="mi">4674</span>
-<span class="w">           </span><span class="p">)</span>
-<span class="w">       </span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_AsText</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_Transform</span><span class="p">(</span><span class="w"></span>
+<span class="w">               </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT (-54 -12)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4618</span><span class="p">),</span><span class="w"></span>
+<span class="w">               </span><span class="mi">4674</span><span class="w"></span>
+<span class="w">           </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <section id="alterando-o-srid-de-uma-coluna-geometrica">
 <h2><span class="section-number">3.4.7.1. </span>Alterando o SRID de uma Coluna Geométrica<a class="headerlink" href="#alterando-o-srid-de-uma-coluna-geometrica" title="Link permanente para este cabeçalho"></a></h2>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">tabela</span>
-<span class="w">            </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">MULTIPOLYGON</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">)</span>
-<span class="w">                              </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">tabela</span><span class="w"></span>
+<span class="w">            </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">MULTIPOLYGON</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">)</span><span class="w"></span>
+<span class="w">                              </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">tabela</span>
-<span class="w">            </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">MULTIPOLYGON</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">)</span>
-<span class="w">                              </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">da</span><span class="o">-</span><span class="n">tabela</span><span class="w"></span>
+<span class="w">            </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="n">GEOMETRY</span><span class="p">(</span><span class="n">MULTIPOLYGON</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">)</span><span class="w"></span>
+<span class="w">                              </span><span class="k">USING</span><span class="w"> </span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -188,7 +186,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22f5ed940>
+<jinja2.runtime.BlockReference object at 0x7fd7328ed9a0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>7.3.1. Instalação no Linux Ubuntu &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script src="../../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -112,10 +110,10 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.3. </span>PL/Python</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">7.3.1. </span>Instalação no Linux Ubuntu</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">7.3. </span>PL/Python</a> &raquo;</li>
+      <li><span class="section-number">7.3.1. </span>Instalação no Linux Ubuntu</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -130,7 +128,7 @@
   <section id="instalacao-no-linux-ubuntu">
 <span id="cap-prog-servidor-plpython-instalacao-linux"></span><h1><span class="section-number">7.3.1. </span>Instalação no Linux Ubuntu<a class="headerlink" href="#instalacao-no-linux-ubuntu" title="Link permanente para este cabeçalho"></a></h1>
 <p>Na distribuição Linux Ubuntu a extensão <code class="docutils literal notranslate"><span class="pre">PL/Python</span></code> pode ser instalada através do próprio gerenciador de pacotes. Se você quiser saber as versões disponíveis desse pacote, utilize o comando <code class="docutils literal notranslate"><span class="pre">apt-cache</span> <span class="pre">search</span></code> como mostrado abaixo:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt-cache<span class="w"> </span>search<span class="w"> </span>plpython
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt-cache search plpython
 </pre></div>
 </div>
 <p>O comando acima produzirá uma listagem semelhante à mostrada abaixo, onde para cada versão do servidor PostgreSQL suportada haverá um pacote <code class="docutils literal notranslate"><span class="pre">plpython3</span></code> associado.</p>
@@ -182,7 +180,7 @@ postgresql-plpython3-15 - PL/Python 3 procedural language for PostgreSQL 15
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22e3dad30>
+<jinja2.runtime.BlockReference object at 0x7fd733041520>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

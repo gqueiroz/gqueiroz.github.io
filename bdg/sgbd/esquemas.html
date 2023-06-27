@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2.20. Esquemas &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -123,9 +121,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2.20. </span>Esquemas</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
+      <li><span class="section-number">2.20. </span>Esquemas</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -141,7 +139,7 @@
 <span id="cap-sgbd-esquemas"></span><h1><span class="section-number">2.20. </span>Esquemas<a class="headerlink" href="#esquemas" title="Link permanente para este cabeçalho"></a></h1>
 <p>Um banco de dados no PostgreSQL pode ser organizado logicamente através do uso de <em>esquemas</em> (<code class="docutils literal notranslate"><span class="pre">SCHEMA</span></code>). Por padrão, ao criar um banco de dados a partir do banco <code class="docutils literal notranslate"><span class="pre">template1</span></code>, haverá um esquema geral chamado <code class="docutils literal notranslate"><span class="pre">public</span></code>. Através do comando <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">SCHEMA</span> <span class="pre">nome-esquema</span></code>, podemos criar novos esquemas e associar as tabelas e outros objetos do banco a esse esquema.</p>
 <p>Vamos criar um esquema chamado <code class="docutils literal notranslate"><span class="pre">geo</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">geo</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">geo</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -149,29 +147,29 @@
 <p>Após executar o comando acima, veja os esquemas apresentados na interface gráfica do pgAdmin.</p>
 </div>
 <p>Em seguida, vamos criar uma nova tabela chamada <code class="docutils literal notranslate"><span class="pre">foco</span></code> que será associada a esse esquema:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">geo</span><span class="p">.</span><span class="n">foco</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">id</span><span class="w">                  </span><span class="n">UUID</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">gen_random_uuid</span><span class="p">(),</span>
-<span class="w">    </span><span class="n">latitude</span><span class="w">            </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span>
-<span class="w">    </span><span class="n">longitude</span><span class="w">           </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span>
-<span class="w">    </span><span class="n">num_dias_sem_chuva</span><span class="w">  </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">frp</span><span class="w">                 </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
-<span class="w">    </span><span class="k">data</span><span class="w">                </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="p">,</span>
-<span class="w">    </span><span class="n">satelite</span><span class="w">            </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">geo</span><span class="p">.</span><span class="n">foco</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w">                  </span><span class="n">UUID</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">gen_random_uuid</span><span class="p">(),</span><span class="w"></span>
+<span class="w">    </span><span class="n">latitude</span><span class="w">            </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">longitude</span><span class="w">           </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_dias_sem_chuva</span><span class="w">  </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">frp</span><span class="w">                 </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="k">data</span><span class="w">                </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">satelite</span><span class="w">            </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Repare no comando acima que utilizamos a notação qualificada para o nome da tabela: <code class="docutils literal notranslate"><span class="pre">geo.foco</span></code>.</p>
 <p>Para se referir a essa tabela, devemos utilizar o nome do esquema, uma vez que ele não é o esquema padrão para o nosso usuário:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">geo</span><span class="p">.</span><span class="n">foco</span><span class="w"> </span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">num_dias_sem_chuva</span><span class="p">,</span><span class="w"> </span><span class="n">frp</span><span class="p">,</span><span class="w"> </span><span class="k">data</span><span class="p">,</span><span class="w"> </span><span class="n">satelite</span><span class="p">)</span>
-<span class="w">              </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">.</span><span class="mi">41792</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">65176</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">89</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2022-09-01 16:30:00&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;AQUA&#39;</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">geo</span><span class="p">.</span><span class="n">foco</span><span class="w"> </span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">num_dias_sem_chuva</span><span class="p">,</span><span class="w"> </span><span class="n">frp</span><span class="p">,</span><span class="w"> </span><span class="k">data</span><span class="p">,</span><span class="w"> </span><span class="n">satelite</span><span class="p">)</span><span class="w"></span>
+<span class="w">              </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">.</span><span class="mi">41792</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">51</span><span class="p">.</span><span class="mi">65176</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">89</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2022-09-01 16:30:00&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;AQUA&#39;</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">geo</span><span class="p">.</span><span class="n">foco</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">geo</span><span class="p">.</span><span class="n">foco</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Para apagar um esquema e todos os objetos associados a ele, use o comando <code class="docutils literal notranslate"><span class="pre">DROP</span> <span class="pre">SCHEMA</span> <span class="pre">nome-esquema</span> <span class="pre">CASCADE</span></code>, como mostrado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">geo</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">geo</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -200,7 +198,7 @@ DROP SCHEMA
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22d4e8730>
+<jinja2.runtime.BlockReference object at 0x7fd732ee62e0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

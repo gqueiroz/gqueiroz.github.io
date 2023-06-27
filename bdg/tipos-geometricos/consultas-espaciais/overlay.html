@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3.5.6. Overlay de Mapas &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script src="../../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -114,10 +112,10 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.5.6. </span>Overlay de Mapas</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a> &raquo;</li>
+      <li><span class="section-number">3.5.6. </span>Overlay de Mapas</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -134,7 +132,7 @@
 <section id="carga-de-dados-mapa-pedologico">
 <h2><span class="section-number">3.5.6.1. </span>Carga de Dados - Mapa Pedológico<a class="headerlink" href="#carga-de-dados-mapa-pedologico" title="Link permanente para este cabeçalho"></a></h2>
 <p>Considere o conjunto ESRI Shapefile mostrado na <a class="reference internal" href="#tbl-consultas-espaciais-overlay-pedologia-2017"><span class="std std-numref">Tabela 3.37</span></a>, que contem o mapa pedológico do Brazil, abo de referência 2017. Faça a carga desse conjunto de dados de acordo com as informações apresentadas nessa tabela.</p>
-<table class="styled-table docutils align-center" id="tbl-consultas-espaciais-overlay-pedologia-2017" style="width: 100%">
+<table class="colwidths-given styled-table docutils align-center" id="tbl-consultas-espaciais-overlay-pedologia-2017" style="width: 100%">
 <caption><span class="caption-number">Tabela 3.37 - </span><span class="caption-text">Mapa Pedológico – 2017 <br/> <strong>Fonte Original:</strong> <a class="reference download external" download="" href="https://geoftp.ibge.gov.br/informacoes_ambientais/pedologia/vetores/escala_250_mil/versao_2017/brasil/Brasil_pedo_area.zip"><code class="xref download docutils literal notranslate"><span class="pre">IBGE</span></code></a>.</span><a class="headerlink" href="#tbl-consultas-espaciais-overlay-pedologia-2017" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 60%" />
@@ -168,11 +166,11 @@
 <details class="summary-carga-dados">
 <summary>Carga Dados:</summary><p><br/></p>
 <p>Para converter este conjunto de dados do formato ESRI Shapefile para SQL utilizando o <code class="docutils literal notranslate"><span class="pre">shp2pgsql</span></code>, use o seguinte comando:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql<span class="w"> </span>-c<span class="w"> </span>-g<span class="w"> </span><span class="s2">&quot;geom&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">4674</span><span class="w"> </span>-i<span class="w"> </span>-I<span class="w"> </span>-t<span class="w"> </span><span class="s2">&quot;2D&quot;</span><span class="w"> </span>-W<span class="w"> </span>UTF-8<span class="w"> </span>pedologia_2017.shp<span class="w"> </span>public.pedologia<span class="w"> </span>&gt;<span class="w"> </span>pedologia.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shp2pgsql -c -g <span class="s2">&quot;geom&quot;</span> -s <span class="m">4674</span> -i -I -t <span class="s2">&quot;2D&quot;</span> -W UTF-8 pedologia_2017.shp public.pedologia &gt; pedologia.sql
 </pre></div>
 </div>
 <p>Para carregar o arquivo <code class="docutils literal notranslate"><span class="pre">pedologia.sql</span></code> para um banco de dados PostgreSQL, utilize o <code class="docutils literal notranslate"><span class="pre">psql</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-p<span class="w"> </span><span class="m">5432</span><span class="w"> </span>-d<span class="w"> </span>bdgeo<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-f<span class="w"> </span>pedologia.sql
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>psql -h localhost -p <span class="m">5432</span> -d bdgeo -U postgres -f pedologia.sql
 </pre></div>
 </div>
 </details></section>
@@ -187,13 +185,13 @@
 </figcaption>
 </figure>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pedologia</span><span class="p">.</span><span class="n">gid</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span>
-<span class="w">       </span><span class="n">pedologia</span><span class="p">.</span><span class="n">ordem</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ordem</span><span class="p">,</span>
-<span class="w">       </span><span class="n">ST_Intersection</span><span class="p">(</span><span class="n">pedologia</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">pedologia</span><span class="p">,</span>
-<span class="w">       </span><span class="n">uf</span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">pedologia</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="p">;</span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pedologia</span><span class="p">.</span><span class="n">gid</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">pedologia</span><span class="p">.</span><span class="n">ordem</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ordem</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">ST_Intersection</span><span class="p">(</span><span class="n">pedologia</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">pedologia</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">uf</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">pedologia</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </details></section>
@@ -208,19 +206,19 @@
 </figcaption>
 </figure>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ordem</span><span class="p">,</span>
-<span class="w">       </span><span class="k">SUM</span><span class="p">(</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="p">::</span><span class="n">geography</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area</span>
-<span class="w">  </span><span class="k">FROM</span>
-<span class="w">      </span><span class="p">(</span>
-<span class="w">           </span><span class="k">SELECT</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">ordem</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">ordem</span><span class="p">,</span>
-<span class="w">                  </span><span class="n">ST_Intersection</span><span class="p">(</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">geom</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
-<span class="w">             </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">m</span><span class="p">,</span>
-<span class="w">                  </span><span class="n">pedologia</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">p</span>
-<span class="w">            </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
-<span class="w">              </span><span class="k">AND</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;OURO PRETO&#39;</span>
-<span class="w">      </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">solos</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ordem</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ordem</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="k">SUM</span><span class="p">(</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="p">::</span><span class="n">geography</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="k">SELECT</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">ordem</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">ordem</span><span class="p">,</span><span class="w"></span>
+<span class="w">                  </span><span class="n">ST_Intersection</span><span class="p">(</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">geom</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">             </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"></span>
+<span class="w">                  </span><span class="n">pedologia</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">p</span><span class="w"></span>
+<span class="w">            </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">              </span><span class="k">AND</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;OURO PRETO&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">solos</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ordem</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </details></section>
@@ -235,14 +233,14 @@
 </figcaption>
 </figure>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">gid</span><span class="p">,</span>
-<span class="w">       </span><span class="n">codtrechor</span><span class="p">,</span>
-<span class="w">       </span><span class="n">ST_Intersection</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span>
-<span class="w">       </span><span class="n">trechos_rodoviarios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">trechos</span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">revestimen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Pavimentado&#39;</span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="p">;</span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">gid</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">codtrechor</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">ST_Intersection</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">trechos_rodoviarios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">trechos</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">revestimen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Pavimentado&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </details></section>
@@ -251,16 +249,16 @@
 <h2><span class="section-number">3.5.6.5. </span>Consulta 4<a class="headerlink" href="#consulta-4" title="Link permanente para este cabeçalho"></a></h2>
 <p><strong>Consulta:</strong> Quantos KM de rodovia existem no Estado do Tocantins com o tipo de revestimento “Pavimentado”?</p>
 <details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span>
-<span class="w">           </span><span class="n">ST_Length</span><span class="p">(</span>
-<span class="w">                </span><span class="n">ST_Intersection</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">)::</span><span class="n">geography</span>
-<span class="w">           </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span>
-<span class="w">       </span><span class="p">)</span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span>
-<span class="w">       </span><span class="n">trechos_rodoviarios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">trechos</span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">revestimen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Pavimentado&#39;</span>
-<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="p">;</span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="w"></span>
+<span class="w">           </span><span class="n">ST_Length</span><span class="p">(</span><span class="w"></span>
+<span class="w">                </span><span class="n">ST_Intersection</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">)::</span><span class="n">geography</span><span class="w"></span>
+<span class="w">           </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="w"></span>
+<span class="w">       </span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">trechos_rodoviarios</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">trechos</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">trechos</span><span class="p">.</span><span class="n">revestimen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Pavimentado&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TOCANTINS&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </details><hr class="docutils" />
@@ -286,7 +284,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22f1f5430>
+<jinja2.runtime.BlockReference object at 0x7fd732e50100>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

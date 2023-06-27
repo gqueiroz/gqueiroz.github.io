@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2.23. Índices - Estruturas de Acesso &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -37,16 +39,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -131,9 +129,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2.23. </span>Índices - Estruturas de Acesso</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
+      <li><span class="section-number">2.23. </span>Índices - Estruturas de Acesso</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -149,11 +147,11 @@
 <span id="cap-sgbd-indexes"></span><h1><span class="section-number">2.23. </span>Índices - Estruturas de Acesso<a class="headerlink" href="#indices-estruturas-de-acesso" title="Link permanente para este cabeçalho"></a></h1>
 <p>Muitas vezes, as aplicações que trabalham com bancos de dados são projetadas de maneira a manipular apenas uma fração dos dados desse banco. As aplicações OLTP (<em>Online Transaction Processing</em>), por exemplo, possuem esta característica. Consequentemente, ter apenas os arquivos das tabelas do banco de dados organizados em linhas armazenadas sequencialmente, sem uma forma de localizar rapidamente uma linha ou conjunto de linhas dependendo do valor de um determinado campo, pode acarretar em problemas de desempenho, principalmente, quando temos tabelas com muitas linhas e com volumes de dados que não são comportados em memória principal. Logo, estruturas de dados auxiliares que ajudem a localizar rapidamente uma linha ou um subconjunto das linhas de uma tabela, são imprescindíveis para um SGBD.</p>
 <p>Vamos retomar a tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code> criada no <a class="reference internal" href="import-export.html#cap-sgbd-import-export-ex-1"><span class="std std-ref">Exercício 1</span></a> da <a class="reference internal" href="import-export.html#cap-sgbd-import-export"><span class="std std-numref">Seção 2.22 - Importando e Exportando Dados</span></a>. Essa tabela contém 5.570 linhas e possui a seguinte definição:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">municipio</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">id</span><span class="w">   </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">nome</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">municipio</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w">   </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">nome</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Em um SGBD relacional, como o PostgreSQL, o fato de definir uma ou mais colunas como chave primária, faz com que o SGBD tenha que verificar o valor desses campos nas operações de inserção (<code class="docutils literal notranslate"><span class="pre">INSERT</span></code>) e atualização (<code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>). Essa verificação depende de um acesso rápido às linhas da tabela para identificar se o valor de chave primária fornecido na operação já existe na tabela. Como as operações de inserção, remoção e atualização podem fazer com que as linhas da tabela não respeitem a ordem da chave primária, é necessária uma estrutura de dados auxiliar que ajude a localizar rapidamente uma linha que contenha a chave primária. Por isso, o PostgreSQL cria automaticamente um índice associado às colunas que compõem a chave primária. Este é o caso da coluna <code class="docutils literal notranslate"><span class="pre">id</span></code> da tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code>, conforme mostrado na descrição dessa tabela pelo aplicativo <em>psql</em>:</p>
@@ -171,8 +169,8 @@ Indexes:
 </pre></div>
 </div>
 <p>Repare na saída acima que um índice denominado <code class="docutils literal notranslate"><span class="pre">municipio_pkey</span></code> foi criado, associado à coluna <code class="docutils literal notranslate"><span class="pre">id</span></code> que é chave primária. A saída acima também indica que esse índice é do tipo <code class="docutils literal notranslate"><span class="pre">btree</span></code>. Mais adiante neste capítulo, será discutido os vários tipos de índices e suas aplicações. Por hora, vamos compreender como o PostgreSQL executa uma consulta envolvendo a busca por um valor de chave primária. O comando <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span></code> do PostgreSQL junto à opção <code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code> apresenta o plano a ser usado na execução de uma consulta. O comando abaixo exibe como o PostgreSQL irá recuperar a linha com <code class="docutils literal notranslate"><span class="pre">id</span></code> de valor <code class="docutils literal notranslate"><span class="pre">2112704</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">YAML</span><span class="p">)</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2112704&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">YAML</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2112704&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -204,8 +202,8 @@ Indexes:
 </div>
 <p>As linhas destacadas na saída acima indicam que o PostgreSQL irá utilizar uma estratégia de consulta baseada no índice <code class="docutils literal notranslate"><span class="pre">municipio_pkey</span></code> associado à coluna <code class="docutils literal notranslate"><span class="pre">id</span></code>. Essa estratégia faz com que o PostgreSQL seja muito eficiente na busca da linha procurada.</p>
 <p>Vamos agora verificar como o PostgreSQL trata uma consulta aonde ele não poderá contar com um índice auxiliar. Para isso, vamos construir uma consulta nessa mesma tabela que recupere a linha do município de nome <code class="docutils literal notranslate"><span class="pre">Araxá</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">YAML</span><span class="p">)</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">YAML</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -432,16 +430,16 @@ primary key, btree, for table &quot;public.municipio&quot;
 </pre></div>
 </div>
 <p>Vamos criar um índice na tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code> sobre a coluna <code class="docutils literal notranslate"><span class="pre">nome</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">municipio_nome_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="p">(</span><span class="n">nome</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">municipio_nome_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="p">(</span><span class="n">nome</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Em seguida, vamos atualizar as estatísticas sobre a tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="n">municipio</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="n">municipio</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Agora, vamos verificar novamente como a consulta à tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code> envolvendo um predicado usando a coluna <code class="docutils literal notranslate"><span class="pre">nome</span></code> é executada:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -458,7 +456,7 @@ primary key, btree, for table &quot;public.municipio&quot;
 <section id="remocao-de-indices">
 <h3><span class="section-number">2.23.3.2. </span>Remoção de Índices<a class="headerlink" href="#remocao-de-indices" title="Link permanente para este cabeçalho"></a></h3>
 <p>Um índice pode ser removido através do comado <code class="docutils literal notranslate"><span class="pre">DROP</span> <span class="pre">INDEX</span></code>, que possui a seguinte sintaxe:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">indice</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">nome</span><span class="o">-</span><span class="n">indice</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -466,7 +464,7 @@ primary key, btree, for table &quot;public.municipio&quot;
 <h3><span class="section-number">2.23.3.3. </span>Considerações Sobre Criação e Uso de Índices<a class="headerlink" href="#consideracoes-sobre-criacao-e-uso-de-indices" title="Link permanente para este cabeçalho"></a></h3>
 <p>Os índices são essenciais para que o SGBD forneça o mecanismo de restrição de chave primária. Isso é tão forte, que no PostgreSQL ao definir uma ou mais colunas  como chave primária, um índice é automaticamente criado. O nome desse índice é dado automaticamente pelo PostgreSQL e segue o seguinte padrão: <code class="docutils literal notranslate"><span class="pre">&lt;nome-tabela&gt;_pkey</span></code>.</p>
 <p>A restrição de chave única (<code class="docutils literal notranslate"><span class="pre">UNIQUE</span></code>) também é implementada com o uso de um índice que garanta que os valores de chave não sejam duplicados. O nome desse índice, quando dado automaticamente pelo PostgreSQL, segue o seguinte padrão: <code class="docutils literal notranslate"><span class="pre">&lt;nome-tabela&gt;_&lt;nome-coluna&gt;[_&lt;nome-coluna&gt;]_key</span></code>. Considere a tabela <code class="docutils literal notranslate"><span class="pre">professor</span></code>, um índice de chave única poderia ser criado sobre a coluna <code class="docutils literal notranslate"><span class="pre">nome</span></code> da seguinte forma:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">professor_nome_key</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="p">(</span><span class="n">nome</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">professor_nome_key</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">professor</span><span class="w"> </span><span class="p">(</span><span class="n">nome</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>A criação de um índice sobre uma ou mais colunas em uma tabela com dezenas de milhares de registros é uma operação relativamente rápida. Para tabelas com milhões de linhas, esse tempo pode ser um pouco maior e depende do tipo de índice a ser criado (B-tree ou GiST R-tree). Além disso, pode ser necessário alterar o parâmetro de configuração <code class="docutils literal notranslate"><span class="pre">maintenance_work_mem</span></code> do servidor PostgreSQL, para aumentar a quantidade de memória usada durante as operações de criação de índices, e assim acelerar a sua criação.</p>
@@ -505,11 +503,11 @@ primary key, btree, for table &quot;public.estudante_disciplina&quot;
 <section id="indices-sobre-expressoes-ou-indices-funcionais">
 <h3><span class="section-number">2.23.3.4. </span>Índices sobre Expressões ou Índices Funcionais<a class="headerlink" href="#indices-sobre-expressoes-ou-indices-funcionais" title="Link permanente para este cabeçalho"></a></h3>
 <p>Muitas vezes realizamos consultas que envolvem a aplicação de uma expressão sobre um dos campos da tabela, como por exemplo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">lower</span><span class="p">(</span><span class="n">nome</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;araxá&#39;</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">lower</span><span class="p">(</span><span class="n">nome</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;araxá&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Nesta consulta aquele índice definido sobre a coluna <code class="docutils literal notranslate"><span class="pre">nome</span></code> da tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code> não será usado, como indicado abaixo:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">lower</span><span class="p">(</span><span class="n">nome</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;araxá&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">lower</span><span class="p">(</span><span class="n">nome</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;araxá&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -544,11 +542,11 @@ primary key, btree, for table &quot;public.estudante_disciplina&quot;
 <li><p>Estimativa média do tamanho (em bytes) de uma linha da saída​.</p></li>
 </ul>
 <p>Para compreender melhor esse comando, vamos retomar o exemplo do início deste capítulo, com a seguinte consulta na tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>O comando <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span></code> sem a opção <code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code>, simplesmente apresenta uma estimativa da execução da consulta:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -559,7 +557,7 @@ primary key, btree, for table &quot;public.estudante_disciplina&quot;
 </pre></div>
 </div>
 <p>A saída acima mostra que o PostgreSQL irá realizar uma <strong>pesquisa sequencial</strong> (<code class="docutils literal notranslate"><span class="pre">Seq</span> <span class="pre">Scan</span></code>) pelas linhas da tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code>, sendo estimada apenas uma linha como resultado (<code class="docutils literal notranslate"><span class="pre">rows=1</span></code>). Esse comando apresenta dois custos estimados (<code class="docutils literal notranslate"><span class="pre">cost</span></code>), o primeiro, indica o custo para iniciar a consulta (<code class="docutils literal notranslate"><span class="pre">0.00</span></code>) e o segundo, o custo total (<code class="docutils literal notranslate"><span class="pre">105.62</span></code>). ​Esse custo é medido em relação à recuperação de uma unidade do disco. Para saber o número de páginas e o número de linhas da tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code>, podemos consultar a tabela do <strong>catálogo do sistema</strong> chamada <code class="docutils literal notranslate"><span class="pre">pg_class</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">relpages</span><span class="p">,</span><span class="w"> </span><span class="n">reltuples</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_class</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">relname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;municipio&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">relpages</span><span class="p">,</span><span class="w"> </span><span class="n">reltuples</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_class</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">relname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;municipio&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -581,8 +579,8 @@ primary key, btree, for table &quot;public.estudante_disciplina&quot;
 </ul>
 <p>Substituindo as constantes com seus valores <em>default</em> e o número de páginas e linhas processados, temos: <span class="math notranslate nohighlight">\((36 \times 1.0) + (5570 \times 0.01) + (5570 \times 0.0025) = 105.62\)</span>.</p>
 <p>Para obter a estatística do tempo de execução, podemos adicionar a opção <code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code> ao comando acima:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -597,8 +595,8 @@ primary key, btree, for table &quot;public.estudante_disciplina&quot;
 </div>
 <p>A opção <code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code> faz com que a consulta seja de fato realizada. Desta forma, o tempo inicial e total são exibidos, em milisegundos. Esse comando também mostra o número total de execuções do <em>nó</em> do plano (<code class="docutils literal notranslate"><span class="pre">loops</span></code>). Além disso, essa saída apresenta o número de linhas descartadas após a aplicação do filtro (<code class="docutils literal notranslate"><span class="pre">5569</span></code>).</p>
 <p>Se existir um índice na tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code> associado à coluna <code class="docutils literal notranslate"><span class="pre">nome</span></code>, o PostgreSQL poderá gerar um plano de execução diferente para essa consulta:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Araxá&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -612,10 +610,10 @@ primary key, btree, for table &quot;public.estudante_disciplina&quot;
 </div>
 <p>Dessa vez, repare que o PostgreSQL utilizou uma estratégia diferente da busca sequencial, que é a <strong>busca indexada</strong> (<code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">Scan</span></code>) utilizando o índice  <code class="docutils literal notranslate"><span class="pre">municipio_nome_idx</span></code>. Repare que os custos envolvidos na execução dessa consulta são bem menores que a da anterior e, consequentemente, o tempo de execução também é menor.</p>
 <p>Como último exemplo, considere a consulta abaixo, que recupera a lista de disciplinas cursadas pelo estudante de nome <code class="docutils literal notranslate"><span class="pre">Claudio</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span>
-<span class="w">                            </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
-<span class="w">            </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante</span><span class="mf">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Claudio&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">TRUE</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">estudante</span><span class="w"> </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">estudante_disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">matricula</span><span class="p">)</span><span class="w"></span>
+<span class="w">                            </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">disciplina</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">WHERE</span><span class="w"> </span><span class="n">estudante</span><span class="mf">.</span><span class="n">nome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Claudio&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -642,31 +640,31 @@ primary key, btree, for table &quot;public.estudante_disciplina&quot;
 <span id="cap-sgbd-indexes-exercicios"></span><h2><span class="section-number">2.23.5. </span>Exercícios<a class="headerlink" href="#exercicios" title="Link permanente para este cabeçalho"></a></h2>
 <p><strong>Exercício 1.</strong> Proponha os índices a serem criados para as tabelas <code class="docutils literal notranslate"><span class="pre">populacao</span></code> e <code class="docutils literal notranslate"><span class="pre">homicidio</span></code> criados na <a class="reference internal" href="import-export.html#cap-sgbd-import-export-exercicios"><span class="std std-numref">Seção 2.22.3</span></a>.</p>
 <p><strong>Exercício 2.</strong> Vamos criar uma tabela chamada <code class="docutils literal notranslate"><span class="pre">pts</span></code> com a seguinte definição:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pts</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">id</span><span class="w">     </span><span class="n">UUID</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">gen_random_uuid</span><span class="p">(),</span>
-<span class="w">    </span><span class="n">x</span><span class="w">      </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span>
-<span class="w">    </span><span class="n">y</span><span class="w">      </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span>
-<span class="w">    </span><span class="n">word</span><span class="w">   </span><span class="nb">TEXT</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pts</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w">     </span><span class="n">UUID</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">gen_random_uuid</span><span class="p">(),</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w">      </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">y</span><span class="w">      </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">word</span><span class="w">   </span><span class="nb">TEXT</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Em seguida, vamos inserir um conjunto sintético de dados nessa tabela:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">pts</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">word</span><span class="p">)</span>
-<span class="w">                </span><span class="p">(</span>
-<span class="w">                    </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">360</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">180</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">x</span><span class="p">,</span>
-<span class="w">                           </span><span class="mi">180</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">90</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">y</span><span class="p">,</span>
-<span class="w">                           </span><span class="n">rpad</span><span class="p">(</span><span class="n">i</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">word</span>
-<span class="w">                      </span><span class="k">FROM</span><span class="w"> </span><span class="n">generate_series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1000000</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">i</span>
-<span class="w">                </span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">pts</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">word</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="p">(</span><span class="w"></span>
+<span class="w">                    </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">360</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">180</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"></span>
+<span class="w">                           </span><span class="mi">180</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">90</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"></span>
+<span class="w">                           </span><span class="n">rpad</span><span class="p">(</span><span class="n">i</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">word</span><span class="w"></span>
+<span class="w">                      </span><span class="k">FROM</span><span class="w"> </span><span class="n">generate_series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1000000</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+<span class="w">                </span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Verifique como a seguinte consulta é realizada:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
-<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts</span>
-<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">2.0</span>
-<span class="w">       </span><span class="k">AND</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts</span><span class="w"></span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">2.0</span><span class="w"></span>
+<span class="w">       </span><span class="k">AND</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -688,19 +686,19 @@ primary key, btree, for table &quot;public.estudante_disciplina&quot;
 </pre></div>
 </div>
 <p>Agora, crie um índice formado pelas colunas <code class="docutils literal notranslate"><span class="pre">x</span></code> e <code class="docutils literal notranslate"><span class="pre">y</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">pts_x_y_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pts</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">pts_x_y_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pts</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Atualize as estatísticas da tabela:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="n">pts</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="n">pts</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Verifique novamente a execução da consulta:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
-<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts</span>
-<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">2.0</span>
-<span class="w">       </span><span class="k">AND</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts</span><span class="w"></span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">2.0</span><span class="w"></span>
+<span class="w">       </span><span class="k">AND</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -759,7 +757,7 @@ primary key, btree, for table &quot;public.estudante_disciplina&quot;
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22f494f40>
+<jinja2.runtime.BlockReference object at 0x7fd7325aee20>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

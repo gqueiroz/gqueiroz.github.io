@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3.5.7. Agregação Espacial &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script src="../../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -114,10 +112,10 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.5.7. </span>Agregação Espacial</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">3. </span>Tipos de Dados e Operações Espaciais</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">3.5. </span>Consultas Espaciais</a> &raquo;</li>
+      <li><span class="section-number">3.5.7. </span>Agregação Espacial</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -143,12 +141,12 @@
 <details class="summary-solucao">
 <summary>Solução:</summary><p><br/></p>
 <p>Podemos utilizar a função de agregação <code class="docutils literal notranslate"><span class="pre">ST_Union</span></code> para computar a geometria formada pela união de todos as geometrias de um grupo definido pela coluna <code class="docutils literal notranslate"><span class="pre">regiao_sig</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">regioes_brasil</span><span class="w"> </span><span class="k">AS</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">regioes_brasil</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
 
-<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">regiao_sig</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sigla</span><span class="p">,</span>
-<span class="w">             </span><span class="n">ST_Union</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
-<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span>
-<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">regiao_sig</span><span class="p">;</span>
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">regiao_sig</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sigla</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="n">ST_Union</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">regiao_sig</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Apesar do comando acima funcionar e gerar uma nova tabela chamada <code class="docutils literal notranslate"><span class="pre">regioes_brasil</span></code>, podemos notar que a estrutura da tabela, isto é, seu esquema, não terá  a coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code> definida com os modificadores de subtipo geométrico e SRID. Verificando a estrutura da tabela:</p>
@@ -164,7 +162,7 @@
 </pre></div>
 </div>
 <p>Podemos notar que não foi definido automaticamente o SRID (4674) e o subtipo geométrico da coluna <code class="docutils literal notranslate"><span class="pre">geom</span></code>. Apesar das geometrias da tabela de entrada serem formadas apenas pelo tipo <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code>, a função <code class="docutils literal notranslate"><span class="pre">ST_Union</span></code> irá gerar uma geometria do tipo mais simples possível. Nesse caso, teremos linhas com o tipo <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code> ou <code class="docutils literal notranslate"><span class="pre">Polygon</span></code>. Podemos identificar isso através da seguinte consulta:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">ST_GeometryType</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">regioes_brasil</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">ST_GeometryType</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">regioes_brasil</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -176,12 +174,12 @@
 </pre></div>
 </div>
 <p>Se nossa intenção é obter uma coluna geométrica de um tipo homogeneo, como o subtipo <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code>, poderíamos aplicar a função <code class="docutils literal notranslate"><span class="pre">ST_Multi</span></code> ao resultado gerado pela função <code class="docutils literal notranslate"><span class="pre">ST_Union</span></code>, de maneira a garantir que a geometria final da região seja de uma coleção. Também incluiremos um <code class="docutils literal notranslate"><span class="pre">CAST</span></code> explícito, como mostrado no comando abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">regioes_brasil</span><span class="w"> </span><span class="k">AS</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">regioes_brasil</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
 
-<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">regiao_sig</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sigla</span><span class="p">,</span>
-<span class="w">             </span><span class="n">ST_Multi</span><span class="p">(</span><span class="w"> </span><span class="n">ST_Union</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="p">)::</span><span class="n">geometry</span><span class="p">(</span><span class="n">MultiPolygon</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
-<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span>
-<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">regiao_sig</span><span class="p">;</span>
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">uf</span><span class="p">.</span><span class="n">regiao_sig</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sigla</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="n">ST_Multi</span><span class="p">(</span><span class="w"> </span><span class="n">ST_Union</span><span class="p">(</span><span class="n">uf</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="p">)::</span><span class="n">geometry</span><span class="p">(</span><span class="n">MultiPolygon</span><span class="p">,</span><span class="w"> </span><span class="mi">4674</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">regiao_sig</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </details></section>
@@ -191,12 +189,12 @@
 <p><strong>Consulta:</strong> Utilizando os dados dos anos de 2017 e 2018 de focos, apresente uma contagem por bioma.</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>A primeira solução que vamos dar é construir uma consulta envolvendo as tabelas <code class="docutils literal notranslate"><span class="pre">focos</span></code> e <code class="docutils literal notranslate"><span class="pre">biomas</span></code> como mostrado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">biomas</span><span class="p">.</span><span class="n">bioma</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">bioma</span><span class="p">,</span>
-<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span>
-<span class="w">         </span><span class="n">biomas</span>
-<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">biomas</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">biomas</span><span class="p">.</span><span class="n">bioma</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">biomas</span><span class="p">.</span><span class="n">bioma</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">bioma</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">biomas</span><span class="w"></span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">biomas</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">biomas</span><span class="p">.</span><span class="n">bioma</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -212,13 +210,13 @@
 </pre></div>
 </div>
 <p>No meu sistema, a consulta acima é executada da seguinte forma:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span>
-<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">biomas</span><span class="mf">.</span><span class="n">bioma</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">bioma</span><span class="p">,</span>
-<span class="w">             </span><span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span>
-<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span>
-<span class="w">             </span><span class="n">biomas</span>
-<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">biomas</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="mf">.</span><span class="n">geom</span><span class="p">)</span>
-<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">biomas</span><span class="mf">.</span><span class="n">bioma</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"></span>
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">biomas</span><span class="mf">.</span><span class="n">bioma</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">bioma</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="n">biomas</span><span class="w"></span>
+<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">biomas</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="mf">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">biomas</span><span class="mf">.</span><span class="n">bioma</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -249,24 +247,24 @@ Time: 97133.166 ms (01:37.133)
 </div>
 <p>Ou seja, essa consulta é executada em aproximadamente 01 minuto e 37 segundos. Você saberia explicar onde essa consulta está gastando a maior parte do tempo?</p>
 <p>Vamos agora tentar uma estratégia diferente, criando uma nova tabela com os biomas onde os polígonos são particionados em um conjunto de polígonos com um número menor de vértices, digamos 40:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">biomas_subdividido</span><span class="w"> </span><span class="k">AS</span>
-<span class="w">       </span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span>
-<span class="w">              </span><span class="n">bioma</span><span class="p">,</span>
-<span class="w">              </span><span class="n">ST_SubDivide</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mf">40</span><span class="p">)</span><span class="o">::</span><span class="n">geometry</span><span class="p">(</span><span class="nb">POLYGON</span><span class="p">,</span><span class="w"> </span><span class="mf">4674</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">geom</span>
-<span class="w">         </span><span class="k">FROM</span><span class="w"> </span><span class="n">biomas</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">biomas_subdividido</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<span class="w">       </span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="n">bioma</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="n">ST_SubDivide</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mf">40</span><span class="p">)</span><span class="o">::</span><span class="n">geometry</span><span class="p">(</span><span class="nb">POLYGON</span><span class="p">,</span><span class="w"> </span><span class="mf">4674</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">         </span><span class="k">FROM</span><span class="w"> </span><span class="n">biomas</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">biomas_subdividido_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">biomas_subdividido</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">biomas_subdividido_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">biomas_subdividido</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Agora, vamos verificar como a mesma consulta é realizada usando essa nova tabela:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span>
-<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">biomas</span><span class="mf">.</span><span class="n">bioma</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">bioma</span><span class="p">,</span>
-<span class="w">             </span><span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span>
-<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span>
-<span class="w">             </span><span class="n">biomas_subdividido</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">biomas</span>
-<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">biomas</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="mf">.</span><span class="n">geom</span><span class="p">)</span>
-<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">biomas</span><span class="mf">.</span><span class="n">bioma</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"></span>
+<span class="w">      </span><span class="k">SELECT</span><span class="w"> </span><span class="n">biomas</span><span class="mf">.</span><span class="n">bioma</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">bioma</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_focos</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">focos</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="n">biomas_subdividido</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">biomas</span><span class="w"></span>
+<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">biomas</span><span class="mf">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">focos</span><span class="mf">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">biomas</span><span class="mf">.</span><span class="n">bioma</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -326,7 +324,7 @@ Time: 5434.675 ms (00:05.435)
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22f1f5dc0>
+<jinja2.runtime.BlockReference object at 0x7fd73310a280>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

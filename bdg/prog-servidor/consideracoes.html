@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>7.5. Considerações Finais &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -105,9 +103,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">7.5. </span>Considerações Finais</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
+      <li><span class="section-number">7.5. </span>Considerações Finais</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -128,14 +126,13 @@
 <p>Procedimentos armazenados <code class="docutils literal notranslate"><span class="pre">PL/pgSQL</span></code> podem aceitar um número variável de argumentos (<code class="docutils literal notranslate"><span class="pre">VARIADIC</span></code>). Também podem aceitar e retornar os tipos polimórficos <code class="docutils literal notranslate"><span class="pre">ANY</span></code>, <code class="docutils literal notranslate"><span class="pre">ANYELEMENT</span></code>, <code class="docutils literal notranslate"><span class="pre">ANYARRAY</span></code>, <code class="docutils literal notranslate"><span class="pre">ANYNONARRAY</span></code>, <code class="docutils literal notranslate"><span class="pre">ANYENUM</span></code> ou <code class="docutils literal notranslate"><span class="pre">ANYRANGE</span></code>, de maneira que os tipos reais podem ser mudados a cada chamada da função. Outra capacidade interessante dessas funções é a possibilidade de declará-las com o tipo de retorno de um conjunto de valores de um certo tipo escalar (<code class="docutils literal notranslate"><span class="pre">RETURNS</span> <span class="pre">SETOF</span></code> ou <code class="docutils literal notranslate"><span class="pre">RETURNS</span> <span class="pre">TABLE</span></code>). Neste caso, a saída é gerada executando o comando <code class="docutils literal notranslate"><span class="pre">RETURN</span> <span class="pre">NEXT</span></code> ou <code class="docutils literal notranslate"><span class="pre">RETURN</span> <span class="pre">QUERY</span></code>. Funções podem ser sobrecarregadas. Podemos declarar parâmetros de retorno (<code class="docutils literal notranslate"><span class="pre">OUT</span></code>). Podemos associar um custo às funções de modo a ajudar o <em>query planner</em> a realizar seu trabalho, ele terá uma forma de estimar quanto irá custar a chamada de sua função.</p>
 <p><strong>Triggers</strong> são importantes ferramentas para aplicações que necessitam de uma auditoria das modificações realizadas em tabelas especiais ou para gerenciamento de dados relacionados em várias tabelas. Um <em>trigger</em> pode ser criado em qualquer linguagem procedural do PostgreSQL, bem como na Linguagem C. Além da associação com tabelas, um <em>trigger</em> pode ser associado a visões (<code class="docutils literal notranslate"><span class="pre">views</span></code>) e tabelas externas (<code class="docutils literal notranslate"><span class="pre">foreign</span> <span class="pre">tables</span></code>). Como comandos <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> não modificam linhas, não podemos criar <em>triggers</em> associadas a este tipo de comando. Neste caso, o mais adequado é o uso de regras (<em>rules</em>) e visões (<em>views</em>). Para maiores detalhes sobre <em>triggers</em>, consulte <a class="reference external" href="https://www.postgresql.org/docs/14/triggers.html">Chapter 39. Triggers</a>.</p>
 <p>As cláusulas <code class="docutils literal notranslate"><span class="pre">BEGIN</span></code> e <code class="docutils literal notranslate"><span class="pre">END</span></code> em funções <code class="docutils literal notranslate"><span class="pre">PL/pgSQL</span></code> possuem o único propósito de agrupar os comandos, não tendo nenhuma relação com os comandos de controle de transações. Tanto <strong>funções</strong> quanto <strong>triggers</strong> são sempre executadas dentro da transação iniciada pela consulta que as invocaram.</p>
-<p>Uma diferença entre o tipo <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> e um tipo composto<a class="footnote-reference brackets" href="#f1" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, é que a estrutura do registro é montada durante a execução da função, enquanto a variável do tipo composto já possui uma estrutura pré-definida. Isto significa que se você tentar acessar os campos de um registro que ainda não foi construído terá um erro de execução. Já o tipo composto não produzirá este efeito.</p>
+<p>Uma diferença entre o tipo <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> e um tipo composto<a class="footnote-reference brackets" href="#f1" id="id2">1</a>, é que a estrutura do registro é montada durante a execução da função, enquanto a variável do tipo composto já possui uma estrutura pré-definida. Isto significa que se você tentar acessar os campos de um registro que ainda não foi construído terá um erro de execução. Já o tipo composto não produzirá este efeito.</p>
 <p class="rubric">Notas</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="f1" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
-<p>Tipo de uma tabela ou um tipo definido por <code class="docutils literal notranslate"><span class="pre">%ROWTYPE</span></code>.</p>
-</aside>
-</aside>
+<dl class="footnote brackets">
+<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dd><p>Tipo de uma tabela ou um tipo definido por <code class="docutils literal notranslate"><span class="pre">%ROWTYPE</span></code>.</p>
+</dd>
+</dl>
 </section>
 
 
@@ -153,7 +150,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22d749520>
+<jinja2.runtime.BlockReference object at 0x7fd732f57700>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

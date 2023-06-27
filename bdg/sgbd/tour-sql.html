@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2.3. Um Tour pela Linguagem SQL &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -128,9 +126,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2.3. </span>Um Tour pela Linguagem SQL</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
+      <li><span class="section-number">2.3. </span>Um Tour pela Linguagem SQL</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -146,11 +144,15 @@
 <span id="cap-sgbd-tour"></span><h1><span class="section-number">2.3. </span>Um Tour pela Linguagem SQL<a class="headerlink" href="#um-tour-pela-linguagem-sql" title="Link permanente para este cabeçalho"></a></h1>
 <p>Os exemplos desta seção estão associados a duas tabelas, <code class="docutils literal notranslate"><span class="pre">paises</span></code> e <code class="docutils literal notranslate"><span class="pre">cidades</span></code>, como mostrado abaixo:</p>
 <table class="styled-table docutils align-default" id="tbl-sgbd-tour-paises">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 69%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align" colspan="2"><p><strong>paises</strong></p></th>
+<tr class="row-odd"><th class="center-align head" colspan="2"><p><strong>paises</strong></p></th>
 </tr>
-<tr class="row-even"><th class="head center-align"><p>pid</p></th>
-<th class="head center-align"><p>nome_pais</p></th>
+<tr class="row-even"><th class="center-align head"><p>pid</p></th>
+<th class="center-align head"><p>nome_pais</p></th>
 </tr>
 </thead>
 <tbody>
@@ -165,13 +167,19 @@
 </tbody>
 </table>
 <table class="styled-table docutils align-default" id="tbl-sgbd-tour-cidades">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 34%" />
+<col style="width: 29%" />
+<col style="width: 24%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align" colspan="4"><p><strong>cidades</strong></p></th>
+<tr class="row-odd"><th class="center-align head" colspan="4"><p><strong>cidades</strong></p></th>
 </tr>
-<tr class="row-even"><th class="head center-align"><p>cid</p></th>
-<th class="head center-align"><p>nome_cidade</p></th>
-<th class="head center-align"><p>populacao</p></th>
-<th class="head center-align"><p>pais_id</p></th>
+<tr class="row-even"><th class="center-align head"><p>cid</p></th>
+<th class="center-align head"><p>nome_cidade</p></th>
+<th class="center-align head"><p>populacao</p></th>
+<th class="center-align head"><p>pais_id</p></th>
 </tr>
 </thead>
 <tbody>
@@ -205,13 +213,18 @@
 <h2><span class="section-number">2.3.1. </span>Esquema das Tabelas<a class="headerlink" href="#esquema-das-tabelas" title="Link permanente para este cabeçalho"></a></h2>
 <p>A tabela <code class="docutils literal notranslate"><span class="pre">paises</span></code> possui o seguinte esquema:</p>
 <table class="styled-table docutils align-default" id="tbl-sgbd-tour-paises-esquema">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 35%" />
+<col style="width: 51%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align" colspan="3" rowspan="2"><p>nome tabela: <strong>paises</strong></p></th>
+<tr class="row-odd"><th class="center-align head" colspan="3" rowspan="2"><p>nome tabela: <strong>paises</strong></p></th>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><th class="head center-align"><p>colunas</p></th>
-<th class="head center-align"><p>tipo de dados</p></th>
-<th class="head center-align"><p>modificadores</p></th>
+<tr class="row-odd"><th class="center-align head"><p>colunas</p></th>
+<th class="center-align head"><p>tipo de dados</p></th>
+<th class="center-align head"><p>modificadores</p></th>
 </tr>
 </thead>
 <tbody>
@@ -233,13 +246,18 @@
 </table>
 <p>A tabela <code class="docutils literal notranslate"><span class="pre">cidades</span></code> possui o seguinte esquema:</p>
 <table class="styled-table docutils align-default" id="tbl-sgbd-tour-cidades-esquema">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 22%" />
+<col style="width: 68%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align" colspan="3" rowspan="2"><p>nome tabela: <strong>cidades</strong></p></th>
+<tr class="row-odd"><th class="center-align head" colspan="3" rowspan="2"><p>nome tabela: <strong>cidades</strong></p></th>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><th class="head center-align" rowspan="2"><p>colunas</p></th>
-<th class="head center-align" rowspan="2"><p>tipo de dados</p></th>
-<th class="head center-align" rowspan="2"><p>modificadores</p></th>
+<tr class="row-odd"><th class="center-align head" rowspan="2"><p>colunas</p></th>
+<th class="center-align head" rowspan="2"><p>tipo de dados</p></th>
+<th class="center-align head" rowspan="2"><p>modificadores</p></th>
 </tr>
 <tr class="row-even"></tr>
 </thead>
@@ -275,39 +293,39 @@
 <h2><span class="section-number">2.3.2. </span>Definição de Dados<a class="headerlink" href="#definicao-de-dados" title="Link permanente para este cabeçalho"></a></h2>
 <p>Vamos utilizar a linguagem SQL para criar essas duas tabelas:</p>
 <p><strong>1.</strong> Criando uma tabela denominada <code class="docutils literal notranslate"><span class="pre">paises</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">paises</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">pid</span><span class="w">       </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
-<span class="w">    </span><span class="n">nome_pais</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">paises</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">pid</span><span class="w">       </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">nome_pais</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p><strong>2.</strong> Criando uma tabela denominada <code class="docutils literal notranslate"><span class="pre">cidades</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">cidades</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">cid</span><span class="w">           </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
-<span class="w">    </span><span class="n">nome_cidade</span><span class="w">   </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span>
-<span class="w">    </span><span class="n">populacao</span><span class="w">     </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">pid</span><span class="w">           </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">paises</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">cidades</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">cid</span><span class="w">           </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">nome_cidade</span><span class="w">   </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">populacao</span><span class="w">     </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">pid</span><span class="w">           </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">paises</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="manipulacao-de-dados">
 <h2><span class="section-number">2.3.3. </span>Manipulação de Dados<a class="headerlink" href="#manipulacao-de-dados" title="Link permanente para este cabeçalho"></a></h2>
 <p><strong>1.</strong> Inserindo tuplas na tabela <code class="docutils literal notranslate"><span class="pre">paises</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">paises</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">nome_pais</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Alemanha&#39;</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">paises</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">nome_pais</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Alemanha&#39;</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">paises</span><span class="w"> </span><span class="k">VALUES</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Brasil&#39;</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">paises</span><span class="w"> </span><span class="k">VALUES</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Brasil&#39;</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p><strong>2.</strong> Inserindo tuplas na tabela <code class="docutils literal notranslate"><span class="pre">cidades</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">cidades</span><span class="w"> </span><span class="p">(</span><span class="n">nome_cidade</span><span class="p">,</span><span class="w"> </span><span class="n">populacao</span><span class="p">,</span><span class="w"> </span><span class="n">pid</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Ouro Preto&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">70227</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
-<span class="w">                                                         </span><span class="p">(</span><span class="s1">&#39;Mariana&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">58233</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
-<span class="w">                                                         </span><span class="p">(</span><span class="s1">&#39;Munster&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">291754</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
-<span class="w">                                                         </span><span class="p">(</span><span class="s1">&#39;Itabirito&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">45449</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">cidades</span><span class="w"> </span><span class="p">(</span><span class="n">nome_cidade</span><span class="p">,</span><span class="w"> </span><span class="n">populacao</span><span class="p">,</span><span class="w"> </span><span class="n">pid</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Ouro Preto&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">70227</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                                         </span><span class="p">(</span><span class="s1">&#39;Mariana&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">58233</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                                         </span><span class="p">(</span><span class="s1">&#39;Munster&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">291754</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                                         </span><span class="p">(</span><span class="s1">&#39;Itabirito&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">45449</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p><strong>5.</strong> Exemplos:</p>
@@ -316,7 +334,7 @@
 <li><p><strong>Projeção:</strong> nome das cidades e populacao (em milhares)</p>
 <blockquote>
 <div><details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">nome_cidade</span><span class="p">,</span><span class="w"> </span><span class="n">trunc</span><span class="p">(</span><span class="n">populacao</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;populacao-milhares&quot;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cidades</span><span class="p">;</span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">nome_cidade</span><span class="p">,</span><span class="w"> </span><span class="n">trunc</span><span class="p">(</span><span class="n">populacao</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;populacao-milhares&quot;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cidades</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </details></div></blockquote>
@@ -324,7 +342,7 @@
 <li><p><strong>Seleção Tuplas:</strong> cidades acima de 60.000 habitantes (ordenação por população)</p>
 <blockquote>
 <div><details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">nome_cidade</span><span class="p">,</span><span class="w"> </span><span class="n">populacao</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cidades</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">populacao</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">60000</span><span class="p">;</span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">nome_cidade</span><span class="p">,</span><span class="w"> </span><span class="n">populacao</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cidades</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">populacao</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">60000</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </details></div></blockquote>
@@ -332,11 +350,11 @@
 <li><p><strong>Produto Cartesiano:</strong> paises x cidades</p>
 <blockquote>
 <div><details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">paises</span><span class="p">,</span><span class="w"> </span><span class="n">cidades</span><span class="p">;</span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">paises</span><span class="p">,</span><span class="w"> </span><span class="n">cidades</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>ou:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">paises</span><span class="w"> </span><span class="k">CROSS</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">cidades</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">paises</span><span class="w"> </span><span class="k">CROSS</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">cidades</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </details></div></blockquote>
@@ -344,11 +362,11 @@
 <li><p><strong>Junção Tabelas:</strong> paises x cidades</p>
 <blockquote>
 <div><details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">paises</span><span class="p">,</span><span class="w"> </span><span class="n">cidades</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">paises</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cidades</span><span class="p">.</span><span class="n">pid</span><span class="p">;</span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">paises</span><span class="p">,</span><span class="w"> </span><span class="n">cidades</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">paises</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cidades</span><span class="p">.</span><span class="n">pid</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>ou:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">paises</span><span class="w"> </span><span class="k">NATURAL</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">cidades</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">paises</span><span class="w"> </span><span class="k">NATURAL</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">cidades</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </details></div></blockquote>
@@ -356,11 +374,11 @@
 <li><p><strong>Agregação:</strong> população países</p>
 <blockquote>
 <div><details class="summary-solucao">
-<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">nome_pais</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">populacao</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pop</span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">paises</span><span class="p">,</span><span class="w"> </span><span class="n">cidades</span>
-<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">paises</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cidades</span><span class="p">.</span><span class="n">pid</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">paises</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">paises</span><span class="p">.</span><span class="n">nome_pais</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pop</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+<summary>Solução:</summary><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">nome_pais</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">populacao</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pop</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">paises</span><span class="p">,</span><span class="w"> </span><span class="n">cidades</span><span class="w"></span>
+<span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">paises</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cidades</span><span class="p">.</span><span class="n">pid</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">paises</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">paises</span><span class="p">.</span><span class="n">nome_pais</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pop</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </details></div></blockquote>
@@ -385,7 +403,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22f6a1340>
+<jinja2.runtime.BlockReference object at 0x7fd733532040>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

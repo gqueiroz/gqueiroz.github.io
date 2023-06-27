@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>10. Dicas &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -97,8 +95,8 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">10. </span>Dicas</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">10. </span>Dicas</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -113,39 +111,39 @@
   <section id="dicas">
 <span id="cap-dicas"></span><h1><span class="section-number">10. </span>Dicas<a class="headerlink" href="#dicas" title="Link permanente para este cabeçalho"></a></h1>
 <p><strong>D001.</strong> Constantes de outros tipos que não os valores numéricos podem ser representados por uma das seguintes formas:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">type</span><span class="w"> </span><span class="s1">&#39;string&#39;</span>
-<span class="s1">&#39;string&#39;</span><span class="p">::</span><span class="k">type</span>
-<span class="k">CAST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;string&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="p">)</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">type</span><span class="w"> </span><span class="s1">&#39;string&#39;</span><span class="w"></span>
+<span class="s1">&#39;string&#39;</span><span class="p">::</span><span class="k">type</span><span class="w"></span>
+<span class="k">CAST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;string&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <hr class="docutils" />
 <p><strong>D002.</strong> Para aumentar a quantdade de memória RAM utilizada na criação de índices, faça:</p>
 <p>Consulte o valor atual do parâmetro <code class="docutils literal notranslate"><span class="pre">maintenance_work_mem</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SHOW</span><span class="w"> </span><span class="n">maintenance_work_mem</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SHOW</span><span class="w"> </span><span class="n">maintenance_work_mem</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Para aumentar esse valor, digamos para 4GB , e garantir que esse valor seja mantido mesmo após reinicializações do servidor, faça:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">SYSTEM</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">maintenance_work_mem</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;4GB&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">SYSTEM</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">maintenance_work_mem</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;4GB&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Para que o servidor passe a usar esse valor em todas as conexões abertas, podemos utilizar o comando <code class="docutils literal notranslate"><span class="pre">pg_reload_conf</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_reload_conf</span><span class="p">();</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_reload_conf</span><span class="p">();</span><span class="w"></span>
 </pre></div>
 </div>
 <hr class="docutils" />
 <p><strong>D003.</strong> Para forçar que uma consulta sempre utilize um índice existente em seu processamento, defina a variável <code class="docutils literal notranslate"><span class="pre">ENABLE_SEQSCAN</span></code> como <code class="docutils literal notranslate"><span class="pre">OFF</span></code>:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SET</span><span class="w"> </span><span class="n">ENABLE_SEQSCAN</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="k">OFF</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SET</span><span class="w"> </span><span class="n">ENABLE_SEQSCAN</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="k">OFF</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Para que o otimizador de consultas possa optar por uma busca sequencial novamente, faça:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SET</span><span class="w"> </span><span class="n">ENABLE_SEQSCAN</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="k">ON</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SET</span><span class="w"> </span><span class="n">ENABLE_SEQSCAN</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="k">ON</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <hr class="docutils" />
 <p><strong>D004.</strong> Para verificar o número de tuplas e páginas usadas por uma tabela e seus índices faça:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">relname</span><span class="p">,</span><span class="w"> </span><span class="n">relkind</span><span class="p">,</span><span class="w"> </span><span class="n">reltuples</span><span class="p">,</span><span class="w"> </span><span class="n">relpages</span>
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_class</span>
-<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">relname</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;focos%&#39;</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">relname</span><span class="p">,</span><span class="w"> </span><span class="n">relkind</span><span class="p">,</span><span class="w"> </span><span class="n">reltuples</span><span class="p">,</span><span class="w"> </span><span class="n">relpages</span><span class="w"></span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_class</span><span class="w"></span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">relname</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;focos%&#39;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <hr class="docutils" />
@@ -156,10 +154,10 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">pg_total_relation_size</span> <span class="pre">('nome-tabela')</span></code>: Computa o espaço total usado por uma tabela incluindo seus indices.</p></li>
 </ul>
 <p>Exemplo de uso:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="w"> </span><span class="n">pg_table_size</span><span class="p">(</span><span class="s1">&#39;pts&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">volume_tabela</span><span class="p">,</span>
-<span class="w">       </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="w"> </span><span class="n">pg_table_size</span><span class="p">(</span><span class="s1">&#39;pts_x_y_idx&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">volume_indice_x_y</span><span class="p">,</span>
-<span class="w">       </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="w"> </span><span class="n">pg_indexes_size</span><span class="p">(</span><span class="s1">&#39;pts&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">volume_indices</span><span class="p">,</span>
-<span class="w">       </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="w"> </span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="s1">&#39;pts&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">volume_total_tabela</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="w"> </span><span class="n">pg_table_size</span><span class="p">(</span><span class="s1">&#39;pts&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">volume_tabela</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="w"> </span><span class="n">pg_table_size</span><span class="p">(</span><span class="s1">&#39;pts_x_y_idx&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">volume_indice_x_y</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="w"> </span><span class="n">pg_indexes_size</span><span class="p">(</span><span class="s1">&#39;pts&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">volume_indices</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="w"> </span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="s1">&#39;pts&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">volume_total_tabela</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -179,7 +177,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22f844fa0>
+<jinja2.runtime.BlockReference object at 0x7fd7329eeee0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

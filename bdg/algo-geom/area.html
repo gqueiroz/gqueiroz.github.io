@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>5.2. Área de Polígonos &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -37,16 +39,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -109,9 +107,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5. </span>Algoritmos Geométricos</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">5.2. </span>Área de Polígonos</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">5. </span>Algoritmos Geométricos</a> &raquo;</li>
+      <li><span class="section-number">5.2. </span>Área de Polígonos</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -139,7 +137,7 @@
 <section id="calculando-area-de-poligonos-no-postgis">
 <h2><span class="section-number">5.2.1. </span>Calculando Área de Polígonos no PostGIS<a class="headerlink" href="#calculando-area-de-poligonos-no-postgis" title="Link permanente para este cabeçalho"></a></h2>
 <p>No PostGIS a operação de cálculo de área é materializada na função <code class="docutils literal notranslate"><span class="pre">ST_Area</span></code>. No caso do tipo <code class="docutils literal notranslate"><span class="pre">geometry</span></code>, essa área é calculada na unidade do dado. Por exemplo, na tabela <code class="docutils literal notranslate"><span class="pre">uf</span></code> teríamos os seguintes valores de área para os limites de cada estado:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -152,11 +150,11 @@
 </pre></div>
 </div>
 <p>Como os dados da coluna geométrica encontram-se no sistema de referência espacial <code class="docutils literal notranslate"><span class="pre">Lat/Long</span> <span class="pre">SIRGAS</span> <span class="pre">2000</span></code> (SRID 4674), os valores são computados em graus. Para computar a área em <span class="math notranslate nohighlight">\(km^2\)</span>, podemos transformar as geometrias do SRID 4674 (<code class="docutils literal notranslate"><span class="pre">Lat/Long</span> <span class="pre">SIRGAS</span> <span class="pre">2000</span></code>) para 6687 (<code class="docutils literal notranslate"><span class="pre">Polyconic/SIRGAS</span> <span class="pre">2000</span></code>), cuja unidade é <em>metros</em>. Dessa forma, computando a área e dividindo por <code class="docutils literal notranslate"><span class="pre">1.000.000</span></code>, teremos a área em <span class="math notranslate nohighlight">\(km^2\)</span>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">6687</span><span class="p">))</span><span class="o">/</span><span class="mi">1000000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area_km2</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">6687</span><span class="p">))</span><span class="o">/</span><span class="mi">1000000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area_km2</span><span class="w"></span>
 
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
 
-<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -169,11 +167,11 @@
 </pre></div>
 </div>
 <p>Se usarmos uma projeção que respeita a área, isto é, uma projeção equivalente ou eqüiárea, como a de SRID 102033 (<code class="docutils literal notranslate"><span class="pre">Albers</span> <span class="pre">South</span> <span class="pre">America/</span> <span class="pre">SAD</span> <span class="pre">1969</span></code>), teremos um resultado diferente do mostrado anteriormente:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">102033</span><span class="p">))</span><span class="o">/</span><span class="mi">1000000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area_km2</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Transform</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="mi">102033</span><span class="p">))</span><span class="o">/</span><span class="mi">1000000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area_km2</span><span class="w"></span>
 
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
 
-<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -187,11 +185,11 @@
 </div>
 <p>A seleção do sistema de referência espacial para computação de áreas e distâncias é fundamental. Em geral, recomenda-se que, para os cálculos de áreas seja utilizada a <em>Projeção Equivalente de Albers</em>, enquanto para os cálculos de extensões, a <em>Projeção Policônica</em>. No entanto, os parâmetros adequados a essas projeções podem não estar presentes como um SRID da distribuição do PostGIS. Por isso, consulte esses parâmetros no documento de recomendações do IBGE para a <a class="reference external" href="https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2021/informacoes_tecnicas/bc250_documentacao_tecnica.pdf">base cartográfica contínua do Brasil</a> e, se necessário, crie um sistema de referência apropriado, registrando na tabela <code class="docutils literal notranslate"><span class="pre">spatial_ref_sys</span></code>.</p>
 <p>Outra opção para calcular áreas sem realizar transformações direta, consiste em trabalhar com o tipo <code class="docutils literal notranslate"><span class="pre">geography</span></code>, cujo cálculo de área já retorna um valor em <span class="math notranslate nohighlight">\(m^2\)</span>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">::</span><span class="n">geography</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area_km2</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">::</span><span class="n">geography</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">area_km2</span><span class="w"></span>
 
-<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">uf</span><span class="w"></span>
 
-<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Saída:</p>
@@ -226,7 +224,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22d754c40>
+<jinja2.runtime.BlockReference object at 0x7fd73373cb20>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

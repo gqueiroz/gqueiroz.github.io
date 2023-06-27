@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>4.5. Árvores de Partição do Espaço no PostgreSQL com PostGIS &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -37,16 +39,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -110,9 +108,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4.5. </span>Árvores de Partição do Espaço no PostgreSQL com PostGIS</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">4. </span>Estruturas de Dados e Métodos de Acesso Multidimensionais</a> &raquo;</li>
+      <li><span class="section-number">4.5. </span>Árvores de Partição do Espaço no PostgreSQL com PostGIS</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -127,7 +125,7 @@
   <section id="arvores-de-particao-do-espaco-no-postgresql-com-postgis">
 <span id="cap-estrutura-dados-postgis-spgist"></span><h1><span class="section-number">4.5. </span>Árvores de Partição do Espaço no PostgreSQL com PostGIS<a class="headerlink" href="#arvores-de-particao-do-espaco-no-postgresql-com-postgis" title="Link permanente para este cabeçalho"></a></h1>
 <p>O PostGIS implementa o suporte a árvores de partição através do mecanismo SP-GiST do PostgreSQL. Para criar um <strong>índice espacial</strong> associado a uma <strong>coluna geométrica</strong>, podemos usar o comando <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">INDEX</span></code> com seguinte sintaxe:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">indice</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">SPGIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="o">&lt;</span><span class="n">coluna</span><span class="o">-</span><span class="n">geometrica</span><span class="o">&gt;</span><span class="w"> </span><span class="p">);</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">indice</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">SPGIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="o">&lt;</span><span class="n">coluna</span><span class="o">-</span><span class="n">geometrica</span><span class="o">&gt;</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>A opção <code class="docutils literal notranslate"><span class="pre">USING</span> <span class="pre">SPGIST</span></code> indica que o método de indexação a ser usado na criação do índice deverá ser baseado no SP-GiST. Desta forma, o índice criado será uma Quadtree no caso do tipo <code class="docutils literal notranslate"><span class="pre">GEOMETRY</span></code> do PostGIS.</p>
@@ -135,41 +133,41 @@
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>A sintaxe acima cria um índice bidimensional. Para criar um índice <span class="math notranslate nohighlight">\(n\text{-dimensional}\)</span> para tipos geométricos 3D, com <span class="math notranslate nohighlight">\(n &gt; 2\)</span>, podemos utilizar a seguinte sintaxe:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">indice</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">SPGIST</span><span class="w"> </span><span class="p">(</span><span class="o">&lt;</span><span class="n">coluna</span><span class="o">-</span><span class="n">geometrica</span><span class="o">&gt;</span><span class="w"> </span><span class="n">spgist_geometry_ops_nd</span><span class="p">);</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">indice</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">SPGIST</span><span class="w"> </span><span class="p">(</span><span class="o">&lt;</span><span class="n">coluna</span><span class="o">-</span><span class="n">geometrica</span><span class="o">&gt;</span><span class="w"> </span><span class="n">spgist_geometry_ops_nd</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Dica</p>
 <p>Ao criar um índice espacial, lembre-se de atualizar as estatísticas da tabela:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>ou:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">VACUUM</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">VACUUM</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">tabela</span><span class="o">&gt;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 <section id="exercicios">
 <span id="cap-estrutura-dados-postgis-spgist-exercicios"></span><h2><span class="section-number">4.5.1. </span>Exercícios<a class="headerlink" href="#exercicios" title="Link permanente para este cabeçalho"></a></h2>
 <p><strong>Exercício 1.</strong> Vamos reindexar a tabela <code class="docutils literal notranslate"><span class="pre">pts_pgis</span></code> criada na <a class="reference internal" href="postgis-gist.html#cap-estrutura-dados-postgis-gist-exercicios"><span class="std std-numref">Seção 4.3.1</span></a> usando um índice do tipo SP-GiST sobre a coluna geométrica:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">pts_pgis_geom_idx</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">pts_pgis_geom_idx</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="n">pts_pgis</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="n">pts_pgis</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">pts_pgis_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">SPGIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">pts_pgis_geom_idx</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">SPGIST</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="n">pts_pgis</span><span class="p">;</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">ANALYZE</span><span class="w"> </span><span class="n">pts_pgis</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Vamos verificar novamente como a seguinte consulta é realizada:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
-<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span>
-<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ST_MakeEnvelope</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">4326</span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="w">      </span><span class="k">FROM</span><span class="w"> </span><span class="n">pts_pgis</span><span class="w"></span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="w"> </span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">ST_MakeEnvelope</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">4326</span><span class="p">)</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -190,7 +188,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22e376ca0>
+<jinja2.runtime.BlockReference object at 0x7fd7337d1af0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

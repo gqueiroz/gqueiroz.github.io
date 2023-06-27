@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2.22. Importando e Exportando Dados &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -37,16 +39,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -129,9 +127,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2.22. </span>Importando e Exportando Dados</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">2. </span>Sistemas de Bancos de Dados Relacionais</a> &raquo;</li>
+      <li><span class="section-number">2.22. </span>Importando e Exportando Dados</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -187,19 +185,19 @@
 </pre></div>
 </div>
 <p>Para importar esse arquivo para o banco de dados usando o comando <code class="docutils literal notranslate"><span class="pre">COPY</span></code>, primeiro devemos criar uma tabela capaz de armazenar esses dados:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">foco</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">id</span><span class="w">             </span><span class="n">UUID</span><span class="p">,</span>
-<span class="w">    </span><span class="n">lat</span><span class="w">            </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span>
-<span class="w">    </span><span class="n">lon</span><span class="w">            </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span>
-<span class="w">    </span><span class="n">data_hora_gmt</span><span class="w">  </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="p">,</span>
-<span class="w">    </span><span class="n">satelite</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
-<span class="w">    </span><span class="n">municipio</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
-<span class="w">    </span><span class="n">estado</span><span class="w">         </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
-<span class="w">    </span><span class="n">pais</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
-<span class="w">    </span><span class="n">bioma</span><span class="w">          </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
-<span class="w">    </span><span class="n">frp</span><span class="w">            </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">foco</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w">             </span><span class="n">UUID</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">lat</span><span class="w">            </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">lon</span><span class="w">            </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">data_hora_gmt</span><span class="w">  </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">satelite</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">municipio</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">estado</span><span class="w">         </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">pais</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">bioma</span><span class="w">          </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">frp</span><span class="w">            </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -207,9 +205,9 @@
 <p>Repare que não incluímos restrições na definição da tabela acima.</p>
 </div>
 <p>Para copiar o arquivo acima para a nova tabela criada, podemos utilizar o comando SQL <code class="docutils literal notranslate"><span class="pre">COPY</span></code> indicando na cláusula <code class="docutils literal notranslate"><span class="pre">FROM</span></code> o caminho completo para que o servidor encontre o arquivo de dados, como mostrado abaixo:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">COPY</span><span class="w"> </span><span class="n">foco</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="n">data_hora_gmt</span><span class="p">,</span><span class="w"> </span><span class="n">satelite</span><span class="p">,</span><span class="w"> </span><span class="n">municipio</span><span class="p">,</span><span class="w"> </span><span class="n">estado</span><span class="p">,</span><span class="w"> </span><span class="n">pais</span><span class="p">,</span><span class="w"> </span><span class="n">bioma</span><span class="p">,</span><span class="w"> </span><span class="n">frp</span><span class="p">)</span>
-<span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;/data/focos-sao-felix-do-xingu-20220901.csv&#39;</span>
-<span class="k">WITH</span><span class="w"> </span><span class="p">(</span><span class="k">DELIMITER</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="k">CSV</span><span class="p">,</span><span class="w"> </span><span class="k">HEADER</span><span class="w"> </span><span class="k">true</span><span class="p">);</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">COPY</span><span class="w"> </span><span class="n">foco</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="n">data_hora_gmt</span><span class="p">,</span><span class="w"> </span><span class="n">satelite</span><span class="p">,</span><span class="w"> </span><span class="n">municipio</span><span class="p">,</span><span class="w"> </span><span class="n">estado</span><span class="p">,</span><span class="w"> </span><span class="n">pais</span><span class="p">,</span><span class="w"> </span><span class="n">bioma</span><span class="p">,</span><span class="w"> </span><span class="n">frp</span><span class="p">)</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;/data/focos-sao-felix-do-xingu-20220901.csv&#39;</span><span class="w"></span>
+<span class="k">WITH</span><span class="w"> </span><span class="p">(</span><span class="k">DELIMITER</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="k">CSV</span><span class="p">,</span><span class="w"> </span><span class="k">HEADER</span><span class="w"> </span><span class="k">true</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>COPY 4122
@@ -220,9 +218,9 @@
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>O exemplo acima também poderia ser realizado sem especificar as colunas da tabela de destino:</p>
-<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">COPY</span><span class="w"> </span><span class="n">foco</span>
-<span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;/data/focos-sao-felix-do-xingu-20220901.csv&#39;</span>
-<span class="k">WITH</span><span class="w"> </span><span class="p">(</span><span class="k">DELIMITER</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="k">CSV</span><span class="p">,</span><span class="w"> </span><span class="k">HEADER</span><span class="w"> </span><span class="k">true</span><span class="p">);</span>
+<div class="highlight-postgresql notranslate"><div class="highlight"><pre><span></span><span class="k">COPY</span><span class="w"> </span><span class="n">foco</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;/data/focos-sao-felix-do-xingu-20220901.csv&#39;</span><span class="w"></span>
+<span class="k">WITH</span><span class="w"> </span><span class="p">(</span><span class="k">DELIMITER</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="k">CSV</span><span class="p">,</span><span class="w"> </span><span class="k">HEADER</span><span class="w"> </span><span class="k">true</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -236,7 +234,7 @@
 <div class="admonition tip">
 <p class="admonition-title">Dica</p>
 <p>Uma forma simples de limpar o conteúdo de uma tabela é usar o comando <code class="docutils literal notranslate"><span class="pre">TRUNCATE</span> <span class="pre">TABLE</span></code>, como mostrado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">TRUNCATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">foco</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">TRUNCATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">foco</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -334,11 +332,11 @@
 <p id="cap-sgbd-import-export-ex-1"><strong>Exercício 1.</strong> Importe os dados do arquivo <a class="reference download internal" download="" href="../_downloads/a25a94cdfca46a4b41d2d8c55bfffce3/municipios-brasil.csv"><code class="xref download docutils literal notranslate"><span class="pre">municipios-brasil.csv</span></code></a> para uma tabela denominada <code class="docutils literal notranslate"><span class="pre">municipio</span></code>. Este arquivo, obtido no <a class="reference external" href="https://sidra.ibge.gov.br/tabela/200">site do IBGE</a>, contém uma lista dos código de munícipios brasileiros e o respectivo nome.</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Vamos criar uma tabela chamada <code class="docutils literal notranslate"><span class="pre">municipio</span></code> compatível com as linhas do arquivo <code class="docutils literal notranslate"><span class="pre">municipios-brasil.csv</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">municipio</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">id</span><span class="w">   </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">nome</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">municipio</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w">   </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">nome</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Em seguida, vamos importar o arquivo:</p>
@@ -353,53 +351,53 @@
 <p><strong>Exercício 2.</strong> Importe os dados do arquivo <a class="reference download internal" download="" href="../_downloads/2b0d12f368abc646433aece219a4d13c/ipeadata-homicidios.csv"><code class="xref download docutils literal notranslate"><span class="pre">ipeadata-homicidios.csv</span></code></a> para uma tabela denominada <code class="docutils literal notranslate"><span class="pre">homicidio_tmp</span></code>. Este arquivo, obtido no <a class="reference external" href="http://www.ipeadata.gov.br/">site do IPEA</a>, contém uma série histórica do número de homicídios nos munícipios brasileiros.</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Vamos criar uma tabela chamada <code class="docutils literal notranslate"><span class="pre">homicidio_tmp</span></code> compatível com as linhas do arquivo <code class="docutils literal notranslate"><span class="pre">ipeadata-homicidios.csv</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">homicidio_tmp</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">uf</span><span class="w">    </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
-<span class="w">    </span><span class="n">id</span><span class="w">    </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span>
-<span class="w">    </span><span class="n">nome</span><span class="w">  </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">),</span>
-<span class="w">    </span><span class="n">a1980</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1981</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1982</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1983</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1984</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1985</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1986</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1987</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1988</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1989</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1990</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1991</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1992</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1993</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1994</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1995</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1996</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1997</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1998</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a1999</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2000</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2001</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2002</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2003</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2004</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2005</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2006</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2007</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2008</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2009</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2010</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2011</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2012</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2013</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2014</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2015</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2016</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2017</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2018</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2019</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">a2020</span><span class="w"> </span><span class="nb">INTEGER</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">homicidio_tmp</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">uf</span><span class="w">    </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w">    </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">nome</span><span class="w">  </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1980</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1981</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1982</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1983</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1984</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1985</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1986</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1987</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1988</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1989</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1990</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1991</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1992</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1993</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1994</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1995</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1996</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1997</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1998</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a1999</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2000</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2001</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2002</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2003</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2004</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2005</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2006</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2007</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2008</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2009</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2010</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2011</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2012</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2013</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2014</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2015</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2016</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2017</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2018</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2019</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">a2020</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Em seguida, vamos importar o arquivo:</p>
@@ -413,12 +411,17 @@
 </details><hr class="docutils" />
 <p><strong>Exercício 3.</strong> Crie uma nova tabela denominada <code class="docutils literal notranslate"><span class="pre">homicidio</span></code> com o esquema mostrado abaixo e preencha ela com os dados provenientes da tabela <code class="docutils literal notranslate"><span class="pre">homicidio_tmp</span></code>:</p>
 <table class="styled-table docutils align-default" id="tbl-sgbd-importando-dados-homicidio-esquema">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 21%" />
+<col style="width: 66%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align" colspan="3"><p>nome tabela: <strong>homicidio</strong></p></th>
+<tr class="row-odd"><th class="center-align head" colspan="3"><p>nome tabela: <strong>homicidio</strong></p></th>
 </tr>
-<tr class="row-even"><th class="head center-align"><p>colunas</p></th>
-<th class="head center-align"><p>tipo de dados</p></th>
-<th class="head center-align"><p>modificadores</p></th>
+<tr class="row-even"><th class="center-align head"><p>colunas</p></th>
+<th class="center-align head"><p>tipo de dados</p></th>
+<th class="center-align head"><p>modificadores</p></th>
 </tr>
 </thead>
 <tbody>
@@ -439,18 +442,18 @@ Chave Estrangeira associada à tabela <code class="docutils literal notranslate"
 </table>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Vamos criar a tabela <code class="docutils literal notranslate"><span class="pre">homicidio</span></code> através da seguinte definição:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">homicidio</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">id</span><span class="w">             </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">municipio</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
-<span class="w">                                               </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">NO</span><span class="w"> </span><span class="n">ACTION</span>
-<span class="w">                                               </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
-<span class="w">    </span><span class="n">ano</span><span class="w">            </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">ano</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1980</span><span class="w"> </span><span class="k">AND</span><span class="w">  </span><span class="n">ano</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2020</span><span class="p">),</span>
-<span class="w">    </span><span class="n">num_homicidios</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">homicidio</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w">             </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">municipio</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"></span>
+<span class="w">                                               </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">NO</span><span class="w"> </span><span class="n">ACTION</span><span class="w"></span>
+<span class="w">                                               </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ano</span><span class="w">            </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">ano</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1980</span><span class="w"> </span><span class="k">AND</span><span class="w">  </span><span class="n">ano</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2020</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_homicidios</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Em seguida, vamos inserir dados nessa tabela a partir da tabela temporária criada. Para isso poderíamos utilizar vários comandos como o mostrado abaixo:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">homicidio</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="mi">1980</span><span class="p">,</span><span class="w"> </span><span class="n">a1980</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">homicidio_tmp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a1980</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">homicidio</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="mi">1980</span><span class="p">,</span><span class="w"> </span><span class="n">a1980</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">homicidio_tmp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a1980</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>No entanto, teríamos que escrever uma linha dessa para cada coluna da tabela <code class="docutils literal notranslate"><span class="pre">homicidio_tmp</span></code>. Uma maneira de fazermos isso facilmente é escrever um pequeno programa em Python como mostrado abaixo:</p>
@@ -461,16 +464,16 @@ Chave Estrangeira associada à tabela <code class="docutils literal notranslate"
 </pre></div>
 </div>
 <p>Esse programa irá gerar todos os comandos necessários:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">homicidio</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="mi">1980</span><span class="p">,</span><span class="w"> </span><span class="n">a1980</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">homicidio_tmp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a1980</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">homicidio</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="mi">1980</span><span class="p">,</span><span class="w"> </span><span class="n">a1980</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">homicidio_tmp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a1980</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span><span class="w"></span>
 
-<span class="p">...</span>
+<span class="p">...</span><span class="w"></span>
 
 
-<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">homicidio</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span><span class="w"> </span><span class="n">a2020</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">homicidio_tmp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a2020</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">homicidio</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span><span class="w"> </span><span class="n">a2020</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">homicidio_tmp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a2020</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Ao término da preparação dessa tabela, você deverá ter <span class="math notranslate nohighlight">\(119791\)</span> linhas na tabela <code class="docutils literal notranslate"><span class="pre">homicidio</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_homicidios</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">homicidio</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_homicidios</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">homicidio</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span> total_homicidios
@@ -483,21 +486,21 @@ Chave Estrangeira associada à tabela <code class="docutils literal notranslate"
 <p><strong>Exercício 4.</strong> Importe os dados do arquivo <a class="reference download internal" download="" href="../_downloads/24f20ccdded3213b7a215ca0b840a5d3/ipeadata-populacao-2010.csv"><code class="xref download docutils literal notranslate"><span class="pre">ipeadata-populacao-2010.csv</span></code></a> para uma tabela denominada <code class="docutils literal notranslate"><span class="pre">populacao_2010_tmp</span></code>. Este arquivo, obtido no <a class="reference external" href="http://www.ipeadata.gov.br/">site do IPEA</a>, contém dados populacionais dos munícipios brasileiros para o ano de 2010.</p>
 <details class="summary-solucao">
 <summary>Solução:</summary><p>Vamos criar uma tabela chamada <code class="docutils literal notranslate"><span class="pre">populacao_2010_tmp</span></code> compatível com as linhas do arquivo <code class="docutils literal notranslate"><span class="pre">ipeadata-populacao-2010.csv</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">populacao_2010_tmp</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="n">uf</span><span class="w">               </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
-<span class="w">    </span><span class="n">id</span><span class="w">               </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span>
-<span class="w">    </span><span class="n">nome</span><span class="w">             </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">),</span>
-<span class="w">    </span><span class="n">urbana_feminina</span><span class="w">  </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">rural_feminina</span><span class="w">   </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">urbana_masculina</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">rural_masculina</span><span class="w">  </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">urbana</span><span class="w">           </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">rural</span><span class="w">            </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">feminia</span><span class="w">          </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">masculina</span><span class="w">        </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">total</span><span class="w">            </span><span class="nb">INTEGER</span>
-<span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">populacao_2010_tmp</span><span class="w"></span>
+<span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">uf</span><span class="w">               </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">id</span><span class="w">               </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">nome</span><span class="w">             </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">urbana_feminina</span><span class="w">  </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">rural_feminina</span><span class="w">   </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">urbana_masculina</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">rural_masculina</span><span class="w">  </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">urbana</span><span class="w">           </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">rural</span><span class="w">            </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">feminia</span><span class="w">          </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">masculina</span><span class="w">        </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">total</span><span class="w">            </span><span class="nb">INTEGER</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Em seguida, vamos importar o arquivo:</p>
@@ -511,7 +514,7 @@ Chave Estrangeira associada à tabela <code class="docutils literal notranslate"
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>Ao importar o arquivo acima, verifique se existe alguma linha na nova tabela <code class="docutils literal notranslate"><span class="pre">populacao_2010_tmp</span></code> que não tenha um <code class="docutils literal notranslate"><span class="pre">id</span></code> correspondente na tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_2010_tmp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_2010_tmp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -522,7 +525,7 @@ Chave Estrangeira associada à tabela <code class="docutils literal notranslate"
 </pre></div>
 </div>
 <p>Logo, temos 26 linhas sem correspondência na tabela <code class="docutils literal notranslate"><span class="pre">municipio</span></code>. Vamos exercitar o comando <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> removendo essas linhas sem correspondência:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_2010_tmp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">populacao_2010_tmp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">municipio</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Resultado:</p>
@@ -546,12 +549,17 @@ Chave Estrangeira associada à tabela <code class="docutils literal notranslate"
 <hr class="docutils" />
 <p><strong>Exercício 6.</strong> Crie uma nova tabela denominada <code class="docutils literal notranslate"><span class="pre">populacao</span></code> com o esquema mostrado abaixo e preencha suas linhas com os dados provenientes das tabelas <code class="docutils literal notranslate"><span class="pre">populacao_2010_tmp</span></code> e demais tabelas criadas no <strong>exercício 5</strong>:</p>
 <table class="styled-table docutils align-default" id="tbl-sgbd-importando-dados-populacao-esquema">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 21%" />
+<col style="width: 65%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align" colspan="3"><p>nome tabela: <strong>populacao</strong></p></th>
+<tr class="row-odd"><th class="center-align head" colspan="3"><p>nome tabela: <strong>populacao</strong></p></th>
 </tr>
-<tr class="row-even"><th class="head center-align"><p>colunas</p></th>
-<th class="head center-align"><p>tipo de dados</p></th>
-<th class="head center-align"><p>modificadores</p></th>
+<tr class="row-even"><th class="center-align head"><p>colunas</p></th>
+<th class="center-align head"><p>tipo de dados</p></th>
+<th class="center-align head"><p>modificadores</p></th>
 </tr>
 </thead>
 <tbody>
@@ -600,7 +608,7 @@ Chave Estrangeira associada à tabela <code class="docutils literal notranslate"
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22e360940>
+<jinja2.runtime.BlockReference object at 0x7fd732c8b8b0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

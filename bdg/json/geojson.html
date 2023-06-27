@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>6.5. Documentos GeoJSON &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -112,9 +110,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6. </span>JSON (Java Script Object Notation)</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">6.5. </span>Documentos GeoJSON</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">6. </span>JSON (Java Script Object Notation)</a> &raquo;</li>
+      <li><span class="section-number">6.5. </span>Documentos GeoJSON</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -137,7 +135,7 @@
 <section id="geometrias">
 <h2><span class="section-number">6.5.1. </span>Geometrias<a class="headerlink" href="#geometrias" title="Link permanente para este cabeçalho"></a></h2>
 <p>O formato GeoJSON suporta os seguintes tipos geométricos (<a class="reference internal" href="#tbl-json-geojson-tipos-geometricos"><span class="std std-numref">Tabela 6.1</span></a>): <code class="docutils literal notranslate"><span class="pre">Point</span></code>, <code class="docutils literal notranslate"><span class="pre">LineString</span></code>, <code class="docutils literal notranslate"><span class="pre">Polygon</span></code>, <code class="docutils literal notranslate"><span class="pre">MultiPoint</span></code>, <code class="docutils literal notranslate"><span class="pre">MultiLineString</span></code>, <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code> e <code class="docutils literal notranslate"><span class="pre">GeometryCollection</span></code>.</p>
-<table class="styled-table docutils align-center" id="tbl-json-geojson-tipos-geometricos" style="width: 640">
+<table class="colwidths-given styled-table docutils align-center" id="tbl-json-geojson-tipos-geometricos" style="width: 640">
 <caption><span class="caption-number">Tabela 6.1 - </span><span class="caption-text">Tipos geométricos suportados pela especificação GeoJSON.</span><a class="headerlink" href="#tbl-json-geojson-tipos-geometricos" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 33%" />
@@ -145,9 +143,9 @@
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head left-align"><p>( a ) <code class="docutils literal notranslate"><span class="pre">Point</span></code></p></th>
-<th class="head left-align"><p>( b ) <code class="docutils literal notranslate"><span class="pre">LineString</span></code></p></th>
-<th class="head left-align"></th>
+<tr class="row-odd"><th class="left-align head"><p>( a ) <code class="docutils literal notranslate"><span class="pre">Point</span></code></p></th>
+<th class="left-align head"><p>( b ) <code class="docutils literal notranslate"><span class="pre">LineString</span></code></p></th>
+<th class="left-align head"></th>
 </tr>
 </thead>
 <tbody>
@@ -158,16 +156,16 @@
 <tr class="row-odd"></tr>
 </tbody>
 </table>
-<table class="styled-table docutils align-center" style="width: 640">
+<table class="colwidths-given styled-table docutils align-center" style="width: 640">
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 33%" />
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head left-align"><p>( c ) <code class="docutils literal notranslate"><span class="pre">Polygon</span></code></p></th>
-<th class="head left-align"><p>( d ) <code class="docutils literal notranslate"><span class="pre">Polygon</span></code> (com buracos)</p></th>
-<th class="head left-align"><p>( e ) <code class="docutils literal notranslate"><span class="pre">MultiPoint</span></code></p></th>
+<tr class="row-odd"><th class="left-align head"><p>( c ) <code class="docutils literal notranslate"><span class="pre">Polygon</span></code></p></th>
+<th class="left-align head"><p>( d ) <code class="docutils literal notranslate"><span class="pre">Polygon</span></code> (com buracos)</p></th>
+<th class="left-align head"><p>( e ) <code class="docutils literal notranslate"><span class="pre">MultiPoint</span></code></p></th>
 </tr>
 </thead>
 <tbody>
@@ -177,16 +175,16 @@
 </tr>
 </tbody>
 </table>
-<table class="styled-table docutils align-center" style="width: 640">
+<table class="colwidths-given styled-table docutils align-center" style="width: 640">
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 33%" />
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head left-align"><p>( f ) <code class="docutils literal notranslate"><span class="pre">MultiLineString</span></code></p></th>
-<th class="head left-align"><p>( g ) <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code></p></th>
-<th class="head left-align"><p>( h ) <code class="docutils literal notranslate"><span class="pre">GeometryCollection</span></code></p></th>
+<tr class="row-odd"><th class="left-align head"><p>( f ) <code class="docutils literal notranslate"><span class="pre">MultiLineString</span></code></p></th>
+<th class="left-align head"><p>( g ) <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code></p></th>
+<th class="left-align head"><p>( h ) <code class="docutils literal notranslate"><span class="pre">GeometryCollection</span></code></p></th>
 </tr>
 </thead>
 <tbody>
@@ -199,126 +197,126 @@
 <section id="point">
 <h3><span class="section-number">6.5.1.1. </span>Point<a class="headerlink" href="#point" title="Link permanente para este cabeçalho"></a></h3>
 <p>O tipo geométrico <code class="docutils literal notranslate"><span class="pre">Point</span></code> (<a class="reference internal" href="#tbl-json-geojson-tipos-geometricos"><span class="std std-numref">Tabela 6.1a</span></a>) é representado por um objeto <code class="docutils literal notranslate"><span class="pre">JSON</span></code> com o seguinte formato:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">]</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="linestring">
 <h3><span class="section-number">6.5.1.2. </span>LineString<a class="headerlink" href="#linestring" title="Link permanente para este cabeçalho"></a></h3>
 <p>O tipo geométrico <code class="docutils literal notranslate"><span class="pre">LineString</span></code> (<a class="reference internal" href="#tbl-json-geojson-tipos-geometricos"><span class="std std-numref">Tabela 6.1b</span></a>) é representado por um objeto JSON com o seguinte formato:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LineString&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span><span class="mf">20.0</span><span class="p">,</span><span class="w"> </span><span class="mf">20.0</span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span><span class="mf">30.0</span><span class="p">,</span><span class="w"> </span><span class="mf">12.0</span><span class="p">]</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LineString&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mf">20.0</span><span class="p">,</span><span class="w"> </span><span class="mf">20.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mf">30.0</span><span class="p">,</span><span class="w"> </span><span class="mf">12.0</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="polygon">
 <h3><span class="section-number">6.5.1.3. </span>Polygon<a class="headerlink" href="#polygon" title="Link permanente para este cabeçalho"></a></h3>
 <p>O tipo geométrico <code class="docutils literal notranslate"><span class="pre">Polygon</span></code> (<a class="reference internal" href="#tbl-json-geojson-tipos-geometricos"><span class="std std-numref">Tabela 6.1c</span></a> e <a class="reference internal" href="#tbl-json-geojson-tipos-geometricos"><span class="std std-numref">Tabela 6.1d</span></a>) é representado por um objeto <code class="docutils literal notranslate"><span class="pre">JSON</span></code> com o seguinte formato:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Polygon&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="p">[</span>
-<span class="w">        </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
-<span class="w">      </span><span class="p">]</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Polygon&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">      </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span><span class="w"></span>
+<span class="w">      </span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="multipoint">
 <h3><span class="section-number">6.5.1.4. </span>MultiPoint<a class="headerlink" href="#multipoint" title="Link permanente para este cabeçalho"></a></h3>
 <p>O tipo geométrico <code class="docutils literal notranslate"><span class="pre">MultiPoint</span></code> (<a class="reference internal" href="#tbl-json-geojson-tipos-geometricos"><span class="std std-numref">Tabela 6.1e</span></a>) é representado por um objeto <code class="docutils literal notranslate"><span class="pre">JSON</span></code> com o seguinte formato:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MultiPoint&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span><span class="mf">11.0</span><span class="p">,</span><span class="w"> </span><span class="mf">11.0</span><span class="p">]</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MultiPoint&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mf">11.0</span><span class="p">,</span><span class="w"> </span><span class="mf">11.0</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="multilinestring">
 <h3><span class="section-number">6.5.1.5. </span>MultiLineString<a class="headerlink" href="#multilinestring" title="Link permanente para este cabeçalho"></a></h3>
 <p>O tipo geométrico <code class="docutils literal notranslate"><span class="pre">MultiLineString​</span></code> (<a class="reference internal" href="#tbl-json-geojson-tipos-geometricos"><span class="std std-numref">Tabela 6.1f</span></a>) é representado por um objeto <code class="docutils literal notranslate"><span class="pre">JSON</span></code> com o seguinte formato:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MultiLineString&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mf">11.0</span><span class="p">,</span><span class="w"> </span><span class="mf">11.0</span><span class="p">]</span><span class="w"> </span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mf">12.0</span><span class="p">,</span><span class="w"> </span><span class="mf">12.0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mf">13.0</span><span class="p">,</span><span class="w"> </span><span class="mf">13.0</span><span class="p">]</span><span class="w"> </span><span class="p">]</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MultiLineString&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mf">11.0</span><span class="p">,</span><span class="w"> </span><span class="mf">11.0</span><span class="p">]</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mf">12.0</span><span class="p">,</span><span class="w"> </span><span class="mf">12.0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mf">13.0</span><span class="p">,</span><span class="w"> </span><span class="mf">13.0</span><span class="p">]</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="multipolygon">
 <h3><span class="section-number">6.5.1.6. </span>MultiPolygon<a class="headerlink" href="#multipolygon" title="Link permanente para este cabeçalho"></a></h3>
 <p>O tipo geométrico <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code> (<a class="reference internal" href="#tbl-json-geojson-tipos-geometricos"><span class="std std-numref">Tabela 6.1g</span></a>) é representado por um objeto <code class="docutils literal notranslate"><span class="pre">JSON</span></code> com o seguinte formato:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MultiPolygon&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">[</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">102.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">103.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">103.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">102.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">102.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">]</span>
-<span class="w">            </span><span class="p">]</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">101.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">101.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
-<span class="w">            </span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">100.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">100.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.8</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">100.8</span><span class="p">,</span><span class="w"> </span><span class="mf">0.8</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">100.8</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">],</span>
-<span class="w">                </span><span class="p">[</span><span class="mf">100.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span>
-<span class="w">            </span><span class="p">]</span>
-<span class="w">        </span><span class="p">]</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MultiPolygon&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">102.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">103.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">103.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">102.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">102.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">]</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">101.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">101.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">100.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">100.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.8</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">100.8</span><span class="p">,</span><span class="w"> </span><span class="mf">0.8</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">100.8</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">],</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="mf">100.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="geometrycollection">
 <h3><span class="section-number">6.5.1.7. </span>GeometryCollection<a class="headerlink" href="#geometrycollection" title="Link permanente para este cabeçalho"></a></h3>
 <p>O tipo geométrico <code class="docutils literal notranslate"><span class="pre">GeometryCollection</span></code> (<a class="reference internal" href="#tbl-json-geojson-tipos-geometricos"><span class="std std-numref">Tabela 6.1h</span></a>) é representado por um objeto JSON com o seguinte formato:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GeometryCollection&quot;</span><span class="p">,</span>
-<span class="w">   </span><span class="nt">&quot;geometries&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">       </span><span class="p">{</span>
-<span class="w">           </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span>
-<span class="w">           </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
-<span class="w">       </span><span class="p">},</span>
-<span class="w">       </span><span class="p">{</span>
-<span class="w">           </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LineString&quot;</span><span class="p">,</span>
-<span class="w">           </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">               </span><span class="p">[</span><span class="mf">101.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span>
-<span class="w">               </span><span class="p">[</span><span class="mf">102.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">]</span>
-<span class="w">           </span><span class="p">]</span>
-<span class="w">       </span><span class="p">}</span>
-<span class="w">   </span><span class="p">]</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GeometryCollection&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;geometries&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">       </span><span class="p">{</span><span class="w"></span>
+<span class="w">           </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span><span class="w"></span>
+<span class="w">       </span><span class="p">},</span><span class="w"></span>
+<span class="w">       </span><span class="p">{</span><span class="w"></span>
+<span class="w">           </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LineString&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">               </span><span class="p">[</span><span class="mf">101.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span><span class="w"></span>
+<span class="w">               </span><span class="p">[</span><span class="mf">102.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">]</span><span class="w"></span>
+<span class="w">           </span><span class="p">]</span><span class="w"></span>
+<span class="w">       </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -326,51 +324,51 @@
 <section id="feature">
 <h2><span class="section-number">6.5.2. </span>Feature<a class="headerlink" href="#feature" title="Link permanente para este cabeçalho"></a></h2>
 <p>Um objeto do tipo <code class="docutils literal notranslate"><span class="pre">Feature</span></code> representa um objeto ou entidade geográfica, com o seguinte formato:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">-45.88</span><span class="p">,</span><span class="w"> </span><span class="mf">-23.17</span><span class="p">]</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">-45.88</span><span class="p">,</span><span class="w"> </span><span class="mf">-23.17</span><span class="p">]</span><span class="w"></span>
 
-<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
 
-<span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;São José dos Campos&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;São José dos Campos&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="featurecollection">
 <h2><span class="section-number">6.5.3. </span>FeatureCollection<a class="headerlink" href="#featurecollection" title="Link permanente para este cabeçalho"></a></h2>
 <p>Um objeto do tipo <code class="docutils literal notranslate"><span class="pre">FeatureCollection</span></code> pode ser utilizado para representar uma coleção de objetos ou entidades geográficas, com o seguinte formato:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">-45.88</span><span class="p">,</span><span class="w"> </span><span class="mf">-23.17</span><span class="p">]</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">-45.88</span><span class="p">,</span><span class="w"> </span><span class="mf">-23.17</span><span class="p">]</span><span class="w"></span>
 
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;São José dos Campos&quot;</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">-43.50</span><span class="p">,</span><span class="w"> </span><span class="mf">-20.38</span><span class="p">]</span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;São José dos Campos&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">-43.50</span><span class="p">,</span><span class="w"> </span><span class="mf">-20.38</span><span class="p">]</span><span class="w"></span>
 
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ouro Preto&quot;</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ouro Preto&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -399,7 +397,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22e35de20>
+<jinja2.runtime.BlockReference object at 0x7fd733980190>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

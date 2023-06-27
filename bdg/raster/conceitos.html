@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>8.1. Imagens de Satélites &mdash; BDGeo</title>
@@ -19,8 +19,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/clipboard.min.js"></script>
@@ -40,16 +42,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> BDGeo
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -121,9 +119,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8. </span>Dados Matriciais</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">8.1. </span>Imagens de Satélites</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">8. </span>Dados Matriciais</a> &raquo;</li>
+      <li><span class="section-number">8.1. </span>Imagens de Satélites</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -310,7 +308,7 @@
 </button>
 </div>
 <p>A <a class="reference internal" href="#tbl-raster-conceitos-resolucao-temporal"><span class="std std-numref">Tabela 8.1</span></a> apresenta a resolução temporal de alguns satélites/sensores muito utilizados na área geoespacial.</p>
-<table class="styled-table docutils align-default" id="tbl-raster-conceitos-resolucao-temporal">
+<table class="colwidths-given styled-table docutils align-default" id="tbl-raster-conceitos-resolucao-temporal">
 <caption><span class="caption-number">Tabela 8.1 - </span><span class="caption-text">Resolução temporal de alguns satélites/sensores. <br/> <strong>Fontes:</strong> <a class="reference external" href="https://modis.gsfc.nasa.gov/about/">NASA</a>, <a class="reference external" href="https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-2-msi/revisit-coverage">ESA</a>.</span><a class="headerlink" href="#tbl-raster-conceitos-resolucao-temporal" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 30%" />
@@ -318,9 +316,9 @@
 <col style="width: 40%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align"><p>Satélites</p></th>
-<th class="head center-align"><p>Sensores</p></th>
-<th class="head center-align"><p>Resolução Temporal</p></th>
+<tr class="row-odd"><th class="center-align head"><p>Satélites</p></th>
+<th class="center-align head"><p>Sensores</p></th>
+<th class="center-align head"><p>Resolução Temporal</p></th>
 </tr>
 </thead>
 <tbody>
@@ -356,7 +354,7 @@
 </section>
 <section id="formatos">
 <h2><span class="section-number">8.1.6. </span>Formatos<a class="headerlink" href="#formatos" title="Link permanente para este cabeçalho"></a></h2>
-<p>As imagens de sensoriamento remoto são disponibilizadas nos mais diversos formatos. As imagens MODIS, por exemplo, são disponibilizadas no formato <strong>HDF4</strong> (extensão <code class="docutils literal notranslate"><span class="pre">.hdf</span></code>). Já as imagens Landsat são distribuias no formato GeoTIFF (extensão <code class="docutils literal notranslate"><span class="pre">.tif</span></code>). As imagens Sentinel 2/MSI são distribuídas no formato JPEG 2000 (extensão <code class="docutils literal notranslate"><span class="pre">.jp2</span></code>).</p>
+<p>As imagens de sensoriamento remoto são disponibilizadas nos mais diversos formatos. As imagens MODIS, por exemplo, são disponibilizadas no formato <strong>HDF4</strong> (extensão <code class="docutils literal notranslate"><span class="pre">.hdf</span></code>). Já as imagens Landsat são distribuídas no formato GeoTIFF (extensão <code class="docutils literal notranslate"><span class="pre">.tif</span></code>). As imagens Sentinel 2/MSI são distribuídas no formato JPEG 2000 (extensão <code class="docutils literal notranslate"><span class="pre">.jp2</span></code>).</p>
 </section>
 <section id="distribuicao-de-imagens-cenas">
 <h2><span class="section-number">8.1.7. </span>Distribuição de Imagens - Cenas<a class="headerlink" href="#distribuicao-de-imagens-cenas" title="Link permanente para este cabeçalho"></a></h2>
@@ -468,7 +466,7 @@
 <section id="landsat-5-tm">
 <h4><span class="section-number">8.1.10.1.1. </span>Landsat 5/TM<a class="headerlink" href="#landsat-5-tm" title="Link permanente para este cabeçalho"></a></h4>
 <p>O sensor TM a bordo do Landsat 5 realiza o imageamento da superfície terrestre usando um <em>swath</em> de 185km x 185km com resolução temporal de 16 dias e produz imagens de 8-bit. As características das bandas espectrais desse sensor são apresentadas na <a class="reference internal" href="#tbl-raster-conceitos-l5-tm"><span class="std std-numref">Tabela 8.2</span></a>.</p>
-<table class="styled-table docutils align-default" id="tbl-raster-conceitos-l5-tm">
+<table class="colwidths-given styled-table docutils align-default" id="tbl-raster-conceitos-l5-tm">
 <caption><span class="caption-number">Tabela 8.2 - </span><span class="caption-text">Características do sensor TM a bordo do satélite Landsat 5. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://www.usgs.gov/landsat-missions/landsat-5">USGS</a></span><a class="headerlink" href="#tbl-raster-conceitos-l5-tm" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 33%" />
@@ -476,9 +474,9 @@
 <col style="width: 28%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align"><p>Banda</p></th>
-<th class="head center-align"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
-<th class="head center-align"><p>Resolução Espacial</p></th>
+<tr class="row-odd"><th class="center-align head"><p>Banda</p></th>
+<th class="center-align head"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
+<th class="center-align head"><p>Resolução Espacial</p></th>
 </tr>
 </thead>
 <tbody>
@@ -599,7 +597,7 @@
 <section id="landsat-7-etm">
 <h4><span class="section-number">8.1.10.1.2. </span>Landsat 7/ETM<sup>+</sup><a class="headerlink" href="#landsat-7-etm" title="Link permanente para este cabeçalho"></a></h4>
 <p>O sensor ETM<sup>+</sup> a bordo do Landsat 7 realiza o imageamento da superfície terrestre usando um <em>swath</em> de 185km x 185km com resolução temporal de 16 dias e produz imagens de 8-bit. As características das bandas espectrais desse sensor são apresentadas na <a class="reference internal" href="#tbl-raster-conceitos-l7-etm"><span class="std std-numref">Tabela 8.3</span></a>.</p>
-<table class="styled-table docutils align-default" id="tbl-raster-conceitos-l7-etm">
+<table class="colwidths-given styled-table docutils align-default" id="tbl-raster-conceitos-l7-etm">
 <caption><span class="caption-number">Tabela 8.3 - </span><span class="caption-text">Características do sensor ETM<sup>+</sup> a bordo do satélite Landsat 7. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://www.usgs.gov/landsat-missions/landsat-7">USGS</a></span><a class="headerlink" href="#tbl-raster-conceitos-l7-etm" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 33%" />
@@ -607,9 +605,9 @@
 <col style="width: 28%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align"><p>Banda</p></th>
-<th class="head center-align"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
-<th class="head center-align"><p>Resolução Espacial</p></th>
+<tr class="row-odd"><th class="center-align head"><p>Banda</p></th>
+<th class="center-align head"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
+<th class="center-align head"><p>Resolução Espacial</p></th>
 </tr>
 </thead>
 <tbody>
@@ -699,7 +697,7 @@
 <section id="landsat-8-oli">
 <h4><span class="section-number">8.1.10.1.3. </span>Landsat 8/OLI<a class="headerlink" href="#landsat-8-oli" title="Link permanente para este cabeçalho"></a></h4>
 <p>O sensor OLI a bordo do Landsat 8 realiza o imageamento da superfície terrestre usando um <em>swath</em> de 185km x 185km com resolução temporal de 16 dias e produz imagens de 12-bit. As características das bandas espectrais desse sensor são apresentadas na <a class="reference internal" href="#tbl-raster-conceitos-l8-oli"><span class="std std-numref">Tabela 8.4</span></a>.</p>
-<table class="styled-table docutils align-default" id="tbl-raster-conceitos-l8-oli">
+<table class="colwidths-given styled-table docutils align-default" id="tbl-raster-conceitos-l8-oli">
 <caption><span class="caption-number">Tabela 8.4 - </span><span class="caption-text">Características do sensor OLI a bordo do satélite Landsat 8. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://www.usgs.gov/landsat-missions/landsat-8">USGS</a></span><a class="headerlink" href="#tbl-raster-conceitos-l8-oli" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 33%" />
@@ -707,9 +705,9 @@
 <col style="width: 28%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align"><p>Banda</p></th>
-<th class="head center-align"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
-<th class="head center-align"><p>Resolução Espacial</p></th>
+<tr class="row-odd"><th class="center-align head"><p>Banda</p></th>
+<th class="center-align head"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
+<th class="center-align head"><p>Resolução Espacial</p></th>
 </tr>
 </thead>
 <tbody>
@@ -801,7 +799,7 @@
 <section id="landsat-9-oli-2">
 <h4><span class="section-number">8.1.10.1.4. </span>Landsat 9/OLI-2<a class="headerlink" href="#landsat-9-oli-2" title="Link permanente para este cabeçalho"></a></h4>
 <p>O sensor OLI-2 a bordo do Landsat 9 realiza o imageamento da superfície terrestre usando um <em>swath</em> de 185km x 185km com resolução temporal de 16 dias e produz imagens de 14-bit. As características das bandas espectrais desse sensor são apresentadas na <a class="reference internal" href="#tbl-raster-conceitos-l9-oli-2"><span class="std std-numref">Tabela 8.5</span></a>.</p>
-<table class="styled-table docutils align-default" id="tbl-raster-conceitos-l9-oli-2">
+<table class="colwidths-given styled-table docutils align-default" id="tbl-raster-conceitos-l9-oli-2">
 <caption><span class="caption-number">Tabela 8.5 - </span><span class="caption-text">Características do sensor OLI a bordo do satélite Landsat 8. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://www.usgs.gov/landsat-missions/landsat-9">USGS</a></span><a class="headerlink" href="#tbl-raster-conceitos-l9-oli-2" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 33%" />
@@ -809,9 +807,9 @@
 <col style="width: 28%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align"><p>Banda</p></th>
-<th class="head center-align"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
-<th class="head center-align"><p>Resolução Espacial</p></th>
+<tr class="row-odd"><th class="center-align head"><p>Banda</p></th>
+<th class="center-align head"><p>Intervalo (<span class="math notranslate nohighlight">\(\mu m\)</span>)</p></th>
+<th class="center-align head"><p>Resolução Espacial</p></th>
 </tr>
 </thead>
 <tbody>
@@ -957,7 +955,7 @@
 <section id="sentinel-2-msi">
 <h3><span class="section-number">8.1.10.2. </span>Sentinel-2/MSI<a class="headerlink" href="#sentinel-2-msi" title="Link permanente para este cabeçalho"></a></h3>
 <p>O sensor MSI a bordo dos satélites Sentinel-2A e 2B realiza o imageamento da superfície terrestre usando um <em>swath</em> de 25km x 23km com resolução temporal de 05 dias e produz imagens de 12-bit. As características das 13 bandas espectrais desse sensor são apresentadas na <a class="reference internal" href="#tbl-raster-conceitos-s2-msi"><span class="std std-numref">Tabela 8.6</span></a>.</p>
-<table class="styled-table docutils align-default" id="tbl-raster-conceitos-s2-msi">
+<table class="colwidths-given styled-table docutils align-default" id="tbl-raster-conceitos-s2-msi">
 <caption><span class="caption-number">Tabela 8.6 - </span><span class="caption-text">Características do sensor MSI a bordo dos satélite Sentinel-2. <br/> <strong>Fonte:</strong> <a class="reference external" href="https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-2-msi/resolutions/spectral">ESA</a></span><a class="headerlink" href="#tbl-raster-conceitos-s2-msi" title="Link Permanente para essa tabela"></a></caption>
 <colgroup>
 <col style="width: 50%" />
@@ -965,9 +963,9 @@
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head center-align"><p>Banda</p></th>
-<th class="head center-align"><p>Intervalo (<span class="math notranslate nohighlight">\(\eta m\)</span>)</p></th>
-<th class="head center-align"><p>Resolução Espacial</p></th>
+<tr class="row-odd"><th class="center-align head"><p>Banda</p></th>
+<th class="center-align head"><p>Intervalo (<span class="math notranslate nohighlight">\(\eta m\)</span>)</p></th>
+<th class="center-align head"><p>Resolução Espacial</p></th>
 </tr>
 </thead>
 <tbody>
@@ -1054,7 +1052,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22db936a0>
+<jinja2.runtime.BlockReference object at 0x7fd733532df0>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 

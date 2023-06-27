@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="pt-BR" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>7.1.9. Blocos &mdash; BDGeo</title>
@@ -17,8 +17,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script src="../../_static/clipboard.min.js"></script>
@@ -36,16 +38,12 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F0F8FF" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            BDGeo
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+            <a href="../../index.html" class="icon icon-home"> BDGeo
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -116,10 +114,10 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.1. </span>PL/pgSQL</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">7.1.9. </span>Blocos</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">7. </span>Programação do Lado Servidor no PostgreSQL</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">7.1. </span>PL/pgSQL</a> &raquo;</li>
+      <li><span class="section-number">7.1.9. </span>Blocos</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
@@ -134,25 +132,24 @@
   <section id="blocos">
 <span id="cap-prog-servidor-plpgsql-blocos"></span><h1><span class="section-number">7.1.9. </span>Blocos<a class="headerlink" href="#blocos" title="Link permanente para este cabeçalho"></a></h1>
 <p>Podemos criar e aninhar novos blocos dentro do bloco principal de uma função. Os blocos possuem a seguinte estrutura:</p>
-<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nl">&lt;&lt;rótulo&gt;&gt;</span><span class="p">]</span>
-<span class="k">DECLARE</span>
-<span class="w">    </span><span class="n">lista</span><span class="o">-</span><span class="n">variáveis</span><span class="p">;</span>
-<span class="k">BEGIN</span>
-<span class="w">    </span><span class="n">comandos</span><span class="p">;</span>
-<span class="p">[</span><span class="k">EXCEPTION</span>
-<span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">condição</span><span class="w"> </span><span class="k">THEN</span>
-<span class="w">        </span><span class="mf">...</span><span class="p">]</span>
-<span class="k">END</span><span class="w"> </span><span class="p">[</span><span class="n">rótulo</span><span class="p">];</span>
+<div class="highlight-plpgsql notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nl">&lt;&lt;rótulo&gt;&gt;</span><span class="p">]</span><span class="w"></span>
+<span class="k">DECLARE</span><span class="w"></span>
+<span class="w">    </span><span class="n">lista</span><span class="o">-</span><span class="n">variáveis</span><span class="p">;</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
+<span class="w">    </span><span class="n">comandos</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="k">EXCEPTION</span><span class="w"></span>
+<span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">condição</span><span class="w"> </span><span class="k">THEN</span><span class="w"></span>
+<span class="w">        </span><span class="mf">...</span><span class="p">]</span><span class="w"></span>
+<span class="k">END</span><span class="w"> </span><span class="p">[</span><span class="n">rótulo</span><span class="p">];</span><span class="w"></span>
 </pre></div>
 </div>
-<p>A cláusula <code class="docutils literal notranslate"><span class="pre">EXCEPTION</span></code> permite que tratemos exceções lançadas durante a execução de uma função<a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<p>A cláusula <code class="docutils literal notranslate"><span class="pre">EXCEPTION</span></code> permite que tratemos exceções lançadas durante a execução de uma função<a class="footnote-reference brackets" href="#f1" id="id1">1</a></p>
 <p class="rubric">Notas</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="f1" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Conforme visto na <a class="reference internal" href="exec-sql.html#comando-retorno-unica-tupla"><span class="std std-numref">Seção 7.1.6.2</span></a>.</p>
-</aside>
-</aside>
+<dl class="footnote brackets">
+<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Conforme visto na <a class="reference internal" href="exec-sql.html#comando-retorno-unica-tupla"><span class="std std-numref">Seção 7.1.6.2</span></a>.</p>
+</dd>
+</dl>
 </section>
 
 
@@ -170,7 +167,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7fe22f822460>
+<jinja2.runtime.BlockReference object at 0x7fd733923b20>
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png" width="117" height="41"/></a> This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons “Attribution-NonCommercial-ShareAlike 4.0 International” license</a>.
 
 
