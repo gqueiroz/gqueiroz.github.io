@@ -1,0 +1,16 @@
+..
+    This file is part of Dicas Containers.
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. |br| raw:: html
+
+    <br/>
+
+
+.. role:: python(code)
+   :language: python
+
+
+.. role:: sql(code)
+   :language: sql

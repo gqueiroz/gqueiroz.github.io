@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6. Modo Rootless &mdash; Proxmox</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="_static/containers.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://gqueiroz.github.io/proxmox/rootless.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="7. Considerações Finais" href="consideracoes.html" />
+    <link rel="prev" title="5. Aplicação Python" href="py.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Containers
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introdução ao Docker</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tópicos:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introducao.html">1. Introdução</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">2. Instalação Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagens-containers.html">3. Imagens e Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiplos-containers.html">4. Múltiplos Contêiners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py.html">5. Aplicação Python</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Modo Rootless</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consideracoes.html">7. Considerações Finais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="terminologia.html">8. Terminologia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Containers</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6. </span>Modo Rootless</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="py.html" class="btn btn-neutral float-left" title="5. Aplicação Python" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="7. Considerações Finais" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="modo-rootless">
+<span id="cap-rootless"></span><h1><span class="section-number">6. </span>Modo Rootless<a class="headerlink" href="#modo-rootless" title="Link permanente para este cabeçalho"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Remova todos os contêineres criados assim como as imagens baixadas na seções anteriores.</p>
+</div>
+<ol class="arabic">
+<li><p>Para colocar o Docker no modo <em>rootless</em> faça:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">uidmap</span>
+
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">dbus</span><span class="o">-</span><span class="n">user</span><span class="o">-</span><span class="n">session</span>
+
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">disable</span> <span class="o">--</span><span class="n">now</span> <span class="n">docker</span><span class="o">.</span><span class="n">service</span> <span class="n">docker</span><span class="o">.</span><span class="n">socket</span>
+</pre></div>
+</div>
+</li>
+<li><p>Faça login com o usuário que irá rodar o serviço do Docker.</p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Faça login e não sudo su.</p>
+</div>
+<ol class="arabic" start="3">
+<li><p>Faça as seguintes configurações:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dockerd</span><span class="o">-</span><span class="n">rootless</span><span class="o">-</span><span class="n">setuptool</span><span class="o">.</span><span class="n">sh</span> <span class="n">install</span>
+</pre></div>
+</div>
+</li>
+<li><p>Edite o arquivo <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> e inclua as linhas abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export PATH=/usr/bin:$PATH
+export XDG_RUNTIME_DIR=/run/user/2001
+export DOCKER_HOST=unix://${XDG_RUNTIME_DIR}/docker.sock
+</pre></div>
+</div>
+</li>
+<li><p>Em seguida, ainda na sessão do usuário de menor privilégio, faça:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="o">--</span><span class="n">user</span> <span class="n">start</span> <span class="n">docker</span>
+
+<span class="n">systemctl</span> <span class="o">--</span><span class="n">user</span> <span class="n">enable</span> <span class="n">docker</span>
+</pre></div>
+</div>
+</li>
+<li><p>Logue com o usuário de maior privilégio e faça:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">loginctl</span> <span class="n">enable</span><span class="o">-</span><span class="n">linger</span> <span class="o">&lt;</span><span class="n">nome</span><span class="o">-</span><span class="n">usuario</span><span class="o">-</span><span class="n">menor</span><span class="o">-</span><span class="n">privilegio</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Reinicie a VM e veja se o Docker continua em execução sob o usuário de menor privilégio.</p></li>
+</ol>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="py.html" class="btn btn-neutral float-left" title="5. Aplicação Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="consideracoes.html" class="btn btn-neutral float-right" title="7. Considerações Finais" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2023, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f23ed29adf0>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" width="117" height="41"/></a> Este obra está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+
+    dbadmin:
+        image: dpage/pgadmin4:6.14
+        container_name: my-pgadmin
+        restart: unless-stopped
+        hostname: my-pgadmin
+        ports:
+            - "8080:80"
+        networks:
+            - my_pg_net
+        env_file:
+            - dbadmin.env
+        depends_on:
+            - db
+
+    db:
+        image: postgis/postgis:14-3.3
+        container_name: my-pg
+        restart: unless-stopped
+        hostname: my-pg
+        networks:
+            - my_pg_net
+        volumes:
+            - "my_pg_data:/var/lib/postgresql/data"
+            - "${PG_SHARED_DATA_DIR}:/shared-data"
+        env_file:
+            - db.env
+
+networks:
+  my_pg_net:
+    name: my-pg-network
+
+volumes:
+  my_pg_data:
+    name: my_pg_data
+

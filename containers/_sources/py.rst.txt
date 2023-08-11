@@ -1,0 +1,40 @@
+..
+    This file is part of Dicas Containers.
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. include:: def.rst
+
+
+.. _cap_python:
+
+Aplicação Python
+================
+
+
+Aplicação Flask
+---------------
+
+
+O :numref:`Trecho de Código %s <code:python:app1>` apresenta um exemplo de aplicação ....
+
+
+.. literalinclude:: code/app1/app.py
+    :linenos:
+    :caption: Aplicação Flask (:download:`app.py <code/app1/app.py>`).
+    :name: code:python:app1
+
+
+.. literalinclude:: code/app1/Dockerfile
+    :linenos:
+    :caption: :download:`Dockerfile <code/app1/Dockerfile>`
+    :name: code:python:dockerfile
+    :language: dockerfile
+
+
+Comando::
+
+    docker build --tag gqueiroz/app-python:1.0
+
+
+    docker images

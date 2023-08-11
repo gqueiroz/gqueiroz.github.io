@@ -1,0 +1,10 @@
+..
+    This file is part of Dicas Containers.
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+Licença
+=======
+
+
+.. literalinclude:: ../LICENSE

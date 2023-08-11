@@ -1,0 +1,314 @@
+..
+    This file is part of Dicas Containers.
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. include:: def.rst
+
+
+.. _cap_multiplos_containers:
+
+Múltiplos Contêiners
+====================
+
+
+Nesta seção nosso objetivo consiste em criar dois contêiners, um baseado na imagem do PostgreSQL e outro na imagem do pgAdmin 4.
+
+
+.. image:: img/logo-pg.svg
+    :alt: PostgreSQL
+    :width: 48
+    :align: right
+
+
+O `PostgreSQL <http://www.postgresql.org>`_ é um sistema gerenciador de banco de dados objeto-relacional, gratuito e de código fonte aberto, desenvolvido a partir do projeto ``POSTGRES``, iniciado em 1986, na Universidade da Califórnia em Berkeley, sob a liderança do professor `Michael Stonebraker <https://en.wikipedia.org/wiki/Michael_Stonebraker>`_. O código fonte do núcleo do PostgreSQL encontra-se escrito na Linguagem de Programação C. Isso garante a ele grande portabilidade, estando disponível para as principais plataformas de hardware e sistemas operacionais, entre eles, Linux, macOS e Microsoft Windows.
+
+
+O `pgAdmin <https://www.pgadmin.org/>`__ é uma aplicação cliente que fornece uma interface gráfica com o usuário para facilitar tanto a administração básica de bancos de dados PostgreSQL quanto a realização de consultas usando a linguagem SQL.
+
+
+.. figure:: img/pg-admin-main-page.png
+    :alt: Janela principal do pgAdmin
+    :width: 100%
+    :figclass: align-center
+    :name: fig:pg-admin-main-page
+
+    Janela principal do pgAdmin
+
+
+Nosso objetivo será acessar a aplicação do pgAdmin (:numref:`Figura %s <fig:pg-admin-main-page>`) pelo navegador no endereço IP do *host* Linux e porta ``8080``. O pgAdmin deverá conseguir acessar o servidor PostgreSQL através de uma rede conectando apenas esses dois contêineres.
+
+
+Contêiner Docker do PostgreSQL
+------------------------------
+
+
+Vamos utilizar a `imagem Docker <https://registry.hub.docker.com/r/postgis/postgis>`__ disponível para o PostgreSQL e PostGIS. O comando abaixo irá realizar o download da imagem contendo a instalação do PostgreSQL 14.7 e o PostGIS 3.3.2::
+
+    docker pull postgis/postgis:14-3.3
+
+
+Após baixar a imagem Docker, crie um contêiner através do seguinte comando::
+
+    docker run --detach \
+               --name my-pg3 \
+               --env "POSTGRES_PASSWORD=secreto" \
+               postgis/postgis:14-3.3
+
+
+O comando acima irá criar um contêiner chamado ``my-pg`` sem expor portas usadas pelos processos do contêiner. Além disso, o usuário padrão ``postgres`` será definido com a senha representada pelo texto ``secreto``.
+
+
+Verifique se o contêiner com o servidor PostgreSQL encontra-se em execução. Para isso, utilize o seguinte comando::
+
+    docker ps
+
+
+Uma saída como a mostrada abaixo deverá ser apresentada:
+
+
+.. code-block:: text
+
+    CONTAINER ID   IMAGE                    COMMAND                  CREATED              STATUS              PORTS       NAMES
+    6c4cd445ad46   postgis/postgis:14-3.3   "docker-entrypoint.s…"   About a minute ago   Up About a minute   5432/tcp    my-pg
+
+
+Verificando a Versão do PostgreSQL
+++++++++++++++++++++++++++++++++++
+
+
+Se o contêiner ``my-pg`` estiver em execução, verifique a versão do PostgreSQL contida nele através do seguite comando::
+
+    docker exec my-pg psql -U postgres -c "SELECT version();"
+
+
+Esse comando deverá produzir uma saída semelhante à apresentada abaixo::
+
+                                                               version
+    -----------------------------------------------------------------------------------------------------------------------------
+     PostgreSQL 14.7 (Debian 14.7-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
+    (1 row)
+
+
+Verificando a Versão do PostGIS
++++++++++++++++++++++++++++++++
+
+
+Para verificar a versão do PostGIS, utilize o comando abaixo::
+
+    docker exec my-pg psql -U postgres \
+                           -c "SELECT name, default_version FROM pg_available_extensions WHERE name = 'postgis';"
+
+
+Esse comando deverá produzir uma saída semelhante à apresentada abaixo::
+
+      name   | default_version
+    ---------+-----------------
+     postgis | 3.3.2
+    (1 row)
+
+
+Compartilhando um Diretório do *Host* com o Contêiner
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Vamos interromper o contêiner do POstgreSQL e remove-lo::
+
+    docker stop my-pg
+
+    docker rm my-pg
+
+
+Para criar um contêiner com um diretório do *host* compartilhado, use a opção ``--volume`` como mostrado abaixo::
+
+    mkdir -p $HOME/my-data/db/pg-data
+    mkdir -p $HOME/my-data/db/shared-data
+
+    docker run --detach \
+               --name my-pg \
+               --env "POSTGRES_PASSWORD=secreto" \
+               --volume $HOME/my-data/db/pg-data:/var/lib/postgresql/data \
+               --volume $HOME/my-data/db/shared-data:/shared-data \
+               postgis/postgis:14-3.3
+
+
+Repare que o servidor PostgreSQL ao inicializar o diretório de dados localizado no contêiner em ``/var/lib/postgresql/data`` na realidade está escrevendo no diretório ``$HOME/my-data/db/pg-data`` do *host*::
+
+    sudo ls $HOME/my-data/db/pg-data
+
+
+
+.. note::
+
+    Nesta seção, utilizamos uma imagem do PostgreSQL com PostGIS baseada na distribuição Linux Debian GNU/Linux 11 (bullseye).
+    
+    
+Contêiner Docker do pgAdmin 4
+-----------------------------
+
+
+Vamos utilizar a `imagem Docker <https://hub.docker.com/r/dpage/pgadmin4>`__ disponível para o pgAdmin4 Versão 6.8::
+
+    docker pull dpage/pgadmin4:6.14
+
+
+Após baixar a imagem Docker, crie um contêiner através do seguinte comando::
+
+    docker run --detach \
+               --name my-pgadmin \
+               --publish <IP>:8080:80 \
+               --env "PGADMIN_DEFAULT_EMAIL=pessoa@domain.org" \
+               --env "PGADMIN_DEFAULT_PASSWORD=b3mv1nd@" \
+               dpage/pgadmin4:6.14
+
+
+O comando acima irá criar um contêiner chamado ``my-pgadmin``, ligando a porta 8080 do *host* com a porta 80 do contêiner. Nesse comando, substitua o valor associado à variável ``PGADMIN_DEFAULT_EMAIL`` com o seu e-mail, pois este será o nome de usuário necessário ao login na aplicação web do pgAdmin4. A senha padrão desse usuário será definida pelo valor associado à variável ``PGADMIN_DEFAULT_PASSWORD`` (``b3mv1nd@``).
+
+
+Verifique se o contêiner com o servidor web do pgAdmin4 se encontra em execução. Para isso, utilize o seguinte comando::
+
+    docker ls
+
+
+Uma saída como amostrada abaixo deverá ser apresentada:
+
+
+.. code-block:: text
+
+    CONTAINER ID   IMAGE                COMMAND            CREATED              STATUS              PORTS                                         NAMES
+    7880a7e90df9   dpage/pgadmin4:6.8   "/entrypoint.sh"   About a minute ago   Up About a minute   443/tcp, <IP>:8080->80/tcp, :::8080->80/tcp   my-pgadmin
+
+
+Para acessar o pgAdmin, utilize seu navegador, como mostrado abaixo::
+
+    firefox http://<IP>:8080
+
+
+Uma janela como a da :numref:`Figura %s <fig:pg-admin-login-page>` deverá ser apresentada no seu navegador.
+
+
+.. figure:: img/pg-admin-login-page.png
+    :alt: Janela de login do pgAdmin
+    :width: 100%
+    :figclass: align-center
+    :name: fig:pg-admin-login-page
+
+    Janela de *login* do pgAdmin
+
+
+.. note::
+
+    Nesta seção, utilizamos uma imagem do pgAdmin baseada na distribuição Alpine Linux v3.15.
+
+
+Conectando os Contêineres do PostgreSQL e pgAdmin através de uma rede
+---------------------------------------------------------------------
+
+
+Vamos utilizar o comando ``docker network`` para criar uma rede comum entre os dois contêiners:
+
+
+.. code-block:: shell
+
+    docker network create my-pg-network
+
+
+Para associar o contêiner ``my-pg`` à rede ``my-pg-network``:
+
+.. code-block:: shell
+
+    docker network connect my-pg-network my-pg
+
+
+Para associar o contêiner ``my-pgadmin`` à rede ``my-pg-network``:
+
+.. code-block:: shell
+
+    docker network connect my-pg-network my-pgadmin
+
+
+Inspecione o contêiner ``my-pg``::
+
+    docker inspect my-pg
+
+
+Agora, na janela do pgAdmin, registre a instância do servidor PostgreSQL. Use como endereço do servidor o prório nome do contêiner PostgreSQL.
+
+
+Docker Compose
+--------------
+
+
+Vamos remover os contêineres criados na seção anterior::
+
+    docker stop my-pg my-pgadmin
+    
+    docker rm my-pg my-pgadmin
+
+
+Também vamos eliminar a rede ``my-pg-network``::
+
+    docker network rm my-pg-network
+
+
+Em seguida, crie um diretório denominado ``db-compose`` e inclua os arquivos abaixo:
+
+
+.. literalinclude:: code/compose/docker-compose.yml
+    :linenos:
+    :caption: :download:`docker-compose.yml <code/compose/docker-compose.yml>`
+    :name: code:docker-compose
+    :language: yaml
+
+
+.. literalinclude:: code/compose/.env
+    :linenos:
+    :caption: :download:`.env <code/compose/.env>`
+    :name: code:docker-compose:env:env
+    :language: yaml
+
+
+.. literalinclude:: code/compose/dbadmin.env
+    :linenos:
+    :caption: :download:`dbadmin.env <code/compose/dbadmin.env>`
+    :name: code:docker-compose:env:dbadmin
+    :language: yaml
+
+
+.. literalinclude:: code/compose/db.env
+    :linenos:
+    :caption: :download:`db.env <code/compose/db.env>`
+    :name: code:docker-compose:env:db
+    :language: yaml
+
+
+Para verificar a configuração final gerada com base no arquivo ``docker-compose.yml``, faça::
+
+    docker compose config
+
+
+Para levantar todos os serviços definidos no arquivo ``docker-compose.yml``::
+
+    docker compose up -d
+
+
+Verifique o *log* dos contêineres::
+
+    docker compose logs -f
+
+
+Para interromper todos os contêineres::
+
+    docker compose stop
+
+
+Para remover todos os contêineres, junto com seus volumes e redes:
+
+    docker compose down -v
+
+
+Para levantar apenas o servidor de bancos de dados::
+
+    docker compose up db -d
+
+

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. Imagens e Containers &mdash; Proxmox</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="_static/containers.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://gqueiroz.github.io/proxmox/imagens-containers.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="4. Múltiplos Contêiners" href="multiplos-containers.html" />
+    <link rel="prev" title="2. Instalação Docker" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Containers
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introdução ao Docker</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tópicos:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introducao.html">1. Introdução</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">2. Instalação Docker</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Imagens e Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#baixando-a-imagem-docker-do-nginx">3.1. Baixando a Imagem Docker do NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#listando-imagens-disponiveis-no-host">3.2. Listando Imagens Disponíveis no Host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#criando-um-conteiner-a-partir-da-imagem-nginx">3.3. Criando um contêiner a partir da Imagem NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#listando-os-conteineres-existentes">3.4. Listando os Contêineres Existentes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#abrindo-um-terminal-com-o-ambiente-do-conteiner">3.5. Abrindo um Terminal com o ambiente do Contêiner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#copiando-arquivos-entre-host-e-o-conteiner">3.6. Copiando Arquivos entre Host e o Contêiner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gerenciamento-do-conteiner">3.7. Gerenciamento do Contêiner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#expondo-portas-do-conteiner">3.8. Expondo Portas do Contêiner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#montando-um-diretorio-do-host-no-conteiner">3.9. Montando um Diretório do Host no Contêiner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#volumes-nomeados">3.10. Volumes Nomeados</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multiplos-containers.html">4. Múltiplos Contêiners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py.html">5. Aplicação Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rootless.html">6. Modo Rootless</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consideracoes.html">7. Considerações Finais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="terminologia.html">8. Terminologia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Containers</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3. </span>Imagens e Containers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="install.html" class="btn btn-neutral float-left" title="2. Instalação Docker" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="multiplos-containers.html" class="btn btn-neutral float-right" title="4. Múltiplos Contêiners" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="imagens-e-containers">
+<span id="cap-docker-pull"></span><h1><span class="section-number">3. </span>Imagens e Containers<a class="headerlink" href="#imagens-e-containers" title="Link permanente para este cabeçalho"></a></h1>
+<section id="baixando-a-imagem-docker-do-nginx">
+<h2><span class="section-number">3.1. </span>Baixando a Imagem Docker do NGINX<a class="headerlink" href="#baixando-a-imagem-docker-do-nginx" title="Link permanente para este cabeçalho"></a></h2>
+<p>O NGINX é um <em>proxy</em> reverso baseado em código aberto bastante utilizado para aplicações baseadas nos protocolos HTTP e HTTPS. A imagem Docker oficial desse sistema pode ser encontrada no <a class="reference external" href="https://hub.docker.com/_/nginx">Docker Hub</a>. Existem dois tipos de imagens base disponíveis, uma baseada no Alpine Linux e outra no Debian. Vamos baixar a imagem baseada na distribuição Linux <em>Debian</em> versão <em>bookworm</em>. Para isso usaremos o comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span></code>, como mostrado abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">nginx</span><span class="p">:</span><span class="mf">1.25.1</span><span class="o">-</span><span class="n">bookworm</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1.25.1-bookworm: Pulling from library/nginx
+648e0aadf75a: Pull complete
+262696647b70: Pull complete
+e66d0270d23f: Pull complete
+55ac49bd649c: Pull complete
+cbf42f5a00d2: Pull complete
+8015f365966b: Pull complete
+4cadff8bc2aa: Pull complete
+Digest: sha256:67f9a4f10d147a6e04629340e6493c9703300ca23a2f7f3aa56fe615d75d31ca
+Status: Downloaded newer image for nginx:1.25.1-bookworm
+docker.io/library/nginx:1.25.1-bookworm
+</pre></div>
+</div>
+<p>O comando acima irá realizar o download da imagem do NGINX versão 1.25.1, com base na distribuição Debian bookworm. Caso tivessemos omitido a versão do NGINX e a distribuição Linux, o comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span></code> iria utilizar a <strong>tag</strong> especial chamada <code class="docutils literal notranslate"><span class="pre">:latest</span></code>, como mostrado abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">nginx</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Using default tag: latest
+latest: Pulling from library/nginx
+Digest: sha256:67f9a4f10d147a6e04629340e6493c9703300ca23a2f7f3aa56fe615d75d31ca
+Status: Downloaded newer image for nginx:latest
+docker.io/library/nginx:latest
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Repare na saída do exemplo acima que a <em>tag</em> <code class="docutils literal notranslate"><span class="pre">:latest</span></code> equivale a versão <code class="docutils literal notranslate"><span class="pre">:1.25.1-bookworm</span></code>.</p>
+</div>
+<p>A sintaxe do comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span></code> é a seguinte:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Para mais detalhes desse comando, consulte a seção <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/pull/">docker pull</a> no documento <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/cli/">Command-line interfaces</a>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>O NGINX é pronunciado como <strong>engine-x</strong>.</p>
+</div>
+</section>
+<section id="listando-imagens-disponiveis-no-host">
+<h2><span class="section-number">3.2. </span>Listando Imagens Disponíveis no Host<a class="headerlink" href="#listando-imagens-disponiveis-no-host" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para listar as imagens existentes no seu sistema, utilize o comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>, como mostrado a seguir:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>REPOSITORY       TAG                   IMAGE ID       CREATED         SIZE
+nginx            1.25.1-bookworm       89da1fb6dcb9   12 days ago     187MB
+</pre></div>
+</div>
+<p>As colunas na saída acima possuem o seguinte significado:</p>
+<ul class="open">
+<li><p>A coluna <code class="docutils literal notranslate"><span class="pre">REPOSITORY</span></code> indica o repositório de origem da imagem. Em geral, os nomes de repositório incluem um prefixo com o endereço da fonte das imagens e alguma organização lógica. Na saída acima, o Docker irá presumir que trata-se de uma imagem do Docker Hub. A imagem do <strong>cAdvisor</strong>, por exemplo, pode ser encontrada no <strong>registry</strong> <code class="docutils literal notranslate"><span class="pre">gcr.io</span></code> sob a organização <code class="docutils literal notranslate"><span class="pre">cadvisor</span></code>.</p>
+<blockquote>
+<div><p>Logo, para baixarmos a imagem contendo o cAdvisor, devemos fazer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">gcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cadvisor</span><span class="o">/</span><span class="n">cadvisor</span><span class="p">:</span><span class="n">latest</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">latest</span><span class="p">:</span> <span class="n">Pulling</span> <span class="kn">from</span> <span class="nn">cadvisor</span><span class="o">/</span><span class="n">cadvisor</span>
+<span class="mi">188</span><span class="n">c0c94c7c5</span><span class="p">:</span> <span class="n">Pull</span> <span class="n">complete</span>
+<span class="mi">2</span><span class="n">d4828968d6c</span><span class="p">:</span> <span class="n">Pull</span> <span class="n">complete</span>
+<span class="n">b28a9b13dc6d</span><span class="p">:</span> <span class="n">Pull</span> <span class="n">complete</span>
+<span class="mf">031224e6222</span><span class="n">c</span><span class="p">:</span> <span class="n">Pull</span> <span class="n">complete</span>
+<span class="n">Digest</span><span class="p">:</span> <span class="n">sha256</span><span class="p">:</span><span class="n">ddadf3e2fd880deb4e0f3606d34a0d9da1165e3801116075d98a1901635dc9e8</span>
+<span class="n">Status</span><span class="p">:</span> <span class="n">Downloaded</span> <span class="n">newer</span> <span class="n">image</span> <span class="k">for</span> <span class="n">gcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cadvisor</span><span class="o">/</span><span class="n">cadvisor</span><span class="p">:</span><span class="n">latest</span>
+<span class="n">gcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cadvisor</span><span class="o">/</span><span class="n">cadvisor</span><span class="p">:</span><span class="n">latest</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>A coluna <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> indica o espaço total da imagem, isto é, este valor inclui o tamanho de imagens usadas como base (<em>parent images</em>).</p></li>
+</ul>
+<p>A sintaxe geral do comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code> é a seguinte:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>docker images [OPTIONS] [REPOSITORY[:TAG]]
+</pre></div>
+</div>
+<p>Repare na sitaxe que podemos listar as imagens de um mesmo repositório, como por exemplo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">images</span> <span class="n">nginx</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>REPOSITORY   TAG               IMAGE ID       CREATED         SIZE
+nginx        1.25.1-bookworm   89da1fb6dcb9   12 days ago     187MB
+nginx        latest            89da1fb6dcb9   12 days ago     187MB
+nginx        1.21.3            f8f4ffc8092c   22 months ago   133MB
+nginx        1.18              c2c45d506085   2 years ago     133MB
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Para mais detalhes desse comando, consulte a seção <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/images/">docker images</a> no documento <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/cli/">Command-line interfaces</a>.</p>
+</div>
+</section>
+<section id="criando-um-conteiner-a-partir-da-imagem-nginx">
+<h2><span class="section-number">3.3. </span>Criando um contêiner a partir da Imagem NGINX<a class="headerlink" href="#criando-um-conteiner-a-partir-da-imagem-nginx" title="Link permanente para este cabeçalho"></a></h2>
+<p>Vamos lançar um contêiner a partir da imagem <code class="docutils literal notranslate"><span class="pre">nginx:1.25.1-bookworm</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">detach</span> <span class="o">--</span><span class="n">name</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span> <span class="n">nginx</span><span class="p">:</span><span class="mf">1.25.1</span><span class="o">-</span><span class="n">bookworm</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>3fcdbc08044bac3ebde1131316ff8238429e880411f1610dc185199a3087dc8d
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Para mais detalhes desse comando, consulte a seção <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/run/">docker run</a> no documento <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/cli/">Command-line interfaces</a>.</p>
+</div>
+</section>
+<section id="listando-os-conteineres-existentes">
+<h2><span class="section-number">3.4. </span>Listando os Contêineres Existentes<a class="headerlink" href="#listando-os-conteineres-existentes" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para obter uma listagem dos contêineres em execução podemos utilizar o comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code> (sem opções):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">ps</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONTAINER ID   IMAGE                    COMMAND                  CREATED          STATUS          PORTS     NAMES
+3fcdbc08044b   nginx:1.25.1-bookworm    &quot;/docker-entrypoint.…&quot;   34 seconds ago   Up 29 seconds   80/tcp    my-nginx
+</pre></div>
+</div>
+</section>
+<section id="abrindo-um-terminal-com-o-ambiente-do-conteiner">
+<h2><span class="section-number">3.5. </span>Abrindo um Terminal com o ambiente do Contêiner<a class="headerlink" href="#abrindo-um-terminal-com-o-ambiente-do-conteiner" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para abrir um terminal no ambiente do contêiner <code class="docutils literal notranslate"><span class="pre">my-nginx</span></code>, podemos utillizar o comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span> <span class="n">bash</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>root@3fcdbc08044b:/#
+</pre></div>
+</div>
+<p>No ambiente do contêiner, vamos instalar dois pacotes, o primeiro, <code class="docutils literal notranslate"><span class="pre">iproute2</span></code> nos permitirá usar o comando <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">a</span></code> e o pacote <code class="docutils literal notranslate"><span class="pre">procps</span></code>, o comando <code class="docutils literal notranslate"><span class="pre">ps</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">update</span>
+
+<span class="n">apt</span> <span class="n">install</span> <span class="n">iproute2</span> <span class="n">procps</span>
+</pre></div>
+</div>
+<p>Repare que o contêiner consegue acessar a Web através de uma rede <em>bridge</em> criada com o sistema do <em>host</em>. Para ver os detalhes de rede do contêiner, faça:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+
+25: eth0@if26: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.17.0.3/16 brd 172.17.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+</pre></div>
+</div>
+<p>O NGINX encontra-se em execução no ambiente do contêiner, sendo o processo principal executado como <code class="docutils literal notranslate"><span class="pre">root</span></code> e os processos que aguardam por conexão de clientes, usando um usuário de UID e GID 101 (<code class="docutils literal notranslate"><span class="pre">nginx</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">-</span><span class="n">ef</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 03:28 ?        00:00:00 nginx: master process nginx -g daemon off;
+nginx         29       1  0 03:29 ?        00:00:00 nginx: worker process
+nginx         30       1  0 03:29 ?        00:00:00 nginx: worker process
+nginx         31       1  0 03:29 ?        00:00:00 nginx: worker process
+nginx         32       1  0 03:29 ?        00:00:00 nginx: worker process
+nginx         33       1  0 03:29 ?        00:00:00 nginx: worker process
+nginx         34       1  0 03:29 ?        00:00:00 nginx: worker process
+nginx         35       1  0 03:29 ?        00:00:00 nginx: worker process
+nginx         36       1  0 03:29 ?        00:00:00 nginx: worker process
+root          37       0  0 03:45 pts/0    00:00:00 bash
+root         368      37  0 03:46 pts/0    00:00:00 ps -ef
+</pre></div>
+</div>
+<p>Veja também o endereço e porta usados pelo NGINX:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">-</span><span class="n">tulpn</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Netid      State       Recv-Q      Send-Q             Local Address:Port             Peer Address:Port      Process
+tcp        LISTEN      0           511                      0.0.0.0:80                    0.0.0.0:*          users:((&quot;nginx&quot;,pid=1,fd=6))
+tcp        LISTEN      0           511                         [::]:80                       [::]:*          users:((&quot;nginx&quot;,pid=1,fd=7))
+</pre></div>
+</div>
+<p>De dentro do contêiner, podemos acessar a página do NGINX:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Welcome to nginx!<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="nt">html</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">color-scheme</span><span class="p">:</span><span class="w"> </span><span class="n">light</span><span class="w"> </span><span class="n">dark</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">body</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">35</span><span class="kt">em</span><span class="p">;</span><span class="w"> </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span>
+<span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="n">Tahoma</span><span class="p">,</span><span class="w"> </span><span class="n">Verdana</span><span class="p">,</span><span class="w"> </span><span class="n">Arial</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Welcome to nginx!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>For online documentation and support please refer to
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;http://nginx.org/&quot;</span><span class="p">&gt;</span>nginx.org<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>.<span class="p">&lt;</span><span class="nt">br</span><span class="p">/&gt;</span>
+Commercial support is available at
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;http://nginx.com/&quot;</span><span class="p">&gt;</span>nginx.com<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">em</span><span class="p">&gt;</span>Thank you for using nginx.<span class="p">&lt;/</span><span class="nt">em</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="copiando-arquivos-entre-host-e-o-conteiner">
+<h2><span class="section-number">3.6. </span>Copiando Arquivos entre Host e o Contêiner<a class="headerlink" href="#copiando-arquivos-entre-host-e-o-conteiner" title="Link permanente para este cabeçalho"></a></h2>
+<p>Vamos copiar o arquivo de configuração do NGINX (<code class="docutils literal notranslate"><span class="pre">nginx.conf</span></code>) localizado no diretório <code class="docutils literal notranslate"><span class="pre">/etc/nginx</span></code> do contêiner para o diretório <code class="docutils literal notranslate"><span class="pre">/tmp</span></code> do <em>host</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">cp</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">nginx</span><span class="o">.</span><span class="n">conf</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">nginx</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>O arquivo <code class="docutils literal notranslate"><span class="pre">/tmp/nginx.conf</span></code> possui o seguinte conteúdo:</p>
+<div class="highlight-linux-config notranslate"><div class="highlight"><pre><span></span>user<span class="w">  </span>nginx;
+worker_processes<span class="w">  </span>auto;
+
+error_log<span class="w">  </span>/var/log/nginx/error.log<span class="w"> </span>notice;
+pid<span class="w">        </span>/var/run/nginx.pid;
+
+
+events<span class="w"> </span>{
+<span class="w">    </span>worker_connections<span class="w">  </span><span class="mi">1024</span>;
+}
+
+
+http<span class="w"> </span>{
+<span class="w">    </span>include<span class="w">       </span>/etc/nginx/mime.types;
+<span class="w">    </span>default_type<span class="w">  </span>application/octet-stream;
+
+<span class="w">    </span>log_format<span class="w">  </span>main<span class="w">  </span><span class="s1">&#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span>
+<span class="w">                      </span><span class="s1">&#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span>
+<span class="w">                      </span><span class="s1">&#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;</span>;
+
+<span class="w">    </span>access_log<span class="w">  </span>/var/log/nginx/access.log<span class="w">  </span>main;
+
+<span class="w">    </span>sendfile<span class="w">        </span>on;
+<span class="w">    </span><span class="c1">#tcp_nopush     on;</span>
+
+<span class="w">    </span>keepalive_timeout<span class="w">  </span><span class="mi">65</span>;
+
+<span class="w">    </span><span class="c1">#gzip  on;</span>
+
+<span class="w">    </span>include<span class="w"> </span>/etc/nginx/conf.d/*.conf;
+}
+</pre></div>
+</div>
+<p>Vamos alterar a linha <code class="docutils literal notranslate"><span class="pre">worker_processes</span>&#160; <span class="pre">auto;</span></code> para <code class="docutils literal notranslate"><span class="pre">worker_processes</span>&#160; <span class="pre">2;</span></code> e, em seguida, copiar o arquivo de volta para o contêiner:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">cp</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">nginx</span><span class="o">.</span><span class="n">conf</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">nginx</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>Se reinicializarmos o contêiner, poderemos ver o novo número de processos aguardando por conexões do usuário:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">restart</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span>
+
+<span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span> <span class="n">bash</span>
+
+<span class="n">ps</span> <span class="o">-</span><span class="n">ef</span>
+</pre></div>
+</div>
+</section>
+<section id="gerenciamento-do-conteiner">
+<h2><span class="section-number">3.7. </span>Gerenciamento do Contêiner<a class="headerlink" href="#gerenciamento-do-conteiner" title="Link permanente para este cabeçalho"></a></h2>
+<p>Para interromper a execução de um contêiner, utilizamos o comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">stop</span></code> informando <strong>o nome</strong> ou <strong>ID</strong> do container:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">stop</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span>
+</pre></div>
+</div>
+<p>Um contêiner que não encontra-se em execução pode ser removido com o comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rm</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">rm</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span>
+</pre></div>
+</div>
+</section>
+<section id="expondo-portas-do-conteiner">
+<h2><span class="section-number">3.8. </span>Expondo Portas do Contêiner<a class="headerlink" href="#expondo-portas-do-conteiner" title="Link permanente para este cabeçalho"></a></h2>
+<p>Vamos criar um novo contêiner do NGINX mas dessa vez expondo a porta 80 do contêiner através da porta 8080 do <em>host</em>, usando apenas a interface local:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">detach</span> \
+           <span class="o">--</span><span class="n">name</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span> \
+           <span class="o">--</span><span class="n">publish</span> <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span><span class="p">:</span><span class="mi">80</span> \
+           <span class="n">nginx</span><span class="p">:</span><span class="mf">1.25.1</span><span class="o">-</span><span class="n">bookworm</span>
+</pre></div>
+</div>
+<p>Agora, no terminal do <em>host</em>, faça:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span>
+</pre></div>
+</div>
+<p>Para expor a porta do processo do NGINX no contêiner a uma interface específica no <em>host</em>, faça:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">detach</span> \
+           <span class="o">--</span><span class="n">name</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span> \
+           <span class="o">--</span><span class="n">publish</span> <span class="o">&lt;</span><span class="n">IP</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">8080</span><span class="p">:</span><span class="mi">80</span> \
+           <span class="n">nginx</span><span class="p">:</span><span class="mf">1.25.1</span><span class="o">-</span><span class="n">bookworm</span>
+</pre></div>
+</div>
+<p>Dessa forma, o NGINX poderá ser acessado por outros <em>hosts</em> da rede através do endereço IP associado:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">IP</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">8080</span>
+</pre></div>
+</div>
+</section>
+<section id="montando-um-diretorio-do-host-no-conteiner">
+<h2><span class="section-number">3.9. </span>Montando um Diretório do Host no Contêiner<a class="headerlink" href="#montando-um-diretorio-do-host-no-conteiner" title="Link permanente para este cabeçalho"></a></h2>
+<figure class="align-default">
+<a class="reference internal image-reference" href="https://docs.docker.com/storage/images/types-of-mounts-bind.png"><img alt="https://docs.docker.com/storage/images/types-of-mounts-bind.png" src="https://docs.docker.com/storage/images/types-of-mounts-bind.png" style="width: 70%;" /></a>
+</figure>
+<p>Baixe o arquivo <a class="reference download internal" download="" href="_downloads/d87992af99be4aba18c89d04629b3d1a/html.tar.gz"><code class="xref download docutils literal notranslate"><span class="pre">html.tar.gz</span></code></a>, que contém uma página HTML e descompate no diretório corrente:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">xzvf</span> <span class="n">html</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>Em seguida, vamos fazer com que a pasta <code class="docutils literal notranslate"><span class="pre">html</span></code> seja montada como leitura em um novo contêiner NGINX sob o diretório <code class="docutils literal notranslate"><span class="pre">/usr/share/nginx/html</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run --detach \
+           --name my-nginx \
+           --publish &lt;IP&gt;:8080:80 \
+           --volume $(pwd)/html:/usr/share/nginx/html:ro \
+           nginx:1.25.1-bookworm
+</pre></div>
+</div>
+<p>Verifique a montagem realizada com:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">inspect</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;Mounts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bind&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/home/gribeiro/Temp/NGINX/html&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Destination&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/usr/share/nginx/html&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ro&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;RW&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Propagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;rprivate&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Abra a página no seu navegador, por exemplo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">firefox</span> <span class="n">http</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">IP</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">8080</span>
+</pre></div>
+</div>
+<p>Vamos verificar se de fato a pasta foi montada dentro do contêiner apenas com permisão de leitura:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span> <span class="n">bash</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">html</span>
+
+<span class="n">touch</span> <span class="n">teste</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Esta forma de montagem de diretório é conhecida como <a class="reference external" href="https://docs.docker.com/storage/bind-mounts/">bind mount</a>. Na opção <code class="docutils literal notranslate"><span class="pre">--volume</span></code>, o diretório do <em>host</em> deve ser informado com o caminho absoluto e caso esse diretório não exista, um novo diretório é automaticamente criado. Já a opção <code class="docutils literal notranslate"><span class="pre">--mount</span></code>, que também pode ser usada para este tipo de montagem de diretórios, produz um erro caso o diretório não exista.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>O que acontece quando montamos um diretório do <em>host</em> sobre um diretório existente do contêiner?</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Ao final, lembre-se de desligar o contêiner e removê-lo para seguirmos para as próximas atividades:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">stop</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span>
+
+<span class="n">docker</span> <span class="n">rm</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="volumes-nomeados">
+<h2><span class="section-number">3.10. </span>Volumes Nomeados<a class="headerlink" href="#volumes-nomeados" title="Link permanente para este cabeçalho"></a></h2>
+<figure class="align-default">
+<a class="reference internal image-reference" href="https://docs.docker.com/storage/images/types-of-mounts-volume.png"><img alt="https://docs.docker.com/storage/images/types-of-mounts-volume.png" src="https://docs.docker.com/storage/images/types-of-mounts-volume.png" style="width: 70%;" /></a>
+</figure>
+<p>Volumes nomeados são completamente gerenciados pelo próprio Docker.</p>
+<p>Vamos retomar o exemplo com o NGINX:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">detach</span> \
+           <span class="o">--</span><span class="n">name</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span> \
+           <span class="o">--</span><span class="n">publish</span> <span class="o">&lt;</span><span class="n">IP</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">8080</span><span class="p">:</span><span class="mi">80</span> \
+           <span class="o">--</span><span class="n">mount</span> <span class="s1">&#39;type=volume,src=nginx-data,dst=/usr/share/nginx/html,ro&#39;</span> \
+           <span class="n">nginx</span><span class="p">:</span><span class="mf">1.25.1</span><span class="o">-</span><span class="n">bookworm</span>
+</pre></div>
+</div>
+<p>Veja que um novo volume chamado <code class="docutils literal notranslate"><span class="pre">nginx-data</span></code> é criado:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">volume</span> <span class="n">ls</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DRIVER    VOLUME NAME
+local     nginx-data
+</pre></div>
+</div>
+<p>Verifique a montagem realizada com:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">inspect</span> <span class="n">my</span><span class="o">-</span><span class="n">nginx</span>
+</pre></div>
+</div>
+<p>Saída:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;Mounts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;volume&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nginx-data&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/var/lib/docker/volumes/nginx-data/_data&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Destination&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/usr/share/nginx/html&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Driver&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;z&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;RW&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;Propagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Veja a documentação sobre <a class="reference external" href="https://docs.docker.com/storage/volumes/">Volumes</a>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Veja também sobre a possibilidade de montagem de áreas de escrita temporárias, chamadas de <a class="reference external" href="https://docs.docker.com/storage/tmpfs/">tmpfs mounts</a>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="install.html" class="btn btn-neutral float-left" title="2. Instalação Docker" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="multiplos-containers.html" class="btn btn-neutral float-right" title="4. Múltiplos Contêiners" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2023, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f23ed6471f0>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" width="117" height="41"/></a> Este obra está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

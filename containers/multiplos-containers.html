@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4. Múltiplos Contêiners &mdash; Proxmox</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="_static/containers.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://gqueiroz.github.io/proxmox/multiplos-containers.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="5. Aplicação Python" href="py.html" />
+    <link rel="prev" title="3. Imagens e Containers" href="imagens-containers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F0F8FF" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Containers
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introdução ao Docker</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tópicos:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introducao.html">1. Introdução</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">2. Instalação Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagens-containers.html">3. Imagens e Containers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Múltiplos Contêiners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#conteiner-docker-do-postgresql">4.1. Contêiner Docker do PostgreSQL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#verificando-a-versao-do-postgresql">4.1.1. Verificando a Versão do PostgreSQL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#verificando-a-versao-do-postgis">4.1.2. Verificando a Versão do PostGIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compartilhando-um-diretorio-do-host-com-o-conteiner">4.1.3. Compartilhando um Diretório do <em>Host</em> com o Contêiner</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conteiner-docker-do-pgadmin-4">4.2. Contêiner Docker do pgAdmin 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conectando-os-conteineres-do-postgresql-e-pgadmin-atraves-de-uma-rede">4.3. Conectando os Contêineres do PostgreSQL e pgAdmin através de uma rede</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-compose">4.4. Docker Compose</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="py.html">5. Aplicação Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rootless.html">6. Modo Rootless</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consideracoes.html">7. Considerações Finais</a></li>
+<li class="toctree-l1"><a class="reference internal" href="terminologia.html">8. Terminologia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Referências Bibliográficas</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="referencias.html">Referências Bibliográficas</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Informações Gerais:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="licenca.html">Licença</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Agradecimentos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="agradecimentos.html">Agradecimentos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel"  style="background: #F0F8FF" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Containers</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4. </span>Múltiplos Contêiners</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Navegação sequencial da página">
+        <a href="imagens-containers.html" class="btn btn-neutral float-left" title="3. Imagens e Containers" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="py.html" class="btn btn-neutral float-right" title="5. Aplicação Python" accesskey="n">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="multiplos-conteiners">
+<span id="cap-multiplos-containers"></span><h1><span class="section-number">4. </span>Múltiplos Contêiners<a class="headerlink" href="#multiplos-conteiners" title="Link permanente para este cabeçalho"></a></h1>
+<p>Nesta seção nosso objetivo consiste em criar dois contêiners, um baseado na imagem do PostgreSQL e outro na imagem do pgAdmin 4.</p>
+<a class="reference internal image-reference" href="_images/logo-pg.svg"><img alt="PostgreSQL" class="align-right" src="_images/logo-pg.svg" width="48" /></a>
+<p>O <a class="reference external" href="http://www.postgresql.org">PostgreSQL</a> é um sistema gerenciador de banco de dados objeto-relacional, gratuito e de código fonte aberto, desenvolvido a partir do projeto <code class="docutils literal notranslate"><span class="pre">POSTGRES</span></code>, iniciado em 1986, na Universidade da Califórnia em Berkeley, sob a liderança do professor <a class="reference external" href="https://en.wikipedia.org/wiki/Michael_Stonebraker">Michael Stonebraker</a>. O código fonte do núcleo do PostgreSQL encontra-se escrito na Linguagem de Programação C. Isso garante a ele grande portabilidade, estando disponível para as principais plataformas de hardware e sistemas operacionais, entre eles, Linux, macOS e Microsoft Windows.</p>
+<p>O <a class="reference external" href="https://www.pgadmin.org/">pgAdmin</a> é uma aplicação cliente que fornece uma interface gráfica com o usuário para facilitar tanto a administração básica de bancos de dados PostgreSQL quanto a realização de consultas usando a linguagem SQL.</p>
+<figure class="align-center align-default" id="fig-pg-admin-main-page">
+<a class="reference internal image-reference" href="_images/pg-admin-main-page.png"><img alt="Janela principal do pgAdmin" src="_images/pg-admin-main-page.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.1 - </span><span class="caption-text">Janela principal do pgAdmin</span><a class="headerlink" href="#fig-pg-admin-main-page" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<p>Nosso objetivo será acessar a aplicação do pgAdmin (<a class="reference internal" href="#fig-pg-admin-main-page"><span class="std std-numref">Figura 4.1</span></a>) pelo navegador no endereço IP do <em>host</em> Linux e porta <code class="docutils literal notranslate"><span class="pre">8080</span></code>. O pgAdmin deverá conseguir acessar o servidor PostgreSQL através de uma rede conectando apenas esses dois contêineres.</p>
+<section id="conteiner-docker-do-postgresql">
+<h2><span class="section-number">4.1. </span>Contêiner Docker do PostgreSQL<a class="headerlink" href="#conteiner-docker-do-postgresql" title="Link permanente para este cabeçalho"></a></h2>
+<p>Vamos utilizar a <a class="reference external" href="https://registry.hub.docker.com/r/postgis/postgis">imagem Docker</a> disponível para o PostgreSQL e PostGIS. O comando abaixo irá realizar o download da imagem contendo a instalação do PostgreSQL 14.7 e o PostGIS 3.3.2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">postgis</span><span class="o">/</span><span class="n">postgis</span><span class="p">:</span><span class="mi">14</span><span class="o">-</span><span class="mf">3.3</span>
+</pre></div>
+</div>
+<p>Após baixar a imagem Docker, crie um contêiner através do seguinte comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">detach</span> \
+           <span class="o">--</span><span class="n">name</span> <span class="n">my</span><span class="o">-</span><span class="n">pg3</span> \
+           <span class="o">--</span><span class="n">env</span> <span class="s2">&quot;POSTGRES_PASSWORD=secreto&quot;</span> \
+           <span class="n">postgis</span><span class="o">/</span><span class="n">postgis</span><span class="p">:</span><span class="mi">14</span><span class="o">-</span><span class="mf">3.3</span>
+</pre></div>
+</div>
+<p>O comando acima irá criar um contêiner chamado <code class="docutils literal notranslate"><span class="pre">my-pg</span></code> sem expor portas usadas pelos processos do contêiner. Além disso, o usuário padrão <code class="docutils literal notranslate"><span class="pre">postgres</span></code> será definido com a senha representada pelo texto <code class="docutils literal notranslate"><span class="pre">secreto</span></code>.</p>
+<p>Verifique se o contêiner com o servidor PostgreSQL encontra-se em execução. Para isso, utilize o seguinte comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">ps</span>
+</pre></div>
+</div>
+<p>Uma saída como a mostrada abaixo deverá ser apresentada:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONTAINER ID   IMAGE                    COMMAND                  CREATED              STATUS              PORTS       NAMES
+6c4cd445ad46   postgis/postgis:14-3.3   &quot;docker-entrypoint.s…&quot;   About a minute ago   Up About a minute   5432/tcp    my-pg
+</pre></div>
+</div>
+<section id="verificando-a-versao-do-postgresql">
+<h3><span class="section-number">4.1.1. </span>Verificando a Versão do PostgreSQL<a class="headerlink" href="#verificando-a-versao-do-postgresql" title="Link permanente para este cabeçalho"></a></h3>
+<p>Se o contêiner <code class="docutils literal notranslate"><span class="pre">my-pg</span></code> estiver em execução, verifique a versão do PostgreSQL contida nele através do seguite comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span> <span class="n">psql</span> <span class="o">-</span><span class="n">U</span> <span class="n">postgres</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;SELECT version();&quot;</span>
+</pre></div>
+</div>
+<p>Esse comando deverá produzir uma saída semelhante à apresentada abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                                                           <span class="n">version</span>
+<span class="o">-----------------------------------------------------------------------------------------------------------------------------</span>
+ <span class="n">PostgreSQL</span> <span class="mf">14.7</span> <span class="p">(</span><span class="n">Debian</span> <span class="mf">14.7</span><span class="o">-</span><span class="mf">1.</span><span class="n">pgdg110</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="n">on</span> <span class="n">x86_64</span><span class="o">-</span><span class="n">pc</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="p">,</span> <span class="n">compiled</span> <span class="n">by</span> <span class="n">gcc</span> <span class="p">(</span><span class="n">Debian</span> <span class="mf">10.2.1</span><span class="o">-</span><span class="mi">6</span><span class="p">)</span> <span class="mf">10.2.1</span> <span class="mi">20210110</span><span class="p">,</span> <span class="mi">64</span><span class="o">-</span><span class="n">bit</span>
+<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="verificando-a-versao-do-postgis">
+<h3><span class="section-number">4.1.2. </span>Verificando a Versão do PostGIS<a class="headerlink" href="#verificando-a-versao-do-postgis" title="Link permanente para este cabeçalho"></a></h3>
+<p>Para verificar a versão do PostGIS, utilize o comando abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span> <span class="n">psql</span> <span class="o">-</span><span class="n">U</span> <span class="n">postgres</span> \
+                       <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;SELECT name, default_version FROM pg_available_extensions WHERE name = &#39;postgis&#39;;&quot;</span>
+</pre></div>
+</div>
+<p>Esse comando deverá produzir uma saída semelhante à apresentada abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">name</span>   <span class="o">|</span> <span class="n">default_version</span>
+<span class="o">---------+-----------------</span>
+ <span class="n">postgis</span> <span class="o">|</span> <span class="mf">3.3.2</span>
+<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="compartilhando-um-diretorio-do-host-com-o-conteiner">
+<h3><span class="section-number">4.1.3. </span>Compartilhando um Diretório do <em>Host</em> com o Contêiner<a class="headerlink" href="#compartilhando-um-diretorio-do-host-com-o-conteiner" title="Link permanente para este cabeçalho"></a></h3>
+<p>Vamos interromper o contêiner do POstgreSQL e remove-lo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">stop</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span>
+
+<span class="n">docker</span> <span class="n">rm</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span>
+</pre></div>
+</div>
+<p>Para criar um contêiner com um diretório do <em>host</em> compartilhado, use a opção <code class="docutils literal notranslate"><span class="pre">--volume</span></code> como mostrado abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mkdir -p $HOME/my-data/db/pg-data
+mkdir -p $HOME/my-data/db/shared-data
+
+docker run --detach \
+           --name my-pg \
+           --env &quot;POSTGRES_PASSWORD=secreto&quot; \
+           --volume $HOME/my-data/db/pg-data:/var/lib/postgresql/data \
+           --volume $HOME/my-data/db/shared-data:/shared-data \
+           postgis/postgis:14-3.3
+</pre></div>
+</div>
+<p>Repare que o servidor PostgreSQL ao inicializar o diretório de dados localizado no contêiner em <code class="docutils literal notranslate"><span class="pre">/var/lib/postgresql/data</span></code> na realidade está escrevendo no diretório <code class="docutils literal notranslate"><span class="pre">$HOME/my-data/db/pg-data</span></code> do <em>host</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo ls $HOME/my-data/db/pg-data
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Nesta seção, utilizamos uma imagem do PostgreSQL com PostGIS baseada na distribuição Linux Debian GNU/Linux 11 (bullseye).</p>
+</div>
+</section>
+</section>
+<section id="conteiner-docker-do-pgadmin-4">
+<h2><span class="section-number">4.2. </span>Contêiner Docker do pgAdmin 4<a class="headerlink" href="#conteiner-docker-do-pgadmin-4" title="Link permanente para este cabeçalho"></a></h2>
+<p>Vamos utilizar a <a class="reference external" href="https://hub.docker.com/r/dpage/pgadmin4">imagem Docker</a> disponível para o pgAdmin4 Versão 6.8:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">dpage</span><span class="o">/</span><span class="n">pgadmin4</span><span class="p">:</span><span class="mf">6.14</span>
+</pre></div>
+</div>
+<p>Após baixar a imagem Docker, crie um contêiner através do seguinte comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">detach</span> \
+           <span class="o">--</span><span class="n">name</span> <span class="n">my</span><span class="o">-</span><span class="n">pgadmin</span> \
+           <span class="o">--</span><span class="n">publish</span> <span class="o">&lt;</span><span class="n">IP</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">8080</span><span class="p">:</span><span class="mi">80</span> \
+           <span class="o">--</span><span class="n">env</span> <span class="s2">&quot;PGADMIN_DEFAULT_EMAIL=pessoa@domain.org&quot;</span> \
+           <span class="o">--</span><span class="n">env</span> <span class="s2">&quot;PGADMIN_DEFAULT_PASSWORD=b3mv1nd@&quot;</span> \
+           <span class="n">dpage</span><span class="o">/</span><span class="n">pgadmin4</span><span class="p">:</span><span class="mf">6.14</span>
+</pre></div>
+</div>
+<p>O comando acima irá criar um contêiner chamado <code class="docutils literal notranslate"><span class="pre">my-pgadmin</span></code>, ligando a porta 8080 do <em>host</em> com a porta 80 do contêiner. Nesse comando, substitua o valor associado à variável <code class="docutils literal notranslate"><span class="pre">PGADMIN_DEFAULT_EMAIL</span></code> com o seu e-mail, pois este será o nome de usuário necessário ao login na aplicação web do pgAdmin4. A senha padrão desse usuário será definida pelo valor associado à variável <code class="docutils literal notranslate"><span class="pre">PGADMIN_DEFAULT_PASSWORD</span></code> (<code class="docutils literal notranslate"><span class="pre">b3mv1nd&#64;</span></code>).</p>
+<p>Verifique se o contêiner com o servidor web do pgAdmin4 se encontra em execução. Para isso, utilize o seguinte comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">ls</span>
+</pre></div>
+</div>
+<p>Uma saída como amostrada abaixo deverá ser apresentada:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONTAINER ID   IMAGE                COMMAND            CREATED              STATUS              PORTS                                         NAMES
+7880a7e90df9   dpage/pgadmin4:6.8   &quot;/entrypoint.sh&quot;   About a minute ago   Up About a minute   443/tcp, &lt;IP&gt;:8080-&gt;80/tcp, :::8080-&gt;80/tcp   my-pgadmin
+</pre></div>
+</div>
+<p>Para acessar o pgAdmin, utilize seu navegador, como mostrado abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">firefox</span> <span class="n">http</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">IP</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">8080</span>
+</pre></div>
+</div>
+<p>Uma janela como a da <a class="reference internal" href="#fig-pg-admin-login-page"><span class="std std-numref">Figura 4.2</span></a> deverá ser apresentada no seu navegador.</p>
+<figure class="align-center align-default" id="fig-pg-admin-login-page">
+<a class="reference internal image-reference" href="_images/pg-admin-login-page.png"><img alt="Janela de login do pgAdmin" src="_images/pg-admin-login-page.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 4.2 - </span><span class="caption-text">Janela de <em>login</em> do pgAdmin</span><a class="headerlink" href="#fig-pg-admin-login-page" title="Link Permanente para essa imagem"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Nesta seção, utilizamos uma imagem do pgAdmin baseada na distribuição Alpine Linux v3.15.</p>
+</div>
+</section>
+<section id="conectando-os-conteineres-do-postgresql-e-pgadmin-atraves-de-uma-rede">
+<h2><span class="section-number">4.3. </span>Conectando os Contêineres do PostgreSQL e pgAdmin através de uma rede<a class="headerlink" href="#conectando-os-conteineres-do-postgresql-e-pgadmin-atraves-de-uma-rede" title="Link permanente para este cabeçalho"></a></h2>
+<p>Vamos utilizar o comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">network</span></code> para criar uma rede comum entre os dois contêiners:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>my-pg-network
+</pre></div>
+</div>
+<p>Para associar o contêiner <code class="docutils literal notranslate"><span class="pre">my-pg</span></code> à rede <code class="docutils literal notranslate"><span class="pre">my-pg-network</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>network<span class="w"> </span>connect<span class="w"> </span>my-pg-network<span class="w"> </span>my-pg
+</pre></div>
+</div>
+<p>Para associar o contêiner <code class="docutils literal notranslate"><span class="pre">my-pgadmin</span></code> à rede <code class="docutils literal notranslate"><span class="pre">my-pg-network</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>network<span class="w"> </span>connect<span class="w"> </span>my-pg-network<span class="w"> </span>my-pgadmin
+</pre></div>
+</div>
+<p>Inspecione o contêiner <code class="docutils literal notranslate"><span class="pre">my-pg</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">inspect</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span>
+</pre></div>
+</div>
+<p>Agora, na janela do pgAdmin, registre a instância do servidor PostgreSQL. Use como endereço do servidor o prório nome do contêiner PostgreSQL.</p>
+</section>
+<section id="docker-compose">
+<h2><span class="section-number">4.4. </span>Docker Compose<a class="headerlink" href="#docker-compose" title="Link permanente para este cabeçalho"></a></h2>
+<p>Vamos remover os contêineres criados na seção anterior:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">stop</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span> <span class="n">my</span><span class="o">-</span><span class="n">pgadmin</span>
+
+<span class="n">docker</span> <span class="n">rm</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span> <span class="n">my</span><span class="o">-</span><span class="n">pgadmin</span>
+</pre></div>
+</div>
+<p>Também vamos eliminar a rede <code class="docutils literal notranslate"><span class="pre">my-pg-network</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">network</span> <span class="n">rm</span> <span class="n">my</span><span class="o">-</span><span class="n">pg</span><span class="o">-</span><span class="n">network</span>
+</pre></div>
+</div>
+<p>Em seguida, crie um diretório denominado <code class="docutils literal notranslate"><span class="pre">db-compose</span></code> e inclua os arquivos abaixo:</p>
+<div class="literal-block-wrapper docutils container" id="code-docker-compose">
+<div class="code-block-caption"><span class="caption-number">Trecho de Código 4.1 - </span><span class="caption-text"><a class="reference download internal" download="" href="_downloads/513d91773eb0cb86081b594288b393ce/docker-compose.yml"><code class="xref download docutils literal notranslate"><span class="pre">docker-compose.yml</span></code></a></span><a class="headerlink" href="#code-docker-compose" title="Link Permanente para esse código"></a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3&#39;</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="nt">services</span><span class="p">:</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="nt">dbadmin</span><span class="p">:</span>
+<span class="linenos"> 6</span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dpage/pgadmin4:6.14</span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pgadmin</span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<span class="linenos"> 9</span><span class="w">        </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pgadmin</span>
+<span class="linenos">10</span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="linenos">11</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8080:80&quot;</span>
+<span class="linenos">12</span><span class="w">        </span><span class="nt">networks</span><span class="p">:</span>
+<span class="linenos">13</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_pg_net</span>
+<span class="linenos">14</span><span class="w">        </span><span class="nt">env_file</span><span class="p">:</span>
+<span class="linenos">15</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dbadmin.env</span>
+<span class="linenos">16</span><span class="w">        </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="linenos">17</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">    </span><span class="nt">db</span><span class="p">:</span>
+<span class="linenos">20</span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgis/postgis:14-3.3</span>
+<span class="linenos">21</span><span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pg</span>
+<span class="linenos">22</span><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<span class="linenos">23</span><span class="w">        </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pg</span>
+<span class="linenos">24</span><span class="w">        </span><span class="nt">networks</span><span class="p">:</span>
+<span class="linenos">25</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_pg_net</span>
+<span class="linenos">26</span><span class="w">        </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="linenos">27</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;my_pg_data:/var/lib/postgresql/data&quot;</span>
+<span class="linenos">28</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;${PG_SHARED_DATA_DIR}:/shared-data&quot;</span>
+<span class="linenos">29</span><span class="w">        </span><span class="nt">env_file</span><span class="p">:</span>
+<span class="linenos">30</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db.env</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="nt">networks</span><span class="p">:</span>
+<span class="linenos">33</span><span class="w">  </span><span class="nt">my_pg_net</span><span class="p">:</span>
+<span class="linenos">34</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pg-network</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span><span class="nt">volumes</span><span class="p">:</span>
+<span class="linenos">37</span><span class="w">  </span><span class="nt">my_pg_data</span><span class="p">:</span>
+<span class="linenos">38</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_pg_data</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="code-docker-compose-env-env">
+<div class="code-block-caption"><span class="caption-number">Trecho de Código 4.2 - </span><span class="caption-text"><a class="reference download internal" download="" href="_downloads/5aa082a6c45c82858d6022f70273c97c/.env"><code class="xref download docutils literal notranslate"><span class="pre">.env</span></code></a></span><a class="headerlink" href="#code-docker-compose-env-env" title="Link Permanente para esse código"></a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="l l-Scalar l-Scalar-Plain">PG_SHARED_DATA_DIR=&quot;$HOME/my-data/db/shared-data&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="code-docker-compose-env-dbadmin">
+<div class="code-block-caption"><span class="caption-number">Trecho de Código 4.3 - </span><span class="caption-text"><a class="reference download internal" download="" href="_downloads/d32968436ee7f92585d9da8466e8898f/dbadmin.env"><code class="xref download docutils literal notranslate"><span class="pre">dbadmin.env</span></code></a></span><a class="headerlink" href="#code-docker-compose-env-dbadmin" title="Link Permanente para esse código"></a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="l l-Scalar l-Scalar-Plain">PGADMIN_DEFAULT_EMAIL=&quot;pessoa@domain.org&quot;</span>
+<span class="linenos">2</span><span class="l l-Scalar l-Scalar-Plain">PGADMIN_DEFAULT_PASSWORD=&quot;b3mv1nd@&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="code-docker-compose-env-db">
+<div class="code-block-caption"><span class="caption-number">Trecho de Código 4.4 - </span><span class="caption-text"><a class="reference download internal" download="" href="_downloads/937393546c12d167a22ddb4086a010e6/db.env"><code class="xref download docutils literal notranslate"><span class="pre">db.env</span></code></a></span><a class="headerlink" href="#code-docker-compose-env-db" title="Link Permanente para esse código"></a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_PASSWORD=&quot;secreto&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>Para verificar a configuração final gerada com base no arquivo <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>, faça:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">compose</span> <span class="n">config</span>
+</pre></div>
+</div>
+<p>Para levantar todos os serviços definidos no arquivo <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
+</pre></div>
+</div>
+<p>Verifique o <em>log</em> dos contêineres:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">compose</span> <span class="n">logs</span> <span class="o">-</span><span class="n">f</span>
+</pre></div>
+</div>
+<p>Para interromper todos os contêineres:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">compose</span> <span class="n">stop</span>
+</pre></div>
+</div>
+<p>Para remover todos os contêineres, junto com seus volumes e redes:</p>
+<blockquote>
+<div><p>docker compose down -v</p>
+</div></blockquote>
+<p>Para levantar apenas o servidor de bancos de dados:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="n">db</span> <span class="o">-</span><span class="n">d</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="imagens-containers.html" class="btn btn-neutral float-left" title="3. Imagens e Containers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="py.html" class="btn btn-neutral float-right" title="5. Aplicação Python" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2023, Gilberto Queiroz.</p>
+  </div>
+
+  
+<jinja2.runtime.BlockReference object at 0x7f23ed4a25e0>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" width="117" height="41"/></a> Este obra está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

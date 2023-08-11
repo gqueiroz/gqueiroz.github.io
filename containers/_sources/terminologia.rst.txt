@@ -1,0 +1,20 @@
+..
+    This file is part of Dicas Containers.
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. include:: def.rst
+
+
+.. _cap_terminologia:
+
+Terminologia
+============
+
+
+.. rst-class:: open
+
+- **OCI:** ...
+
+- **UTS:** Unix Time Sharing system
+

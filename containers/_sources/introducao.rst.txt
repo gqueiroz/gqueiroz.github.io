@@ -1,0 +1,47 @@
+
+..
+    This file is part of Dicas Containers.
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. include:: def.rst
+
+
+.. _cap_introducao:
+
+Introdução
+==========
+
+
+Máquinas Virtuais e Contêineres
+-------------------------------
+
+
+.. figure:: https://www.docker.com/wp-content/uploads/2021/11/container-vm-whatcontainer_2.png
+
+
+
+.. figure:: https://www.docker.com/wp-content/uploads/2021/11/docker-containerized-appliction-blue-border_2.png
+
+
+
+Tecnologias para Criação de Contêineres
+---------------------------------------
+
+
+.. figure:: https://www.docker.com/wp-content/uploads/2022/03/horizontal-logo-monochromatic-white.png
+    :width: 50%
+
+
+.. figure:: https://podman.io/assets/images/podman-logo-orig-595af17fb326f4b7cadfa3be142bf810.png#gh-light-mode-only
+    :width: 50%
+
+
+.. figure:: https://blog.sakuragawa.moe/content/images/size/w2000/2021/03/9a2865f528f7b846cda54335dec298dda6109bb3.png
+    :width: 50%
+
+
+
+
+
+

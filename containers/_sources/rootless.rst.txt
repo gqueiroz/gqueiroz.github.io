@@ -1,0 +1,65 @@
+..
+    This file is part of Dicas Containers.
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. include:: def.rst
+
+
+.. _cap_rootless:
+
+Modo Rootless
+=============
+
+
+.. warning::
+
+    Remova todos os contêineres criados assim como as imagens baixadas na seções anteriores.
+
+
+1. Para colocar o Docker no modo *rootless* faça::
+
+    sudo apt install uidmap
+    
+    sudo apt install dbus-user-session
+    
+    sudo systemctl disable --now docker.service docker.socket
+
+
+2. Faça login com o usuário que irá rodar o serviço do Docker.
+
+
+.. warning::
+
+    Faça login e não sudo su.
+
+
+3. Faça as seguintes configurações::
+
+    dockerd-rootless-setuptool.sh install
+
+
+4. Edite o arquivo ``~/.bashrc`` e inclua as linhas abaixo::
+
+    export PATH=/usr/bin:$PATH
+    export XDG_RUNTIME_DIR=/run/user/2001
+    export DOCKER_HOST=unix://${XDG_RUNTIME_DIR}/docker.sock
+
+
+5. Em seguida, ainda na sessão do usuário de menor privilégio, faça::
+
+    systemctl --user start docker
+
+    systemctl --user enable docker
+
+
+6. Logue com o usuário de maior privilégio e faça::
+
+    sudo loginctl enable-linger <nome-usuario-menor-privilegio>
+
+
+7. Reinicie a VM e veja se o Docker continua em execução sob o usuário de menor privilégio.
+
+
+
+

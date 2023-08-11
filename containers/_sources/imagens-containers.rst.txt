@@ -1,0 +1,564 @@
+..
+    This file is part of Dicas Containers.
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. include:: def.rst
+
+
+.. _cap_docker_pull:
+
+Imagens e Containers
+====================
+
+
+Baixando a Imagem Docker do NGINX
+---------------------------------
+
+
+O NGINX é um *proxy* reverso baseado em código aberto bastante utilizado para aplicações baseadas nos protocolos HTTP e HTTPS. A imagem Docker oficial desse sistema pode ser encontrada no `Docker Hub <https://hub.docker.com/_/nginx>`__. Existem dois tipos de imagens base disponíveis, uma baseada no Alpine Linux e outra no Debian. Vamos baixar a imagem baseada na distribuição Linux *Debian* versão *bookworm*. Para isso usaremos o comando ``docker pull``, como mostrado abaixo::
+
+    docker pull nginx:1.25.1-bookworm
+
+
+Saída:
+
+
+.. code-block:: text
+
+    1.25.1-bookworm: Pulling from library/nginx
+    648e0aadf75a: Pull complete 
+    262696647b70: Pull complete 
+    e66d0270d23f: Pull complete 
+    55ac49bd649c: Pull complete 
+    cbf42f5a00d2: Pull complete 
+    8015f365966b: Pull complete 
+    4cadff8bc2aa: Pull complete 
+    Digest: sha256:67f9a4f10d147a6e04629340e6493c9703300ca23a2f7f3aa56fe615d75d31ca
+    Status: Downloaded newer image for nginx:1.25.1-bookworm
+    docker.io/library/nginx:1.25.1-bookworm
+
+
+O comando acima irá realizar o download da imagem do NGINX versão 1.25.1, com base na distribuição Debian bookworm. Caso tivessemos omitido a versão do NGINX e a distribuição Linux, o comando ``docker pull`` iria utilizar a **tag** especial chamada ``:latest``, como mostrado abaixo::
+
+    docker pull nginx
+
+
+Saída:
+
+
+.. code-block:: text
+
+    Using default tag: latest
+    latest: Pulling from library/nginx
+    Digest: sha256:67f9a4f10d147a6e04629340e6493c9703300ca23a2f7f3aa56fe615d75d31ca
+    Status: Downloaded newer image for nginx:latest
+    docker.io/library/nginx:latest
+
+
+.. note::
+
+    Repare na saída do exemplo acima que a *tag* ``:latest`` equivale a versão ``:1.25.1-bookworm``.
+
+
+A sintaxe do comando ``docker pull`` é a seguinte:
+
+
+.. code-block:: text
+
+    docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+
+
+.. tip::
+
+    Para mais detalhes desse comando, consulte a seção `docker pull <https://docs.docker.com/engine/reference/commandline/pull/>`__ no documento `Command-line interfaces <https://docs.docker.com/engine/reference/commandline/cli/>`__.
+
+
+.. tip::
+
+    O NGINX é pronunciado como **engine-x**.
+
+
+Listando Imagens Disponíveis no Host
+------------------------------------
+
+
+Para listar as imagens existentes no seu sistema, utilize o comando ``docker images``, como mostrado a seguir::
+
+    docker images
+
+
+Saída:
+
+
+.. code-block:: text
+
+    REPOSITORY       TAG                   IMAGE ID       CREATED         SIZE
+    nginx            1.25.1-bookworm       89da1fb6dcb9   12 days ago     187MB
+
+
+As colunas na saída acima possuem o seguinte significado:
+
+.. rst-class:: open
+
+- A coluna ``REPOSITORY`` indica o repositório de origem da imagem. Em geral, os nomes de repositório incluem um prefixo com o endereço da fonte das imagens e alguma organização lógica. Na saída acima, o Docker irá presumir que trata-se de uma imagem do Docker Hub. A imagem do **cAdvisor**, por exemplo, pode ser encontrada no **registry** ``gcr.io`` sob a organização ``cadvisor``. 
+
+    Logo, para baixarmos a imagem contendo o cAdvisor, devemos fazer::
+
+        docker pull gcr.io/cadvisor/cadvisor:latest
+    
+    
+    Saída::
+
+        latest: Pulling from cadvisor/cadvisor
+        188c0c94c7c5: Pull complete 
+        2d4828968d6c: Pull complete 
+        b28a9b13dc6d: Pull complete 
+        031224e6222c: Pull complete 
+        Digest: sha256:ddadf3e2fd880deb4e0f3606d34a0d9da1165e3801116075d98a1901635dc9e8
+        Status: Downloaded newer image for gcr.io/cadvisor/cadvisor:latest
+        gcr.io/cadvisor/cadvisor:latest
+
+
+- A coluna ``SIZE`` indica o espaço total da imagem, isto é, este valor inclui o tamanho de imagens usadas como base (*parent images*).
+
+
+A sintaxe geral do comando ``docker images`` é a seguinte:
+
+
+.. code-block:: text
+
+    docker images [OPTIONS] [REPOSITORY[:TAG]]
+
+
+Repare na sitaxe que podemos listar as imagens de um mesmo repositório, como por exemplo::
+
+    docker images nginx
+    
+
+Saída:
+
+
+.. code-block:: text
+
+    REPOSITORY   TAG               IMAGE ID       CREATED         SIZE
+    nginx        1.25.1-bookworm   89da1fb6dcb9   12 days ago     187MB
+    nginx        latest            89da1fb6dcb9   12 days ago     187MB
+    nginx        1.21.3            f8f4ffc8092c   22 months ago   133MB
+    nginx        1.18              c2c45d506085   2 years ago     133MB
+
+
+
+.. tip::
+
+    Para mais detalhes desse comando, consulte a seção `docker images <https://docs.docker.com/engine/reference/commandline/images/>`__ no documento `Command-line interfaces <https://docs.docker.com/engine/reference/commandline/cli/>`__.
+
+
+Criando um contêiner a partir da Imagem NGINX
+---------------------------------------------
+
+
+Vamos lançar um contêiner a partir da imagem ``nginx:1.25.1-bookworm``::
+
+    docker run --detach --name my-nginx nginx:1.25.1-bookworm
+
+
+Saída:
+
+
+.. code-block:: text
+
+    3fcdbc08044bac3ebde1131316ff8238429e880411f1610dc185199a3087dc8d
+
+
+.. tip::
+
+    Para mais detalhes desse comando, consulte a seção `docker run <https://docs.docker.com/engine/reference/commandline/run/>`__ no documento `Command-line interfaces <https://docs.docker.com/engine/reference/commandline/cli/>`__.
+
+
+Listando os Contêineres Existentes
+----------------------------------
+
+
+Para obter uma listagem dos contêineres em execução podemos utilizar o comando ``docker ps`` (sem opções)::
+
+    docker ps
+
+
+Saída:
+
+
+.. code-block:: text
+
+    CONTAINER ID   IMAGE                    COMMAND                  CREATED          STATUS          PORTS     NAMES
+    3fcdbc08044b   nginx:1.25.1-bookworm    "/docker-entrypoint.…"   34 seconds ago   Up 29 seconds   80/tcp    my-nginx
+
+
+Abrindo um Terminal com o ambiente do Contêiner
+-----------------------------------------------
+
+
+Para abrir um terminal no ambiente do contêiner ``my-nginx``, podemos utillizar o comando ``docker exec``::
+
+    docker exec -it my-nginx bash
+
+
+Saída:
+
+
+.. code-block:: text
+
+    root@3fcdbc08044b:/#
+
+
+No ambiente do contêiner, vamos instalar dois pacotes, o primeiro, ``iproute2`` nos permitirá usar o comando ``ip a`` e o pacote ``procps``, o comando ``ps``::
+
+    apt update
+
+    apt install iproute2 procps
+
+
+Repare que o contêiner consegue acessar a Web através de uma rede *bridge* criada com o sistema do *host*. Para ver os detalhes de rede do contêiner, faça::
+
+    ip a
+
+
+Saída:
+
+
+.. code-block:: text
+
+    1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+        link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+        inet 127.0.0.1/8 scope host lo
+           valid_lft forever preferred_lft forever
+
+    25: eth0@if26: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+        link/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+        inet 172.17.0.3/16 brd 172.17.255.255 scope global eth0
+           valid_lft forever preferred_lft forever
+
+
+O NGINX encontra-se em execução no ambiente do contêiner, sendo o processo principal executado como ``root`` e os processos que aguardam por conexão de clientes, usando um usuário de UID e GID 101 (``nginx``)::
+
+    ps -ef
+
+
+Saída:
+
+
+.. code-block:: text
+
+    UID          PID    PPID  C STIME TTY          TIME CMD
+    root           1       0  0 03:28 ?        00:00:00 nginx: master process nginx -g daemon off;
+    nginx         29       1  0 03:29 ?        00:00:00 nginx: worker process
+    nginx         30       1  0 03:29 ?        00:00:00 nginx: worker process
+    nginx         31       1  0 03:29 ?        00:00:00 nginx: worker process
+    nginx         32       1  0 03:29 ?        00:00:00 nginx: worker process
+    nginx         33       1  0 03:29 ?        00:00:00 nginx: worker process
+    nginx         34       1  0 03:29 ?        00:00:00 nginx: worker process
+    nginx         35       1  0 03:29 ?        00:00:00 nginx: worker process
+    nginx         36       1  0 03:29 ?        00:00:00 nginx: worker process
+    root          37       0  0 03:45 pts/0    00:00:00 bash
+    root         368      37  0 03:46 pts/0    00:00:00 ps -ef
+
+
+Veja também o endereço e porta usados pelo NGINX::
+
+    ss -tulpn
+
+
+Saída:
+
+
+.. code-block:: text
+
+
+    Netid      State       Recv-Q      Send-Q             Local Address:Port             Peer Address:Port      Process                            
+    tcp        LISTEN      0           511                      0.0.0.0:80                    0.0.0.0:*          users:(("nginx",pid=1,fd=6))      
+    tcp        LISTEN      0           511                         [::]:80                       [::]:*          users:(("nginx",pid=1,fd=7))      
+
+
+De dentro do contêiner, podemos acessar a página do NGINX::
+
+    curl http://127.0.0.1
+
+
+Saída:
+
+
+.. code-block:: html
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Welcome to nginx!</title>
+    <style>
+    html { color-scheme: light dark; }
+    body { width: 35em; margin: 0 auto;
+    font-family: Tahoma, Verdana, Arial, sans-serif; }
+    </style>
+    </head>
+    <body>
+    <h1>Welcome to nginx!</h1>
+    <p>If you see this page, the nginx web server is successfully installed and
+    working. Further configuration is required.</p>
+
+    <p>For online documentation and support please refer to
+    <a href="http://nginx.org/">nginx.org</a>.<br/>
+    Commercial support is available at
+    <a href="http://nginx.com/">nginx.com</a>.</p>
+
+    <p><em>Thank you for using nginx.</em></p>
+    </body>
+    </html>
+
+
+Copiando Arquivos entre Host e o Contêiner
+------------------------------------------
+
+
+Vamos copiar o arquivo de configuração do NGINX (``nginx.conf``) localizado no diretório ``/etc/nginx`` do contêiner para o diretório ``/tmp`` do *host*::
+
+    docker cp my-nginx:/etc/nginx/nginx.conf /tmp/nginx.conf
+
+
+O arquivo ``/tmp/nginx.conf`` possui o seguinte conteúdo:
+
+
+.. code-block:: linux-config
+
+    user  nginx;
+    worker_processes  auto;
+
+    error_log  /var/log/nginx/error.log notice;
+    pid        /var/run/nginx.pid;
+
+
+    events {
+        worker_connections  1024;
+    }
+
+
+    http {
+        include       /etc/nginx/mime.types;
+        default_type  application/octet-stream;
+
+        log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log  /var/log/nginx/access.log  main;
+
+        sendfile        on;
+        #tcp_nopush     on;
+
+        keepalive_timeout  65;
+
+        #gzip  on;
+
+        include /etc/nginx/conf.d/*.conf;
+    }
+
+
+Vamos alterar a linha ``worker_processes  auto;`` para ``worker_processes  2;`` e, em seguida, copiar o arquivo de volta para o contêiner::
+
+    docker cp /tmp/nginx.conf my-nginx:/etc/nginx/nginx.conf
+
+
+Se reinicializarmos o contêiner, poderemos ver o novo número de processos aguardando por conexões do usuário::
+
+    docker restart my-nginx
+    
+    docker exec -it my-nginx bash
+    
+    ps -ef
+
+
+Gerenciamento do Contêiner
+--------------------------
+
+
+Para interromper a execução de um contêiner, utilizamos o comando ``docker stop`` informando **o nome** ou **ID** do container::
+
+    docker stop my-nginx
+
+
+Um contêiner que não encontra-se em execução pode ser removido com o comando ``docker rm``::
+
+    docker rm my-nginx
+
+
+Expondo Portas do Contêiner
+---------------------------
+
+
+Vamos criar um novo contêiner do NGINX mas dessa vez expondo a porta 80 do contêiner através da porta 8080 do *host*, usando apenas a interface local::
+
+    docker run --detach \
+               --name my-nginx \
+               --publish 127.0.0.1:8080:80 \
+               nginx:1.25.1-bookworm
+
+
+Agora, no terminal do *host*, faça::
+
+    curl http://127.0.0.1:8080
+
+
+Para expor a porta do processo do NGINX no contêiner a uma interface específica no *host*, faça::
+
+    docker run --detach \
+               --name my-nginx \
+               --publish <IP>:8080:80 \
+               nginx:1.25.1-bookworm
+
+
+Dessa forma, o NGINX poderá ser acessado por outros *hosts* da rede através do endereço IP associado::
+
+    curl http://<IP>:8080
+
+
+Montando um Diretório do Host no Contêiner
+------------------------------------------
+
+
+.. figure:: https://docs.docker.com/storage/images/types-of-mounts-bind.png
+    :width: 70%
+
+
+Baixe o arquivo :download:`html.tar.gz <code/html.tar.gz>`, que contém uma página HTML e descompate no diretório corrente::
+
+    tar -xzvf html.tar.gz
+
+
+Em seguida, vamos fazer com que a pasta ``html`` seja montada como leitura em um novo contêiner NGINX sob o diretório ``/usr/share/nginx/html``::
+
+    docker run --detach \
+               --name my-nginx \
+               --publish <IP>:8080:80 \
+               --volume $(pwd)/html:/usr/share/nginx/html:ro \
+               nginx:1.25.1-bookworm
+
+
+Verifique a montagem realizada com::
+
+    docker inspect my-nginx
+
+
+Saída:
+
+
+.. code-block:: json
+
+    "Mounts": [
+        {
+            "Type": "bind",
+            "Source": "/home/gribeiro/Temp/NGINX/html",
+            "Destination": "/usr/share/nginx/html",
+            "Mode": "ro",
+            "RW": false,
+            "Propagation": "rprivate"
+        }
+    ]
+
+
+Abra a página no seu navegador, por exemplo::
+
+    firefox http://<IP>:8080
+
+
+Vamos verificar se de fato a pasta foi montada dentro do contêiner apenas com permisão de leitura::
+
+    docker exec -it my-nginx bash
+    
+    cd /usr/share/nginx/html
+    
+    touch teste.txt
+
+
+.. note::
+
+    Esta forma de montagem de diretório é conhecida como `bind mount <https://docs.docker.com/storage/bind-mounts/>`__. Na opção ``--volume``, o diretório do *host* deve ser informado com o caminho absoluto e caso esse diretório não exista, um novo diretório é automaticamente criado. Já a opção ``--mount``, que também pode ser usada para este tipo de montagem de diretórios, produz um erro caso o diretório não exista.
+
+
+.. tip::
+
+    O que acontece quando montamos um diretório do *host* sobre um diretório existente do contêiner?
+
+
+.. tip::
+
+    Ao final, lembre-se de desligar o contêiner e removê-lo para seguirmos para as próximas atividades::
+    
+        docker stop my-nginx
+        
+        docker rm my-nginx
+
+
+Volumes Nomeados
+----------------
+
+
+.. figure:: https://docs.docker.com/storage/images/types-of-mounts-volume.png
+    :width: 70%
+
+
+Volumes nomeados são completamente gerenciados pelo próprio Docker.
+
+
+Vamos retomar o exemplo com o NGINX::
+
+    docker run --detach \
+               --name my-nginx \
+               --publish <IP>:8080:80 \
+               --mount 'type=volume,src=nginx-data,dst=/usr/share/nginx/html,ro' \
+               nginx:1.25.1-bookworm
+
+
+Veja que um novo volume chamado ``nginx-data`` é criado::
+
+    docker volume ls
+
+
+Saída:
+
+
+.. code-block:: text
+
+    DRIVER    VOLUME NAME
+    local     nginx-data
+
+
+Verifique a montagem realizada com::
+
+    docker inspect my-nginx
+
+
+Saída:
+
+
+.. code-block:: json
+
+    "Mounts": [
+        {
+            "Type": "volume",
+            "Name": "nginx-data",
+            "Source": "/var/lib/docker/volumes/nginx-data/_data",
+            "Destination": "/usr/share/nginx/html",
+            "Driver": "local",
+            "Mode": "z",
+            "RW": false,
+            "Propagation": ""
+        }
+    ]
+
+
+.. tip::
+
+    Veja a documentação sobre `Volumes <https://docs.docker.com/storage/volumes/>`__.
+
+
+.. tip::
+
+    Veja também sobre a possibilidade de montagem de áreas de escrita temporárias, chamadas de `tmpfs mounts <https://docs.docker.com/storage/tmpfs/>`__.

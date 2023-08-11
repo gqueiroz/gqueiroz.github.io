@@ -1,0 +1,27 @@
+..
+    This file is part of Dicas Containers.
+    Copyright 2020-2023, Gilberto Queiroz.
+
+
+.. include:: def.rst
+
+
+.. _cap_cosideracoes_finais:
+
+Considerações Finais
+====================
+
+
+Alguns tópicos para discussão:
+
+.. rst-class:: open
+
+- Segurança
+
+- Docker Registry
+
+- NFS
+
+- Você conhece esses conceitos: **namespaces**, **cgroups** e **chroot**?
+
+
