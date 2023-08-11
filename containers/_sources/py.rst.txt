@@ -16,13 +16,25 @@ Aplicação Flask
 ---------------
 
 
-O :numref:`Trecho de Código %s <code:python:app1>` apresenta um exemplo de aplicação ....
+O :numref:`Trecho de Código %s <code:python:app1>` apresenta um exemplo de aplicação web simples, escrita em Python com framework `Flask <https://flask-sqlalchemy.palletsprojects.com/>`_. A aplicação consiste em apenas uma rota ``/`` cuja resposta é o famoso ``Hello World``.
 
 
 .. literalinclude:: code/app1/app.py
     :linenos:
     :caption: Aplicação Flask (:download:`app.py <code/app1/app.py>`).
     :name: code:python:app1
+
+Como toda aplicação Python, esse exemplo também acompanha um arquivo de dependências `requirements.txt <code/app1/requirements.txt>`_, conforme abaixo.
+
+
+.. literalinclude:: code/app1/requirements.txt
+    :linenos:
+    :caption: :download:`requirements.txt <code/app1/requirements.txt>`
+    :name: code:python:requirements
+    :language: text
+
+
+Além disso, esse exemplo também acompanha um ``Dockerfile`` para funcionamento:
 
 
 .. literalinclude:: code/app1/Dockerfile
@@ -32,9 +44,32 @@ O :numref:`Trecho de Código %s <code:python:app1>` apresenta um exemplo de apli
     :language: dockerfile
 
 
-Comando::
+.. note::
 
-    docker build --tag gqueiroz/app-python:1.0
+    No arquivo ``Dockerfile``, as entradas de instalação de dependência ``pip`` estão com a flag ``--no-cache``. Isso é muito importante visto que por padrão, toda dependencia também é mantida dentro da home do usuário ``${HOME}/.cache/pip`` e essa opção descarta esse cache interno.
+    Para aplicações que possuem muitas dependências ou de bibliotecas compiladas, como por exemplo, ``rasterio``, ``fiona``, ``sklearn``, etc a imagem docker final pode ficar bem grande e essa opção ``--no-cache`` é muito útil.
 
+
+Para gerar a imagem docker da aplicação Flask, utilize o comando abaixo::
+
+
+    docker build --tag gqueiroz/app-python:1.0 .
+
+
+Em seguida, você pode rodar o comando abaixo e ver a imagem construida::
 
     docker images
+
+
+.. code-block::
+
+    REPOSITORY                                                     TAG                   IMAGE ID       CREATED          SIZE
+    gqueiroz/app-python                                            1.0                   e5452993fb90   2 minutes ago   144MB
+
+
+Com a imagem Docker construida, podemos rodar a aplicação com o comando abaixo::
+
+    docker run --rm -d --name app-py --publish 127.0.0.1:5000:5000 gqueiroz/app-python:1.0
+
+
+Em seguida, acesse o navegador `http://localhost:5000 <http://localhost:5000>`_.

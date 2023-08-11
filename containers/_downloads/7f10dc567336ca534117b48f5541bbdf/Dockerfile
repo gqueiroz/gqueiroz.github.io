@@ -1,11 +1,15 @@
-FROM python:3.8-slim-buster
+ARG BASE_IMAGE=python:3.11-slim-bullseye
+FROM ${BASE_IMAGE}
 
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
+COPY ./requirements.txt requirements.txt
 
-RUN pip3 install -r requirements.txt
+RUN pip install -r requirements.txt --no-cache && \
+    pip install gunicorn --no-cache
 
-COPY . .
+COPY ./app.py .
 
-CMD ["python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+EXPOSE 5000
+
+CMD ["gunicorn", "-w4" , "--bind=0.0.0.0:5000", "app:app"]

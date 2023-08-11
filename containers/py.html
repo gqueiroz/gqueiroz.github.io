@@ -110,7 +110,7 @@
 <span id="cap-python"></span><h1><span class="section-number">5. </span>Aplicação Python<a class="headerlink" href="#aplicacao-python" title="Link permanente para este cabeçalho"></a></h1>
 <section id="aplicacao-flask">
 <h2><span class="section-number">5.1. </span>Aplicação Flask<a class="headerlink" href="#aplicacao-flask" title="Link permanente para este cabeçalho"></a></h2>
-<p>O <a class="reference internal" href="#code-python-app1"><span class="std std-numref">Trecho de Código 5.1</span></a> apresenta um exemplo de aplicação ….</p>
+<p>O <a class="reference internal" href="#code-python-app1"><span class="std std-numref">Trecho de Código 5.1</span></a> apresenta um exemplo de aplicação web simples, escrita em Python com framework <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/">Flask</a>. A aplicação consiste em apenas uma rota <code class="docutils literal notranslate"><span class="pre">/</span></code> cuja resposta é o famoso <code class="docutils literal notranslate"><span class="pre">Hello</span> <span class="pre">World</span></code>.</p>
 <div class="literal-block-wrapper docutils container" id="code-python-app1">
 <div class="code-block-caption"><span class="caption-number">Trecho de Código 5.1 - </span><span class="caption-text">Aplicação Flask (<a class="reference download internal" download="" href="_downloads/dff8663b6aa60ce2808e6372e0c03030/app.py"><code class="xref download docutils literal notranslate"><span class="pre">app.py</span></code></a>).</span><a class="headerlink" href="#code-python-app1" title="Link Permanente para esse código"></a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
@@ -123,29 +123,56 @@
 </pre></div>
 </div>
 </div>
+<p>Como toda aplicação Python, esse exemplo também acompanha um arquivo de dependências <a class="reference external" href="code/app1/requirements.txt">requirements.txt</a>, conforme abaixo.</p>
+<div class="literal-block-wrapper docutils container" id="code-python-requirements">
+<div class="code-block-caption"><span class="caption-number">Trecho de Código 5.2 - </span><span class="caption-text"><a class="reference download internal" download="" href="_downloads/0699f6e514816ba75960e2bb178a663e/requirements.txt"><code class="xref download docutils literal notranslate"><span class="pre">requirements.txt</span></code></a></span><a class="headerlink" href="#code-python-requirements" title="Link Permanente para esse código"></a></div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>Flask&gt;=2.3
+</pre></div>
+</div>
+</div>
+<p>Além disso, esse exemplo também acompanha um <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> para funcionamento:</p>
 <div class="literal-block-wrapper docutils container" id="code-python-dockerfile">
-<div class="code-block-caption"><span class="caption-number">Trecho de Código 5.2 - </span><span class="caption-text"><a class="reference download internal" download="" href="_downloads/7f10dc567336ca534117b48f5541bbdf/Dockerfile"><code class="xref download docutils literal notranslate"><span class="pre">Dockerfile</span></code></a></span><a class="headerlink" href="#code-python-dockerfile" title="Link Permanente para esse código"></a></div>
-<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.8-slim-buster</span>
-<span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="k">COPY</span><span class="w"> </span>requirements.txt<span class="w"> </span>requirements.txt
-<span class="linenos"> 6</span>
-<span class="linenos"> 7</span><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
-<span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="k">COPY</span><span class="w"> </span>.<span class="w"> </span>.
+<div class="code-block-caption"><span class="caption-number">Trecho de Código 5.3 - </span><span class="caption-text"><a class="reference download internal" download="" href="_downloads/7f10dc567336ca534117b48f5541bbdf/Dockerfile"><code class="xref download docutils literal notranslate"><span class="pre">Dockerfile</span></code></a></span><a class="headerlink" href="#code-python-dockerfile" title="Link Permanente para esse código"></a></div>
+<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">ARG</span><span class="w"> </span><span class="nv">BASE_IMAGE</span><span class="o">=</span>python:3.11-slim-bullseye
+<span class="linenos"> 2</span><span class="k">FROM</span><span class="w"> </span><span class="s">${BASE_IMAGE}</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="k">COPY</span><span class="w"> </span>./requirements.txt<span class="w"> </span>requirements.txt
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt<span class="w"> </span>--no-cache<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos"> 9</span><span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>gunicorn<span class="w"> </span>--no-cache
 <span class="linenos">10</span>
-<span class="linenos">11</span><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;python3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-m&quot;</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;flask&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--host=0.0.0.0&quot;</span><span class="p">]</span>
+<span class="linenos">11</span><span class="k">COPY</span><span class="w"> </span>./app.py<span class="w"> </span>.
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="k">EXPOSE</span><span class="w"> </span><span class="s">5000</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;gunicorn&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-w4&quot;</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--bind=0.0.0.0:5000&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;app:app&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
-<p>Comando:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">build</span> <span class="o">--</span><span class="n">tag</span> <span class="n">gqueiroz</span><span class="o">/</span><span class="n">app</span><span class="o">-</span><span class="n">python</span><span class="p">:</span><span class="mf">1.0</span>
-
-
-<span class="n">docker</span> <span class="n">images</span>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>No arquivo <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>, as entradas de instalação de dependência <code class="docutils literal notranslate"><span class="pre">pip</span></code> estão com a flag <code class="docutils literal notranslate"><span class="pre">--no-cache</span></code>. Isso é muito importante visto que por padrão, toda dependencia também é mantida dentro da home do usuário <code class="docutils literal notranslate"><span class="pre">${HOME}/.cache/pip</span></code> e essa opção descarta esse cache interno.
+Para aplicações que possuem muitas dependências ou de bibliotecas compiladas, como por exemplo, <code class="docutils literal notranslate"><span class="pre">rasterio</span></code>, <code class="docutils literal notranslate"><span class="pre">fiona</span></code>, <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>, etc a imagem docker final pode ficar bem grande e essa opção <code class="docutils literal notranslate"><span class="pre">--no-cache</span></code> é muito útil.</p>
+</div>
+<p>Para gerar a imagem docker da aplicação Flask, utilize o comando abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">build</span> <span class="o">--</span><span class="n">tag</span> <span class="n">gqueiroz</span><span class="o">/</span><span class="n">app</span><span class="o">-</span><span class="n">python</span><span class="p">:</span><span class="mf">1.0</span> <span class="o">.</span>
 </pre></div>
 </div>
+<p>Em seguida, você pode rodar o comando abaixo e ver a imagem construida:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">REPOSITORY</span>                                                     <span class="n">TAG</span>                   <span class="n">IMAGE</span> <span class="n">ID</span>       <span class="n">CREATED</span>          <span class="n">SIZE</span>
+<span class="n">gqueiroz</span><span class="o">/</span><span class="n">app</span><span class="o">-</span><span class="n">python</span>                                            <span class="mf">1.0</span>                   <span class="n">e5452993fb90</span>   <span class="mi">2</span> <span class="n">minutes</span> <span class="n">ago</span>   <span class="mi">144</span><span class="n">MB</span>
+</pre></div>
+</div>
+<p>Com a imagem Docker construida, podemos rodar a aplicação com o comando abaixo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">name</span> <span class="n">app</span><span class="o">-</span><span class="n">py</span> <span class="o">--</span><span class="n">publish</span> <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">5000</span><span class="p">:</span><span class="mi">5000</span> <span class="n">gqueiroz</span><span class="o">/</span><span class="n">app</span><span class="o">-</span><span class="n">python</span><span class="p">:</span><span class="mf">1.0</span>
+</pre></div>
+</div>
+<p>Em seguida, acesse o navegador <a class="reference external" href="http://localhost:5000">http://localhost:5000</a>.</p>
 </section>
 </section>
 
@@ -164,7 +191,7 @@
   </div>
 
   
-<jinja2.runtime.BlockReference object at 0x7f23ed27c940>
+<jinja2.runtime.BlockReference object at 0x7f570bce4ca0>
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" width="117" height="41"/></a> Este obra está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>.
 
 
